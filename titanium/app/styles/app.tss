@@ -1,0 +1,7 @@
+// Global styles
+
+".full-view": {
+	width: "auto",
+	height: "auto",
+	backgroundColor: "#FFF"
+}

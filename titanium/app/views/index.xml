@@ -1,0 +1,14 @@
+<Alloy>
+	<TabGroup>
+		<Tab title="Home" icon="KS_nav_ui.png">
+			<Window id="homeWindow" title="Home">
+				<Require type="view" src="home" id="homeTab"/>
+			</Window>
+		</Tab>
+		<Tab title="Weather" icon="KS_nav_views.png">
+			<Window id="weatherWindow" title="Weather">
+				<Require type="view" src="weather" id="weatherTab"/>
+			</Window>
+		</Tab>
+	</TabGroup>
+</Alloy>

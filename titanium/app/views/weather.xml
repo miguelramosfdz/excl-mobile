@@ -1,0 +1,8 @@
+<Alloy>
+	<View id="containerView" class="full-view">		
+		<Require type="widget" src="excl.platform-logo" id="platformLogoWidget"/>
+		<Label id="temperatureLabel"></Label>
+		<Label id="cityLabel"></Label>
+		<Button id="refreshButton" title="Refresh" onClick="refresh"/>
+	</View>
+</Alloy>
