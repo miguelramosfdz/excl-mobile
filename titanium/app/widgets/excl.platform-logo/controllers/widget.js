@@ -25,7 +25,7 @@ var init = function(options) {
 	if (OS_ANDROID){
 		logoPath = options.androidLogoPath;
 	} else if (OS_IOS) {
-		logoPath = options.ioslogoPath;
+		logoPath = options.iosLogoPath;
 	}
 	
 	// Show logo
