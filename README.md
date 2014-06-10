@@ -1,29 +1,9 @@
-# README #
+# ExCL Mobile App #
 
 This README would normally document whatever steps are necessary to get your application up and running.
 
-### What is this repository for? ###
+### Install Steps ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+1. Clone the cmh-excl-mobile repository (go to https://bitbucket.org/parivedasolutions/cmh-excl-mobile to see your clone link) from bitbucket to anywhere on your computer
+2. Open up Titanium Studio and Import the existing project into your workspace
+3. Develop!
