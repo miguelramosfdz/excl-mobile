@@ -4,6 +4,9 @@ function init() {
 	var pathImage;
 	var inputSelected = false;
 
+	var socialView = Ti.UI.createView({});
+	$.socialViewAll.add(socialView);
+
 	function shareWindow(viewName) {
 		var shareScrollView = Ti.UI.createScrollView({
 			contentWidth : 'auto',
@@ -510,6 +513,5 @@ function init() {
 	});
 	//End btnShare listener
 }
-
 
 init();
