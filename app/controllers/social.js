@@ -1,7 +1,4 @@
 function init() {
-	//global vars
-	var inputSelected = false;
-
 	//Pop up window that contains specific app information
 	// function windowPopupShare(viewName) {
 	// var viewScrollShare = Ti.UI.createScrollView({
@@ -47,6 +44,13 @@ function init() {
 		var viewSharingAllContent = Ti.UI.createView({
 			backgroundColor : "#FFFFFF"
 		});
+		viewSharingAllContent.addEventListener('load', function(e) {
+			//Set keyboard to hide for Android
+			if (OS_ANDROID) {
+				inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
+				inputSubject.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
+			}
+		});
 		$.viewShareBase.add(viewSharingAllContent);
 
 		//Window rows
@@ -64,21 +68,27 @@ function init() {
 		viewSharingAllContent.add(rowTwo);
 		var rowThree = Ti.UI.createView({
 			layout : "horizontal",
-			top : "150dip"
+			top : "100dip",
+			width : "100%",
 		});
 		viewSharingAllContent.add(rowThree);
 		var rowFour = Ti.UI.createView({
 			layout : "horizontal",
-			top : "200dip",
-			left : 0
+			top : "200dip"
 		});
 		viewSharingAllContent.add(rowFour);
 		var rowFive = Ti.UI.createView({
 			layout : "horizontal",
 			top : "250dip",
-			width : "100%",
+			left : 0
 		});
 		viewSharingAllContent.add(rowFive);
+		var rowSix = Ti.UI.createView({
+			layout : "horizontal",
+			top : "300dip",
+			width : "100%",
+		});
+		viewSharingAllContent.add(rowSix);
 
 		//Back button closes sharing window and returns to app
 		var closeViewSharingAllContent = Ti.UI.createButton({
@@ -97,8 +107,8 @@ function init() {
 		});
 
 		clearAll.addEventListener('click', function(e) {
-			inputComment.value = "";
-			viewImageCaptured.image = "";
+			Ti.app.fireEvent(clearTextComment);
+			Ti.app.fireEvent(removeImage);
 		});
 		rowOne.add(clearAll);
 
@@ -109,8 +119,8 @@ function init() {
 					action : Ti.Android.ACTION_SEND,
 					type : 'text/plain'
 				});
-				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
-				intentText.putExtra(Ti.Android.EXTRA_TEXT, "This is some text to send.");
+				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, inputSubject.value);
+				intentText.putExtra(Ti.Android.EXTRA_TEXT, inputComment.value);
 				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				Ti.Android.createIntentChooser(intentText, "Send Message");
 				Ti.Android.currentActivity.startActivity(intentText);
@@ -174,7 +184,7 @@ function init() {
 				alert("There's no image to share!");
 			}
 		});
-		rowFour.add(sendIntentImage);
+		rowFive.add(sendIntentImage);
 
 		//Open camera button
 		var openCamera = Ti.UI.createButton({
@@ -242,7 +252,7 @@ function init() {
 			});
 		});
 		//add open camera button
-		rowFour.add(openCamera);
+		rowFive.add(openCamera);
 
 		//removes image from view but does not delete from gallery
 		var removeImage = Ti.UI.createButton({
@@ -255,7 +265,7 @@ function init() {
 			rotateLeft.visible = false;
 			rotateRight.visible = false;
 		});
-		rowFour.add(removeImage);
+		rowFive.add(removeImage);
 
 		function correctOrientation(viewImage, rotateLeft, rotateRight) {
 			//corrects displayed picture based on which rotation is sent. booleans accepted for rotateLeft and rotateRight
@@ -342,10 +352,44 @@ function init() {
 				rotateRight.visible = false;
 			}
 		});
-		rowFour.add(viewImageCaptured);
+		rowSix.add(viewImageCaptured);
 
-		//Text area for input
-		var textSelected = false;
+		//Text area for subject input
+		var textSubjectSelected = false;
+		var inputSubject = Ti.UI.createTextArea({
+			width : "100%",
+			height : '45dip',
+			borderRadius : "15",
+			backgroundColor : "#E0E0E0",
+			borderColor : "#000000",
+			font : {
+				fontSize : 12,
+				color : "#000000"
+			},
+			keyboardType : Ti.UI.KEYBOARD_ASCII,
+			returnKeyType : Ti.UI.RETURNKEY_DONE,
+			textAlign : 'left',
+			hintText : '(Subject, if applicable)',
+			scrollable : true,
+		});
+
+		//control focus/blur of inputSubject
+		inputSubject.addEventListener('click', function(e) {
+			if (OS_ANDROID) {
+				inputSubject.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
+			}
+			inputSubject.keyboardType = Ti.UI.KEYBOARD_ASCII;
+			inputSubject.returnKeyType = Ti.UI.RETURNKEY_DONE;
+			inputSubject.font.color = "#000000";
+			inputSubject.focus();
+			//show text editting buttons
+			closeInputKeyboard.visible = true;
+			clearTextComment.visible = true;
+		});
+		rowTwo.add(inputSubject);
+
+		//Text area for comment input
+		var textCommentSelected = false;
 		var inputComment = Ti.UI.createTextArea({
 			width : "100%",
 			height : '95dip',
@@ -363,13 +407,8 @@ function init() {
 			scrollable : true,
 		});
 
-		//Set keyboard to hide for Android
-		if (OS_ANDROID) {
-			inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
-		}
-
 		//control focus/blur of inputComment
-		inputComment.addEventListener('click', function() {
+		inputComment.addEventListener('click', function(e) {
 			if (OS_ANDROID) {
 				inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
 			}
@@ -385,7 +424,7 @@ function init() {
 		// inputComment.addEventListener('blur', function() {
 		// inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
 		// });
-		rowTwo.add(inputComment);
+		rowThree.add(inputComment);
 
 		//Send text intent
 		var sendIntentText = Ti.UI.createButton({
@@ -403,7 +442,7 @@ function init() {
 				alert("There's no text to share!");
 			}
 		});
-		rowThree.add(sendIntentText);
+		rowFour.add(sendIntentText);
 
 		//close keyboard button for inputComment
 		var closeInputKeyboard = Ti.UI.createButton({
@@ -419,7 +458,7 @@ function init() {
 			closeInputKeyboard.visible = false;
 			clearTextComment.visible = false;
 		});
-		rowThree.add(closeInputKeyboard);
+		rowFour.add(closeInputKeyboard);
 
 		//clear text button for inputComment
 		var clearTextComment = Ti.UI.createButton({
@@ -429,7 +468,7 @@ function init() {
 		clearTextComment.addEventListener('click', function(e) {
 			inputComment.value = "";
 		});
-		rowThree.add(clearTextComment);
+		rowFour.add(clearTextComment);
 
 		////Twitter////
 		/*Old way: use button for WebView
