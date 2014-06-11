@@ -317,21 +317,25 @@ function init() {
 			Ti.Android.createIntentChooser(intentText, "Send Message");
 			Ti.Android.currentActivity.startActivity(intentText);
 
-			if (Titanium.Platform.osname == 'android'){
+			if (Titanium.Platform.osname == 'android') {
 				var intentText = Ti.Android.createIntent({
 					action : Ti.Android.ACTION_SEND,
 					type : 'text/plain'
 				});
 				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
 				intentText.putExtra(Ti.Android.EXTRA_TEXT, "This is some text to send.");
-				intent.addCategory(Ti.Android.CATEGORY_DEFAULT);
+				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				Ti.Android.createIntentChooser(intentText, "Send Message");
 				Ti.Android.currentActivity.startActivity(intentText);
-			}
-			else if (Titanium.Platform.osname == 'iphone' || Titanium.Platform.osname == 'ipad'){ 
+			} else if (Titanium.Platform.osname == 'iphone' || Titanium.Platform.osname == 'ipad') {
 				//Assume for now we're doing the same thing with iPhones and iPads
-				var docViewer = Ti.UI.iOS.createDocumentViewer({ url: "http://www.cmhouston.org" });
-				docViewer.show({ view: rightNavBtn, animated: true });
+				var docViewer = Ti.UI.iOS.createDocumentViewer({
+					url : "http://www.cmhouston.org"
+				});
+				docViewer.show({
+					view : rightNavBtn,
+					animated : true
+				});
 			}
 		});
 		rowThree.add(sendIntentText);
