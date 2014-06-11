@@ -1,12 +1,6 @@
 function init() {
 	//global vars
-	var imageDefault = "http://www.freestockphotos.biz/pictures/4/4398/border.png";
-	var imageCapturedPath;
 	var inputSelected = false;
-
-	//push view to xml
-	var viewSocial = Ti.UI.createView({});
-	$.viewSocialAll.add(viewSocial);
 
 	//Pop up window that contains specific app information
 	// function windowPopupShare(viewName) {
@@ -43,13 +37,14 @@ function init() {
 			color : "#000000"
 		}
 	});
-	viewSocial.add(openMenuShare);
+	$.viewShareBase.add(openMenuShare);
 
 	openMenuShare.addEventListener('click', function(e) {
-		var viewSocialAll = Ti.UI.createWindow({});
-		viewSocialAll.open({
-			modal : true
+		//create viewSharingAllContent, which will serve as the background view for all sharing content, then post to page
+		var viewSharingAllContent = Ti.UI.createView({
+			backgroundColor : "#FFFFFF"
 		});
+		$.viewShareBase.add(viewSharingAllContent);
 
 		//Window rows
 		var rowOne = Ti.UI.createView({
@@ -57,40 +52,40 @@ function init() {
 			top : "0dip",
 			width : "100%",
 		});
-		viewSocialAll.add(rowOne);
+		viewSharingAllContent.add(rowOne);
 		var rowTwo = Ti.UI.createView({
 			layout : "horizontal",
 			top : "50dip",
 			width : "75%",
 			left : "12.5%"
 		});
-		viewSocialAll.add(rowTwo);
+		viewSharingAllContent.add(rowTwo);
 		var rowThree = Ti.UI.createView({
 			layout : "horizontal",
 			top : "150dip"
 		});
-		viewSocialAll.add(rowThree);
+		viewSharingAllContent.add(rowThree);
 		var rowFour = Ti.UI.createView({
 			layout : "horizontal",
 			top : "200dip",
 			left : 0
 		});
-		viewSocialAll.add(rowFour);
+		viewSharingAllContent.add(rowFour);
 		var rowFive = Ti.UI.createView({
 			layout : "horizontal",
-			top : "455dip",
+			top : "250dip",
 			width : "100%",
 		});
-		viewSocialAll.add(rowFive);
+		viewSharingAllContent.add(rowFive);
 
 		//Back button closes sharing window and returns to app
-		var closeViewSocialAll = Ti.UI.createButton({
+		var closeViewSharingAllContent = Ti.UI.createButton({
 			title : "Back",
 			height : "45dip"
 		});
-		rowOne.add(closeViewSocialAll);
-		closeViewSocialAll.addEventListener("click", function(e) {
-			viewSocialAll.close();
+		rowOne.add(closeViewSharingAllContent);
+		closeViewSharingAllContent.addEventListener("click", function(e) {
+			viewSharingAllContent.close();
 		});
 
 		//clear all button that clears text in inputComment and picture in viewImageCaptured
@@ -99,7 +94,7 @@ function init() {
 		});
 		clearAll.addEventListener('click', function(e) {
 			inputComment.value = null;
-			viewImageCaptured.image = imageDefault;
+			viewImageCaptured.image = null;
 		});
 		rowOne.add(clearAll);
 
@@ -170,7 +165,7 @@ function init() {
 		sendIntentImage.addEventListener("click", function(e) {
 			createIntentImage(viewImageCaptured.image);
 		});
-		rowFive.add(sendIntentImage);
+		rowFour.add(sendIntentImage);
 
 		//Open camera button
 		var openCamera = Ti.UI.createButton({
@@ -211,7 +206,7 @@ function init() {
 			if ( orientationCode = "1") {
 				//portrait
 				var matrix2d = Ti.UI.create2DMatrix();
-				matrix2d = matrix2d.rotate(90);
+				matrix2d = matrix2d.rotate(-90);
 				var spin = Ti.UI.createAnimation({
 					transform : matrix2d,
 					duration : 1000,
@@ -222,7 +217,7 @@ function init() {
 			} else if ( orientationCode = '2') {
 				//left landscape
 				var matrix2d = Ti.UI.create2DMatrix();
-				matrix2d = matrix2d.rotate(-90);
+				matrix2d = matrix2d.rotate(0);
 				var spin = Ti.UI.createAnimation({
 					transform : matrix2d,
 					duration : 1000,
@@ -268,16 +263,18 @@ function init() {
 			});
 		});
 		//add open camera button
-		rowFive.add(openCamera);
+		rowFour.add(openCamera);
 
 		//removes image from view but does not delete from gallery
 		var removeImage = Ti.UI.createButton({
-			title : "Clear Pic"
+			title : "Clear Pic",
+			visible : false
 		});
 		removeImage.addEventListener("click", function(e) {
-			viewImageCaptured.image = imageDefault;
+			viewImageCaptured.image = null;
+			removeImage.visible = false;
 		});
-		rowFive.add(removeImage);
+		rowFour.add(removeImage);
 
 		// //Switch to determine if photo will be shared
 		// var sharePhoto = Ti.UI.createSwitch({
@@ -289,7 +286,7 @@ function init() {
 
 		//Image view
 		var viewImageCaptured = Ti.UI.createImageView({
-			image : imageDefault,
+			image : null,
 			top : "0",
 			left : "12.5%",
 			height : "250dip",
@@ -299,23 +296,28 @@ function init() {
 				y : 0.5
 			}
 		});
-		// viewImageCaptured.addEventListener("load", function(e) {
-		// if (viewImageCaptured.image == imageDefault) {
-		// sharePhoto.value = false;
-		// sharePhoto.enabled = false;
-		// } else {
-		// sharePhoto.value = true;
-		// sharePhoto.enabled = true;
-		// }
-		// });
+		viewImageCaptured.addEventListener("load", function(e) {
+			if (viewImageCaptured.image != null) {
+				// sharePhoto.value = false;
+				// sharePhoto.enabled = false;
+				// } else {
+				// sharePhoto.value = true;
+				// sharePhoto.enabled = true;
+				removeImage.visible = true;
+			} else {
+				removeImage.visible = false;
+			}
+		});
 		rowFour.add(viewImageCaptured);
 
 		//Text area for input
 		var textSelected = false;
 		var inputComment = Ti.UI.createTextArea({
 			width : "100%",
-			height : '100dip',
-			borderStyle : Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+			height : '95dip',
+			borderRadius : "50",
+			backgroundColor : "#E0E0E0",
+			borderColor : "#000000",
 			font : {
 				fontSize : 12,
 			},
