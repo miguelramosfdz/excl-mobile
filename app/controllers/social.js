@@ -307,7 +307,6 @@ function init() {
 			height : "45dip"
 		});
 		sendIntentText.addEventListener("click", function(e) {
-<<<<<<< HEAD
 			var intentText = Ti.Android.createIntent({
 				action : Ti.Android.ACTION_SEND,
 				type : 'text/plain'
@@ -317,7 +316,7 @@ function init() {
 			intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 			Ti.Android.createIntentChooser(intentText, "Send Message");
 			Ti.Android.currentActivity.startActivity(intentText);
-=======
+
 			if (Titanium.Platform.osname == 'android'){
 				var intentText = Ti.Android.createIntent({
 					action : Ti.Android.ACTION_SEND,
@@ -334,7 +333,6 @@ function init() {
 				var docViewer = Ti.UI.iOS.createDocumentViewer({ url: "http://www.cmhouston.org" });
 				docViewer.show({ view: rightNavBtn, animated: true });
 			}
->>>>>>> fff3167dda6d1a31abf7149506b98270d0a4e205
 		});
 		rowThree.add(sendIntentText);
 
