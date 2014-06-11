@@ -133,7 +133,7 @@ function init() {
 					action : Ti.Android.ACTION_PICK
 				});
 				intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-				intentText.putExtra(Ti.Android.ACTION_ATTACH_DATA, contentImage);
+				intentImage.putExtra(Ti.Android.ACTION_ATTACH_DATA, contentImage);
 				Ti.Android.createIntentChooser(intentImage, "Share Photo");
 			}
 		}
@@ -263,6 +263,7 @@ function init() {
 				repeat : 0
 			});
 			//rotate if image exists
+			//Issue is that the view is being rotated, not the actual image, which means that when an additional picture is taken, it will orient to the orientation of the imageview and is not a permanent and doesn't reset with each additional photo
 			viewImage.animate(spinMatrix);
 		}
 
