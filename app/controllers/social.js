@@ -36,7 +36,7 @@ function init() {
 		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
 		font : {
 			size : 8,
-			color : "#FFFFFF"
+			color : "#000000"
 		}
 	});
 	$.viewShareBase.add(openMenuShare); //Add button to XML
@@ -100,17 +100,7 @@ function init() {
 		rowOne.add(clearAll);
 
 		function createIntentText(contentText) {
-			//function to create a text intent
-			var intentText = Ti.Android.createIntent({
-				action : Ti.Android.ACTION_SEND,
-				type : 'text/plain'
-			});
-			intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
-			intentText.putExtra(Ti.Android.EXTRA_TEXT, contentText);
-			intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-			Ti.Android.createIntentChooser(intentText, "Send Message");
-			Ti.Android.currentActivity.startActivity(intentText);
-
+			//function to create a text intent/iOS equivalent
 			if (OS_ANDROID) {
 				var intentText = Ti.Android.createIntent({
 					action : Ti.Android.ACTION_SEND,
@@ -127,7 +117,7 @@ function init() {
 					url : "http://www.cmhouston.org"
 				});
 				docViewer.show({
-					view : rightNavBtn,
+					//view : rightNavBtn,
 					animated : true
 				});
 			}
@@ -135,13 +125,15 @@ function init() {
 
 		function createIntentImage(contentImage) {
 			//function to create an image intent
-			var intentImage = Ti.Android.createIntent({
-				type : "image/*",
-				action : Ti.Android.ACTION_PICK
-			});
-			intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-			intentText.putExtra(Ti.Android.ACTION_ATTACH_DATA, contentImage);
-			Ti.Android.createIntentChooser(intentImage, "Share Photo");
+			if (OS_ANDROID){
+				var intentImage = Ti.Android.createIntent({
+					type : "image/*",
+					action : Ti.Android.ACTION_PICK
+				});
+				intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+				intentText.putExtra(Ti.Android.ACTION_ATTACH_DATA, contentImage);
+				Ti.Android.createIntentChooser(intentImage, "Share Photo");
+			}
 		}
 
 		//Share both text and image button
@@ -329,11 +321,18 @@ function init() {
 			textAlign : 'left',
 			hintText : '(Type here)',
 			scrollable : true,
-			softKeyboardOnFocus : Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS,
 		});
+		
+		//Set keyboard to hide for Android
+		if (OS_ANDROID){
+			inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
+		}
+		
 		//control focus/blur of inputComment
 		inputComment.addEventListener('click', function() {
-			inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
+			if (OS_ANDROID){
+				inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
+			}
 			inputComment.keyboardType = Ti.UI.KEYBOARD_ASCII;
 			inputComment.returnKeyType = Ti.UI.RETURNKEY_DONE;
 			inputComment.font.color = "#000000";
@@ -368,7 +367,9 @@ function init() {
 			visible : false
 		});
 		closeInputKeyboard.addEventListener('click', function(e) {
-			Ti.UI.Android.hideSoftKeyboard();
+			if (OS_ANDROID){
+				Ti.UI.Android.hideSoftKeyboard();
+			}
 			inputComment.blur();
 			//hide text specific buttons
 			closeInputKeyboard.visible = false;
