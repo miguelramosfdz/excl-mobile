@@ -115,13 +115,7 @@ function init() {
 				Ti.Android.currentActivity.startActivity(intentText);
 			} else if (OS_IOS) {
 				//Assume for now we're doing the same thing with iPhones and iPads
-				var docViewer = Ti.UI.iOS.createDocumentViewer({
-					url : "http://www.cmhouston.org"
-				});
-				docViewer.show({
-					//view : rightNavBtn,
-					animated : true
-				});
+				
 			}
 		}
 
