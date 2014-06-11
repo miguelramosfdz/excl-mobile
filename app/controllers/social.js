@@ -276,6 +276,7 @@ function init() {
 			intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
 			intentText.putExtra(Ti.Android.EXTRA_TEXT, "This is some text to send.");
 			Ti.Android.createIntentChooser(intentText, "Send Message");
+			Ti.Android.currentActivity.startActivity(intentText);
 		});
 		rowOne.add(intentText);
 
