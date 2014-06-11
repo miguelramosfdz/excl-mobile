@@ -84,7 +84,7 @@ function init() {
 		});
 		rowOne.add(closeViewSharingAllContent);
 		closeViewSharingAllContent.addEventListener("click", function(e) {
-			viewSharingAllContent.close();
+			$.viewShareBase.remove(viewSharingAllContent);
 		});
 
 		//clear all button that clears text in inputComment and picture in viewImageCaptured
