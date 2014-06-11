@@ -5,7 +5,9 @@ function init() {
 	var inputSelected = false;
 
 	//push view to xml
-	var viewSocial = Ti.UI.createView({});
+	var viewSocial = Ti.UI.createView({
+		id: 'viewSocial'
+	});
 	$.viewSocialAll.add(viewSocial);
 
 	//Pop up window that contains specific app information
@@ -36,11 +38,12 @@ function init() {
 
 	////Social window////
 	var openMenuShare = Ti.UI.createButton({
+		id: 'openMenuShare',
 		Title : "Share",
 		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
 		font : {
 			size : 8,
-			color : "#000000"
+			color : "#FFFFFF"
 		}
 	});
 	viewSocial.add(openMenuShare);
@@ -160,6 +163,7 @@ function init() {
 
 		//Send image intent
 		var sendIntentImage = Ti.UI.createButton({
+			id: 'sendIntentImage',
 			title : "Share Photo",
 			font : {
 				size : 8,
