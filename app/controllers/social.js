@@ -144,13 +144,8 @@ function init() {
 				action : Ti.Android.ACTION_PICK
 			});
 			intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+			intentText.putExtra(Ti.Android.ACTION_ATTACH_DATA, contentImage);
 			Ti.Android.createIntentChooser(intentImage, "Share Photo");
-
-			var activityImageIntent = Ti.Android.currentActivity;
-			var intentImagePending = Ti.Android.createPendingIntent({
-				activity : activityImageIntent,
-				intent : intentImage
-			});
 		}
 
 		//Share both text and image button
@@ -161,6 +156,21 @@ function init() {
 			createIntentImage(viewImageCaptured.image);
 			createIntentText(inputComment.value);
 		});
+		rowOne.add(shareBoth);
+
+		//Send image intent
+		var sendIntentImage = Ti.UI.createButton({
+			title : "Share Photo",
+			font : {
+				size : 8,
+				color : "#000000"
+			},
+			height : "45dip"
+		});
+		sendIntentImage.addEventListener("click", function(e) {
+			createIntentImage(viewImageCaptured.image);
+		});
+		rowFive.add(sendIntentImage);
 
 		//Open camera button
 		var openCamera = Ti.UI.createButton({
@@ -369,20 +379,6 @@ function init() {
 			inputComment.value = null;
 		});
 		rowThree.add(clearTextComment);
-
-		//Send image intent
-		var sendIntentImage = Ti.UI.createButton({
-			title : "Share Photo",
-			font : {
-				size : 8,
-				color : "#000000"
-			},
-			height : "45dip"
-		});
-		sendIntentImage.addEventListener("click", function(e) {
-			createIntentImage(viewImageCaptured.image);
-		});
-		rowFive.add(sendIntentImage);
 
 		////Twitter////
 		/*Old way: use button for WebView
