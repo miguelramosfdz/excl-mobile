@@ -35,9 +35,10 @@ function init() {
 		Title : "Share",
 		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
 		font : {
-			size : 8,
-			color : "#000000"
-		}
+			fontSize : 30,
+		},
+		//backgroundColor: "#00FFFF"
+		color: "#000000"
 	});
 	$.viewShareBase.add(openMenuShare);
 	//Add button to XML
@@ -214,6 +215,7 @@ function init() {
 		openCamera.addEventListener('click', function(e) {
 			Titanium.Media.showCamera({
 				saveToPhotoGallery : true,
+				mediaTypes: Titanium.Media.MEDIA_TYPE_PHOTO,
 				success : function(event) {
 					//Tracks orientation of picture
 					// var orientationWhilePictureTakenCode = Ti.Gesture.orientation;
@@ -232,6 +234,7 @@ function init() {
 				cancel : function() {
 				},
 				error : function(Error) {
+					alert("Camera functionality not working");
 				}
 			});
 		});
