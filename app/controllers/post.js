@@ -20,7 +20,7 @@ var playSoundBtn = Ti.UI.createButton({
 	height : 50, //define height
 	title : 'Play Sound',
 	id : 'soundBtn',
-	left : '120dp',
+	left : '115dp',
 	top : '380dp'
 });
 
