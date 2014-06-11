@@ -1,0 +1,7 @@
+<Alloy>
+	<View id = "socialView" class="full-view">
+		<Label class="title">Social</Label>
+		<ImageView id="logo" class="logo" image="/images/pariveda-logo.gif" />
+		<Label class="description">We be social!</Label>
+	</View>
+</Alloy>
