@@ -103,6 +103,35 @@ function init() {
 		});
 		rowOne.add(clearAll);
 
+		function createIntentText(content) {
+			//function to create a text intent
+		}
+
+		function createIntentImage(content) {
+			//function to create an image intent
+			var intentImage = Ti.Android.createIntent({
+				type : "image/*",
+				action : Ti.Android.ACTION_PICK
+			});
+			intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+			Ti.Android.createIntentChooser(intentImage, "Share Photo");
+
+			var activityImageIntent = Ti.Android.currentActivity;
+			var intentImagePending = Ti.Android.createPendingIntent({
+				activity : activityImageIntent,
+				intent : intentImage
+			});
+		}
+
+		//Share both text and image button
+		var shareBoth = Ti.UI.createButton({
+			title : "Share Both!"
+		});
+		shareBoth.addEventListener('click', function(e) {
+			createIntentImage(viewImageCaptured.image);
+			createIntentText(inputComment.value);
+		});
+
 		//Open camera button
 		var openCamera = Ti.UI.createButton({
 			title : "Take Photo",
@@ -273,30 +302,6 @@ function init() {
 		// });
 		rowTwo.add(inputComment);
 
-		//close keyboard button for inputComment
-		var closeInputKeyboard = Ti.UI.createButton({
-			title : "Done Typing",
-			visible : false
-		});
-		closeInputKeyboard.addEventListener('click', function(e) {
-			Ti.UI.Android.hideSoftKeyboard();
-			inputComment.blur();
-			//hide text specific buttons
-			closeInputKeyboard.visible = false;
-			clearTextComment.visible = false;
-		});
-		rowThree.add(closeInputKeyboard);
-
-		//clear text button for inputComment
-		var clearTextComment = Ti.UI.createButton({
-			title : "Clear Text",
-			visible : false
-		});
-		clearTextComment.addEventListener('click', function(e) {
-			inputComment.value = null;
-		});
-		rowThree.add(clearTextComment);
-
 		//Send text intent
 		var sendIntentText = Ti.UI.createButton({
 			title : "Share Text",
@@ -307,6 +312,8 @@ function init() {
 			height : "45dip"
 		});
 		sendIntentText.addEventListener("click", function(e) {
+	createIntentText(inputComment.value);
+			
 			var intentText = Ti.Android.createIntent({
 				action : Ti.Android.ACTION_SEND,
 				type : 'text/plain'
@@ -340,6 +347,30 @@ function init() {
 		});
 		rowThree.add(sendIntentText);
 
+		//close keyboard button for inputComment
+		var closeInputKeyboard = Ti.UI.createButton({
+			title : "Done Typing",
+			visible : false
+		});
+		closeInputKeyboard.addEventListener('click', function(e) {
+			Ti.UI.Android.hideSoftKeyboard();
+			inputComment.blur();
+			//hide text specific buttons
+			closeInputKeyboard.visible = false;
+			clearTextComment.visible = false;
+		});
+		rowThree.add(closeInputKeyboard);
+
+		//clear text button for inputComment
+		var clearTextComment = Ti.UI.createButton({
+			title : "Clear Text",
+			visible : false
+		});
+		clearTextComment.addEventListener('click', function(e) {
+			inputComment.value = null;
+		});
+		rowThree.add(clearTextComment);
+
 		//Send image intent
 		var sendIntentImage = Ti.UI.createButton({
 			title : "Share Photo",
@@ -350,21 +381,9 @@ function init() {
 			height : "45dip"
 		});
 		sendIntentImage.addEventListener("click", function(e) {
-			var intentImage = Ti.Android.createIntent({
-				type : "image/*",
-				action : Ti.Android.ACTION_PICK
-			});
-			intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-			Ti.Android.createIntentChooser(intentImage, "Share Photo");
-
-			var activityImageIntent = Ti.Android.currentActivity;
-			var intentImagePending = Ti.Android.createPendingIntent({
-				activity : activityImageIntent,
-				intent : intentImage
-			});
-
+			createIntentImage(viewImageCaptured.image);
 		});
-		rowOne.add(sendIntentImage);
+		rowFive.add(sendIntentImage);
 
 		////Twitter////
 		/*Old way: use button for WebView
