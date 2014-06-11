@@ -8,7 +8,7 @@
 ".title": {
 	width: Ti.UI.SIZE,
     height: Ti.UI.SIZE,
-    color: "#000",
+    color: "#111",
     font: {
         //fontFamily:'Helvetica',
         fontSize: '32dp',
@@ -18,7 +18,8 @@
     top: "20"
 }
 ".logo": {
-	height: "50dp"
+	height: "300dp",
+	width:"300dp"
 	
 }
 ".description": {

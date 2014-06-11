@@ -1,7 +1,8 @@
 <Alloy>
 	<View class="full-view">
-		<Label class="title">Fake Weather</Label>
-		<ImageView id="logo" class="logo" image="/images/pariveda-logo.gif" />
-		<Label class="description">Welcome, Big Dawgs!</Label>
+		<Label class="title">Rick Ross says</Label>
+		<ImageView id="logo" class="logo" image="/RickRoss.jpg" />
+		
+		<Label class="description">"Welcome, Big Dawgs!"</Label>
 	</View>
 </Alloy>

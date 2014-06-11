@@ -10,7 +10,7 @@
 				<Require type="view" src="component" id="componentTab"/>
 			</Window>
 		</Tab>
-		<Tab title="Post" icon="KS_nav_views.png">
+		<Tab title="Rozay" icon="KS_nav_views.png">
 			<Window id="win" title="win">
 				<Require type="view" src="post" id="postTab"/>
 			</Window>
