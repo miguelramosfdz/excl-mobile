@@ -1,39 +1,41 @@
 function init() {
 	//global vars
-	var defaultNoImage = "http://www.freestockphotos.biz/pictures/4/4398/border.png";
-	var pathImage;
+	var imageDefault = "http://www.freestockphotos.biz/pictures/4/4398/border.png";
+	var imageCapturedPath;
 	var inputSelected = false;
 
-	var socialView = Ti.UI.createView({});
-	$.socialViewAll.add(socialView);
+	//push view to xml
+	var viewSocial = Ti.UI.createView({});
+	$.viewSocialAll.add(viewSocial);
 
-	function shareWindow(viewName) {
-		var shareScrollView = Ti.UI.createScrollView({
+	//define popup sharing window
+	function windowPopupShare(viewName) {
+		var viewScrollShare = Ti.UI.createScrollView({
 			contentWidth : 'auto',
 			contentHeight : 'auto',
 			showVerticalScrollIndicator : true,
 			showHorizontalScrollIndicator : true
 		});
-		var shareWindow = Ti.UI.createWindow({
+		var windowPopupShare = Ti.UI.createWindow({
 			top : "50dip"
 		});
-		shareWindow.open({
+		windowPopupShare.open({
 			modal : true
 		});
-		var btnCancelShare = Ti.UI.createButton({
+		var cancelShare = Ti.UI.createButton({
 			top : 0,
 			title : "Close Window"
 		});
-		btnCancelShare.addEventListener('click', function(e) {
-			shareWindow.close();
+		cancelShare.addEventListener('click', function(e) {
+			windowPopupShare.close();
 		});
-		shareWindow.add(btnCancelShare);
-		shareScrollView.add(viewName);
-		shareWindow.add(shareScrollView);
+		windowPopupShare.add(cancelShare);
+		viewScrollShare.add(viewName);
+		windowPopupShare.add(viewScrollShare);
 	}
 
 	////Social window////
-	var btnShare = Ti.UI.createButton({
+	var openMenuShare = Ti.UI.createButton({
 		Title : "Share",
 		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
 		font : {
@@ -41,11 +43,11 @@ function init() {
 			color : "#000000"
 		}
 	});
-	socialView.add(btnShare);
+	viewSocial.add(openMenuShare);
 
-	btnShare.addEventListener('click', function(e) {
-		var socialWin = Ti.UI.createWindow({});
-		socialWin.open({
+	openMenuShare.addEventListener('click', function(e) {
+		var viewSocialAll = Ti.UI.createWindow({});
+		viewSocialAll.open({
 			modal : true
 		});
 
@@ -55,25 +57,25 @@ function init() {
 			top : "0dip",
 			width : "100%",
 		});
-		socialWin.add(rowOne);
+		viewSocialAll.add(rowOne);
 		var rowTwo = Ti.UI.createView({
 			layout : "horizontal",
 			top : "50dip",
 			width : "75%",
 			left : "12.5%"
 		});
-		socialWin.add(rowTwo);
+		viewSocialAll.add(rowTwo);
 		var rowThree = Ti.UI.createView({
 			layout : "horizontal",
 			top : "150dip"
 		});
-		socialWin.add(rowThree);
+		viewSocialAll.add(rowThree);
 		var rowFour = Ti.UI.createView({
 			layout : "horizontal",
 			top : "405dip",
 			left : 0
 		});
-		socialWin.add(rowFour);
+		viewSocialAll.add(rowFour);
 
 		//Cancel button
 		var btnCancel = Ti.UI.createButton({
@@ -82,7 +84,7 @@ function init() {
 		});
 		rowOne.add(btnCancel);
 		btnCancel.addEventListener("click", function(e) {
-			socialWin.close();
+			viewSocialAll.close();
 		});
 
 		//Take picture button
@@ -167,11 +169,11 @@ function init() {
 					var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 					imageFile.write(event.media);
 					if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
-						capturedImage.image = event.media;
+						viewImageCaptured.image = event.media;
 						//pathPhoto = Ti.Filesystem.applicationDataDirectory + fileName;
 
 						//rotate image view based on value in var orientationWhilePictureTakenCode
-						correctOrientation(capturedImage, orientationWhilePictureTakenCode);
+						correctOrientation(viewImageCaptured, orientationWhilePictureTakenCode);
 					}
 				},
 				cancel : function() {
@@ -187,21 +189,21 @@ function init() {
 			title : "Remove Photo"
 		});
 		removeImage.addEventListener("click", function(e) {
-			capturedImage.image = defaultNoImage;
+			viewImageCaptured.image = imageDefault;
 		});
 		rowFour.add(removeImage);
 
 		//Photo switch
-		var chkShare = Ti.UI.createSwitch({
+		var sharePhoto = Ti.UI.createSwitch({
 			titleOn : "Photo will post",
 			titleOff : "Photo won't post",
 			value : false
 		});
-		rowFour.add(chkShare);
+		rowFour.add(sharePhoto);
 
 		//Image view
-		var capturedImage = Ti.UI.createImageView({
-			image : defaultNoImage,
+		var viewImageCaptured = Ti.UI.createImageView({
+			image : imageDefault,
 			top : "0",
 			left : "12.5%",
 			height : "250dip",
@@ -211,20 +213,20 @@ function init() {
 				y : 0.5
 			}
 		});
-		capturedImage.addEventListener("load", function(e) {
-			if (capturedImage.image == defaultNoImage) {
-				chkShare.value = false;
-				chkShare.enabled = false;
+		viewImageCaptured.addEventListener("load", function(e) {
+			if (viewImageCaptured.image == imageDefault) {
+				sharePhoto.value = false;
+				sharePhoto.enabled = false;
 			} else {
-				chkShare.value = true;
-				chkShare.enabled = true;
+				sharePhoto.value = true;
+				sharePhoto.enabled = true;
 			}
 		});
-		rowThree.add(capturedImage);
+		rowThree.add(viewImageCaptured);
 
-		//Text box
+		//Text area for input
 		var textSelected = false;
-		var inputText = Ti.UI.createTextArea({
+		var inputComment = Ti.UI.createTextArea({
 			width : "100%",
 			height : '100dip',
 			borderWidth : 2,
@@ -241,24 +243,24 @@ function init() {
 			scrollable : true
 
 		});
-		inputText.addEventListener("type", function(e) {
-			doneInput.visible = true;
+		inputComment.addEventListener("type", function(e) {
+			closeInputKeyboard.visible = true;
 		});
-		rowTwo.add(inputText);
+		rowTwo.add(inputComment);
 
-		//Done button for textArea
-		var doneInput = Ti.UI.createButton({
+		//close keyboard button for textArea
+		var closeInputKeyboard = Ti.UI.createButton({
 			title : "Done",
 			visible : false
 		});
-		doneInput.addEventListener('click', function(e) {
+		closeInputKeyboard.addEventListener('click', function(e) {
 			Ti.UI.Android.hideSoftKeyboard();
-			doneInput.visible = false;
+			closeInputKeyboard.visible = false;
 		});
-		rowOne.add(doneInput);
+		rowOne.add(closeInputKeyboard);
 
 		//Send text intent
-		var sendTextIntent = Ti.UI.createButton({
+		var intentText = Ti.UI.createButton({
 			title : "Share Text",
 			font : {
 				size : 8,
@@ -266,7 +268,7 @@ function init() {
 			},
 			height : "45dip"
 		});
-		sendTextIntent.addEventListener("click", function(e) {
+		intentText.addEventListener("click", function(e) {
 			var intentText = Ti.Android.createIntent({
 				action : Ti.Android.ACTION_SEND,
 				type : 'text/plain'
@@ -275,10 +277,10 @@ function init() {
 			intentText.putExtra(Ti.Android.EXTRA_TEXT, "This is some text to send.");
 			Ti.Android.createIntentChooser(intentText, "Send Message");
 		});
-		rowOne.add(sendTextIntent);
+		rowOne.add(intentText);
 
 		//Send image intent
-		var sendImageIntent = Ti.UI.createButton({
+		var intentImage = Ti.UI.createButton({
 			title : "Share Photo",
 			font : {
 				size : 8,
@@ -286,7 +288,7 @@ function init() {
 			},
 			height : "45dip"
 		});
-		sendImageIntent.addEventListener("click", function(e) {
+		intentImage.addEventListener("click", function(e) {
 			var intentImage = Ti.Android.createIntent({
 				type : "image/*",
 				action : Ti.Android.ACTION_PICK
@@ -295,27 +297,27 @@ function init() {
 			Ti.Android.createIntentChooser(intentImage, "Share Photo");
 
 			var activityImageIntent = Ti.Android.currentActivity;
-			var pendingImageIntent = Ti.Android.createPendingIntent({
+			var intentImagePending = Ti.Android.createPendingIntent({
 				activity : activityImageIntent,
-				intent : sendImageIntent
+				intent : intentImage
 			});
 
 			//update image view to display selected photo
-			var activity = socialWin.getActivity();
-			activity.startActivityForResult(pendingImageIntent, function(e) {
+			var intentActivityCurrent = viewSocialAll.getActivity();
+			intentActivityCurrent.startActivityForResult(intentImagePending, function(e) {
 				if (e.resultCode == Ti.Android.RESULT_OK) {
 					var Content = require("yy.ticontent");
-					var nativePath = e.pendingImageIntent.data;
-					if (nativePath.indexOf("content://") === 0) {
-						nativePath = "file://" + Content.resolveAudioPath(e.pendingImageIntent.data);
+					var filePathNative = e.intentImagePending.data;
+					if (filePathNative.indexOf("content://") === 0) {
+						filePathNative = "file://" + Content.resolveAudioPath(e.intentImagePending.data);
 					} else {
-						nativePath = decodeURIComponent(nativePath);
+						filePathNative = decodeURIComponent(filePathNative);
 					}
 				}
 			});
 
 		});
-		rowOne.add(sendImageIntent);
+		rowOne.add(intentImage);
 
 		////Twitter////
 		/*Old way: use button for WebView
@@ -368,7 +370,7 @@ function init() {
 		height : "750dip"
 		});
 		//end createWebView
-		shareWindow(twitterView);
+		windowPopupShare(twitterView);
 		}//end catch
 		});
 		//end addEventListener
@@ -393,7 +395,7 @@ function init() {
 		url : "https://twitter.com/home?status=%23cmhouston%20%23awesome",
 		height : "750dip"
 		});
-		shareWindow(twitterView);
+		windowPopupShare(twitterView);
 		});
 		rowOne.add(postTwitter);
 		*/
@@ -430,7 +432,7 @@ function init() {
 		height : "750dip"
 		});
 		//end createWebView
-		shareWindow(twitterView);
+		windowPopupShare(twitterView);
 		}//end catch
 		});
 		//end addEventListener
@@ -449,14 +451,14 @@ function init() {
 		height : "45dip"
 		});
 		shareFacebook.addEventListener('click', function(e) {
-		if (chkShare.value = false) {
+		if (sharePhoto.value = false) {
 		var facebookView = Ti.UI.createWebView({
 		top : "50 dip",
 		url : "http://www.facebook.com/share.php?u=http://www.cmhouston.org",
 		height : "750dip"
 		});
-		shareWindow(facebookView);
-		} else if (chkShare.value = true) {
+		windowPopupShare(facebookView);
+		} else if (sharePhoto.value = true) {
 
 		//Share photo
 
@@ -505,13 +507,13 @@ function init() {
 		},
 		height : "45dip"
 		});
-		if (chkShare.value==true){
+		if (sharePhoto.value==true){
 		rowOne.add(shareInstagram);
 		}
 		*/
 
 	});
-	//End btnShare listener
+	//End openMenuShare listener
 }
 
 init();
