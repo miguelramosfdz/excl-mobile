@@ -1,12 +1,7 @@
 function init() {
 	//global vars
 	var inputSelected = false;
-<<<<<<< HEAD
 
-
-=======
-	
->>>>>>> a8a16fc5f67dd700cefa1cd46052830c8c637f91
 	//Pop up window that contains specific app information
 	// function windowPopupShare(viewName) {
 	// var viewScrollShare = Ti.UI.createScrollView({
