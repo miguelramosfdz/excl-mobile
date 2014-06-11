@@ -1,13 +1,18 @@
 <Alloy>
 	<TabGroup>
-		<Tab title="Home" icon="KS_nav_ui.png">
-			<Window id="homeWindow" title="Home">
-				<Require type="view" src="home" id="homeTab"/>
+		<Tab title="Exhibit" icon="KS_nav_ui.png">
+			<Window id="exhibitWindow" title="Exhibit">
+				<Require type="view" src="exhibit" id="exhibitTab"/>
 			</Window>
 		</Tab>
-		<Tab title="Weather" icon="KS_nav_views.png">
-			<Window id="weatherWindow" title="Weather">
-				<Require type="view" src="weather" id="weatherTab"/>
+		<Tab title="Component" icon="KS_nav_views.png">
+			<Window id="componentWindow" title="Component">
+				<Require type="view" src="component" id="componentTab"/>
+			</Window>
+		</Tab>
+		<Tab title="Post" icon="KS_nav_views.png">
+			<Window id="win" title="win">
+				<Require type="view" src="post" id="postTab"/>
 			</Window>
 		</Tab>
 		<Tab title="Social" icon="KS_nav_views.png">
