@@ -63,8 +63,7 @@ function init() {
 		var rowTwo = Ti.UI.createView({
 			layout : "horizontal",
 			top : "50dip",
-			width : "75%",
-			left : "12.5%"
+			width : "100%",
 		});
 		viewSharingAllContent.add(rowTwo);
 		var rowThree = Ti.UI.createView({
@@ -323,7 +322,7 @@ function init() {
 		var inputComment = Ti.UI.createTextArea({
 			width : "100%",
 			height : '95dip',
-			borderRadius : "50",
+			borderRadius : "15",
 			backgroundColor : "#E0E0E0",
 			borderColor : "#000000",
 			font : {
