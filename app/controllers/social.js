@@ -107,8 +107,9 @@ function init() {
 		});
 
 		clearAll.addEventListener('click', function(e) {
-			Ti.app.fireEvent(clearTextComment);
-			Ti.app.fireEvent(removeImage);
+			clearTextComment.fireEvent("click");
+			removeImage.fireEvent("click");
+			closeInputKeyboard.fireEvent("click");
 		});
 		rowOne.add(clearAll);
 
@@ -461,6 +462,7 @@ function init() {
 		});
 		clearTextComment.addEventListener('click', function(e) {
 			inputComment.value = "";
+			inputSubject.value = "";
 		});
 		rowFour.add(clearTextComment);
 
