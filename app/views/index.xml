@@ -10,5 +10,10 @@
 				<Require type="view" src="weather" id="weatherTab"/>
 			</Window>
 		</Tab>
+		<Tab title="Social" icon="KS_nav_views.png">
+			<Window id="win" title="win">
+				<Require type="view" src="social" id="weatherTab"/>
+			</Window>
+		</Tab>
 	</TabGroup>
 </Alloy>
