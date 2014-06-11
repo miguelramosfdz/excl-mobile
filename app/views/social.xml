@@ -1,5 +1,9 @@
 <Alloy>
+<<<<<<< HEAD
 	<View id="viewSocialAll" class="full-view">
 		<Button id='openMenuShare'></Button>
+=======
+	<View id="viewShareBase" class="full-view">
+>>>>>>> 55777b09895c7d74131cb1ca685b03648f948e06
 	</View>
 </Alloy>
