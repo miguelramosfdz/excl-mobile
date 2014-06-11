@@ -31,7 +31,7 @@ function init() {
 	////Social window////
 	//When clicked, this button will open up the share menu
 	var openMenuShare = Ti.UI.createButton({
-		id: 'openMenuShare',
+		id : 'openMenuShare',
 		Title : "Share",
 		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
 		font : {
@@ -150,7 +150,7 @@ function init() {
 
 		//Send image intent
 		var sendIntentImage = Ti.UI.createButton({
-			id: 'sendIntentImage',
+			id : 'sendIntentImage',
 			title : "Share Photo",
 			font : {
 				size : 8,
@@ -175,60 +175,33 @@ function init() {
 
 		////Camera functionality////
 
-		function getOrientation(orientation) {
-			//Tracks orientation of picture taken by camera
-			switch (orientation) {
-				case Titanium.UI.PORTRAIT:
-					//1
-					return 'portrait';
-				case Titanium.UI.UPSIDE_PORTRAIT:
-					return 'upside portrait';
-				case Titanium.UI.LANDSCAPE_LEFT:
-					//2
-					return 'landscape left';
-				case Titanium.UI.LANDSCAPE_RIGHT:
-					return 'landscape right';
-				case Titanium.UI.FACE_UP:
-					return 'face up';
-				case Titanium.UI.FACE_DOWN:
-					return 'face down';
-				case Titanium.UI.UNKNOWN:
-					return 'unknown';
-			}
-		}
+		// function getOrientation(orientation) {
+		// //Tracks orientation of picture taken by camera
+		// switch (orientation) {
+		// case Titanium.UI.PORTRAIT:
+		// //1
+		// return 'portrait';
+		// case Titanium.UI.UPSIDE_PORTRAIT:
+		// return 'upside portrait';
+		// case Titanium.UI.LANDSCAPE_LEFT:
+		// //2
+		// return 'landscape left';
+		// case Titanium.UI.LANDSCAPE_RIGHT:
+		// return 'landscape right';
+		// case Titanium.UI.FACE_UP:
+		// return 'face up';
+		// case Titanium.UI.FACE_DOWN:
+		// return 'face down';
+		// case Titanium.UI.UNKNOWN:
+		// return 'unknown';
+		// }
+		// }
 
-		function correctOrientation(imageViewName, orientationCode) {
-			//corrects displayed picture based on the orientation in which it was taken
-			if ( orientationCode = "1") {
-				//portrait
-				var matrix2d = Ti.UI.create2DMatrix();
-				matrix2d = matrix2d.rotate(-90);
-				var spin = Ti.UI.createAnimation({
-					transform : matrix2d,
-					duration : 1000,
-					autoreverse : false,
-					repeat : 0
-				});
-				imageViewName.animate(spin);
-			} else if ( orientationCode = '2') {
-				//left landscape
-				var matrix2d = Ti.UI.create2DMatrix();
-				matrix2d = matrix2d.rotate(0);
-				var spin = Ti.UI.createAnimation({
-					transform : matrix2d,
-					duration : 1000,
-					autoreverse : false,
-					repeat : 0
-				});
-				imageViewName.animate(spin);
-			}
-		}
-
-		//tracks orientation of device
-		Ti.Gesture.addEventListener('orientationchange', function(e) {
-			Ti.API.info("Current Orientation: " + getOrientation(Ti.Gesture.orientation) + " (Code = " + Ti.Gesture.orientation + ")");
-			var orientation = getOrientation(e.orientation);
-		});
+		// //tracks orientation of device
+		// Ti.Gesture.addEventListener('orientationchange', function(e) {
+		// Ti.API.info("Current Orientation: " + getOrientation(Ti.Gesture.orientation) + " (Code = " + Ti.Gesture.orientation + ")");
+		// var orientation = getOrientation(e.orientation);
+		// });
 
 		//Save process for camera and updates view to display new picture
 		openCamera.addEventListener('click', function(e) {
@@ -236,9 +209,9 @@ function init() {
 				saveToPhotoGallery : true,
 				success : function(event) {
 					//Tracks orientation of picture
-					var orientationWhilePictureTakenCode = Ti.Gesture.orientation;
-					var orientationWhilePictureTakenName = getOrientation(orientationWhilePictureTakenCode);
-					Titanium.API.info("Picture Orientation: " + orientationWhilePictureTakenName + " (Code = " + orientationWhilePictureTakenCode + ")");
+					// var orientationWhilePictureTakenCode = Ti.Gesture.orientation;
+					// var orientationWhilePictureTakenName = getOrientation(orientationWhilePictureTakenCode);
+					// Titanium.API.info("Picture Orientation: " + orientationWhilePictureTakenName + " (Code = " + orientationWhilePictureTakenCode + ")");
 
 					//saves picture file and updates imageview
 					var fileName = new Date().getTime() + '.jpg';
@@ -247,9 +220,6 @@ function init() {
 					if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 						viewImageCaptured.image = event.media;
 						//pathPhoto = Ti.Filesystem.applicationDataDirectory + fileName;
-
-						//rotate image view based on value in var orientationWhilePictureTakenCode
-						correctOrientation(viewImageCaptured, orientationWhilePictureTakenCode);
 					}
 				},
 				cancel : function() {
@@ -267,10 +237,60 @@ function init() {
 			visible : false
 		});
 		removeImage.addEventListener("click", function(e) {
-			viewImageCaptured.image = null;
+			viewImageCaptured.image = "";
 			removeImage.visible = false;
+			rotateLeft.visible = false;
+			rotateRight.visible = false;
 		});
 		rowFour.add(removeImage);
+
+		function correctOrientation(viewImage, rotateLeft, rotateRight) {
+			//corrects displayed picture based on which rotation is sent. booleans accepted for rotateLeft and rotateRight
+			var rotateAngle;
+			//set rotation direction
+			if (rotateLeft == true) {
+				rotateAngle = "-90";
+			} else if (rotateRight == true) {
+				rotateAngle = "90";
+			}
+			//rotate image
+			var matrixRotation = Ti.UI.create2DMatrix();
+			matrixRotation = matrixRotation.rotate(rotateAngle);
+			var spinMatrix = Ti.UI.createAnimation({
+				transform : matrixRotation,
+				duration : 1000,
+				autoreverse : false,
+				repeat : 0
+			});
+			//rotate if image exists
+			viewImage.animate(spinMatrix);
+		}
+
+		//rotate left button
+		var rotateLeft = Ti.UI.createButton({
+			title : "<-",
+			visible : false
+		});
+		rotateLeft.addEventListener('click', function(e) {
+			if (viewImageCaptured.image != "") {
+				correctOrientation(viewImageCaptured, true, false);
+				Ti.API.info("rotated left");
+			}
+		});
+		rowFive.add(rotateLeft);
+
+		//rotate right button
+		var rotateRight = Ti.UI.createButton({
+			title : "->",
+			visible : false
+		});
+		rotateRight.addEventListener('click', function(e) {
+			if (viewImageCaptured.image != "") {
+				correctOrientation(viewImageCaptured, false, true);
+				Ti.API.info("rotated right");
+			}
+		});
+		rowFive.add(rotateRight);
 
 		// //Switch to determine if photo will be shared
 		// var sharePhoto = Ti.UI.createSwitch({
@@ -282,7 +302,7 @@ function init() {
 
 		//Image view
 		var viewImageCaptured = Ti.UI.createImageView({
-			image : null,
+			image : "",
 			top : "0",
 			left : "12.5%",
 			height : "250dip",
@@ -293,15 +313,19 @@ function init() {
 			}
 		});
 		viewImageCaptured.addEventListener("load", function(e) {
-			if (viewImageCaptured.image != null) {
+			if (viewImageCaptured.image != "") {
 				// sharePhoto.value = false;
 				// sharePhoto.enabled = false;
 				// } else {
 				// sharePhoto.value = true;
 				// sharePhoto.enabled = true;
 				removeImage.visible = true;
+				rotateLeft.visible = true;
+				rotateRight.visible = true;
 			} else {
 				removeImage.visible = false;
+				rotateLeft.visible = false;
+				rotateRight.visible = false;
 			}
 		});
 		rowFour.add(viewImageCaptured);
@@ -316,7 +340,7 @@ function init() {
 			borderColor : "#000000",
 			font : {
 				fontSize : 12,
-				color: "#000000"
+				color : "#000000"
 			},
 			keyboardType : Ti.UI.KEYBOARD_ASCII,
 			returnKeyType : Ti.UI.RETURNKEY_DONE,
@@ -385,7 +409,7 @@ function init() {
 			visible : false
 		});
 		clearTextComment.addEventListener('click', function(e) {
-			inputComment.value = null;
+			inputComment.value = "";
 		});
 		rowThree.add(clearTextComment);
 
