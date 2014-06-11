@@ -1,5 +1,5 @@
 
-function parseJSON(responseText) {
+function parseJson(responseText) {
 	json = JSON.parse(responseText);
 	Ti.API.debug(json);
 	return json;
@@ -13,7 +13,7 @@ function onErrorHelper() {
 function makeServiceCall(onSuccess, url) {
 	var client = Ti.Network.createHTTPClient({
 		onload : function() {
-			var json = parseJSON(this.responseText);
+			var json = parseJson(this.responseText);
 			onSuccess(json);
 		},
 		onerror : function() {
@@ -29,7 +29,7 @@ function getJsonData(url, onSuccess) {
 	makeServiceCall(onSuccess, url);
 }
 
-module.exports.parseJSON = parseJSON;
+module.exports.parseJson = parseJson;
 module.exports.onErrorHelper = onErrorHelper;
 module.exports.makeServiceCall = makeServiceCall; 
 module.exports.getJsonData = getJsonData;
