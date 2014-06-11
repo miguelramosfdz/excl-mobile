@@ -91,11 +91,13 @@ function init() {
 
 		//clear all button that clears text in inputComment and picture in viewImageCaptured
 		var clearAll = Ti.UI.createButton({
-			title : "Clear All"
+			id: 'clearAll',
+			title : "Clear All",
 		});
+
 		clearAll.addEventListener('click', function(e) {
-			inputComment.value = null;
-			viewImageCaptured.image = null;
+			inputComment.value = "";
+			viewImageCaptured.image = "";
 		});
 		rowOne.add(clearAll);
 
