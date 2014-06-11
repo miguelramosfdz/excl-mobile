@@ -317,7 +317,7 @@ function init() {
 			Ti.Android.createIntentChooser(intentText, "Send Message");
 			Ti.Android.currentActivity.startActivity(intentText);
 
-			if (Titanium.Platform.osname == 'android') {
+			if (OS_ANDROID) {
 				var intentText = Ti.Android.createIntent({
 					action : Ti.Android.ACTION_SEND,
 					type : 'text/plain'
@@ -327,7 +327,7 @@ function init() {
 				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				Ti.Android.createIntentChooser(intentText, "Send Message");
 				Ti.Android.currentActivity.startActivity(intentText);
-			} else if (Titanium.Platform.osname == 'iphone' || Titanium.Platform.osname == 'ipad') {
+			} else if (OS_IOS) {
 				//Assume for now we're doing the same thing with iPhones and iPads
 				var docViewer = Ti.UI.iOS.createDocumentViewer({
 					url : "http://www.cmhouston.org"
