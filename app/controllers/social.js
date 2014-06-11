@@ -511,5 +511,5 @@ function init() {
 	//End btnShare listener
 }
 
-$.social.open();
+
 init();
