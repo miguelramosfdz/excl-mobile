@@ -260,7 +260,7 @@ function init() {
 		rowOne.add(closeInputKeyboard);
 
 		//Send text intent
-		var intentText = Ti.UI.createButton({
+		var sendIntentText = Ti.UI.createButton({
 			title : "Share Text",
 			font : {
 				size : 8,
@@ -268,20 +268,21 @@ function init() {
 			},
 			height : "45dip"
 		});
-		intentText.addEventListener("click", function(e) {
+		sendIntentText.addEventListener("click", function(e) {
 			var intentText = Ti.Android.createIntent({
 				action : Ti.Android.ACTION_SEND,
 				type : 'text/plain'
 			});
 			intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
 			intentText.putExtra(Ti.Android.EXTRA_TEXT, "This is some text to send.");
+			intent.addCategory(Ti.Android.CATEGORY_DEFAULT);
 			Ti.Android.createIntentChooser(intentText, "Send Message");
 			Ti.Android.currentActivity.startActivity(intentText);
 		});
-		rowOne.add(intentText);
+		rowOne.add(sendIntentText);
 
 		//Send image intent
-		var intentImage = Ti.UI.createButton({
+		var sendIntentImage = Ti.UI.createButton({
 			title : "Share Photo",
 			font : {
 				size : 8,
@@ -289,7 +290,7 @@ function init() {
 			},
 			height : "45dip"
 		});
-		intentImage.addEventListener("click", function(e) {
+		sendIntentImage.addEventListener("click", function(e) {
 			var intentImage = Ti.Android.createIntent({
 				type : "image/*",
 				action : Ti.Android.ACTION_PICK
@@ -303,22 +304,10 @@ function init() {
 				intent : intentImage
 			});
 
-			//update image view to display selected photo
-			var intentActivityCurrent = viewSocialAll.getActivity();
-			intentActivityCurrent.startActivityForResult(intentImagePending, function(e) {
-				if (e.resultCode == Ti.Android.RESULT_OK) {
-					var Content = require("yy.ticontent");
-					var filePathNative = e.intentImagePending.data;
-					if (filePathNative.indexOf("content://") === 0) {
-						filePathNative = "file://" + Content.resolveAudioPath(e.intentImagePending.data);
-					} else {
-						filePathNative = decodeURIComponent(filePathNative);
-					}
-				}
-			});
+
 
 		});
-		rowOne.add(intentImage);
+		rowOne.add(sendIntentImage);
 
 		////Twitter////
 		/*Old way: use button for WebView
