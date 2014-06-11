@@ -1,13 +1,7 @@
 function init() {
 	//global vars
 	var inputSelected = false;
-
-	//push view to xml
-	var viewSocial = Ti.UI.createView({
-		id: 'viewSocial'
-	});
-	$.viewSocialAll.add(viewSocial);
-
+	
 	//Pop up window that contains specific app information
 	// function windowPopupShare(viewName) {
 	// var viewScrollShare = Ti.UI.createScrollView({
@@ -327,11 +321,12 @@ function init() {
 			borderColor : "#000000",
 			font : {
 				fontSize : 12,
+				color: "#000000"
 			},
 			keyboardType : Ti.UI.KEYBOARD_ASCII,
 			returnKeyType : Ti.UI.RETURNKEY_DONE,
 			textAlign : 'left',
-			hintText : 'Type here... IF YOU DARE!!!',
+			hintText : '(Type here)',
 			scrollable : true,
 			softKeyboardOnFocus : Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS,
 		});
@@ -340,6 +335,7 @@ function init() {
 			inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
 			inputComment.keyboardType = Ti.UI.KEYBOARD_ASCII;
 			inputComment.returnKeyType = Ti.UI.RETURNKEY_DONE;
+			inputComment.font.color = "#000000";
 			inputComment.focus();
 			//show text editting buttons
 			closeInputKeyboard.visible = true;
