@@ -2,11 +2,6 @@ function init() {
 	//global vars
 	var inputSelected = false;
 
-	//push view to xml
-	var viewSocial = Ti.UI.createView({
-		id: 'viewSocial'
-	});
-	$.viewSocialAll.add(viewSocial);
 
 	//Pop up window that contains specific app information
 	// function windowPopupShare(viewName) {
@@ -35,6 +30,7 @@ function init() {
 	// }
 
 	////Social window////
+	//When clicked, this button will open up the share menu
 	var openMenuShare = Ti.UI.createButton({
 		id: 'openMenuShare',
 		Title : "Share",
@@ -44,7 +40,7 @@ function init() {
 			color : "#FFFFFF"
 		}
 	});
-	$.viewShareBase.add(openMenuShare);
+	$.viewShareBase.add(openMenuShare); //Add button to XML
 
 	openMenuShare.addEventListener('click', function(e) {
 		//create viewSharingAllContent, which will serve as the background view for all sharing content, then post to page
