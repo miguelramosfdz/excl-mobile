@@ -39,7 +39,8 @@ function init() {
 			color : "#000000"
 		}
 	});
-	$.viewShareBase.add(openMenuShare); //Add button to XML
+	$.viewShareBase.add(openMenuShare);
+	//Add button to XML
 
 	openMenuShare.addEventListener('click', function(e) {
 		//create viewSharingAllContent, which will serve as the background view for all sharing content, then post to page
@@ -91,7 +92,7 @@ function init() {
 
 		//clear all button that clears text in inputComment and picture in viewImageCaptured
 		var clearAll = Ti.UI.createButton({
-			id: 'clearAll',
+			id : 'clearAll',
 			title : "Clear All",
 		});
 
@@ -121,13 +122,13 @@ function init() {
 
 		function createIntentImage(contentImage) {
 			//function to create an image intent
-			if (OS_ANDROID){
+			if (OS_ANDROID) {
 				var intentImage = Ti.Android.createIntent({
 					type : "image/*",
 					action : Ti.Android.ACTION_PICK
 				});
 				intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-				intentText.putExtra(Ti.Android.ACTION_ATTACH_DATA, contentImage);
+				intentImage.putExtra(Ti.Android.ACTION_ATTACH_DATA, contentImage);
 				Ti.Android.createIntentChooser(intentImage, "Share Photo");
 			}
 		}
@@ -137,8 +138,16 @@ function init() {
 			title : "Share Both!"
 		});
 		shareBoth.addEventListener('click', function(e) {
-			createIntentImage(viewImageCaptured.image);
-			createIntentText(inputComment.value);
+			if (viewImageCaptured.image == "" && inputComment.value == "") {
+				alert("No content to share!");
+			} else if (viewImageCaptured.image == "") {
+				alert("No photo to share!");
+			} else if (inputComment.value == "") {
+				alert("No text to share!");
+			} else {
+				createIntentImage(viewImageCaptured.image);
+				createIntentText(inputComment.value);
+			}
 		});
 		rowOne.add(shareBoth);
 
@@ -153,7 +162,11 @@ function init() {
 			height : "45dip"
 		});
 		sendIntentImage.addEventListener("click", function(e) {
-			createIntentImage(viewImageCaptured.image);
+			if (viewImageCaptured.image != "") {
+				createIntentImage(viewImageCaptured.image);
+			} else {
+				alert("There's no image to share!");
+			}
 		});
 		rowFour.add(sendIntentImage);
 
@@ -257,6 +270,7 @@ function init() {
 				repeat : 0
 			});
 			//rotate if image exists
+			//Issue is that the view is being rotated, not the actual image, which means that when an additional picture is taken, it will orient to the orientation of the imageview and is not a permanent and doesn't reset with each additional photo
 			viewImage.animate(spinMatrix);
 		}
 
@@ -342,15 +356,15 @@ function init() {
 			hintText : '(Type here)',
 			scrollable : true,
 		});
-		
+
 		//Set keyboard to hide for Android
-		if (OS_ANDROID){
+		if (OS_ANDROID) {
 			inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
 		}
-		
+
 		//control focus/blur of inputComment
 		inputComment.addEventListener('click', function() {
-			if (OS_ANDROID){
+			if (OS_ANDROID) {
 				inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
 			}
 			inputComment.keyboardType = Ti.UI.KEYBOARD_ASCII;
@@ -377,7 +391,11 @@ function init() {
 			height : "45dip"
 		});
 		sendIntentText.addEventListener("click", function(e) {
-			createIntentText(inputComment.value);
+			if (inputComment.value != "") {
+				createIntentText(inputComment.value);
+			} else {
+				alert("There's no text to share!");
+			}
 		});
 		rowThree.add(sendIntentText);
 
@@ -387,7 +405,7 @@ function init() {
 			visible : false
 		});
 		closeInputKeyboard.addEventListener('click', function(e) {
-			if (OS_ANDROID){
+			if (OS_ANDROID) {
 				Ti.UI.Android.hideSoftKeyboard();
 			}
 			inputComment.blur();
