@@ -103,11 +103,41 @@ function init() {
 		});
 		rowOne.add(clearAll);
 
-		function createIntentText(content) {
+		function createIntentText(contentText) {
 			//function to create a text intent
+			var intentText = Ti.Android.createIntent({
+				action : Ti.Android.ACTION_SEND,
+				type : 'text/plain'
+			});
+			intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
+			intentText.putExtra(Ti.Android.EXTRA_TEXT, contentText);
+			intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
+			Ti.Android.createIntentChooser(intentText, "Send Message");
+			Ti.Android.currentActivity.startActivity(intentText);
+
+			if (OS_ANDROID) {
+				var intentText = Ti.Android.createIntent({
+					action : Ti.Android.ACTION_SEND,
+					type : 'text/plain'
+				});
+				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
+				intentText.putExtra(Ti.Android.EXTRA_TEXT, "This is some text to send.");
+				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
+				Ti.Android.createIntentChooser(intentText, "Send Message");
+				Ti.Android.currentActivity.startActivity(intentText);
+			} else if (OS_IOS) {
+				//Assume for now we're doing the same thing with iPhones and iPads
+				var docViewer = Ti.UI.iOS.createDocumentViewer({
+					url : "http://www.cmhouston.org"
+				});
+				docViewer.show({
+					view : rightNavBtn,
+					animated : true
+				});
+			}
 		}
 
-		function createIntentImage(content) {
+		function createIntentImage(contentImage) {
 			//function to create an image intent
 			var intentImage = Ti.Android.createIntent({
 				type : "image/*",
@@ -312,38 +342,7 @@ function init() {
 			height : "45dip"
 		});
 		sendIntentText.addEventListener("click", function(e) {
-	createIntentText(inputComment.value);
-			
-			var intentText = Ti.Android.createIntent({
-				action : Ti.Android.ACTION_SEND,
-				type : 'text/plain'
-			});
-			intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
-			intentText.putExtra(Ti.Android.EXTRA_TEXT, inputComment.value);
-			intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-			Ti.Android.createIntentChooser(intentText, "Send Message");
-			Ti.Android.currentActivity.startActivity(intentText);
-
-			if (OS_ANDROID) {
-				var intentText = Ti.Android.createIntent({
-					action : Ti.Android.ACTION_SEND,
-					type : 'text/plain'
-				});
-				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
-				intentText.putExtra(Ti.Android.EXTRA_TEXT, "This is some text to send.");
-				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-				Ti.Android.createIntentChooser(intentText, "Send Message");
-				Ti.Android.currentActivity.startActivity(intentText);
-			} else if (OS_IOS) {
-				//Assume for now we're doing the same thing with iPhones and iPads
-				var docViewer = Ti.UI.iOS.createDocumentViewer({
-					url : "http://www.cmhouston.org"
-				});
-				docViewer.show({
-					view : rightNavBtn,
-					animated : true
-				});
-			}
+			createIntentText(inputComment.value);
 		});
 		rowThree.add(sendIntentText);
 
