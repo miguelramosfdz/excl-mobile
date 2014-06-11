@@ -1,41 +1,37 @@
 function init() {
 	//global vars
-	var imageDefault = "http://www.freestockphotos.biz/pictures/4/4398/border.png";
-	var imageCapturedPath;
 	var inputSelected = false;
 
-	//push view to xml
-	var viewSocial = Ti.UI.createView({});
-	$.viewSocialAll.add(viewSocial);
-
-	//define popup sharing window
-	function windowPopupShare(viewName) {
-		var viewScrollShare = Ti.UI.createScrollView({
-			contentWidth : 'auto',
-			contentHeight : 'auto',
-			showVerticalScrollIndicator : true,
-			showHorizontalScrollIndicator : true
-		});
-		var windowPopupShare = Ti.UI.createWindow({
-			top : "50dip"
-		});
-		windowPopupShare.open({
-			modal : true
-		});
-		var cancelShare = Ti.UI.createButton({
-			top : 0,
-			title : "Close Window"
-		});
-		cancelShare.addEventListener('click', function(e) {
-			windowPopupShare.close();
-		});
-		windowPopupShare.add(cancelShare);
-		viewScrollShare.add(viewName);
-		windowPopupShare.add(viewScrollShare);
-	}
+	//Pop up window that contains specific app information
+	// function windowPopupShare(viewName) {
+	// var viewScrollShare = Ti.UI.createScrollView({
+	// contentWidth : 'auto',
+	// contentHeight : 'auto',
+	// showVerticalScrollIndicator : true,
+	// showHorizontalScrollIndicator : true
+	// });
+	// var windowPopupShare = Ti.UI.createWindow({
+	// top : "50dip"
+	// });
+	// windowPopupShare.open({
+	// modal : true
+	// });
+	// var closeWindowShare = Ti.UI.createButton({
+	// top : 0,
+	// title : "Close Window"
+	// });
+	// closeWindowShare.addEventListener('click', function(e) {
+	// windowPopupShare.close();
+	// });
+	// windowPopupShare.add(closeWindowShare);
+	// viewScrollShare.add(viewName);
+	// windowPopupShare.add(viewScrollShare);
+	// }
 
 	////Social window////
+	//When clicked, this button will open up the share menu
 	var openMenuShare = Ti.UI.createButton({
+		id : 'openMenuShare',
 		Title : "Share",
 		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
 		font : {
@@ -43,13 +39,14 @@ function init() {
 			color : "#000000"
 		}
 	});
-	viewSocial.add(openMenuShare);
+	$.viewShareBase.add(openMenuShare); //Add button to XML
 
 	openMenuShare.addEventListener('click', function(e) {
-		var viewSocialAll = Ti.UI.createWindow({});
-		viewSocialAll.open({
-			modal : true
+		//create viewSharingAllContent, which will serve as the background view for all sharing content, then post to page
+		var viewSharingAllContent = Ti.UI.createView({
+			backgroundColor : "#FFFFFF"
 		});
+		$.viewShareBase.add(viewSharingAllContent);
 
 		//Window rows
 		var rowOne = Ti.UI.createView({
@@ -57,38 +54,117 @@ function init() {
 			top : "0dip",
 			width : "100%",
 		});
-		viewSocialAll.add(rowOne);
+		viewSharingAllContent.add(rowOne);
 		var rowTwo = Ti.UI.createView({
 			layout : "horizontal",
 			top : "50dip",
-			width : "75%",
-			left : "12.5%"
+			width : "100%",
 		});
-		viewSocialAll.add(rowTwo);
+		viewSharingAllContent.add(rowTwo);
 		var rowThree = Ti.UI.createView({
 			layout : "horizontal",
 			top : "150dip"
 		});
-		viewSocialAll.add(rowThree);
+		viewSharingAllContent.add(rowThree);
 		var rowFour = Ti.UI.createView({
 			layout : "horizontal",
-			top : "405dip",
+			top : "200dip",
 			left : 0
 		});
-		viewSocialAll.add(rowFour);
+		viewSharingAllContent.add(rowFour);
+		var rowFive = Ti.UI.createView({
+			layout : "horizontal",
+			top : "250dip",
+			width : "100%",
+		});
+		viewSharingAllContent.add(rowFive);
 
-		//Cancel button
-		var btnCancel = Ti.UI.createButton({
-			title : "Cancel",
+		//Back button closes sharing window and returns to app
+		var closeViewSharingAllContent = Ti.UI.createButton({
+			title : "Back",
 			height : "45dip"
 		});
-		rowOne.add(btnCancel);
-		btnCancel.addEventListener("click", function(e) {
-			viewSocialAll.close();
+		rowOne.add(closeViewSharingAllContent);
+		closeViewSharingAllContent.addEventListener("click", function(e) {
+			$.viewShareBase.remove(viewSharingAllContent);
 		});
 
-		//Take picture button
-		var takePicture = Ti.UI.createButton({
+		//clear all button that clears text in inputComment and picture in viewImageCaptured
+		var clearAll = Ti.UI.createButton({
+			id: 'clearAll',
+			title : "Clear All",
+		});
+
+		clearAll.addEventListener('click', function(e) {
+			inputComment.value = "";
+			viewImageCaptured.image = "";
+		});
+		rowOne.add(clearAll);
+
+		function createIntentText(contentText) {
+			//function to create a text intent/iOS equivalent
+			if (OS_ANDROID) {
+				var intentText = Ti.Android.createIntent({
+					action : Ti.Android.ACTION_SEND,
+					type : 'text/plain'
+				});
+				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
+				intentText.putExtra(Ti.Android.EXTRA_TEXT, "This is some text to send.");
+				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
+				Ti.Android.createIntentChooser(intentText, "Send Message");
+				Ti.Android.currentActivity.startActivity(intentText);
+			} else if (OS_IOS) {
+				//Assume for now we're doing the same thing with iPhones and iPads
+				var docViewer = Ti.UI.iOS.createDocumentViewer({
+					url : "http://www.cmhouston.org"
+				});
+				docViewer.show({
+					//view : rightNavBtn,
+					animated : true
+				});
+			}
+		}
+
+		function createIntentImage(contentImage) {
+			//function to create an image intent
+			if (OS_ANDROID){
+				var intentImage = Ti.Android.createIntent({
+					type : "image/*",
+					action : Ti.Android.ACTION_PICK
+				});
+				intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+				intentText.putExtra(Ti.Android.ACTION_ATTACH_DATA, contentImage);
+				Ti.Android.createIntentChooser(intentImage, "Share Photo");
+			}
+		}
+
+		//Share both text and image button
+		var shareBoth = Ti.UI.createButton({
+			title : "Share Both!"
+		});
+		shareBoth.addEventListener('click', function(e) {
+			createIntentImage(viewImageCaptured.image);
+			createIntentText(inputComment.value);
+		});
+		rowOne.add(shareBoth);
+
+		//Send image intent
+		var sendIntentImage = Ti.UI.createButton({
+			id : 'sendIntentImage',
+			title : "Share Photo",
+			font : {
+				size : 8,
+				color : "#000000"
+			},
+			height : "45dip"
+		});
+		sendIntentImage.addEventListener("click", function(e) {
+			createIntentImage(viewImageCaptured.image);
+		});
+		rowFour.add(sendIntentImage);
+
+		//Open camera button
+		var openCamera = Ti.UI.createButton({
 			title : "Take Photo",
 			top : 0,
 			font : {
@@ -99,70 +175,43 @@ function init() {
 
 		////Camera functionality////
 
-		////Begin orientation tracking
-		function getOrientation(orientation) {
-			switch (orientation) {
-				case Titanium.UI.PORTRAIT:
-					//1
-					return 'portrait';
-				case Titanium.UI.UPSIDE_PORTRAIT:
-					return 'upside portrait';
-				case Titanium.UI.LANDSCAPE_LEFT:
-					//2
-					return 'landscape left';
-				case Titanium.UI.LANDSCAPE_RIGHT:
-					return 'landscape right';
-				case Titanium.UI.FACE_UP:
-					return 'face up';
-				case Titanium.UI.FACE_DOWN:
-					return 'face down';
-				case Titanium.UI.UNKNOWN:
-					return 'unknown';
-			}
-		}
+		// function getOrientation(orientation) {
+		// //Tracks orientation of picture taken by camera
+		// switch (orientation) {
+		// case Titanium.UI.PORTRAIT:
+		// //1
+		// return 'portrait';
+		// case Titanium.UI.UPSIDE_PORTRAIT:
+		// return 'upside portrait';
+		// case Titanium.UI.LANDSCAPE_LEFT:
+		// //2
+		// return 'landscape left';
+		// case Titanium.UI.LANDSCAPE_RIGHT:
+		// return 'landscape right';
+		// case Titanium.UI.FACE_UP:
+		// return 'face up';
+		// case Titanium.UI.FACE_DOWN:
+		// return 'face down';
+		// case Titanium.UI.UNKNOWN:
+		// return 'unknown';
+		// }
+		// }
 
-		function correctOrientation(imageViewName, orientationCode) {
-			//To correct orientation of an image
-			if ( orientationCode = "1") {
-				//portrait
-				var matrix2d = Ti.UI.create2DMatrix();
-				matrix2d = matrix2d.rotate(90);
-				var spin = Ti.UI.createAnimation({
-					transform : matrix2d,
-					duration : 1000,
-					autoreverse : false,
-					repeat : 0
-				});
-				imageViewName.animate(spin);
-			} else if ( orientationCode = '2') {
-				//left landscape
-				var matrix2d = Ti.UI.create2DMatrix();
-				matrix2d = matrix2d.rotate(-90);
-				var spin = Ti.UI.createAnimation({
-					transform : matrix2d,
-					duration : 1000,
-					autoreverse : false,
-					repeat : 0
-				});
-				imageViewName.animate(spin);
-			}
-		}
+		// //tracks orientation of device
+		// Ti.Gesture.addEventListener('orientationchange', function(e) {
+		// Ti.API.info("Current Orientation: " + getOrientation(Ti.Gesture.orientation) + " (Code = " + Ti.Gesture.orientation + ")");
+		// var orientation = getOrientation(e.orientation);
+		// });
 
-
-		Ti.Gesture.addEventListener('orientationchange', function(e) {
-			Ti.API.info("Current Orientation: " + getOrientation(Ti.Gesture.orientation) + " (Code = " + Ti.Gesture.orientation + ")");
-			var orientation = getOrientation(e.orientation);
-		});
-		////End orientation tracking
-
-		takePicture.addEventListener('click', function(e) {
+		//Save process for camera and updates view to display new picture
+		openCamera.addEventListener('click', function(e) {
 			Titanium.Media.showCamera({
 				saveToPhotoGallery : true,
 				success : function(event) {
 					//Tracks orientation of picture
-					var orientationWhilePictureTakenCode = Ti.Gesture.orientation;
-					var orientationWhilePictureTakenName = getOrientation(orientationWhilePictureTakenCode);
-					Titanium.API.info("Picture Orientation: " + orientationWhilePictureTakenName + " (Code = " + orientationWhilePictureTakenCode + ")");
+					// var orientationWhilePictureTakenCode = Ti.Gesture.orientation;
+					// var orientationWhilePictureTakenName = getOrientation(orientationWhilePictureTakenCode);
+					// Titanium.API.info("Picture Orientation: " + orientationWhilePictureTakenName + " (Code = " + orientationWhilePictureTakenCode + ")");
 
 					//saves picture file and updates imageview
 					var fileName = new Date().getTime() + '.jpg';
@@ -171,9 +220,6 @@ function init() {
 					if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 						viewImageCaptured.image = event.media;
 						//pathPhoto = Ti.Filesystem.applicationDataDirectory + fileName;
-
-						//rotate image view based on value in var orientationWhilePictureTakenCode
-						correctOrientation(viewImageCaptured, orientationWhilePictureTakenCode);
 					}
 				},
 				cancel : function() {
@@ -182,28 +228,81 @@ function init() {
 				}
 			});
 		});
-		rowFour.add(takePicture);
+		//add open camera button
+		rowFour.add(openCamera);
 
-		//Remove image button
+		//removes image from view but does not delete from gallery
 		var removeImage = Ti.UI.createButton({
-			title : "Remove Photo"
+			title : "Clear Pic",
+			visible : false
 		});
 		removeImage.addEventListener("click", function(e) {
-			viewImageCaptured.image = imageDefault;
+			viewImageCaptured.image = "";
+			removeImage.visible = false;
+			rotateLeft.visible = false;
+			rotateRight.visible = false;
 		});
 		rowFour.add(removeImage);
 
-		//Photo switch
-		var sharePhoto = Ti.UI.createSwitch({
-			titleOn : "Photo will post",
-			titleOff : "Photo won't post",
-			value : false
+		function correctOrientation(viewImage, rotateLeft, rotateRight) {
+			//corrects displayed picture based on which rotation is sent. booleans accepted for rotateLeft and rotateRight
+			var rotateAngle;
+			//set rotation direction
+			if (rotateLeft == true) {
+				rotateAngle = "-90";
+			} else if (rotateRight == true) {
+				rotateAngle = "90";
+			}
+			//rotate image
+			var matrixRotation = Ti.UI.create2DMatrix();
+			matrixRotation = matrixRotation.rotate(rotateAngle);
+			var spinMatrix = Ti.UI.createAnimation({
+				transform : matrixRotation,
+				duration : 1000,
+				autoreverse : false,
+				repeat : 0
+			});
+			//rotate if image exists
+			viewImage.animate(spinMatrix);
+		}
+
+		//rotate left button
+		var rotateLeft = Ti.UI.createButton({
+			title : "<-",
+			visible : false
 		});
-		rowFour.add(sharePhoto);
+		rotateLeft.addEventListener('click', function(e) {
+			if (viewImageCaptured.image != "") {
+				correctOrientation(viewImageCaptured, true, false);
+				Ti.API.info("rotated left");
+			}
+		});
+		rowFive.add(rotateLeft);
+
+		//rotate right button
+		var rotateRight = Ti.UI.createButton({
+			title : "->",
+			visible : false
+		});
+		rotateRight.addEventListener('click', function(e) {
+			if (viewImageCaptured.image != "") {
+				correctOrientation(viewImageCaptured, false, true);
+				Ti.API.info("rotated right");
+			}
+		});
+		rowFive.add(rotateRight);
+
+		// //Switch to determine if photo will be shared
+		// var sharePhoto = Ti.UI.createSwitch({
+		// titleOn : "Photo will post",
+		// titleOff : "Photo won't post",
+		// value : false
+		// });
+		// rowFour.add(sharePhoto);
 
 		//Image view
 		var viewImageCaptured = Ti.UI.createImageView({
-			image : imageDefault,
+			image : "",
 			top : "0",
 			left : "12.5%",
 			height : "250dip",
@@ -214,50 +313,65 @@ function init() {
 			}
 		});
 		viewImageCaptured.addEventListener("load", function(e) {
-			if (viewImageCaptured.image == imageDefault) {
-				sharePhoto.value = false;
-				sharePhoto.enabled = false;
+			if (viewImageCaptured.image != "") {
+				// sharePhoto.value = false;
+				// sharePhoto.enabled = false;
+				// } else {
+				// sharePhoto.value = true;
+				// sharePhoto.enabled = true;
+				removeImage.visible = true;
+				rotateLeft.visible = true;
+				rotateRight.visible = true;
 			} else {
-				sharePhoto.value = true;
-				sharePhoto.enabled = true;
+				removeImage.visible = false;
+				rotateLeft.visible = false;
+				rotateRight.visible = false;
 			}
 		});
-		rowThree.add(viewImageCaptured);
+		rowFour.add(viewImageCaptured);
 
 		//Text area for input
 		var textSelected = false;
 		var inputComment = Ti.UI.createTextArea({
 			width : "100%",
-			height : '100dip',
-			borderWidth : 2,
-			borderColor : '#bbb',
-			borderRadius : 5,
+			height : '95dip',
+			borderRadius : "15",
+			backgroundColor : "#E0E0E0",
+			borderColor : "#000000",
 			font : {
-				fontSize : 20,
-				fontWeight : 'bold'
+				fontSize : 12,
+				color : "#000000"
 			},
 			keyboardType : Ti.UI.KEYBOARD_ASCII,
-			returnKeyType : Ti.UI.RETURNKEY_NEXT,
+			returnKeyType : Ti.UI.RETURNKEY_DONE,
 			textAlign : 'left',
-			hintText : 'Type here... IF YOU DARE!!!',
-			scrollable : true
-
+			hintText : '(Type here)',
+			scrollable : true,
 		});
-		inputComment.addEventListener("type", function(e) {
+		
+		//Set keyboard to hide for Android
+		if (OS_ANDROID){
+			inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
+		}
+		
+		//control focus/blur of inputComment
+		inputComment.addEventListener('click', function() {
+			if (OS_ANDROID){
+				inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
+			}
+			inputComment.keyboardType = Ti.UI.KEYBOARD_ASCII;
+			inputComment.returnKeyType = Ti.UI.RETURNKEY_DONE;
+			inputComment.font.color = "#000000";
+			inputComment.focus();
+			//show text editting buttons
 			closeInputKeyboard.visible = true;
+			clearTextComment.visible = true;
 		});
-		rowTwo.add(inputComment);
 
-		//close keyboard button for textArea
-		var closeInputKeyboard = Ti.UI.createButton({
-			title : "Done",
-			visible : false
-		});
-		closeInputKeyboard.addEventListener('click', function(e) {
-			Ti.UI.Android.hideSoftKeyboard();
-			closeInputKeyboard.visible = false;
-		});
-		rowOne.add(closeInputKeyboard);
+		// inputComment.addEventListener('blur', function() {
+		// inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
+		// });
+		rowTwo.add(inputComment);
 
 		//Send text intent
 		var sendIntentText = Ti.UI.createButton({
@@ -269,52 +383,35 @@ function init() {
 			height : "45dip"
 		});
 		sendIntentText.addEventListener("click", function(e) {
-			if (Titanium.Platform.osname == 'android'){
-				var intentText = Ti.Android.createIntent({
-					action : Ti.Android.ACTION_SEND,
-					type : 'text/plain'
-				});
-				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, "This is the subject.");
-				intentText.putExtra(Ti.Android.EXTRA_TEXT, "This is some text to send.");
-				intent.addCategory(Ti.Android.CATEGORY_DEFAULT);
-				Ti.Android.createIntentChooser(intentText, "Send Message");
-				Ti.Android.currentActivity.startActivity(intentText);
+			createIntentText(inputComment.value);
+		});
+		rowThree.add(sendIntentText);
+
+		//close keyboard button for inputComment
+		var closeInputKeyboard = Ti.UI.createButton({
+			title : "Done Typing",
+			visible : false
+		});
+		closeInputKeyboard.addEventListener('click', function(e) {
+			if (OS_ANDROID){
+				Ti.UI.Android.hideSoftKeyboard();
 			}
-			else if (Titanium.Platform.osname == 'iphone' || Titanium.Platform.osname == 'ipad'){ 
-				//Assume for now we're doing the same thing with iPhones and iPads
-				var docViewer = Ti.UI.iOS.createDocumentViewer({ url: "http://www.cmhouston.org" });
-				docViewer.show({ view: rightNavBtn, animated: true });
-			}
+			inputComment.blur();
+			//hide text specific buttons
+			closeInputKeyboard.visible = false;
+			clearTextComment.visible = false;
 		});
-		rowOne.add(sendIntentText);
+		rowThree.add(closeInputKeyboard);
 
-		//Send image intent
-		var sendIntentImage = Ti.UI.createButton({
-			title : "Share Photo",
-			font : {
-				size : 8,
-				color : "#000000"
-			},
-			height : "45dip"
+		//clear text button for inputComment
+		var clearTextComment = Ti.UI.createButton({
+			title : "Clear Text",
+			visible : false
 		});
-		sendIntentImage.addEventListener("click", function(e) {
-			var intentImage = Ti.Android.createIntent({
-				type : "image/*",
-				action : Ti.Android.ACTION_PICK
-			});
-			intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-			Ti.Android.createIntentChooser(intentImage, "Share Photo");
-
-			var activityImageIntent = Ti.Android.currentActivity;
-			var intentImagePending = Ti.Android.createPendingIntent({
-				activity : activityImageIntent,
-				intent : intentImage
-			});
-
-
-
+		clearTextComment.addEventListener('click', function(e) {
+			inputComment.value = "";
 		});
-		rowOne.add(sendIntentImage);
+		rowThree.add(clearTextComment);
 
 		////Twitter////
 		/*Old way: use button for WebView
