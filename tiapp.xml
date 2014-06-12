@@ -60,4 +60,8 @@
     <plugins>
         <plugin version="1.0">ti.alloy</plugin>
     </plugins>
+	
+	<modules>
+		<module platform="iphone">dk.napp.social</module> 
+	</modules>
 </ti:app>
