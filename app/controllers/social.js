@@ -2,7 +2,6 @@ function init() {
 	//top level vars
 	var imageName;
 	var imageFile;
-	var textCommentBackup;
 
 	//Hide keyboard on initial load
 	if (OS_ANDROID) {
@@ -110,7 +109,7 @@ function init() {
 		viewSharingAllContent.add(rowSix);
 		var rowSeven = Ti.UI.createView({
 			layout : "horizontal",
-			top : "600dip",
+			top : "675dip",
 			width : "50%",
 			left : "20%"
 		});
@@ -156,7 +155,7 @@ function init() {
 					type : 'text/plain'
 				});
 				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, inputSubject.value);
-				intentText.putExtra(Ti.Android.EXTRA_TEXT, inputComment.value + "\n\nhttp://www.cmhouston.org/");
+				intentText.putExtra(Ti.Android.EXTRA_TEXT, contentText + "\n\nhttp://www.cmhouston.org/");
 				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				Ti.Android.createIntentChooser(intentText, "Send Message");
 				Ti.Android.currentActivity.startActivity(intentText);
@@ -304,57 +303,27 @@ function init() {
 		function createIntentImage(contentImage) {
 			//function to create an image intent
 			if (OS_ANDROID) {
-				if (viewImageCaptured.image != "") {
-					var fileImage = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, imageName);
-					var filePath = fileImage.read();
-					var intentImage = Ti.Android.createIntent({
-						type : "image/*",
-						action : Ti.Android.ACTION_SEND
-					});
+				//determine file path of displayed image in viewImageCaptured
 
-					//Must determine appropriate category to call only image handling apps
-
-					//intentImage.addCategory(Ti.Android.CATEGORY_APP_GALLERY);
-					intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-					intentImage.putExtra(Ti.Android.EXTRA_TITLE, "Taken at the Children's Museum of Houston");
-					intentImage.putExtra(Ti.Android.EXTRA_TEXT, "Taken at the Children's Museum of Houston");
-					intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFile.getNativePath());
-					Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
-				} else {
-					//Choose file
-					var intentImage = Ti.Android.createIntent({
-						type : "image/*",
-						action : Ti.Android.ACTION_GET_CONTENT
-					});
-					intentImage.addCategory(Ti.Android.CATEGORY_OPENABLE);
-					var file = Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
-
-					alert("This feature is not ready:" + file);
-
-					//Must find a way to retrieve content from above intent and send it
-
-						//send file
-					/* var intentImageSend = Ti.Android.createIntent({
-					 type : "image/*",
-					 action : Ti.Android.ACTION_SEND
-					 });
-					 intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, file);
-					 Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImageSend, "Share Picture"));
-
-					 //openPhotoGallery();*/
-					 
-
-				}
-				
-			}
-			else if (OS_IOS) {
+				//create and send intent
+				var intentImage = Ti.Android.createIntent({
+					type : "image/*",
+					action : Ti.Android.ACTION_SEND
+				});
+				//intentImage.addCategory(Ti.Android.CATEGORY_APP_GALLERY);
+				intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+				intentImage.putExtra(Ti.Android.EXTRA_TITLE, "Taken at the Children's Museum of Houston");
+				intentImage.putExtra(Ti.Android.EXTRA_TEXT, "Taken at the Children's Museum of Houston");
+				intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFile.getNativePath());
+				Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
+			} else if (OS_IOS) {
 				//Use TiSocial.Framework module
 				var fileImage = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, imageName);
 				var filePath = fileImage.read();
 				var Social = require('dk.napp.social');
 				if (Social.isActivityViewSupported()) {
 					Social.activityView({
-						image: filePath,
+						image : filePath,
 						url : 'http://www.cmhouston.org'
 					});
 				} else {
@@ -365,28 +334,13 @@ function init() {
 				alert("Unsupported platform");
 			}
 		}
-		
-		function createIntentTextAndImage(contentText, contentImage){
-			if (OS_ANDROID){
+
+		function createIntentTextAndImage(contentText, contentImage) {
+			if (OS_ANDROID) {
 				//Code for sharing both text and image in Android
-			}
-			else if (OS_IOS){
+			} else if (OS_IOS) {
 				//Code for sharing both text and image in iOS
-				//Use TiSocial.Framework module
-				var fileImage = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, imageName);
-				var filePath = fileImage.read();
-				var Social = require('dk.napp.social');
-				if (Social.isActivityViewSupported()) {
-					Social.activityView({
-						text: inputComment.value,
-						image: filePath,
-						url : 'http://www.cmhouston.org'
-					});
-				} else {
-					alert("Sharing is not available on this device");
-				}
-			}//end image sharing for iOS
-			else{
+			} else {
 				alert("Unsupported platform");
 			}
 		}
@@ -409,7 +363,7 @@ function init() {
 					//Image and text found. Share.
 
 					//PUT IN METHOD TO SHARE PHOTO WITH TEXT
-					createIntentTextAndImage(inputComment.value);
+					createIntentTextAndImage(contentText, contentImage);
 
 				}
 			} else if (switchShareText.value == true) {
@@ -417,7 +371,7 @@ function init() {
 				if (inputComment.value == "") {
 					alert("No text to share!");
 				} else {
-					//Text found. Share.
+					//Text found - Share.
 					//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
 					Ti.UI.Clipboard.setText(inputComment.value);
 					//send intent
@@ -428,12 +382,39 @@ function init() {
 				if (viewImageCaptured.image == "") {
 					alert("No image to share!");
 				} else {
-					//Image found. Share.
+					//Image found - Share.
 					createIntentImage(viewImageCaptured.image);
 				}
+			} else {
+				//Content may be there but nothing selected to share
+				alert("Nothing selected to share!");
 			}
 		});
 		rowOne.add(shareBoth);
+
+		//Choose picture button
+		var openGallery = Ti.UI.createButton({
+			title : "Choose Photo",
+			top : 0,
+			font : {
+				size : 8,
+				color : "#000000"
+			}
+		});
+		openGallery.addEventListener('click', function(e) {
+			//choose photo from gallery
+			Titanium.Media.openPhotoGallery({
+				success : function(event) {
+					viewImageCaptured.image = event.media;
+				},
+				cancel : function() {
+				},
+				error : function(error) {
+				},
+				mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
+			});
+		});
+		rowSix.add(openGallery);
 
 		//Open camera button
 		var openCamera = Ti.UI.createButton({
@@ -506,7 +487,7 @@ function init() {
 			});
 		});
 		//add open camera button
-		rowFive.add(openCamera);
+		rowSix.add(openCamera);
 
 		//removes image from view but does not delete from gallery
 		var removeImage = Ti.UI.createButton({
@@ -580,8 +561,8 @@ function init() {
 			image : "",
 			top : "0",
 			left : "12.5%",
-			height : "250dip",
-			width : "250dip",
+			height : "300dip",
+			width : "275dip",
 			anchorPoint : {
 				x : 0.5,
 				y : 0.5
@@ -658,7 +639,7 @@ function init() {
 			keyboardType : Ti.UI.KEYBOARD_ASCII,
 			returnKeyType : Ti.UI.RETURNKEY_DONE,
 			textAlign : 'left',
-			hintText : '(Type here)\n\n\nDouble tap box if Hide Keyboard does not appear.',
+			hintText : '(Type here)\n\n\n\n(Double-tap box if "Hide Keyboard" button does not appear)',
 			scrollable : true,
 		});
 
@@ -689,8 +670,8 @@ function init() {
 				color : "#000000"
 			}
 		});
-		if (OS_ANDROID){
-			rowThree.add(labelWarningFacebookText);
+		if (OS_ANDROID) {
+			rowFour.add(labelWarningFacebookText);
 		}
 
 		//Check boxes to share an image or text
@@ -780,7 +761,7 @@ function init() {
 			inputComment.value = "";
 			inputSubject.value = "";
 		});
-		rowFour.add(clearTextComment);
+		rowThree.add(clearTextComment);
 
 		////Twitter////
 		/*Old way: use button for WebView
