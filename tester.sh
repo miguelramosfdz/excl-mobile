@@ -2,4 +2,4 @@
 set -e
 
 echo '--- running tishadow'
-./tishadow run
+tishadow run
