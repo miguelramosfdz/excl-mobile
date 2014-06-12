@@ -93,24 +93,24 @@ function init() {
 		viewSharingAllContent.add(rowThree);
 		var rowFour = Ti.UI.createView({
 			layout : "horizontal",
-			top : "200dip"
+			top : "250dip"
 		});
 		viewSharingAllContent.add(rowFour);
 		var rowFive = Ti.UI.createView({
 			layout : "horizontal",
-			top : "250dip",
+			top : "300dip",
 			left : 0
 		});
 		viewSharingAllContent.add(rowFive);
 		var rowSix = Ti.UI.createView({
 			layout : "horizontal",
-			top : "300dip",
+			top : "350dip",
 			width : "100%",
 		});
 		viewSharingAllContent.add(rowSix);
 		var rowSeven = Ti.UI.createView({
 			layout : "horizontal",
-			top : "550dip",
+			top : "600dip",
 			width : "50%",
 			left : "20%"
 		});
@@ -143,6 +143,9 @@ function init() {
 		rowOne.add(clearAll);
 
 		function createIntentText(contentText) {
+
+			//MAKE SURE TO DISABLE CHOICE OF ALWAYS/JUST ONCE
+
 			//function to create a text intent/iOS equivalent
 			if (OS_ANDROID) {
 				var intentText = Ti.Android.createIntent({
@@ -158,25 +161,25 @@ function init() {
 				/* DocumentViewer attempt: http://docs.appcelerator.com/titanium/3.0/#!/api/Titanium.UI.iOS.DocumentViewer
 				// Use a NavigationWindow to create a navigation bar for the window
 				var docWindow = Ti.UI.createWindow({
-					backgroundColor : 'blue',
-					title : "Blue window"
+				backgroundColor : 'blue',
+				title : "Blue window"
 				});
 				var navWin = Ti.UI.iOS.createNavigationWindow({
-					window : docWindow
+				window : docWindow
 				});
 				docWindow.add(navWin);
 
 				var winButton = Titanium.UI.createButton({
-					title : 'Launch',
-					height : 40,
-					width : 200,
-					top : 270
+				title : 'Launch',
+				height : 40,
+				width : 200,
+				top : 270
 				});
 				docWindow.add(winButton);
 
 				// Create a document viewer to preview a PDF file
 				docViewer = Ti.UI.iOS.createDocumentViewer({
-					url : '/Users/parivedadeveloper/Downloads/Apple-logo.jpg'
+				url : '/Users/parivedadeveloper/Downloads/Apple-logo.jpg'
 				});
 				//docViewer.setUrl('');
 				// Opens the options menu and when the user clicks on 'Quick Look'
@@ -184,16 +187,16 @@ function init() {
 
 				// The document viewer immediately launches without an animation
 				winButton.addEventListener('click', function() {
-					docViewer.show();
-					Ti.API.info("winButton pressed");
+				docViewer.show();
+				Ti.API.info("winButton pressed");
 				});
 				navWin.open();
 				*/ //End DocumentViewer attempt
-				
+
 				//Use Ti.Social module
 				var Social = require('dk.napp.social');
 				Social.activityView({
-					url: 'www.facebook.com'
+					url : 'www.facebook.com'
 				});
 			}
 		}
@@ -355,6 +358,10 @@ function init() {
 		//removes image from view but does not delete from gallery
 		var removeImage = Ti.UI.createButton({
 			title : "Clear Image",
+			font: {
+				color: "#FFFFFF",
+				size: "8"
+			},
 			visible : false
 		});
 		removeImage.addEventListener("click", function(e) {
@@ -451,7 +458,7 @@ function init() {
 			width : "100%",
 			height : '45dip',
 			borderRadius : "15",
-			backgroundColor : "#E0E0E0",
+			backgroundColor : "#FFFFFF",
 			borderColor : "#000000",
 			font : {
 				fontSize : 12,
@@ -462,6 +469,8 @@ function init() {
 			textAlign : 'left',
 			hintText : '(Subject, if applicable)',
 			scrollable : true,
+			borderColor : "#000000",
+			borderWidth : "1"
 		});
 
 		//control focus/blur of inputSubject
@@ -485,7 +494,9 @@ function init() {
 			width : "100%",
 			height : '95dip',
 			borderRadius : "15",
-			backgroundColor : "#E0E0E0",
+			borderColor : "#000000",
+			borderWidth : "1",
+			backgroundColor : "#FFFFFF",
 			borderColor : "#000000",
 			font : {
 				fontSize : 12,
@@ -517,6 +528,16 @@ function init() {
 		// });
 		rowThree.add(inputComment);
 
+		//Warning label for Facebook
+		var labelWarningFacebookText = Ti.UI.createLabel({
+			text : "Please note that Facebook does not allow this app to post text. The app will copy your comment for you once it is shared.",
+			font : {
+				size : 4,
+				color : "#000000"
+			}
+		});
+		rowThree.add(labelWarningFacebookText);
+
 		//Send text intent
 		var sendIntentText = Ti.UI.createButton({
 			title : "Share Text",
@@ -524,13 +545,33 @@ function init() {
 				size : 8,
 				color : "#000000"
 			},
-			height : "45dip"
+			height : "45dip",
 		});
 		sendIntentText.addEventListener("click", function(e) {
 			if (inputComment.value != "") {
 				//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
 				Ti.UI.Clipboard.setText(inputComment.value);
-				alert("Your comment has been copied to the clipboard.");
+
+				//display alert
+				Ti.UI.createAlertDialog({
+					message : 'Your comment has been copied to the clipboard.',
+					ok : 'Continue',
+					title : 'Text copied'
+				}).show();
+
+				//pause processing
+				if (OS_ANDROID) {
+					setInterval(function() {
+					}, 3000);
+				} else {
+					//pause for iOS
+					Ti.App.paused
+				}
+
+				//alert("Your comment has been copied to the clipboard.");
+
+				//resume processing once alert displayed
+
 				//Send intent
 				createIntentText(inputComment.value);
 			} else {
@@ -558,6 +599,10 @@ function init() {
 		//clear text button for inputComment
 		var clearTextComment = Ti.UI.createButton({
 			title : "Clear Text",
+			font : {
+				size : 8,
+				color : "#000000"
+			},
 			visible : false
 		});
 		clearTextComment.addEventListener('click', function(e) {
