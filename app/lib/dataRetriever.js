@@ -2,7 +2,6 @@ var tiCalls = require('../lib/exclCommonTiApi');
 
 function parseJson(responseText) {
 	json = tiCalls.parse(responseText);
-	tiCalls.heyhey();
 	return json;
 }
 
