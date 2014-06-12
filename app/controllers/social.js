@@ -285,16 +285,12 @@ function init() {
 
 			}
 			else if (OS_IOS) {
-				//Use Ti.Social module
+				//Use TiSocial.Framework module
 				var Social = require('dk.napp.social');
-				Social.activityView({
-					url : 'www.facebook.com'
-				});
 				if (Social.isActivityViewSupported()) {
 					Social.activityView({
 						text : inputComment.value,
-						subject : inputSubject.value, //Subject field doesn't go here
-						url : '\n\nwww.cmhouston.org'
+						url : 'http://www.cmhouston.org'
 					});
 				} else {
 					alert("Sharing is not available on this device");
@@ -349,6 +345,36 @@ function init() {
 					 
 
 				}
+				
+			}
+			else if (OS_IOS) {
+				//Use TiSocial.Framework module
+				var fileImage = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, imageName);
+				var filePath = fileImage.read();
+				var Social = require('dk.napp.social');
+				if (Social.isActivityViewSupported()) {
+					Social.activityView({
+						image: filePath,
+						url : 'http://www.cmhouston.org'
+					});
+				} else {
+					alert("Sharing is not available on this device");
+				}
+			}//end image sharing for iOS
+			else {
+				alert("Unsupported platform");
+			}
+		}
+		
+		function createIntentTextAndImage(contentText, contentImage){
+			if (OS_ANDROID){
+				//Code for sharing both text and image in Android
+			}
+			else if (OS_IOS){
+				//Code for sharing both text and image in iOS
+			}
+			else{
+				alert("Unsupported platform");
 			}
 		}
 
@@ -370,6 +396,7 @@ function init() {
 					//Image and text found. Share.
 
 					//PUT IN METHOD TO SHARE PHOTO WITH TEXT
+					createIntentTextAndImage(contentText, contentImage);
 
 				}
 			} else if (switchShareText.value == true) {
