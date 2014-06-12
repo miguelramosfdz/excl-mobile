@@ -183,6 +183,10 @@ function init() {
 				*/ //End DocumentViewer attempt
 				
 				//Use Ti.Social module
+				var Social = require('dk.napp.social');
+				Social.activityView({
+					url: 'www.facebook.com'
+				});
 			}
 		}
 
