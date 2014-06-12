@@ -368,20 +368,20 @@ function init() {
 					intentImage.addCategory(Ti.Android.CATEGORY_OPENABLE);
 					var file = Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
 
-					alert("This feature is not ready");
+					alert("This feature is not ready:" + file);
 
 					//Must find a way to retrieve content from above intent and send it
 
-					/*	//send file
-					 var intentImageSend = Ti.Android.createIntent({
+						//send file
+					/* var intentImageSend = Ti.Android.createIntent({
 					 type : "image/*",
 					 action : Ti.Android.ACTION_SEND
 					 });
 					 intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, file);
 					 Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImageSend, "Share Picture"));
 
-					 //openPhotoGallery();
-					 */
+					 //openPhotoGallery();*/
+					 
 
 				}
 			}
@@ -407,7 +407,7 @@ function init() {
 					//PUT IN METHOD TO SHARE PHOTO WITH TEXT
 
 				}
-			} else if (switchShareText.value = true) {
+			} else if (switchShareText.value == true) {
 				//Share text selected - check for text
 				if (inputComment.value == "") {
 					alert("No text to share!");
@@ -418,7 +418,7 @@ function init() {
 					//send intent
 					createIntentText(inputComment.value);
 				}
-			} else if (switchShareImage.value = true) {
+			} else if (switchShareImage.value == true) {
 				//Share image selected - check for image
 				if (viewImageCaptured.image == "") {
 					alert("No image to share!");
