@@ -195,11 +195,6 @@ function init() {
 
 				//Use Ti.Social module
 				var Social = require('dk.napp.social');
-<<<<<<< HEAD
-				Social.activityView({
-					url : 'www.facebook.com'
-				});
-=======
 				if (Social.isActivityViewSupported()) {
 					Social.activityView({
 						text: inputComment.value,
@@ -213,7 +208,6 @@ function init() {
 			}//end text sharing for iOS
 			else{
 				alert("Unsupported platform");
->>>>>>> 697f9bba98df936d7839ae3f88bbec3978327b9a
 			}
 		}
 
@@ -552,8 +546,10 @@ function init() {
 				color : "#000000"
 			}
 		});
-		rowThree.add(labelWarningFacebookText);
-
+		if (OS_ANDROID){ //Only necessary if using Android, since the module we used for iOS takes care of this
+			rowThree.add(labelWarningFacebookText);
+		}
+		
 		//Send text intent
 		var sendIntentText = Ti.UI.createButton({
 			title : "Share Text",
@@ -581,7 +577,7 @@ function init() {
 					}, 3000);
 				} else {
 					//pause for iOS
-					Ti.App.paused
+					Ti.App.paused;
 				}
 
 				//alert("Your comment has been copied to the clipboard.");
