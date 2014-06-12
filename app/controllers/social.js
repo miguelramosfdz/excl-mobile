@@ -109,7 +109,7 @@ function init() {
 		viewSharingAllContent.add(rowSix);
 		var rowSeven = Ti.UI.createView({
 			layout : "horizontal",
-			top : "600dip",
+			top : "675dip",
 			width : "50%",
 			left : "20%"
 		});
@@ -304,8 +304,7 @@ function init() {
 			//function to create an image intent
 			if (OS_ANDROID) {
 				//determine file path of displayed image in viewImageCaptured
-				
-				
+
 				//create and send intent
 				var intentImage = Ti.Android.createIntent({
 					type : "image/*",
@@ -372,7 +371,7 @@ function init() {
 				if (inputComment.value == "") {
 					alert("No text to share!");
 				} else {
-					//Text found. Share.
+					//Text found - Share.
 					//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
 					Ti.UI.Clipboard.setText(inputComment.value);
 					//send intent
@@ -383,12 +382,39 @@ function init() {
 				if (viewImageCaptured.image == "") {
 					alert("No image to share!");
 				} else {
-					//Image found. Share.
+					//Image found - Share.
 					createIntentImage(viewImageCaptured.image);
 				}
+			} else {
+				//Content may be there but nothing selected to share
+				alert("Nothing selected to share!");
 			}
 		});
 		rowOne.add(shareBoth);
+
+		//Choose picture button
+		var openGallery = Ti.UI.createButton({
+			title : "Choose Photo",
+			top : 0,
+			font : {
+				size : 8,
+				color : "#000000"
+			}
+		});
+		openGallery.addEventListener('click', function(e) {
+			//choose photo from gallery
+			Titanium.Media.openPhotoGallery({
+				success : function(event) {
+					viewImageCaptured.image = event.media;
+				},
+				cancel : function() {
+				},
+				error : function(error) {
+				},
+				mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
+			});
+		});
+		rowSix.add(openGallery);
 
 		//Open camera button
 		var openCamera = Ti.UI.createButton({
@@ -461,7 +487,7 @@ function init() {
 			});
 		});
 		//add open camera button
-		rowFive.add(openCamera);
+		rowSix.add(openCamera);
 
 		//removes image from view but does not delete from gallery
 		var removeImage = Ti.UI.createButton({
@@ -535,8 +561,8 @@ function init() {
 			image : "",
 			top : "0",
 			left : "12.5%",
-			height : "250dip",
-			width : "250dip",
+			height : "300dip",
+			width : "275dip",
 			anchorPoint : {
 				x : 0.5,
 				y : 0.5
@@ -613,7 +639,7 @@ function init() {
 			keyboardType : Ti.UI.KEYBOARD_ASCII,
 			returnKeyType : Ti.UI.RETURNKEY_DONE,
 			textAlign : 'left',
-			hintText : '(Type here)\n\n\nDouble tap box if Hide Keyboard does not appear.',
+			hintText : '(Type here)\n\n\n\n(Double-tap box if "Hide Keyboard" button does not appear)',
 			scrollable : true,
 		});
 
@@ -645,7 +671,7 @@ function init() {
 			}
 		});
 		if (OS_ANDROID) {
-			rowThree.add(labelWarningFacebookText);
+			rowFour.add(labelWarningFacebookText);
 		}
 
 		//Check boxes to share an image or text
@@ -735,7 +761,7 @@ function init() {
 			inputComment.value = "";
 			inputSubject.value = "";
 		});
-		rowFour.add(clearTextComment);
+		rowThree.add(clearTextComment);
 
 		////Twitter////
 		/*Old way: use button for WebView
