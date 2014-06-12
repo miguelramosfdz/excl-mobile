@@ -2,6 +2,7 @@ function init() {
 	//top level vars
 	var imageName;
 	var imageFile;
+	var imageFilePath;
 
 	//Hide keyboard on initial load
 	if (OS_ANDROID) {
@@ -305,6 +306,8 @@ function init() {
 			if (OS_ANDROID) {
 				//determine file path of displayed image in viewImageCaptured
 
+				alert("here: " + imageFilePath);
+
 				//create and send intent
 				var intentImage = Ti.Android.createIntent({
 					type : "image/*",
@@ -314,7 +317,7 @@ function init() {
 				intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				intentImage.putExtra(Ti.Android.EXTRA_TITLE, "Taken at the Children's Museum of Houston");
 				intentImage.putExtra(Ti.Android.EXTRA_TEXT, "Taken at the Children's Museum of Houston");
-				intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFile.getNativePath());
+				intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
 				Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
 			} else if (OS_IOS) {
 				//Use TiSocial.Framework module
@@ -406,6 +409,7 @@ function init() {
 			Titanium.Media.openPhotoGallery({
 				success : function(event) {
 					viewImageCaptured.image = event.media;
+					imageFilePath = event.media.nativePath;
 				},
 				cancel : function() {
 				},
@@ -476,7 +480,7 @@ function init() {
 					//set viewImageCaptured to show new image
 					if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 						viewImageCaptured.image = event.media;
-						//pathPhoto = Ti.Filesystem.applicationDataDirectory + fileName;
+						imageFilePath = event.media.nativePath;
 					}
 				},
 				cancel : function() {
