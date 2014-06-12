@@ -154,8 +154,31 @@ function init() {
 				Ti.Android.createIntentChooser(intentText, "Send Message");
 				Ti.Android.currentActivity.startActivity(intentText);
 			} else if (OS_IOS) {
-				//Assume for now we're doing the same thing with iPhones and iPads
+				// Use a NavigationWindow to create a navigation bar for the window
+				var docWindow = Ti.UI.createWindow({
+					backgroundColor: 'blue',
+					title: "Blue window"
+				});
+				var navWin = Ti.UI.iOS.createNavigationWindow({window: docWindow});
+				docWindow.add(navWin);
+				
+				var winButton = Titanium.UI.createButton({
+				    title : 'Launch',
+				    height : 40,
+				    width : 200,
+				    top : 270
+				});
+				docWindow.add(winButton);
+				
+				// Create a document viewer to preview a PDF file
+				docViewer = Ti.UI.iOS.createDocumentViewer({url : '/Users/parivedadeveloper/Downloads/Apple-logo.jpg'});
+				//docViewer.setUrl('');
+				// Opens the options menu and when the user clicks on 'Quick Look'
+				// the document viewer launches with an animated transition
 
+				// The document viewer immediately launches without an animation
+				winButton.addEventListener('click', function(){ docViewer.show(); Ti.API.info("winButton pressed");});
+				navWin.open();
 			}
 		}
 
