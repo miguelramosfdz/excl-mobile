@@ -46,6 +46,13 @@ function init() {
 	//Add button to XML
 
 	openMenuShare.addEventListener('click', function(e) {
+		//create scrolling view
+		var viewScroll = Ti.UI.createScrollView({
+			contentWidth : 'auto',
+			contentHeight : 'auto',
+			showVerticalScrollIndicator : true,
+			showHorizontalScrollIndicator : true
+		});
 		//create viewSharingAllContent, which will serve as the background view for all sharing content, then post to page
 		var viewSharingAllContent = Ti.UI.createView({
 			backgroundColor : "#FFFFFF"
@@ -57,9 +64,10 @@ function init() {
 				inputSubject.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
 			}
 		});
-		$.viewShareBase.add(viewSharingAllContent);
+		viewScroll.add(viewSharingAllContent);
+		$.viewShareBase.add(viewScroll);
 
-		//Window rows
+		//Rows in the viewSharingAllContent
 		var rowOne = Ti.UI.createView({
 			layout : "horizontal",
 			top : "0dip",
@@ -97,9 +105,9 @@ function init() {
 		viewSharingAllContent.add(rowSix);
 		var rowSeven = Ti.UI.createView({
 			layout : "horizontal",
-			top : "350dip",
+			top : "550dip",
 			width : "50%",
-			left: "12.5%"
+			left : "20%"
 		});
 		viewSharingAllContent.add(rowSeven);
 
@@ -157,6 +165,14 @@ function init() {
 				intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				intentImage.putExtra(Ti.Android.ACTION_ATTACH_DATA, contentImage);
 				Ti.Android.createIntentChooser(intentImage, "Share Photo");
+		
+		
+		
+		
+		
+		
+		
+		
 			}
 		}
 
