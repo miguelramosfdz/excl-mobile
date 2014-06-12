@@ -1,4 +1,7 @@
 function init() {
+	//top level vars
+	var imageName;
+
 	//Hide keyboard on initial load
 	if (OS_ANDROID) {
 		Ti.UI.Android.hideSoftKeyboard();
@@ -158,21 +161,27 @@ function init() {
 		function createIntentImage(contentImage) {
 			//function to create an image intent
 			if (OS_ANDROID) {
-				var intentImage = Ti.Android.createIntent({
-					type : "image/*",
-					action : Ti.Android.ACTION_PICK
-				});
-				intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-				intentImage.putExtra(Ti.Android.ACTION_ATTACH_DATA, contentImage);
-				Ti.Android.createIntentChooser(intentImage, "Share Photo");
-		
-		
-		
-		
-		
-		
-		
-		
+				if (viewImageCaptured.image != "") {
+					var fileImage = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, imageName);
+					var filePath = fileImage.read();
+					var intentImage = Ti.Android.createIntent({
+						type : "image/*",
+						action : Ti.Android.ACTION_SEND
+					});
+					intentImage.putExtra(Ti.Android.EXTRA_TITLE, "This is a title field");
+					intentImage.putExtra(Ti.Android.EXTRA_TEXT, "This is an extra text field");
+					intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, filePath.nativePath);
+					Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
+				} else {
+					var intentImage = Ti.Android.createIntent({
+						type : "image/*",
+						action : Ti.Android.ACTION_PICK
+					});
+					intentImage.putExtra(Ti.Android.EXTRA_TITLE, "This is a title field");
+					intentImage.putExtra(Ti.Android.EXTRA_TEXT, "This is an extra text field");
+					Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
+				}
+
 			}
 		}
 
@@ -205,11 +214,8 @@ function init() {
 			height : "45dip"
 		});
 		sendIntentImage.addEventListener("click", function(e) {
-			if (viewImageCaptured.image != "") {
-				createIntentImage(viewImageCaptured.image);
-			} else {
-				alert("There's no image to share!");
-			}
+			//if photo is not taken within app then option to select image from gallery will appear
+			createIntentImage(viewImageCaptured.image);
 		});
 		rowFive.add(sendIntentImage);
 
@@ -264,10 +270,13 @@ function init() {
 					// var orientationWhilePictureTakenName = getOrientation(orientationWhilePictureTakenCode);
 					// Titanium.API.info("Picture Orientation: " + orientationWhilePictureTakenName + " (Code = " + orientationWhilePictureTakenCode + ")");
 
-					//saves picture file and updates imageview
-					var fileName = new Date().getTime() + '.jpg';
+					//create image file and save name for future use
+					var fileName = 'cmh' + new Date().getTime() + '.jpg';
+					imageName = fileName;
+					//save file
 					var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 					imageFile.write(event.media);
+					//set viewImageCaptured to show new image
 					if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 						viewImageCaptured.image = event.media;
 						//pathPhoto = Ti.Filesystem.applicationDataDirectory + fileName;
@@ -344,14 +353,6 @@ function init() {
 			}
 		});
 		rowSeven.add(rotateRight);
-
-		// //Switch to determine if photo will be shared
-		// var sharePhoto = Ti.UI.createSwitch({
-		// titleOn : "Photo will post",
-		// titleOff : "Photo won't post",
-		// value : false
-		// });
-		// rowFour.add(sharePhoto);
 
 		//Image view
 		var viewImageCaptured = Ti.UI.createImageView({
