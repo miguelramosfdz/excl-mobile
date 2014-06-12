@@ -20,10 +20,5 @@
 				<Require type="view" src="post" id="postTab"/>
 			</Window>
 		</Tab>
-		<Tab title="Visual Demo" icon="KS_nav_views.png">
-			<Window id="exhibitsWindow" title="Visual Demo">
-				<Require type="view" src="exhibits" id="demoTab"/>
-			</Window>
-		</Tab>
 	</TabGroup>
 </Alloy>
