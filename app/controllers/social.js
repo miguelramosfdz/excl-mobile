@@ -195,9 +195,25 @@ function init() {
 
 				//Use Ti.Social module
 				var Social = require('dk.napp.social');
+<<<<<<< HEAD
 				Social.activityView({
 					url : 'www.facebook.com'
 				});
+=======
+				if (Social.isActivityViewSupported()) {
+					Social.activityView({
+						text: inputComment.value,
+						subject: inputSubject.value, //Subject field doesn't go here
+						url: 'www.cmhouston.org'
+					});
+				}
+				else{
+					alert("Sharing is not available on this device");
+				}
+			}//end text sharing for iOS
+			else{
+				alert("Unsupported platform");
+>>>>>>> 697f9bba98df936d7839ae3f88bbec3978327b9a
 			}
 		}
 
