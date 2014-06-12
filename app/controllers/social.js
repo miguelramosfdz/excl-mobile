@@ -372,7 +372,20 @@ function init() {
 			}
 			else if (OS_IOS){
 				//Code for sharing both text and image in iOS
-			}
+				//Use TiSocial.Framework module
+				var fileImage = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, imageName);
+				var filePath = fileImage.read();
+				var Social = require('dk.napp.social');
+				if (Social.isActivityViewSupported()) {
+					Social.activityView({
+						text: inputComment.value,
+						image: filePath,
+						url : 'http://www.cmhouston.org'
+					});
+				} else {
+					alert("Sharing is not available on this device");
+				}
+			}//end image sharing for iOS
 			else{
 				alert("Unsupported platform");
 			}
@@ -396,7 +409,7 @@ function init() {
 					//Image and text found. Share.
 
 					//PUT IN METHOD TO SHARE PHOTO WITH TEXT
-					createIntentTextAndImage(contentText, contentImage);
+					createIntentTextAndImage(inputComment.value);
 
 				}
 			} else if (switchShareText.value == true) {
