@@ -195,8 +195,8 @@ function init() {
 				if (Social.isActivityViewSupported()) {
 					Social.activityView({
 						text: inputComment.value,
-						subject: inputSubject.value, //Subject field doesn't go here
-						url: 'www.cmhouston.org'
+						url: 'http://www.cmhouston.org',
+						image: 'http://v.cdn.vine.co/r/avatars/692294394E1009667482371637248_129ead53f63.4.2_44ncr9wcPhnOc6kRk4X87PT.XwVhld5hEDBu9dzhRDBK60hv3Jj5tbO2jEumQiNo.jpg?versionId=wbBLBAZ5kURO8qKxr1pdczmfecqFkvOp'
 					});
 				}
 				else{
