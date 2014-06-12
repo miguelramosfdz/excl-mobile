@@ -494,7 +494,7 @@ function init() {
 			keyboardType : Ti.UI.KEYBOARD_ASCII,
 			returnKeyType : Ti.UI.RETURNKEY_DONE,
 			textAlign : 'left',
-			hintText : '(Type here)\nDouble tap text area if text options do not appear.',
+			hintText : '(Type here)\n\n\nDouble tap box if Hide Keyboard does not appear.',
 			scrollable : true,
 		});
 
@@ -541,7 +541,7 @@ function init() {
 
 		//close keyboard button for inputComment
 		var closeInputKeyboard = Ti.UI.createButton({
-			title : "Done Typing",
+			title : "Hide Keyboard",
 			visible : false
 		});
 		closeInputKeyboard.addEventListener('click', function(e) {
