@@ -1,6 +1,7 @@
 function init() {
 	//top level vars
 	var imageName;
+	var imageFile;
 
 	//Hide keyboard on initial load
 	if (OS_ANDROID) {
@@ -168,20 +169,41 @@ function init() {
 						type : "image/*",
 						action : Ti.Android.ACTION_SEND
 					});
-					intentImage.putExtra(Ti.Android.EXTRA_TITLE, "This is a title field");
-					intentImage.putExtra(Ti.Android.EXTRA_TEXT, "This is an extra text field");
-					intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, filePath.nativePath);
+					
+					//Must determine appropriate category to call only image handling apps
+					
+					//intentImage.addCategory(Ti.Android.CATEGORY_APP_GALLERY);
+					intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+					intentImage.putExtra(Ti.Android.EXTRA_TITLE, "Taken at the Children's Museum of Houston");
+					intentImage.putExtra(Ti.Android.EXTRA_TEXT, "Taken at the Children's Museum of Houston");
+					intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFile.getNativePath());
 					Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
 				} else {
+					//Choose file
 					var intentImage = Ti.Android.createIntent({
 						type : "image/*",
-						action : Ti.Android.ACTION_PICK
+						action : Ti.Android.ACTION_GET_CONTENT
 					});
-					intentImage.putExtra(Ti.Android.EXTRA_TITLE, "This is a title field");
-					intentImage.putExtra(Ti.Android.EXTRA_TEXT, "This is an extra text field");
-					Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
+					intentImage.addCategory(Ti.Android.CATEGORY_OPENABLE);
+					var file = Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
+					
+					alert("This feature is not ready");
+					
+					//Must find a way to retrieve content from above intent and send it
+					
+				/*	//send file
+					var intentImageSend = Ti.Android.createIntent({
+						type : "image/*",
+						action : Ti.Android.ACTION_SEND
+					});
+					intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, file);
+					Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImageSend, "Share Picture"));
+					
+					//openPhotoGallery();
+					*/
+					
+					
 				}
-
 			}
 		}
 
@@ -191,11 +213,11 @@ function init() {
 		});
 		shareBoth.addEventListener('click', function(e) {
 			if (viewImageCaptured.image == "" && inputComment.value == "") {
-				alert("No content to share!");
+				alert("You're missing any content!");
 			} else if (viewImageCaptured.image == "") {
-				alert("No photo to share!");
+				alert("You're missing an image!");
 			} else if (inputComment.value == "") {
-				alert("No text to share!");
+				alert("You're missing text!");
 			} else {
 				createIntentImage(viewImageCaptured.image);
 				createIntentText(inputComment.value);
@@ -274,7 +296,7 @@ function init() {
 					var fileName = 'cmh' + new Date().getTime() + '.jpg';
 					imageName = fileName;
 					//save file
-					var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
+					imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 					imageFile.write(event.media);
 					//set viewImageCaptured to show new image
 					if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
@@ -294,7 +316,7 @@ function init() {
 
 		//removes image from view but does not delete from gallery
 		var removeImage = Ti.UI.createButton({
-			title : "Clear Pic",
+			title : "Clear Image",
 			visible : false
 		});
 		removeImage.addEventListener("click", function(e) {
@@ -302,6 +324,7 @@ function init() {
 			removeImage.visible = false;
 			rotateLeft.visible = false;
 			rotateRight.visible = false;
+			viewScroll.scrollTo(0,0);
 		});
 		rowFive.add(removeImage);
 
