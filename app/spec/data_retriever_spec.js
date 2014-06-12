@@ -6,9 +6,7 @@ describe("Testing parsedJson", function() {
 		// Arrange
 		var dataToSend = "\"social-media-settings\": {\"liking\": true,\"sharing\": false,\"commenting\": true},";
 		var expectedData = "\"social-media-settings\": {\"liking\":expectedData true,\"sharing\": false,\"commenting\": true},";
-		spyOn(tiCalls, 'heyhey').andReturn(console.log("what's cooking!"));
-		// spy on ticalls.parseJson
-		// spy on ticalls.heyhey
+		spyOn(tiCalls, 'parse').andReturn(expectedData);
 		
 		// Act
 		var returnedData = dataRetriever.parseJson(dataToSend);
