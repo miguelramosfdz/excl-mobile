@@ -1,4 +1,9 @@
 function init() {
+	//Hide keyboard on initial load
+	if (OS_ANDROID) {
+		Ti.UI.Android.hideSoftKeyboard();
+	}
+
 	//Pop up window that contains specific app information
 	// function windowPopupShare(viewName) {
 	// var viewScrollShare = Ti.UI.createScrollView({
@@ -35,7 +40,7 @@ function init() {
 			fontSize : 30,
 		},
 		//backgroundColor: "#00FFFF"
-		color: "#000000"
+		color : "#000000"
 	});
 	$.viewShareBase.add(openMenuShare);
 	//Add button to XML
@@ -90,6 +95,13 @@ function init() {
 			width : "100%",
 		});
 		viewSharingAllContent.add(rowSix);
+		var rowSeven = Ti.UI.createView({
+			layout : "horizontal",
+			top : "350dip",
+			width : "50%",
+			left: "12.5%"
+		});
+		viewSharingAllContent.add(rowSeven);
 
 		//Back button closes sharing window and returns to app
 		var closeViewSharingAllContent = Ti.UI.createButton({
@@ -99,6 +111,9 @@ function init() {
 		rowOne.add(closeViewSharingAllContent);
 		closeViewSharingAllContent.addEventListener("click", function(e) {
 			$.viewShareBase.remove(viewSharingAllContent);
+			if (OS_ANDROID) {
+				Ti.UI.Android.hideSoftKeyboard();
+			}
 		});
 
 		//clear all button that clears text in inputComment and picture in viewImageCaptured
@@ -128,7 +143,7 @@ function init() {
 				Ti.Android.currentActivity.startActivity(intentText);
 			} else if (OS_IOS) {
 				//Assume for now we're doing the same thing with iPhones and iPads
-				
+
 			}
 		}
 
@@ -226,7 +241,7 @@ function init() {
 		openCamera.addEventListener('click', function(e) {
 			Titanium.Media.showCamera({
 				saveToPhotoGallery : true,
-				mediaTypes: Titanium.Media.MEDIA_TYPE_PHOTO,
+				mediaTypes : Titanium.Media.MEDIA_TYPE_PHOTO,
 				success : function(event) {
 					//Tracks orientation of picture
 					// var orientationWhilePictureTakenCode = Ti.Gesture.orientation;
@@ -299,7 +314,7 @@ function init() {
 				Ti.API.info("rotated left");
 			}
 		});
-		rowFive.add(rotateLeft);
+		rowSeven.add(rotateLeft);
 
 		//rotate right button
 		var rotateRight = Ti.UI.createButton({
@@ -312,7 +327,7 @@ function init() {
 				Ti.API.info("rotated right");
 			}
 		});
-		rowFive.add(rotateRight);
+		rowSeven.add(rotateRight);
 
 		// //Switch to determine if photo will be shared
 		// var sharePhoto = Ti.UI.createSwitch({
