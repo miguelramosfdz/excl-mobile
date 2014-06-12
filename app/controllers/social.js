@@ -133,6 +133,9 @@ function init() {
 		var clearAll = Ti.UI.createButton({
 			id : 'clearAll',
 			title : "Clear All",
+			font : {
+				size : "8"
+			}
 		});
 
 		clearAll.addEventListener('click', function(e) {
@@ -140,7 +143,7 @@ function init() {
 			removeImage.fireEvent("click");
 			closeInputKeyboard.fireEvent("click");
 		});
-		rowOne.add(clearAll);
+		rowFive.add(clearAll);
 
 		function createIntentText(contentText) {
 
@@ -157,7 +160,131 @@ function init() {
 				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				Ti.Android.createIntentChooser(intentText, "Send Message");
 				Ti.Android.currentActivity.startActivity(intentText);
-			} else if (OS_IOS) {
+
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				//Possible facebook solution for android. Needs android facebook module
+				/*var fb = require('facebook');
+				fb.appid = APP_ID;
+				fb.permissions = ['publish_stream'];
+				fb.addEventListener('login', function(e) {
+				if (e.success) {
+				alert('Logged in');
+				}
+				});
+				fb.addEventListener('logout', function(e) {
+				alert('Logged out');
+				});
+
+				// Add the button.  Note that it doesn't need a click event listener.
+				viewSharingAllContent.add(fb.createLoginButton({
+				top : 50,
+				style : fb.BUTTON_STYLE_WIDE
+				}));
+
+				function showRequestResult(e) {
+				var s = '';
+				if (e.success) {
+				s = "SUCCESS";
+				if (e.result) {
+				s += "; " + e.result;
+				}
+				if (e.data) {
+				s += "; " + e.data;
+				}
+				if (!e.result && !e.data) {
+				s = '"success", but no data from FB.  I am guessing you cancelled the dialog.';
+				}
+				} else if (e.cancelled) {
+				s = "CANCELLED";
+				} else {
+				s = "FAIL";
+				if (e.error) {
+				s += "; " + e.error;
+				}
+				}
+				alert(s);
+				}
+
+				var statusText = Ti.UI.createTextField({
+				top : 10,
+				left : 10,
+				right : 10,
+				height : Titanium.UI.SIZE,
+				hintText : 'Enter your FB status'
+				});
+				viewSharingAllContent.add(statusText);
+				var statusBtn = Ti.UI.createButton({
+				title : 'Publish status with GRAPH API',
+				top : 10,
+				left : 10,
+				right : 10,
+				height : Titanium.UI.SIZE
+				});
+				statusBtn.addEventListener('click', function() {
+				var text = statusText.value;
+				if ((text === '')) {
+				Ti.UI.createAlertDialog({
+				tile : 'ERROR',
+				message : 'No text to Publish !! '
+				}).show();
+				} else {
+				fb.requestWithGraphPath('me/feed', {
+				message : text
+				}, "POST", showRequestResult);
+				}
+				});
+				viewSharingAllContent.add(statusBtn);
+
+				var wall = Ti.UI.createButton({
+				title : 'Publish wall post with GRAPH API',
+				top : 10,
+				left : 10,
+				right : 10,
+				height : Titanium.UI.SIZE
+				});
+				wall.addEventListener('click', function() {
+				var data = {
+				link : "https://developer.mozilla.org/en/JavaScript",
+				name : "Best online Javascript reference",
+				message : "Use Mozilla's online Javascript reference",
+				caption : "MDN Javascript Reference",
+				picture : "https://developer.mozilla.org/media/img/mdn-logo.png",
+				description : "This section of the site is dedicated to JavaScript-the-language, the parts that are not specific to web pages or other host environments...",
+				test : [{
+				foo : 'Encoding test',
+				bar : 'Durp durp'
+				}, 'test']
+				};
+				fb.requestWithGraphPath('me/feed', data, 'POST', showRequestResult);
+				});
+				viewSharingAllContent.add(wall);
+
+				var wallDialog = Ti.UI.createButton({
+				title : 'Publish wall post with DIALOG',
+				top : 10,
+				left : 10,
+				right : 10,
+				height : Titanium.UI.SIZE
+				});
+				var iter = 0;
+				wallDialog.addEventListener('click', function() {
+				iter++;
+				var data = {
+				link : "http://www.appcelerator.com",
+				name : "Appcelerator Titanium (iteration " + iter + ")",
+				message : "Awesome SDKs for building desktop and mobile apps",
+				caption : "Appcelerator Titanium (iteration " + iter + ")",
+				picture : "http://developer.appcelerator.com/assets/img/DEV_titmobile_image.png",
+				description : "You've got the ideas, now you've got the power. Titanium translates your hard won web skills..."
+				};
+				fb.dialog("feed", data, showRequestResult);
+				});
+				viewSharingAllContent.add(wallDialog);*/
+
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+			}
+			else if (OS_IOS) {
 				/* DocumentViewer attempt: http://docs.appcelerator.com/titanium/3.0/#!/api/Titanium.UI.iOS.DocumentViewer
 				// Use a NavigationWindow to create a navigation bar for the window
 				var docWindow = Ti.UI.createWindow({
@@ -195,25 +322,21 @@ function init() {
 
 				//Use Ti.Social module
 				var Social = require('dk.napp.social');
-<<<<<<< HEAD
 				Social.activityView({
 					url : 'www.facebook.com'
 				});
-=======
 				if (Social.isActivityViewSupported()) {
 					Social.activityView({
-						text: inputComment.value,
-						subject: inputSubject.value, //Subject field doesn't go here
-						url: 'www.cmhouston.org'
+						text : inputComment.value,
+						subject : inputSubject.value, //Subject field doesn't go here
+						url : 'www.cmhouston.org'
 					});
-				}
-				else{
+				} else {
 					alert("Sharing is not available on this device");
 				}
 			}//end text sharing for iOS
-			else{
+			else {
 				alert("Unsupported platform");
->>>>>>> 697f9bba98df936d7839ae3f88bbec3978327b9a
 			}
 		}
 
@@ -266,37 +389,46 @@ function init() {
 
 		//Share both text and image button
 		var shareBoth = Ti.UI.createButton({
-			title : "Share Both!"
+			title : "Share"
 		});
 		shareBoth.addEventListener('click', function(e) {
-			if (viewImageCaptured.image == "" && inputComment.value == "") {
-				alert("You're missing any content!");
-			} else if (viewImageCaptured.image == "") {
-				alert("You're missing an image!");
-			} else if (inputComment.value == "") {
-				alert("You're missing text!");
-			} else {
-				createIntentImage(viewImageCaptured.image);
-				createIntentText(inputComment.value);
+			//Validate what is to be shared based on switch values and what content was input by user
+			if (switchShareText.value == true && switchShareImage.value == true) {
+				//Share image and text selected - check for image and text
+				if (viewImageCaptured.image == "" && inputComment.value == "") {
+					alert("No content to share!");
+				} else if (viewImageCaptured.image == "") {
+					alert("No image to share!");
+				} else if (inputComment.value == "") {
+					alert("No text to share!");
+				} else {
+					//Image and text found. Share.
+
+					//PUT IN METHOD TO SHARE PHOTO WITH TEXT
+
+				}
+			} else if (switchShareText.value = true) {
+				//Share text selected - check for text
+				if (inputComment.value == "") {
+					alert("No text to share!");
+				} else {
+					//Text found. Share.
+					//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
+					Ti.UI.Clipboard.setText(inputComment.value);
+					//send intent
+					createIntentText(inputComment.value);
+				}
+			} else if (switchShareImage.value = true) {
+				//Share image selected - check for image
+				if (viewImageCaptured.image == "") {
+					alert("No image to share!");
+				} else {
+					//Image found. Share.
+					createIntentImage(viewImageCaptured.image);
+				}
 			}
 		});
 		rowOne.add(shareBoth);
-
-		//Send image intent
-		var sendIntentImage = Ti.UI.createButton({
-			id : 'sendIntentImage',
-			title : "Share Photo",
-			font : {
-				size : 8,
-				color : "#000000"
-			},
-			height : "45dip"
-		});
-		sendIntentImage.addEventListener("click", function(e) {
-			//if photo is not taken within app then option to select image from gallery will appear
-			createIntentImage(viewImageCaptured.image);
-		});
-		rowFive.add(sendIntentImage);
 
 		//Open camera button
 		var openCamera = Ti.UI.createButton({
@@ -374,9 +506,9 @@ function init() {
 		//removes image from view but does not delete from gallery
 		var removeImage = Ti.UI.createButton({
 			title : "Clear Image",
-			font: {
-				color: "#FFFFFF",
-				size: "8"
+			font : {
+				color : "#FFFFFF",
+				size : "8"
 			},
 			visible : false
 		});
@@ -554,52 +686,68 @@ function init() {
 		});
 		rowThree.add(labelWarningFacebookText);
 
-		//Send text intent
-		var sendIntentText = Ti.UI.createButton({
-			title : "Share Text",
-			font : {
-				size : 8,
-				color : "#000000"
-			},
-			height : "45dip",
+		//Check boxes to share an image or text
+		var switchShareText = Ti.UI.createSwitch({
+			titleOn : 'Share Text',
+			titleOff : "Hide Text",
+			value : true
 		});
-		sendIntentText.addEventListener("click", function(e) {
-			if (inputComment.value != "") {
-				//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
-				Ti.UI.Clipboard.setText(inputComment.value);
-
-				//display alert
-				Ti.UI.createAlertDialog({
-					message : 'Your comment has been copied to the clipboard.',
-					ok : 'Continue',
-					title : 'Text copied'
-				}).show();
-
-				//pause processing
-				if (OS_ANDROID) {
-					setInterval(function() {
-					}, 3000);
-				} else {
-					//pause for iOS
-					Ti.App.paused
-				}
-
-				//alert("Your comment has been copied to the clipboard.");
-
-				//resume processing once alert displayed
-
-				//Send intent
-				createIntentText(inputComment.value);
-			} else {
-				alert("There's no text to share!");
-			}
+		rowOne.add(switchShareText);
+		var switchShareImage = Ti.UI.createSwitch({
+			titleOn : 'Share Photo',
+			titleOff : "Hide Photo",
+			value : true
 		});
-		rowFour.add(sendIntentText);
+		rowOne.add(switchShareImage);
+
+		// //Create Checkbox by faking it with a button
+		// var checkboxShareImage = Ti.UI.createButton({
+		// title : '',
+		// top : 10,
+		// right : 10,
+		// width : 30,
+		// height : 30,
+		// borderColor : '#666',
+		// borderWidth : 2,
+		// borderRadius : 3,
+		// backgroundColor : '#aaa',
+		// color : '#fff',
+		// font : {
+		// fontSize : 25,
+		// fontWeight : 'bold'
+		// },
+		// value : false
+		// });
+		//
+		// //Attach some simple on/off actions
+		// checkboxShareImage.on = function() {
+		// this.backgroundColor = '#007690';
+		// this.title = '\u2713';
+		// this.value = true;
+		// };
+		//
+		// checkboxShareImage.off = function() {
+		// this.backgroundColor = '#aaa';
+		// this.title = '';
+		// this.value = false;
+		// };
+		//
+		// checkboxShareImage.addEventListener('click', function(e) {
+		// if (false == e.source.value) {
+		// e.source.on();
+		// } else {
+		// e.source.off();
+		// }
+		// });
+		// rowFive.add(checkboxShareImage);
 
 		//close keyboard button for inputComment
 		var closeInputKeyboard = Ti.UI.createButton({
 			title : "Hide Keyboard",
-			visible : false
+			visible : false,
+			font : {
+				size : "8"
+			}
 		});
 		closeInputKeyboard.addEventListener('click', function(e) {
 			if (OS_ANDROID) {
