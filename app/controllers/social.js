@@ -2,6 +2,7 @@ function init() {
 	//top level vars
 	var imageName;
 	var imageFile;
+	var textCommentBackup;
 
 	//Hide keyboard on initial load
 	if (OS_ANDROID) {
@@ -149,35 +150,42 @@ function init() {
 					type : 'text/plain'
 				});
 				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, inputSubject.value);
-				intentText.putExtra(Ti.Android.EXTRA_TEXT, inputComment.value);
+				intentText.putExtra(Ti.Android.EXTRA_TEXT, inputComment.value + "\n\nhttp://www.cmhouston.org/");
 				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				Ti.Android.createIntentChooser(intentText, "Send Message");
 				Ti.Android.currentActivity.startActivity(intentText);
 			} else if (OS_IOS) {
 				// Use a NavigationWindow to create a navigation bar for the window
 				var docWindow = Ti.UI.createWindow({
-					backgroundColor: 'blue',
-					title: "Blue window"
+					backgroundColor : 'blue',
+					title : "Blue window"
 				});
-				var navWin = Ti.UI.iOS.createNavigationWindow({window: docWindow});
+				var navWin = Ti.UI.iOS.createNavigationWindow({
+					window : docWindow
+				});
 				docWindow.add(navWin);
-				
+
 				var winButton = Titanium.UI.createButton({
-				    title : 'Launch',
-				    height : 40,
-				    width : 200,
-				    top : 270
+					title : 'Launch',
+					height : 40,
+					width : 200,
+					top : 270
 				});
 				docWindow.add(winButton);
-				
+
 				// Create a document viewer to preview a PDF file
-				docViewer = Ti.UI.iOS.createDocumentViewer({url : '/Users/parivedadeveloper/Downloads/Apple-logo.jpg'});
+				docViewer = Ti.UI.iOS.createDocumentViewer({
+					url : '/Users/parivedadeveloper/Downloads/Apple-logo.jpg'
+				});
 				//docViewer.setUrl('');
 				// Opens the options menu and when the user clicks on 'Quick Look'
 				// the document viewer launches with an animated transition
 
 				// The document viewer immediately launches without an animation
-				winButton.addEventListener('click', function(){ docViewer.show(); Ti.API.info("winButton pressed");});
+				winButton.addEventListener('click', function() {
+					docViewer.show();
+					Ti.API.info("winButton pressed");
+				});
 				navWin.open();
 			}
 		}
@@ -192,9 +200,9 @@ function init() {
 						type : "image/*",
 						action : Ti.Android.ACTION_SEND
 					});
-					
+
 					//Must determine appropriate category to call only image handling apps
-					
+
 					//intentImage.addCategory(Ti.Android.CATEGORY_APP_GALLERY);
 					intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
 					intentImage.putExtra(Ti.Android.EXTRA_TITLE, "Taken at the Children's Museum of Houston");
@@ -209,23 +217,22 @@ function init() {
 					});
 					intentImage.addCategory(Ti.Android.CATEGORY_OPENABLE);
 					var file = Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
-					
+
 					alert("This feature is not ready");
-					
+
 					//Must find a way to retrieve content from above intent and send it
-					
-				/*	//send file
-					var intentImageSend = Ti.Android.createIntent({
-						type : "image/*",
-						action : Ti.Android.ACTION_SEND
-					});
-					intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, file);
-					Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImageSend, "Share Picture"));
-					
-					//openPhotoGallery();
-					*/
-					
-					
+
+					/*	//send file
+					 var intentImageSend = Ti.Android.createIntent({
+					 type : "image/*",
+					 action : Ti.Android.ACTION_SEND
+					 });
+					 intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, file);
+					 Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImageSend, "Share Picture"));
+
+					 //openPhotoGallery();
+					 */
+
 				}
 			}
 		}
@@ -347,7 +354,7 @@ function init() {
 			removeImage.visible = false;
 			rotateLeft.visible = false;
 			rotateRight.visible = false;
-			viewScroll.scrollTo(0,0);
+			viewScroll.scrollTo(0, 0);
 		});
 		rowFive.add(removeImage);
 
@@ -479,7 +486,7 @@ function init() {
 			keyboardType : Ti.UI.KEYBOARD_ASCII,
 			returnKeyType : Ti.UI.RETURNKEY_DONE,
 			textAlign : 'left',
-			hintText : '(Type here)',
+			hintText : '(Type here)\nDouble tap text area if text options do not appear.',
 			scrollable : true,
 		});
 
@@ -513,6 +520,10 @@ function init() {
 		});
 		sendIntentText.addEventListener("click", function(e) {
 			if (inputComment.value != "") {
+				//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
+				Ti.UI.Clipboard.setText(inputComment.value);
+				alert("Your comment has been copied to the clipboard.");
+				//Send intent
 				createIntentText(inputComment.value);
 			} else {
 				alert("There's no text to share!");
