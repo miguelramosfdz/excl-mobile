@@ -1,7 +1,8 @@
+var tiCalls = require('../lib/exclCommonTiApi');
 
 function parseJson(responseText) {
-	json = JSON.parse(responseText);
-	Ti.API.debug(json);
+	json = tiCalls.parse(responseText);
+	tiCalls.heyhey();
 	return json;
 }
 
@@ -31,5 +32,5 @@ function getJsonData(url, onSuccess) {
 
 module.exports.parseJson = parseJson;
 module.exports.onErrorHelper = onErrorHelper;
-module.exports.makeServiceCall = makeServiceCall; 
+module.exports.makeServiceCall = makeServiceCall;
 module.exports.getJsonData = getJsonData;
