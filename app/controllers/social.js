@@ -153,6 +153,7 @@ function init() {
 				Ti.Android.createIntentChooser(intentText, "Send Message");
 				Ti.Android.currentActivity.startActivity(intentText);
 			} else if (OS_IOS) {
+				/* DocumentViewer attempt: http://docs.appcelerator.com/titanium/3.0/#!/api/Titanium.UI.iOS.DocumentViewer
 				// Use a NavigationWindow to create a navigation bar for the window
 				var docWindow = Ti.UI.createWindow({
 					backgroundColor: 'blue',
@@ -178,6 +179,9 @@ function init() {
 				// The document viewer immediately launches without an animation
 				winButton.addEventListener('click', function(){ docViewer.show(); Ti.API.info("winButton pressed");});
 				navWin.open();
+				*/ //End DocumentViewer attempt
+				
+				//Use Ti.Social module
 			}
 		}
 
