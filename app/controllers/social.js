@@ -9,9 +9,13 @@ function init() {
 		Ti.UI.Android.hideSoftKeyboard();
 	}
 
-
-//fah
-
+	function formatButtonIOS(buttonName) {
+		//Format buttons for IOS
+		if (OS_IOS) {
+			buttonName.borderWidth = "1";
+			buttonName.borderColor = "#000000";
+		}
+	}
 
 	//Pop up window that contains specific app information
 	// function windowPopupShare(viewName) {
@@ -45,8 +49,8 @@ function init() {
 		id : 'openMenuShare',
 		Title : "Share",
 		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
-		height: "40dip",
-		width: "40dip",
+		height : "40dip",
+		width : "40dip",
 		font : {
 			fontSize : 30,
 		},
@@ -127,6 +131,7 @@ function init() {
 			title : "Back",
 			height : "45dip"
 		});
+		formatButtonIOS(closeViewSharingAllContent);
 		rowOne.add(closeViewSharingAllContent);
 		closeViewSharingAllContent.addEventListener("click", function(e) {
 			$.viewShareBase.remove(viewSharingAllContent);
@@ -143,7 +148,7 @@ function init() {
 				size : "8"
 			}
 		});
-
+		formatButtonIOS(clearAll);
 		clearAll.addEventListener('click', function(e) {
 			clearTextComment.fireEvent("click");
 			removeImage.fireEvent("click");
@@ -374,6 +379,7 @@ function init() {
 		var shareBoth = Ti.UI.createButton({
 			title : "Share"
 		});
+		formatButtonIOS(shareBoth);
 		shareBoth.addEventListener('click', function(e) {
 			//Validate what is to be shared based on switch values and what content was input by user
 			if (switchShareText.value == true && switchShareImage.value == true) {
@@ -429,6 +435,7 @@ function init() {
 				color : "#000000"
 			}
 		});
+		formatButtonIOS(openGallery);
 		openGallery.addEventListener('click', function(e) {
 			//choose photo from gallery
 			Titanium.Media.openPhotoGallery({
@@ -454,7 +461,8 @@ function init() {
 				color : "#000000"
 			}
 		});
-
+		formatButtonIOS(openCamera);
+		
 		////Camera functionality////
 
 		// function getOrientation(orientation) {
@@ -527,6 +535,7 @@ function init() {
 			},
 			visible : false
 		});
+		formatButtonIOS(removeImage);
 		removeImage.addEventListener("click", function(e) {
 			viewImageCaptured.image = "";
 			removeImage.visible = false;
@@ -564,6 +573,7 @@ function init() {
 			title : "<-",
 			visible : false
 		});
+		formatButtonIOS(rotateLeft);
 		rotateLeft.addEventListener('click', function(e) {
 			if (viewImageCaptured.image != "") {
 				correctOrientation(viewImageCaptured, true, false);
@@ -577,6 +587,7 @@ function init() {
 			title : "->",
 			visible : false
 		});
+		formatButtonIOS(rotateRight);
 		rotateRight.addEventListener('click', function(e) {
 			if (viewImageCaptured.image != "") {
 				correctOrientation(viewImageCaptured, false, true);
@@ -703,13 +714,39 @@ function init() {
 			rowFour.add(labelWarningFacebookText);
 		}
 
-		//Check boxes to share an image or text
+		//Switches to share an image or text. Include listeners that hide appropriate content based on which switch is active
+		if (OS_IOS) {
+			var labelShareType = Ti.UI.createLabel({
+				text: "Share: "
+			});
+			rowOne.add(labelShareType);
+			var labelShareText = Ti.UI.createLabel({
+				text: "Text "
+			});
+			rowOne.add(labelShareText);
+		}
+		//Text sharing switch
 		var switchShareText = Ti.UI.createSwitch({
 			titleOn : 'Share Text',
 			titleOff : "Hide Text",
 			value : true
 		});
+		switchShareText.addEventListener ('load',function(e){
+			if (switchShareText.value == true) {
+				//show text share content
+				
+			} else {
+				//hide text share content
+			}
+			
+		});
 		rowOne.add(switchShareText);
+		if(OS_IOS) {
+			var labelShareImage = Ti.UI.createLabel({
+				text: "Photo"
+			});
+			rowOne.add(labelShareImage);
+		}
 		var switchShareImage = Ti.UI.createSwitch({
 			titleOn : 'Share Photo',
 			titleOff : "Hide Photo",
@@ -775,7 +812,8 @@ function init() {
 			closeInputKeyboard.visible = false;
 			clearTextComment.visible = false;
 		});
-		rowFour.add(closeInputKeyboard);
+		formatButtonIOS(closeInputKeyboard);
+		rowFive.add(closeInputKeyboard);
 
 		//clear text button for inputComment
 		var clearTextComment = Ti.UI.createButton({
@@ -786,6 +824,7 @@ function init() {
 			},
 			visible : false
 		});
+		formatButtonIOS(clearTextComment);
 		clearTextComment.addEventListener('click', function(e) {
 			inputComment.value = "";
 			inputSubject.value = "";
