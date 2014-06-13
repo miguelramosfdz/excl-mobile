@@ -1,10 +1,13 @@
 var args = arguments[0] || {};
 
 var tableData = [];
-var imageCollection = ['http://placehold.it/700x300/556270', 'http://placehold.it/700x200/4ECDC4', 'http://placehold.it/600x300/C7F464', 'http://placehold.it/600x200/FF6B6B', 'http://placehold.it/700x300/C44D58'];
+var exhibitsImages;
+
+exhibitsImages = ['http://placehold.it/700x300/556270', 'http://placehold.it/700x200/4ECDC4', 'http://placehold.it/600x300/C7F464', 'http://placehold.it/600x200/FF6B6B', 'http://placehold.it/700x300/C44D58'];
 
 
 // simulate data from wordpress using Jess' model
+
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 function createPlainRow() {
@@ -78,11 +81,62 @@ function createExhibitsCarousel(headingText, imageCollection){
 	tableData.push(row);
 }
 
-function createComponentsScrollView(){
+function createComponentsScrollView(componentsMessage, components){
+	var row = createPlainRow();
+	var headingRow = createHeadingRow();
 	
+	var heading = Ti.UI.createLabel({
+		color : 'brown',
+		font : {
+			fontFamily : 'Arial',
+			fontSize : 22,
+			fontWeight : 'bold'
+		},
+		text : componentsMessage,
+		textAlign : 'center',
+	});
+	row.height = 150;
+	headingRow.add(heading);
+	tableData.push(headingRow);
+	
+	var image; 	
+	var scrollView = Ti.UI.createScrollView({
+		layout: 'horizontal',
+		//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
+		height : '100%',
+		showHorizontalScrollIndicator: true,
+		width: '100%',
+		contentWidth: 'auto',
+		scrollType: 'horizontal',
+		horizontalWrap: false
+	});
+	var myView = Ti.UI.createView({
+		layout: 'horizontal',
+		height: '100%',
+	});
+	
+	for (var i = 0; i < 5; i++){//imageCollection.length; i++) {
+		image = Ti.UI.createImageView({
+			image : components[i],
+			defaultImage : 'http://placehold.it/700x300',
+			left: 10,
+			right: 10,
+			height: '100%',
+			width: 200
+		});
+		scrollView.add(image);
+		//images[i] = tempImage;
+		//imageWrappers[i] = tempImage;
+	}
+	//alert(myView.width);
+	//scrollView.add(myView);
+	
+	row.add(scrollView);
+	tableData.push(row);
 }
 
-createExhibitsCarousel("All Exhibits", imageCollection);
+createExhibitsCarousel("All Exhibits", exhibitsImages);
+createComponentsScrollView("Check out our Stations", exhibitsImages);
 
 var tableView = Ti.UI.createTableView({
 	// backgroundColor : '#07B5BE',
