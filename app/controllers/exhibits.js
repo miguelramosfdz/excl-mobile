@@ -1,12 +1,22 @@
 var args = arguments[0] || {};
 
 var tableData = [];
-var exhibitsImages;
-
-exhibitsImages = ['http://placehold.it/700x300/556270', 'http://placehold.it/700x200/4ECDC4', 'http://placehold.it/600x300/C7F464', 'http://placehold.it/600x200/FF6B6B', 'http://placehold.it/700x300/C44D58'];
+var exhibitsImages = ['http://placehold.it/700x300/556270', 'http://placehold.it/700x200/4ECDC4', 'http://placehold.it/600x300/C7F464', 'http://placehold.it/600x200/FF6B6B', 'http://placehold.it/700x300/C44D58'];
 
 
 // simulate data from wordpress using Jess' model
+
+// Modify with new MODULE methods
+function openComponent(e){
+		
+	var componentWindow = Alloy.createController('componentLanding').getView();
+	componentWindow.open();  
+	
+}
+
+function openExhibitInformation(e){
+	
+}
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
@@ -64,7 +74,7 @@ function createExhibitsCarousel(headingText, imageCollection){
 			maxZoomScale : 4.0,
 		});
 		tempWrapper.add(tempImage);
-		imageWrappers[i] = tempWrapper;
+		imageWrappers[i] = tempImage;
 		//imageWrappers[i] = tempImage;
 	}
 
@@ -111,10 +121,6 @@ function createComponentsScrollView(componentsMessage, components){
 		scrollType: 'horizontal',
 		horizontalWrap: false
 	});
-	var myView = Ti.UI.createView({
-		layout: 'horizontal',
-		height: '100%',
-	});
 	
 	for (var i = 0; i < 5; i++){//imageCollection.length; i++) {
 		image = Ti.UI.createImageView({
@@ -125,12 +131,9 @@ function createComponentsScrollView(componentsMessage, components){
 			height: '100%',
 			width: 200
 		});
+		image.addEventListener('click', openComponent);
 		scrollView.add(image);
-		//images[i] = tempImage;
-		//imageWrappers[i] = tempImage;
 	}
-	//alert(myView.width);
-	//scrollView.add(myView);
 	
 	row.add(scrollView);
 	tableData.push(row);
