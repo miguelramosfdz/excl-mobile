@@ -27,8 +27,10 @@ function createButtonsShare() {
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
 		id : 'openMenuShareText',
-		//title : "Share",
-		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
+		title : "Share",
+		backgroundImage : "../../Resources/shareImage.png",
+		backgroundFocusedImage: "../../Resources/shareImage.png",
+		backgroundSelectedImage: "../../Resources/shareImage.png",
 		height : "40dip",
 		width : "40dip",
 		// font : {
