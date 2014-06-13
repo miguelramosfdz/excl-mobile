@@ -1,8 +1,12 @@
-if ( typeof Titanium == 'undefined') {
-	// this is required for jasmine-node to run via terminal
-	var tiCalls = require('../lib/exclCommonTiApi');
-} else {
-	var tiCalls = require('exclCommonTiApi');
+var tiCalls;
+
+function setPathForLibDirectory(nameOfLib) {
+	if ( typeof Titanium == 'undefined') {
+		// this is required for jasmine-node to run via terminal
+		tiCalls = require('../lib/' + nameOfLib);
+	} else {
+		tiCalls = require(nameOfLib);
+	}
 }
 
 function parseJson(responseText) {
@@ -20,5 +24,6 @@ function fetchDataFromUrl(url, onSuccess) {
 
 }
 
+setPathForLibDirectory('exclCommonTiApi');
 module.exports.parseJson = parseJson;
 module.exports.fetchDataFromUrl = fetchDataFromUrl;
