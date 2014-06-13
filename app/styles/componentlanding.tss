@@ -1,4 +1,7 @@
 
 ".container" : {
-  
+    backgroundColor:"white"
+},
+"Label":{
+	color:"black"
 }

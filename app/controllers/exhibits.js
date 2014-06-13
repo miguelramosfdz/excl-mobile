@@ -13,10 +13,6 @@ function openComponent(e){
 	componentWindow.open();  
 }
 
-function openExhibitInformation(e){
-	
-}
-
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 function createPlainRow() {
