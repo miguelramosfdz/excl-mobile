@@ -108,19 +108,19 @@ function init() {
 		viewSharingAllContent.add(rowFour);
 		var rowFive = Ti.UI.createView({
 			layout : "horizontal",
-			top : "300dip",
+			top : "325dip",
 			left : 0
 		});
 		viewSharingAllContent.add(rowFive);
 		var rowSix = Ti.UI.createView({
 			layout : "horizontal",
-			top : "350dip",
+			top : "375dip",
 			width : "100%",
 		});
 		viewSharingAllContent.add(rowSix);
 		var rowSeven = Ti.UI.createView({
 			layout : "horizontal",
-			top : "675dip",
+			top : "700dip",
 			width : "50%",
 			left : "20%"
 		});
@@ -154,7 +154,7 @@ function init() {
 			removeImage.fireEvent("click");
 			closeInputKeyboard.fireEvent("click");
 		});
-		rowSix.add(clearAll);
+		rowFive.add(clearAll);
 
 		function createIntentText(contentTextComment, contentTextSubject) {
 
@@ -704,7 +704,7 @@ function init() {
 
 		//Warning label for Facebook
 		var labelWarningFacebookText = Ti.UI.createLabel({
-			text : "Facebook does not allow this app to post text. Your comment will be copied when you tap the Share.",
+			text : "Facebook & Instagram do not allow pre-population of text fields. Your comment will be copied to clipboard for you.",
 			font : {
 				size : 4,
 				color : "#000000"
@@ -813,7 +813,7 @@ function init() {
 			clearTextComment.visible = false;
 		});
 		formatButtonIOS(closeInputKeyboard);
-		rowFive.add(closeInputKeyboard);
+		rowThree.add(closeInputKeyboard);
 
 		//clear text button for inputComment
 		var clearTextComment = Ti.UI.createButton({
