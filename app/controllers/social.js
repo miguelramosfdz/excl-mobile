@@ -147,6 +147,7 @@ function init() {
 		});
 		rowSix.add(clearAll);
 
+		function createIntentText(contentText) {
 		function createIntentText(contentTextComment, contentTextSubject) {
 
 			//MAKE SURE TO DISABLE CHOICE OF ALWAYS/JUST ONCE
@@ -291,7 +292,7 @@ function init() {
 				var Social = require('dk.napp.social');
 				if (Social.isActivityViewSupported()) {
 					Social.activityView({
-						text : inputComment.value,
+						text : contentText,
 						url : 'http://www.cmhouston.org'
 					});
 				} else {
@@ -319,12 +320,10 @@ function init() {
 				Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
 			} else if (OS_IOS) {
 				//Use TiSocial.Framework module
-				var fileImage = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, imageName);
-				var filePath = fileImage.read();
 				var Social = require('dk.napp.social');
 				if (Social.isActivityViewSupported()) {
 					Social.activityView({
-						image : filePath,
+						image : imageFilePath,
 						url : 'http://www.cmhouston.org'
 					});
 				} else {
@@ -353,6 +352,16 @@ function init() {
 
 			} else if (OS_IOS) {
 				//Code for sharing both text and image in iOS
+				var Social = require('dk.napp.social');
+				if (Social.isActivityViewSupported()) {
+					Social.activityView({
+						text : contentText,
+						image : imageFilePath,
+						url : 'http://www.cmhouston.org'
+					});
+				} else {
+					alert("Sharing is not available on this device");
+				}
 			} else {
 				alert("Unsupported platform");
 			}
@@ -373,11 +382,14 @@ function init() {
 				} else if (inputComment.value == "") {
 					alert("No text to share!");
 				} else {
-					//Image and text found - Share.
+					//Image and text found. Share.
+
 					//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
 					Ti.UI.Clipboard.setText(inputComment.value);
+
 					//send intent
 					createIntentTextAndImage(inputComment.value, inputSubject.value, viewImageCaptured.image);
+
 				}
 			} else if (switchShareText.value == true) {
 				//Share text selected - check for text
