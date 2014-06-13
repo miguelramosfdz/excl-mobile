@@ -25,5 +25,10 @@
 				<Require type="view" src="demoIndex" id="demoTab"/>
 			</Window>
 		</Tab>
+		<Tab title="Navigation Demo" icon="KS_nav_views.png">
+			<Window id="navWindow" title="Navigation Demo">
+				<Require type="view" src="navdemo" id="navDemoTab"/>
+			</Window>
+		</Tab>
 	</TabGroup>
 </Alloy>
