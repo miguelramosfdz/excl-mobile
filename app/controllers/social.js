@@ -553,4 +553,4 @@ function openViewShareText() {
 }
 
 //Run initialization
-createButtonShare();
+createButtonsShare();
