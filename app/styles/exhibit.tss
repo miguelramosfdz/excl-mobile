@@ -1,27 +1,5 @@
-
-".container" : {
-  
-},
-"Label" : {
-	
-},
-".title": {
-	width: Ti.UI.SIZE,
-    height: Ti.UI.SIZE,
-    color: "#000",
-    font: {
-        //fontFamily:'Helvetica',
-        fontSize: '32dp',
-        //fontStyle: 'normal',
-        fontWeight: 'bold'
-    },
-    top: "20"
-}
-".logo": {
-	height: "50dp"
-	
-}
-".description": {
-	bottom:"20",
-    color: "#000"
+".view":{
+    height: "200dp",
+    width: "400dp",
+    top:"100dp"
 }
