@@ -9,6 +9,10 @@ function init() {
 		Ti.UI.Android.hideSoftKeyboard();
 	}
 
+
+//fah
+
+
 	//Pop up window that contains specific app information
 	// function windowPopupShare(viewName) {
 	// var viewScrollShare = Ti.UI.createScrollView({
@@ -147,7 +151,6 @@ function init() {
 		});
 		rowSix.add(clearAll);
 
-		function createIntentText(contentText) {
 		function createIntentText(contentTextComment, contentTextSubject) {
 
 			//MAKE SURE TO DISABLE CHOICE OF ALWAYS/JUST ONCE
