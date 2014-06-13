@@ -2,7 +2,7 @@
 set -e
 
 echo '--- building app'
-tishadow test
+tishadow spec
 
 echo '--- running unit tests'
 jasmine-node app/spec
