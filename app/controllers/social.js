@@ -295,7 +295,7 @@ function init() {
 				var Social = require('dk.napp.social');
 				if (Social.isActivityViewSupported()) {
 					Social.activityView({
-						text : contentText,
+						text : contentTextComment,
 						url : 'http://www.cmhouston.org'
 					});
 				} else {
@@ -324,6 +324,7 @@ function init() {
 			} else if (OS_IOS) {
 				//Use TiSocial.Framework module
 				var Social = require('dk.napp.social');
+				alert(imageFilePath);
 				if (Social.isActivityViewSupported()) {
 					Social.activityView({
 						image : imageFilePath,
@@ -358,7 +359,7 @@ function init() {
 				var Social = require('dk.napp.social');
 				if (Social.isActivityViewSupported()) {
 					Social.activityView({
-						text : contentText,
+						text : contentTextComment,
 						image : imageFilePath,
 						url : 'http://www.cmhouston.org'
 					});
