@@ -143,7 +143,7 @@ function init() {
 			removeImage.fireEvent("click");
 			closeInputKeyboard.fireEvent("click");
 		});
-		rowFive.add(clearAll);
+		rowSix.add(clearAll);
 
 		function createIntentText(contentText) {
 		function createIntentText(contentTextComment, contentTextSubject) {
@@ -344,7 +344,7 @@ function init() {
 				});
 				intentImageAndText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
-				intentText.putExtra(Ti.Android.EXTRA_TEXT, contentText);
+				intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
 				intentImageAndText.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
 				Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImageAndText, "Share with..."));
 
@@ -382,11 +382,12 @@ function init() {
 				} else {
 					//Image and text found. Share.
 
-					//PUT IN METHOD TO SHARE PHOTO WITH TEXT
-					createIntentTextAndImage(inputComment.value, viewImageCaptured.image);
-
 					//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
 					Ti.UI.Clipboard.setText(inputComment.value);
+
+					//send intent
+					createIntentTextAndImage(inputComment.value, inputSubject.value, viewImageCaptured.image);
+
 				}
 			} else if (switchShareText.value == true) {
 				//Share text selected - check for text
