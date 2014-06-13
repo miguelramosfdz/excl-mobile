@@ -12,17 +12,18 @@ var logger = {
 		return JSON.parse(object);
 	},
 
-	network : function() {
+	network : function(url, onSuccess) {
 		var client = Ti.Network.createHTTPClient({
 			onload : function() {
-				var json = parseJson(this.responseText);
+				var json = logger.parse(this.responseText);
 				onSuccess(json);
 			},
 			onerror : function() {
-				debug(e.error);
+				// logger.debug(e.error);
 				alert("Could not retrieve data!");
 			}
 		});
+
 		return client;
 	},
 };

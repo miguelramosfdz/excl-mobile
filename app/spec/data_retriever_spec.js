@@ -19,14 +19,22 @@ describe("Testing parsedJson", function() {
 describe("Testing network", function() {
 	it("should return valid http client", function() {
 		// Arrange
-		var url = "http://api.openweathermap.org/data/2.5/weather?q=Housotn,us&mode=json&units=imperial";
-		spyOn(tiCalls, 'network').andReturn();
+		var url = "http://api.openweathermap.org/data/2.5/weather?q=Houston,us&mode=json&units=imperial";
+		spyOn(tiCalls, 'network').andReturn({
+			open : function() {
+				// console.log("open method called yo!");
+				// return "Open method called";
+			},
+			send : function() {
+				// console.log("send method has arived");
+				// return "Send method called";
+			},
+		});
 
 		// Act
 		var returnedData = dataRetriever.fetchDataFromUrl(url);
 
 		// Assert
-		// expect(returnedData).not.toBeNull();
-		console.log(returnedData);
+		expect(returnedData).not.toBeNull();
 	});
 });
