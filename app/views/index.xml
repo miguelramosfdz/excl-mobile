@@ -22,7 +22,7 @@
 		</Tab>
 		<Tab title="Visual Demo" icon="KS_nav_views.png">
 			<Window id="exhibitsWindow" title="Visual Demo">
-				<Require type="view" src="exhibits" id="demoTab"/>
+				<Require type="view" src="demoIndex" id="demoTab"/>
 			</Window>
 		</Tab>
 	</TabGroup>

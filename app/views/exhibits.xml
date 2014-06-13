@@ -1,6 +1,6 @@
 <Alloy>
-	<View class="container">
+	<Window class="container">
 		<ImageView class="exhibit" image="/image/default.png"></ImageView>
 		<Label>Welcome to the Demo</Label>
-	</View>
+	</Window>
 </Alloy>
