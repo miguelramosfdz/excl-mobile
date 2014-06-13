@@ -13,8 +13,9 @@ exhibitsImages = ['http://placehold.it/700x300/556270', 'http://placehold.it/700
 function createPlainRow() {
 	var row = Ti.UI.createTableViewRow({
 		// height: (Ti.Platform.displayCaps.platformHeight / 8),
-		height : '200dp',
-		backgroundColor : '#ffff00',
+		height : '190dp',
+		top: '10dp',
+		backgroundColor : 'grey',
 	});
 	return row;
 }
@@ -38,7 +39,7 @@ function createExhibitsCarousel(headingText, imageCollection){
 	var headingRow = createHeadingRow();
 
 	var heading = Ti.UI.createLabel({
-		color : 'brown',
+		color : 'black',
 		font : {
 			fontFamily : 'Arial',
 			fontSize : 22,
@@ -86,7 +87,7 @@ function createComponentsScrollView(componentsMessage, components){
 	var headingRow = createHeadingRow();
 	
 	var heading = Ti.UI.createLabel({
-		color : 'brown',
+		color : 'black',
 		font : {
 			fontFamily : 'Arial',
 			fontSize : 22,
@@ -95,7 +96,7 @@ function createComponentsScrollView(componentsMessage, components){
 		text : componentsMessage,
 		textAlign : 'center',
 	});
-	row.height = 150;
+	row.height = 100;
 	headingRow.add(heading);
 	tableData.push(headingRow);
 	
@@ -135,13 +136,38 @@ function createComponentsScrollView(componentsMessage, components){
 	tableData.push(row);
 }
 
+function createExhibitText(text){
+	var textRow = createHeadingRow();
+	
+	var label = Ti.UI.createLabel({
+		color : 'black',
+		font : {
+			fontFamily : 'Arial',
+			fontSize : 12,
+			fontWeight : 'bold'
+		},
+		width: 'auto',
+		horizontalWrap: true,
+		text : text
+	});
+	textRow.top = 20;
+	textRow.add(label);
+	textRow.height = 150;
+	tableData.push(textRow);
+}
+
+
+
 createExhibitsCarousel("All Exhibits", exhibitsImages);
 createComponentsScrollView("Check out our Stations", exhibitsImages);
+createExhibitText("Blah blah blah blah blah blah blah blah,\nBlah blah blah.");
 
 var tableView = Ti.UI.createTableView({
 	// backgroundColor : '#07B5BE',
-	backgroundColor : 'green',
-	data : tableData
+	backgroundColor : 'grey',
+	data : tableData,
+	width: '90%',
+	left: '5%'
 });
 
 $.exhibits.title = "Exhibits";
