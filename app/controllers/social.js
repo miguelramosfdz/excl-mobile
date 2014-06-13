@@ -1,3 +1,8 @@
+//top level vars
+var imageName;
+var imageFile;
+var imageFilePath;
+
 function formatButtonIOS(buttonName) {
 	//Format buttons for IOS
 	if (OS_IOS) {
@@ -15,20 +20,20 @@ function createButtonsShare() {
 	var viewSharingTemp = Ti.UI.createView({
 		layout : "horizontal",
 		width : "100%",
-		height: "200dip"
+		height : "200dip"
 	});
 	$.viewShareBase.add(viewSharingTemp);
 
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
 		id : 'openMenuShareText',
-		Title : "Share",
-		//backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
-		// height : "40dip",
-		// width : "40dip",
-		font : {
-			fontSize : 30
-		},
+		//title : "Share",
+		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
+		height : "40dip",
+		width : "40dip",
+		// font : {
+			// fontSize : 30
+		// },
 		left : "10%"
 	});
 	openMenuShareText.addEventListener('click', function(e) {
@@ -38,31 +43,38 @@ function createButtonsShare() {
 	viewSharingTemp.add(openMenuShareText);
 
 	//button to open photo sharing
-	var openCamera = Ti.UI.createButton({
-		id : 'openCamera',
-		Title : "Camera",
-		//backgroundImage : "http://www.vodeblog.com/wp-content/uploads/2012/01/volume-button-camera-shutter-enable_thumb.png",
-		// height : "40dip",
-		// width : "40dip",
-		font : {
-			fontSize : 30
-		},	
+	var shareImage = Ti.UI.createButton({
+		id : 'shareImage',
+		//title : "Camera",
+		backgroundImage : "http://icons.iconarchive.com/icons/visualpharm/icons8-metro-style/512/Photo-Video-Slr-camera-icon.png",
+		height : "40dip",
+		width : "40dip",
+		// font : {
+			// fontSize : 30
+		// },
 		left : "30%"
 	});
-	openCamera.addEventListener('click', function(e) {
-		shareImage();
+	shareImage.addEventListener('click', function(e) {
+		//create invisible imageview to hold picture so that the intent is not triggered until after the picture is taken
+		var viewImageCaptured = Ti.UI.createView({
+			visible: false
+		});
+		viewImageCaptured.addEventListener('load', function(e){
+			if (viewImageCaptured.image != ""){
+				sendIntentImage();
+			}
+		});
+		viewSharingTemp.add(viewImageCaptured);
+		//open camera and save image to view
+		openCamera();
+		viewSharingTemp.image = imageFilePath;
 	});
-	formatButtonIOS(openCamera);
-	viewSharingTemp.add(openCamera);
+	formatButtonIOS(shareImage);
+	viewSharingTemp.add(shareImage);
 }
 
-function shareImage() {
+function openCamera() {
 	//Holds all functionality related to sharing image through camera
-
-	//top level vars
-	var imageName;
-	var imageFile;
-	var imageFilePath;
 
 	//Save process for camera and updates view to display new picture
 	Titanium.Media.showCamera({
@@ -87,7 +99,11 @@ function shareImage() {
 			alert("Camera functionality not working");
 		}
 	});
+}
+
+function sendIntentImage() {
 	//create and send an image intent
+	
 	if (OS_ANDROID) {
 		var intentImage = Ti.Android.createIntent({
 			type : "image/*",
