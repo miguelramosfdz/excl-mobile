@@ -41,6 +41,8 @@ function init() {
 		id : 'openMenuShare',
 		Title : "Share",
 		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
+		height: "40dip",
+		width: "40dip",
 		font : {
 			fontSize : 30,
 		},
@@ -156,7 +158,7 @@ function init() {
 					type : 'text/plain'
 				});
 				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
-				intentText.putExtra(Ti.Android.EXTRA_TEXT, contentText);
+				intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
 				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				Ti.Android.createIntentChooser(intentText, "Send Message");
 				Ti.Android.currentActivity.startActivity(intentText);
@@ -344,8 +346,8 @@ function init() {
 					action : Ti.Android.ACTION_SEND
 				});
 				intentImageAndText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
-				intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
+				intentImageAndText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
+				intentImageAndText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
 				intentImageAndText.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
 				Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImageAndText, "Share with..."));
 
