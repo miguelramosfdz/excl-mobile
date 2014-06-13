@@ -145,7 +145,7 @@ function init() {
 		});
 		rowFive.add(clearAll);
 
-		function createIntentText(contentText) {
+		function createIntentText(contentTextComment, contentTextSubject) {
 
 			//MAKE SURE TO DISABLE CHOICE OF ALWAYS/JUST ONCE
 
@@ -155,8 +155,8 @@ function init() {
 					action : Ti.Android.ACTION_SEND,
 					type : 'text/plain'
 				});
-				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, inputSubject.value);
-				intentText.putExtra(Ti.Android.EXTRA_TEXT, contentText + "\n\nhttp://www.cmhouston.org/");
+				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
+				intentText.putExtra(Ti.Android.EXTRA_TEXT, contentText);
 				intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 				Ti.Android.createIntentChooser(intentText, "Send Message");
 				Ti.Android.currentActivity.startActivity(intentText);
@@ -304,10 +304,6 @@ function init() {
 		function createIntentImage(contentImage) {
 			//function to create an image intent
 			if (OS_ANDROID) {
-				//determine file path of displayed image in viewImageCaptured
-
-				alert("here: " + imageFilePath);
-
 				//create and send intent
 				var intentImage = Ti.Android.createIntent({
 					type : "image/*",
@@ -318,7 +314,7 @@ function init() {
 				intentImage.putExtra(Ti.Android.EXTRA_TITLE, "Taken at the Children's Museum of Houston");
 				intentImage.putExtra(Ti.Android.EXTRA_TEXT, "Taken at the Children's Museum of Houston");
 				intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-				Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share Picture"));
+				Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
 			} else if (OS_IOS) {
 				//Use TiSocial.Framework module
 				var fileImage = Titanium.Filesystem.getFile(Titanium.Filesystem.externalStorageDirectory, imageName);
@@ -338,9 +334,21 @@ function init() {
 			}
 		}
 
-		function createIntentTextAndImage(contentText, contentImage) {
+		function createIntentTextAndImage(contentTextComment, contentTextSubject, contentImage) {
+			//Generates intent for both text and image when given values for text comments, subject comments (optional), and image content
 			if (OS_ANDROID) {
 				//Code for sharing both text and image in Android
+				//create and send intent
+				var intentImageAndText = Ti.Android.createIntent({
+					type : "image/*",
+					action : Ti.Android.ACTION_SEND
+				});
+				intentImageAndText.addCategory(Ti.Android.CATEGORY_DEFAULT);
+				intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
+				intentText.putExtra(Ti.Android.EXTRA_TEXT, contentText);
+				intentImageAndText.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
+				Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImageAndText, "Share with..."));
+
 			} else if (OS_IOS) {
 				//Code for sharing both text and image in iOS
 			} else {
@@ -363,11 +371,11 @@ function init() {
 				} else if (inputComment.value == "") {
 					alert("No text to share!");
 				} else {
-					//Image and text found. Share.
-
-					//PUT IN METHOD TO SHARE PHOTO WITH TEXT
+					//Image and text found - Share.
+					//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
+					Ti.UI.Clipboard.setText(inputComment.value);
+					//send intent
 					createIntentTextAndImage(contentText, contentImage);
-
 				}
 			} else if (switchShareText.value == true) {
 				//Share text selected - check for text
@@ -378,7 +386,7 @@ function init() {
 					//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
 					Ti.UI.Clipboard.setText(inputComment.value);
 					//send intent
-					createIntentText(inputComment.value);
+					createIntentText(inputComment.value, inputSubject.value);
 				}
 			} else if (switchShareImage.value == true) {
 				//Share image selected - check for image
@@ -643,7 +651,7 @@ function init() {
 			keyboardType : Ti.UI.KEYBOARD_ASCII,
 			returnKeyType : Ti.UI.RETURNKEY_DONE,
 			textAlign : 'left',
-			hintText : '(Type here)\n\n\n\n(Double-tap box if "Hide Keyboard" button does not appear)',
+			hintText : '(Type here)\n\n\n(Double-tap box if "Hide Keyboard" button does not appear)',
 			scrollable : true,
 		});
 
@@ -668,7 +676,7 @@ function init() {
 
 		//Warning label for Facebook
 		var labelWarningFacebookText = Ti.UI.createLabel({
-			text : "Please note that Facebook does not allow this app to post text. The app will copy your comment for you once it is shared.",
+			text : "Facebook does not allow this app to post text. Your comment will be copied when you tap the Share.",
 			font : {
 				size : 4,
 				color : "#000000"
