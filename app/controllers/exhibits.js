@@ -9,9 +9,8 @@ var exhibitsImages = ['http://placehold.it/700x300/556270', 'http://placehold.it
 // Modify with new MODULE methods
 function openComponent(e){
 		
-	var componentWindow = Alloy.createController('componentLanding').getView();
+	var componentWindow = Alloy.createController('componentlanding2').getView();
 	componentWindow.open();  
-	
 }
 
 function openExhibitInformation(e){
