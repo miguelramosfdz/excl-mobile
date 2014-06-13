@@ -18,7 +18,7 @@ function createButtonsShare() {
 
 	//create view that will serve as temporary backing for sharing buttons
 	var viewSharingTemp = Ti.UI.createView({
-		layout : "horizontal",
+		layout : "vertical",
 		width : "100%",
 		height : "200dip"
 	});
@@ -27,14 +27,10 @@ function createButtonsShare() {
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
 		id : 'openMenuShareText',
-		//title : "Share",
 		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
 		height : "40dip",
 		width : "40dip",
-		// font : {
-			// fontSize : 30
-		// },
-		left : "10%"
+		left : "0"
 	});
 	openMenuShareText.addEventListener('click', function(e) {
 		openViewShareText();
@@ -45,32 +41,27 @@ function createButtonsShare() {
 	//button to open photo sharing
 	var shareImage = Ti.UI.createButton({
 		id : 'shareImage',
-		//title : "Camera",
 		backgroundImage : "http://icons.iconarchive.com/icons/visualpharm/icons8-metro-style/512/Photo-Video-Slr-camera-icon.png",
 		height : "40dip",
 		width : "40dip",
-		// font : {
-			// fontSize : 30
-		// },
-		left : "30%"
+		left : "0"
 	});
 	shareImage.addEventListener('click', function(e) {
 		//create invisible imageview to hold picture so that the intent is not triggered until after the picture is taken
-		var viewImageCaptured = Ti.UI.createView({
-			visible: false
-		});
-		viewImageCaptured.addEventListener('load', function(e){
-			if (viewImageCaptured.image != ""){
-				sendIntentImage();
-			}
-		});
-		viewSharingTemp.add(viewImageCaptured);
+
 		//open camera and save image to view
 		openCamera();
-		viewSharingTemp.image = imageFilePath;
+		alert("File: " + imageFilePath);
+
+		//sendIntentImage();
 	});
 	formatButtonIOS(shareImage);
 	viewSharingTemp.add(shareImage);
+
+	var labelTemp = Ti.UI.createLabel({
+		text : "this is the label"
+	});
+	viewSharingTemp.add(labelTemp);
 }
 
 function openCamera() {
@@ -103,7 +94,7 @@ function openCamera() {
 
 function sendIntentImage() {
 	//create and send an image intent
-	
+
 	if (OS_ANDROID) {
 		var intentImage = Ti.Android.createIntent({
 			type : "image/*",
