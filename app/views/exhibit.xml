@@ -1,7 +1,5 @@
 <Alloy>
 	<View class="full-view">
-		<Label class="title">Some Title</Label>
-		<ImageView id="logo" class="logo" image="/images/pariveda-logo.gif" />
-		<Label class="description">Tacos!</Label>
+
 	</View>
 </Alloy>
