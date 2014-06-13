@@ -1,5 +1,5 @@
 <Alloy>
-	<Window id="ExhibitsWindow" layout='vertical' class="container">
+	<View id="NavDemo" layout='vertical' class="container">
 		<Button id = "add" onClick = "addClick" title = "Add A New Window" />
-	</Window>
+	</View>
 </Alloy>

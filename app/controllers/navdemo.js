@@ -1,9 +1,9 @@
 var args = arguments[0] || {};
 
-$.NavDemoWindow.title = 'Window ' + Alloy.Globals.navController.windowStack.length;
+$.NavDemo.title = 'Window ' + Alloy.Globals.navController.windowStack.length;
 	
 function addClick(e){
-	var view = Alloy.createController('navDemo').getView();
+	var view = Alloy.createController('navdemo').getView();
 	view.reload = loadPage;
 	view.reload(view);
 	Alloy.Globals.navController.open(view);
@@ -49,3 +49,5 @@ function loadPage(view) {
 	}
 }
 
+
+// Alloy.Globals.navController.open(Alloy.createController('navdemo').getView());
