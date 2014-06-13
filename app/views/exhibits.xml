@@ -1,6 +1,4 @@
 <Alloy>
-	<Window class="container">
-		<ImageView class="exhibit" image="/image/default.png"></ImageView>
-		<Label>Welcome to the Demo</Label>
+	<Window class="container" backgroundColor='grey'>
 	</Window>
 </Alloy>
