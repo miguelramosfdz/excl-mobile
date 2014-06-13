@@ -1,5 +1,4 @@
-// var weatherService = require('weather/weather');
-var dataRetriever = require('dataRetriever');
+var weatherService = require('weather/weather');
 
 function init() {	
 	$.containerView.layout = "vertical";
@@ -8,16 +7,15 @@ function init() {
 		iosLogoPath: "/images/ios-logo.png"
 	});
 	
-	// weatherService.getWeather(function(weatherData){
-		// if (weatherData){
-			// $.temperatureLabel.text = weatherData.main.temp + " °F";
-			// $.cityLabel.text = weatherData.name;
-		// }
-	// });
-	
-	dataRetriever.fetchDataFromUrl(function(){
-		
-	});
+
+	weatherService.getWeather(function(weatherData) {
+		if (weatherData) {
+			$.temperatureLabel.text = weatherData.main.temp + " °F";
+			$.cityLabel.text = weatherData.name;
+		}
+	}); 
+
+
 }
 
 function refresh(){
