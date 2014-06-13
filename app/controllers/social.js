@@ -9,11 +9,6 @@ function formatButtonIOS(buttonName) {
 function createButtonsShare() {
 	//Initialization, which ensures keyboard is hidden and creates share button
 
-	//Hide keyboard on initial load
-	if (OS_ANDROID) {
-		Ti.UI.Android.hideSoftKeyboard();
-	}
-
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
 		id : 'openMenuShareText',
@@ -62,57 +57,53 @@ function shareImage() {
 	var imageFilePath;
 
 	//Save process for camera and updates view to display new picture
-	openCamera.addEventListener('click', function(e) {
-		Titanium.Media.showCamera({
-			saveToPhotoGallery : true,
-			mediaTypes : Titanium.Media.MEDIA_TYPE_PHOTO,
-			success : function(event) {
+	Titanium.Media.showCamera({
+		saveToPhotoGallery : true,
+		mediaTypes : Titanium.Media.MEDIA_TYPE_PHOTO,
+		success : function(event) {
 
-				//create image file and save name for future use
-				var fileName = 'cmh' + new Date().getTime() + '.jpg';
-				imageName = fileName;
-				//save file
-				imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
-				imageFile.write(event.media);
-				//save file path to be shared
-				if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
-					imageFilePath = event.media.nativePath;
-				}
-			},
-			cancel : function() {
-			},
-			error : function(Error) {
-				alert("Camera functionality not working");
+			//create image file and save name for future use
+			var fileName = 'cmh' + new Date().getTime() + '.jpg';
+			imageName = fileName;
+			//save file
+			imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
+			imageFile.write(event.media);
+			//save file path to be shared
+			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
+				imageFilePath = event.media.nativePath;
 			}
-		});
-		//create and send an image intent
-		if (OS_ANDROID) {
-			var intentImage = Ti.Android.createIntent({
-				type : "image/*",
-				action : Ti.Android.ACTION_SEND
-			});
-			intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-			intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-			Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
-		} else if (OS_IOS) {
-			//Use TiSocial.Framework module
-			var Social = require('dk.napp.social');
-			if (Social.isActivityViewSupported()) {
-				Social.activityView({
-					image : imageFilePath,
-					url : 'http://www.cmhouston.org'
-				});
-			} else {
-				alert("Sharing is not available on this device");
-			}
+		},
+		cancel : function() {
+		},
+		error : function(Error) {
+			alert("Camera functionality not working");
 		}
-		else {
-			alert("Unsupported platform");
-		}
-
-//close sharing menu?
-
 	});
+	//create and send an image intent
+	if (OS_ANDROID) {
+		var intentImage = Ti.Android.createIntent({
+			type : "image/*",
+			action : Ti.Android.ACTION_SEND
+		});
+		intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+		intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
+		Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
+	} else if (OS_IOS) {
+		//Use TiSocial.Framework module
+		var Social = require('dk.napp.social');
+		if (Social.isActivityViewSupported()) {
+			Social.activityView({
+				image : imageFilePath,
+				url : 'http://www.cmhouston.org'
+			});
+		} else {
+			alert("Sharing is not available on this device");
+		}
+	} else {
+		alert("Unsupported platform");
+	}
+
+	//close sharing menu?
 }
 
 function openViewShareText() {
@@ -183,40 +174,21 @@ function openViewShareText() {
 	});
 	viewSharingAllContent.add(rowSeven);
 
-	//Back button closes sharing window and returns to app
+	//Back button closes sharing view and returns to app
 	var closeViewSharingAllContent = Ti.UI.createButton({
 		title : "Back",
 		height : "45dip"
 	});
 	formatButtonIOS(closeViewSharingAllContent);
-	rowOne.add(closeViewSharingAllContent);
 	closeViewSharingAllContent.addEventListener("click", function(e) {
 		$.viewShareBase.remove(viewSharingAllContent);
 		if (OS_ANDROID) {
 			Ti.UI.Android.hideSoftKeyboard();
 		}
 	});
-
-	//clear all button that clears text in inputComment and picture in viewImageCaptured
-	var clearAll = Ti.UI.createButton({
-		id : 'clearAll',
-		title : "Clear All",
-		font : {
-			size : "8"
-		}
-	});
-	formatButtonIOS(clearAll);
-	clearAll.addEventListener('click', function(e) {
-		clearTextComment.fireEvent("click");
-		removeImage.fireEvent("click");
-		closeInputKeyboard.fireEvent("click");
-	});
-	rowFive.add(clearAll);
+	rowOne.add(closeViewSharingAllContent);
 
 	function createIntentText(contentTextComment, contentTextSubject) {
-
-		//MAKE SURE TO DISABLE CHOICE OF ALWAYS/JUST ONCE
-
 		//function to create a text intent/iOS equivalent
 		if (OS_ANDROID) {
 			var intentText = Ti.Android.createIntent({
@@ -245,210 +217,6 @@ function openViewShareText() {
 			alert("Unsupported platform");
 		}
 	}
-
-	function createIntentTextAndImage(contentTextComment, contentTextSubject, contentImage) {
-		//Generates intent for both text and image when given values for text comments, subject comments (optional), and image content
-		if (OS_ANDROID) {
-			//Code for sharing both text and image in Android
-			//create and send intent
-			var intentImageAndText = Ti.Android.createIntent({
-				type : "image/*",
-				action : Ti.Android.ACTION_SEND
-			});
-			intentImageAndText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-			intentImageAndText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
-			intentImageAndText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
-			intentImageAndText.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-			Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImageAndText, "Share with..."));
-
-		} else if (OS_IOS) {
-			//Code for sharing both text and image in iOS
-			var Social = require('dk.napp.social');
-			if (Social.isActivityViewSupported()) {
-				Social.activityView({
-					text : contentText,
-					image : imageFilePath,
-					url : 'http://www.cmhouston.org'
-				});
-			} else {
-				alert("Sharing is not available on this device");
-			}
-		} else {
-			alert("Unsupported platform");
-		}
-	}
-
-	//Share both text and image button
-	var shareBoth = Ti.UI.createButton({
-		title : "Share"
-	});
-	formatButtonIOS(shareBoth);
-	shareBoth.addEventListener('click', function(e) {
-		//Validate what is to be shared based on switch values and what content was input by user
-		if (switchShareText.value == true && switchShareImage.value == true) {
-			//Share image and text selected - check for image and text
-			if (viewImageCaptured.image == "" && inputComment.value == "") {
-				alert("No content to share!");
-			} else if (viewImageCaptured.image == "") {
-				alert("No image to share!");
-			} else if (inputComment.value == "") {
-				alert("No text to share!");
-			} else {
-				//Image and text found. Share.
-
-				//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
-				Ti.UI.Clipboard.setText(inputComment.value);
-
-				//send intent
-				createIntentTextAndImage(inputComment.value, inputSubject.value, viewImageCaptured.image);
-
-			}
-		} else if (switchShareText.value == true) {
-			//Share text selected - check for text
-			if (inputComment.value == "") {
-				alert("No text to share!");
-			} else {
-				//Text found - Share.
-				//Copy backup of text in textCommentBackup (to be used to copy into facebook for comment sharing)
-				Ti.UI.Clipboard.setText(inputComment.value);
-				//send intent
-				createIntentText(inputComment.value, inputSubject.value);
-			}
-		} else if (switchShareImage.value == true) {
-			//Share image selected - check for image
-			if (viewImageCaptured.image == "") {
-				alert("No image to share!");
-			} else {
-				//Image found - Share.
-				createIntentImage(viewImageCaptured.image);
-			}
-		} else {
-			//Content may be there but nothing selected to share
-			alert("Nothing selected to share!");
-		}
-	});
-	rowOne.add(shareBoth);
-
-	//Choose picture button
-	var openGallery = Ti.UI.createButton({
-		title : "Choose Photo",
-		top : 0,
-		font : {
-			size : 8,
-			color : "#000000"
-		}
-	});
-	formatButtonIOS(openGallery);
-	openGallery.addEventListener('click', function(e) {
-		//choose photo from gallery
-		Titanium.Media.openPhotoGallery({
-			success : function(event) {
-				viewImageCaptured.image = event.media;
-				imageFilePath = event.media.nativePath;
-			},
-			cancel : function() {
-			},
-			error : function(error) {
-			},
-			mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
-		});
-	});
-	rowSix.add(openGallery);
-
-	//removes image from view but does not delete from gallery
-	var removeImage = Ti.UI.createButton({
-		title : "Clear Image",
-		font : {
-			color : "#FFFFFF",
-			size : "8"
-		},
-		visible : false
-	});
-	formatButtonIOS(removeImage);
-	removeImage.addEventListener("click", function(e) {
-		viewImageCaptured.image = "";
-		removeImage.visible = false;
-		rotateLeft.visible = false;
-		rotateRight.visible = false;
-		viewScroll.scrollTo(0, 0);
-	});
-	rowFive.add(removeImage);
-
-	function correctOrientation(viewImage, rotateLeft, rotateRight) {
-		//corrects displayed picture based on which rotation is sent. booleans accepted for rotateLeft and rotateRight
-		var rotateAngle;
-		//set rotation direction
-		if (rotateLeft == true) {
-			rotateAngle = "-90";
-		} else if (rotateRight == true) {
-			rotateAngle = "90";
-		}
-		//rotate image
-		var matrixRotation = Ti.UI.create2DMatrix();
-		matrixRotation = matrixRotation.rotate(rotateAngle);
-		var spinMatrix = Ti.UI.createAnimation({
-			transform : matrixRotation,
-			duration : 1000,
-			autoreverse : false,
-			repeat : 0
-		});
-		//rotate if image exists
-		//Issue is that the view is being rotated, not the actual image, which means that when an additional picture is taken, it will orient to the orientation of the imageview and is not a permanent and doesn't reset with each additional photo
-		viewImage.animate(spinMatrix);
-	}
-
-	//rotate left button
-	var rotateLeft = Ti.UI.createButton({
-		title : "<-",
-		visible : false
-	});
-	formatButtonIOS(rotateLeft);
-	rotateLeft.addEventListener('click', function(e) {
-		if (viewImageCaptured.image != "") {
-			correctOrientation(viewImageCaptured, true, false);
-			Ti.API.info("rotated left");
-		}
-	});
-	rowSeven.add(rotateLeft);
-
-	//rotate right button
-	var rotateRight = Ti.UI.createButton({
-		title : "->",
-		visible : false
-	});
-	formatButtonIOS(rotateRight);
-	rotateRight.addEventListener('click', function(e) {
-		if (viewImageCaptured.image != "") {
-			correctOrientation(viewImageCaptured, false, true);
-			Ti.API.info("rotated right");
-		}
-	});
-	rowSeven.add(rotateRight);
-
-	//Image view
-	var viewImageCaptured = Ti.UI.createImageView({
-		image : "",
-		top : "0",
-		left : "12.5%",
-		height : "300dip",
-		width : "275dip",
-		anchorPoint : {
-			x : 0.5,
-			y : 0.5
-		}
-	});
-	viewImageCaptured.addEventListener("load", function(e) {
-		if (viewImageCaptured.image != "") {
-			removeImage.visible = true;
-			rotateLeft.visible = true;
-			rotateRight.visible = true;
-		} else {
-			removeImage.visible = false;
-			rotateLeft.visible = false;
-			rotateRight.visible = false;
-		}
-	});
-	rowSix.add(viewImageCaptured);
 
 	//Text area for subject input
 	var textSubjectSelected = false;
