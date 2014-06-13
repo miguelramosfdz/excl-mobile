@@ -88,7 +88,7 @@ function openCamera() {
 			var fileName = 'cmh' + new Date().getTime() + '.jpg';
 			imageName = fileName;
 			//save file
-			imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
+			imageFile = /*Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) :*/ Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
