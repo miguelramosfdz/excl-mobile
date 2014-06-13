@@ -3,11 +3,20 @@ function formatButtonIOS(buttonName) {
 	if (OS_IOS) {
 		buttonName.borderWidth = "1";
 		buttonName.borderColor = "#000000";
+		buttonName.borderRadius = "1";
+		buttonName.backgroundColor = "F8F8F8";
 	}
 }
 
 function createButtonsShare() {
 	//Initialization, which ensures keyboard is hidden and creates share button
+
+	//create view that will serve as temporary backing for sharing buttons
+	var viewSharingTemp = Ti.UI.createView({
+		layout : "horizontal",
+		width : "80%"
+	});
+	$.viewShareBase.add(viewSharingTemp);
 
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
@@ -19,33 +28,33 @@ function createButtonsShare() {
 		font : {
 			fontSize : 30,
 		},
-		//backgroundColor: "#00FFFF"
-		color : "#000000"
+		color : "#000000",
+		left : "20%"
 	});
 	openMenuShareText.addEventListener('click', function(e) {
 		openViewShareText();
 	});
 	formatButtonIOS(openMenuShareText);
-	$.viewShareBase.add(openMenuShareText);
+	viewSharingTemp.add(openMenuShareText);
 
 	//button to open photo sharing
 	var openCamera = Ti.UI.createButton({
 		id : 'openCamera',
 		Title : "Share",
-		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
+		backgroundImage : "http://www.vodeblog.com/wp-content/uploads/2012/01/volume-button-camera-shutter-enable_thumb.png",
 		height : "40dip",
 		width : "40dip",
 		font : {
 			fontSize : 30,
 		},
-		//backgroundColor: "#00FFFF"
-		color : "#000000"
+		color : "#000000",
+		left : "90%"
 	});
 	openCamera.addEventListener('click', function(e) {
 		shareImage();
 	});
 	formatButtonIOS(openCamera);
-	$.viewShareBase.add(openCamera);
+	viewSharingTemp.add(openCamera);
 }
 
 function shareImage() {
