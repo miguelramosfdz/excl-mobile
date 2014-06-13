@@ -27,7 +27,10 @@ function createButtonsShare() {
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
 		id : 'openMenuShareText',
-		backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
+		title : "Share",
+		backgroundImage : "../../Resources/shareImage.png",
+		backgroundFocusedImage: "../../Resources/shareImage.png",
+		backgroundSelectedImage: "../../Resources/shareImage.png",
 		height : "40dip",
 		width : "40dip",
 		left : "0"
@@ -77,7 +80,7 @@ function openCamera() {
 			var fileName = 'cmh' + new Date().getTime() + '.jpg';
 			imageName = fileName;
 			//save file
-			imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
+			imageFile = /*Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) :*/ Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
