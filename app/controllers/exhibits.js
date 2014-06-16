@@ -92,8 +92,6 @@ function createHeadingRow() {
 	return row;
 }
 
-
-
 function createExhibitsCarousel(headingText, exhibits){
 	
 	var row = createPlainRow();
@@ -265,7 +263,7 @@ function createExhibitText(text){
 
 
 
-createExhibitsCarousel("All Exhibits", json.data.museum.exhibits);
+createExhibitsCarousel("Exhibits", json.data.museum.exhibits);
 createComponentsScrollView("Check out our Stations", json.data.museum.exhibits[0].components);
 createExhibitText("Blah blah blah blah blah blah blah blah,\nBlah blah blah.");
 
