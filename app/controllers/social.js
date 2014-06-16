@@ -88,12 +88,12 @@ function openCamera() {
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = event.media.nativePath;
 
-				alert("image: " + imageFilePath);
-
-				while (imageFilePath.text == "") {
-					//do nothing
-					Ti.API.info("itz going");
-				};
+				// alert("image: " + imageFilePath);
+// 
+				// while (imageFilePath.text == "") {
+					// //do nothing
+					// Ti.API.info("itz going");
+				// };
 				sendIntentImage();
 
 			}
@@ -124,7 +124,7 @@ function sendIntentImageAndroid(){
 	});
 	intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
 	intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
+	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Send Picture To..."));
 }
 
 function sendIntentImageiOS(){
