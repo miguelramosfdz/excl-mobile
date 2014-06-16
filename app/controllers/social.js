@@ -15,11 +15,6 @@ function formatButtonIOS(buttonName) {
 	}
 }
 
-function formatButtonAndroid(buttonName, backgroundImagePath){
-	buttonName.backgroundImage = backgroundImage;
-	
-}
-
 function createButtonsShare() {
 	//Initialization, which ensures keyboard is hidden and creates share button
 
@@ -38,8 +33,8 @@ function createButtonsShare() {
 	viewSharingTemp.add(labelTemp);
 	
 	//button to open text sharing
-	var openMenuShareText = Ti.UI.createButton({
-		id : 'openMenuShareText',
+	var shareText = Ti.UI.createButton({
+		id : 'shareText',
 		title : "Text",
 		backgroundImage : "../../Resources/shareImage.png",
 		backgroundFocusedImage: "../../Resources/shareImage.png",
@@ -48,11 +43,11 @@ function createButtonsShare() {
 		width : "40dip",
 		left : "0"
 	});
-	openMenuShareText.addEventListener('click', function(e) {
-		openViewShareText();
+	shareText.addEventListener('click', function(e) {
+		sendIntentText();
 	});
-	formatButtonIOS(openMenuShareText);
-	viewSharingTemp.add(openMenuShareText);
+	formatButtonIOS(shareText);
+	viewSharingTemp.add(shareText);
 
 	//button to open photo sharing
 	var shareImage = Ti.UI.createButton({
@@ -68,7 +63,11 @@ function createButtonsShare() {
 		//open camera and save image to view
 		imageFilePath = "";
 		openCamera();
-
+		while (imageFilePath.text == "") {
+			//do nothing
+			Ti.API.info("itz going");
+		};
+		sendIntentImage();
 	});
 	formatButtonIOS(shareImage);
 	viewSharingTemp.add(shareImage);
@@ -92,9 +91,9 @@ function openCamera() {
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = event.media.nativePath;
-				sendIntentImage();
-
 			}
+			labelTemp.text = "1";
+			alert("path: " + imageFilePath);
 		},
 		cancel : function() {
 		},
@@ -122,7 +121,7 @@ function sendIntentImageAndroid(){
 	});
 	intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
 	intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Send Picture To..."));
+	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
 }
 
 function sendIntentImageiOS(){
@@ -138,225 +137,48 @@ function sendIntentImageiOS(){
 	}
 }
 
-function openViewShareText() {
-	//Holds all functionality related to sharing text
 
-	//create scrolling view
-	var viewScroll = Ti.UI.createScrollView({
-		contentWidth : 'auto',
-		contentHeight : 'auto',
-		showVerticalScrollIndicator : true,
-		showHorizontalScrollIndicator : true
-	});
-	//create viewSharingAllContent, which will serve as the background view for all sharing content, then post to page
-	var viewSharingAllContent = Ti.UI.createView({
-		backgroundColor : "#FFFFFF"
-	});
-	viewSharingAllContent.addEventListener('load', function(e) {
-		//Set keyboard to hide for Android
-		if (OS_ANDROID) {
-			inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
-			inputSubject.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
-		}
-	});
-	viewScroll.add(viewSharingAllContent);
-	$.viewShareBase.add(viewScroll);
-
-	//Rows in the viewSharingAllContent
-	var rowOne = Ti.UI.createView({
-		layout : "horizontal",
-		top : "0dip",
-		width : "100%",
-	});
-	viewSharingAllContent.add(rowOne);
-	var rowTwo = Ti.UI.createView({
-		layout : "horizontal",
-		top : "50dip",
-		width : "100%",
-	});
-	viewSharingAllContent.add(rowTwo);
-	var rowThree = Ti.UI.createView({
-		layout : "horizontal",
-		top : "100dip",
-		width : "100%",
-	});
-	viewSharingAllContent.add(rowThree);
-	var rowFour = Ti.UI.createView({
-		layout : "horizontal",
-		top : "250dip"
-	});
-	viewSharingAllContent.add(rowFour);
-	var rowFive = Ti.UI.createView({
-		layout : "horizontal",
-		top : "325dip",
-		left : 0
-	});
-	viewSharingAllContent.add(rowFive);
-	var rowSix = Ti.UI.createView({
-		layout : "horizontal",
-		top : "375dip",
-		width : "100%",
-	});
-	viewSharingAllContent.add(rowSix);
-	var rowSeven = Ti.UI.createView({
-		layout : "horizontal",
-		top : "700dip",
-		width : "50%",
-		left : "20%"
-	});
-	viewSharingAllContent.add(rowSeven);
-
-	//Back button closes sharing view and returns to app
-	var closeViewSharingAllContent = Ti.UI.createButton({
-		title : "Back",
-		height : "45dip"
-	});
-	formatButtonIOS(closeViewSharingAllContent);
-	closeViewSharingAllContent.addEventListener("click", function(e) {
-		$.viewShareBase.remove(viewScroll);
-		if (OS_ANDROID) {
-			Ti.UI.Android.hideSoftKeyboard();
-		}
-	});
-	rowOne.add(closeViewSharingAllContent);
-
-	function createIntentText(contentTextComment, contentTextSubject) {
-		//function to create a text intent/iOS equivalent
-
-		//Note: in kiosk mode, restrict available apps to email only
-		if (OS_ANDROID) {
-			createIntentTextAndroid(contentTextComment, contentTextSubject);
-		} else if (OS_IOS) {
-			createIntentTextiOS(contentTextComment, contentTextSubject);
-		} else {
-			alert("Unsupported platform");
-		}
-	}
+function sendIntentText() {
+	//function to create a text intent/iOS equivalent
 	
-	function createIntentTextAndroid(contentTextComment, contentTextSubject){
-		var intentText = Ti.Android.createIntent({
-			action : Ti.Android.ACTION_SEND,
-			type : 'text/plain'
-		});
-		intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
-		intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
-		intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-		Ti.Android.createIntentChooser(intentText, "Send Message");
-		Ti.Android.currentActivity.startActivity(intentText);
-	}
+	//Get text to be sent from WP
+	contentTextComment = "#cmh #awesome";
+	contentTextSubject = "Having fun at Children's Museum of Houston!";
+	contentTextURL = "http://www.cmhouston.org";
 	
-	function createIntentTextiOS(contentTextComment, contentTextSubject){
-		//Use TiSocial.Framework module
-		var Social = require('dk.napp.social');
-		if (Social.isActivityViewSupported()) {
-			Social.activityView({
-				text : contentText,
-				url : 'http://www.cmhouston.org'
-			});
-		} else {
-			alert("Sharing is not available on this device");
-		}
-	}
-
-	//Text area for subject input
-	var textSubjectSelected = false;
-	var inputSubject = Ti.UI.createTextArea({
-		width : "100%",
-		height : '45dip',
-		borderRadius : "15",
-		backgroundColor : "#FFFFFF",
-		borderColor : "#000000",
-		font : {
-			fontSize : 12,
-			color : "#000000"
-		},
-		keyboardType : Ti.UI.KEYBOARD_ASCII,
-		returnKeyType : Ti.UI.RETURNKEY_DONE,
-		textAlign : 'left',
-		hintText : '(Subject, if applicable)',
-		scrollable : true,
-		borderColor : "#000000",
-		borderWidth : "1"
-	});
-
-	//control focus/blur of inputSubject
-	inputSubject.addEventListener('click', function(e) {
-		if (OS_ANDROID) {
-			inputSubject.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
-		}
-		inputSubject.keyboardType = Ti.UI.KEYBOARD_ASCII;
-		inputSubject.returnKeyType = Ti.UI.RETURNKEY_DONE;
-		inputSubject.font.color = "#000000";
-		inputSubject.focus();
-		//show text editting buttons
-		clearTextComment.visible = true;
-	});
-	rowTwo.add(inputSubject);
-
-	//Text area for comment input
-	var textCommentSelected = false;
-	var inputComment = Ti.UI.createTextArea({
-		width : "100%",
-		height : '95dip',
-		borderRadius : "15",
-		borderColor : "#000000",
-		borderWidth : "1",
-		backgroundColor : "#FFFFFF",
-		borderColor : "#000000",
-		font : {
-			fontSize : 12,
-			color : "#000000"
-		},
-		keyboardType : Ti.UI.KEYBOARD_ASCII,
-		returnKeyType : Ti.UI.RETURNKEY_DONE,
-		textAlign : 'left',
-		hintText : '(Type here)\n\n\n(Double-tap box if "Hide Keyboard" button does not appear)',
-		scrollable : true,
-	});
-
-	//control focus/blur of inputComment
-	inputComment.addEventListener('click', function(e) {
-		if (OS_ANDROID) {
-			inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
-		}
-		inputComment.keyboardType = Ti.UI.KEYBOARD_ASCII;
-		inputComment.returnKeyType = Ti.UI.RETURNKEY_DONE;
-		inputComment.font.color = "#000000";
-		inputComment.focus();
-		//show text editting buttons
-		clearTextComment.visible = true;
-	});
-
-	rowThree.add(inputComment);
-
-	//Warning label for Facebook
-	var labelWarningFacebookText = Ti.UI.createLabel({
-		text : "Facebook & Instagram do not allow pre-population of text fields. Your comment will be copied to the clipboard for you.",
-		font : {
-			size : 4,
-			color : "#000000"
-		}
-	});
+	//Note: in kiosk mode, restrict available apps to email only
 	if (OS_ANDROID) {
-		rowFour.add(labelWarningFacebookText);
+		sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL);
+	} else if (OS_IOS) {
+		sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL);
+	} else {
+		alert("Unsupported platform");
 	}
+}
 
-	//clear text button for inputComment
-	var clearTextComment = Ti.UI.createButton({
-		title : "Clear Text",
-		font : {
-			size : 8,
-			color : "#000000"
-		},
-		visible : false
+function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL){
+	var intentText = Ti.Android.createIntent({
+		action : Ti.Android.ACTION_SEND,
+		type : 'text/plain'
 	});
-	formatButtonIOS(clearTextComment);
-	clearTextComment.addEventListener('click', function(e) {
-		inputComment.value = "";
-		inputSubject.value = "";
-		clearTextComment.visible = false;
-	});
-	rowThree.add(clearTextComment);
+	contentTextComment = contentTextComment + " " + contentTextURL; //Android doesn't have a separate URL field
+	intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
+	intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
+	intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
+	Ti.Android.createIntentChooser(intentText, "Send Message");
+	Ti.Android.currentActivity.startActivity(intentText);
+}
+
+function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL){
+	//Use TiSocial.Framework module
+	var Social = require('dk.napp.social');
+	if (Social.isActivityViewSupported()) {
+		Social.activityView({
+			text : contentTextComment,
+			url : contentTextURL
+		});
+		alert("Sharing is not available on this device");
+	}
 }
 
 //Run initialization
