@@ -15,6 +15,11 @@ function formatButtonIOS(buttonName) {
 	}
 }
 
+function formatButtonAndroid(buttonName, backgroundImagePath){
+	buttonName.backgroundImage = backgroundImage;
+	
+}
+
 function createButtonsShare() {
 	//Initialization, which ensures keyboard is hidden and creates share button
 
@@ -87,13 +92,6 @@ function openCamera() {
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = event.media.nativePath;
-
-				// alert("image: " + imageFilePath);
-// 
-				// while (imageFilePath.text == "") {
-					// //do nothing
-					// Ti.API.info("itz going");
-				// };
 				sendIntentImage();
 
 			}
