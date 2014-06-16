@@ -1,3 +1,5 @@
+//separate android/iOS sections into separate functions
+
 //top level vars
 var imageName;
 var imageFile;
@@ -84,7 +86,7 @@ function openCamera() {
 			var fileName = 'cmh' + new Date().getTime() + '.jpg';
 			imageName = fileName;
 			//save file
-			imageFile = /*Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) :*/ Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
+			imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
@@ -205,7 +207,7 @@ function openViewShareText() {
 	});
 	formatButtonIOS(closeViewSharingAllContent);
 	closeViewSharingAllContent.addEventListener("click", function(e) {
-		$.viewShareBase.remove(viewSharingTemp);
+		$.viewShareBase.remove(viewScroll);
 		if (OS_ANDROID) {
 			Ti.UI.Android.hideSoftKeyboard();
 		}
@@ -317,7 +319,7 @@ function openViewShareText() {
 
 	//Warning label for Facebook
 	var labelWarningFacebookText = Ti.UI.createLabel({
-		text : "Facebook & Instagram do not allow pre-population of text fields. Your comment will be copied to clipboard for you.",
+		text : "Facebook & Instagram do not allow pre-population of text fields. Your comment will be copied to the clipboard for you.",
 		font : {
 			size : 4,
 			color : "#000000"
