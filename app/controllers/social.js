@@ -105,31 +105,36 @@ function openCamera() {
 
 function sendIntentImage() {
 	//create and send an image intent
-
 	if (OS_ANDROID) {
-		var intentImage = Ti.Android.createIntent({
-			type : "image/*",
-			action : Ti.Android.ACTION_SEND
-		});
-		intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-		intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-		Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
+		sendIntentImageAndroid();
 	} else if (OS_IOS) {
-		//Use TiSocial.Framework module
-		var Social = require('dk.napp.social');
-		if (Social.isActivityViewSupported()) {
-			Social.activityView({
-				image : imageFilePath,
-				url : 'http://www.cmhouston.org'
-			});
-		} else {
-			alert("Sharing is not available on this device");
-		}
+		sendIntentImageiOS();
 	} else {
 		alert("Unsupported platform");
 	}
+}
 
-	//close sharing menu?
+function sendIntentImageAndroid(){
+	var intentImage = Ti.Android.createIntent({
+		type : "image/*",
+		action : Ti.Android.ACTION_SEND
+	});
+	intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+	intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
+	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
+}
+
+function sendIntentImageiOS(){
+	//Use TiSocial.Framework module
+	var Social = require('dk.napp.social');
+	if (Social.isActivityViewSupported()) {
+		Social.activityView({
+			image : imageFilePath,
+			url : 'http://www.cmhouston.org'
+		});
+	} else {
+		alert("Sharing is not available on this device");
+	}
 }
 
 function openViewShareText() {
@@ -219,30 +224,36 @@ function openViewShareText() {
 		
 		//Note: in kiosk mode, restrict available apps to email only
 		if (OS_ANDROID) {
-			var intentText = Ti.Android.createIntent({
-				action : Ti.Android.ACTION_SEND,
-				type : 'text/plain'
-			});
-			intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
-			intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
-			intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-			Ti.Android.createIntentChooser(intentText, "Send Message");
-			Ti.Android.currentActivity.startActivity(intentText);
-
+			createIntentTextAndroid(contentTextComment, contentTextSubject);
 		} else if (OS_IOS) {
-			//Use TiSocial.Framework module
-			var Social = require('dk.napp.social');
-			if (Social.isActivityViewSupported()) {
-				Social.activityView({
-					text : contentText,
-					url : 'http://www.cmhouston.org'
-				});
-			} else {
-				alert("Sharing is not available on this device");
-			}
-		}//end text sharing for iOS
-		else {
+			createIntentTextiOS(contentTextComment, contentTextSubject);
+		} else {
 			alert("Unsupported platform");
+		}
+	}
+	
+	function createIntentTextAndroid(contentTextComment, contentTextSubject){
+		var intentText = Ti.Android.createIntent({
+			action : Ti.Android.ACTION_SEND,
+			type : 'text/plain'
+		});
+		intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
+		intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
+		intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
+		Ti.Android.createIntentChooser(intentText, "Send Message");
+		Ti.Android.currentActivity.startActivity(intentText);
+	}
+	
+	function createIntentTextiOS(contentTextComment, contentTextSubject){
+		//Use TiSocial.Framework module
+		var Social = require('dk.napp.social');
+		if (Social.isActivityViewSupported()) {
+			Social.activityView({
+				text : contentText,
+				url : 'http://www.cmhouston.org'
+			});
+		} else {
+			alert("Sharing is not available on this device");
 		}
 	}
 
