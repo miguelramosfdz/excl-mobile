@@ -79,10 +79,13 @@ function openCamera() {
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 			//save file path to be shared
+			
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
-				imageFilePath = event.media.nativePath;
+				imageFilePath = imageFile.nativePath;
 				sendIntentImage();
 			}
+			alert("File: " + imageFilePath);
+            alert(JSON.stringify(event.media));
 		},
 		cancel : function() {
 		},
