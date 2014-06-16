@@ -1,27 +1,6 @@
 //top level vars
 var imageFilePath;
 
-function formatButtonIOS(buttonName) {
-	//Format buttons for IOS
-	if (OS_IOS) {
-		buttonName.borderWidth = "1";
-		buttonName.borderColor = "#000000";
-		buttonName.borderRadius = "1";
-		if (buttonName.backgroundImage != "") {
-			buttonName.title = "";
-		}
-	}
-}
-
-function formatButtonAndroid(buttonName) {
-	//format buttons for Android
-	if (OS_ANDROID) {
-		if (buttonName.backgroundImage != "") {
-			buttonName.title = "";
-		}
-	}
-}
-
 function createShareButtons() {
 	//create view that will serve as temporary backing for sharing buttons
 	var viewSharingTemp = Ti.UI.createView({
@@ -43,8 +22,6 @@ function createShareButtons() {
 	shareText.addEventListener('click', function(e) {
 		sendIntentText();
 	});
-	formatButtonIOS(shareText);
-	formatButtonAndroid(shareText);
 	viewSharingTemp.add(shareText);
 
 	//button to open photo sharing
@@ -59,8 +36,6 @@ function createShareButtons() {
 	shareImage.addEventListener('click', function(e) {
 		openCamera();
 	});
-	formatButtonIOS(shareImage);
-	formatButtonAndroid(shareImage);
 	viewSharingTemp.add(shareImage);
 }
 
@@ -84,8 +59,6 @@ function openCamera() {
 				imageFilePath = imageFile.nativePath;
 				sendIntentImage();
 			}
-			alert("File: " + imageFilePath);
-            alert(JSON.stringify(event.media));
 		},
 		cancel : function() {
 		},
@@ -115,7 +88,7 @@ function sendIntentImage() {
 function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL) {
 	contentTextComment = contentTextComment + contentTextURL; //Android intents don't have a separate URL field
 
-	//Create and send intent intent for android. 
+	//Create and send image intent for android. 
 	var intentImage = Ti.Android.createIntent({
 		type : "image/*",
 		action : Ti.Android.ACTION_SEND
