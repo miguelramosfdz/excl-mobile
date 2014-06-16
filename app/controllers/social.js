@@ -84,8 +84,6 @@ function openCamera() {
 				imageFilePath = imageFile.nativePath;
 				sendIntentImage();
 			}
-			alert("File: " + imageFilePath);
-            alert(JSON.stringify(event.media));
 		},
 		cancel : function() {
 		},
