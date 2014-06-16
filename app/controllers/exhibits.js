@@ -35,6 +35,24 @@ var json = {
               "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg"
             }
           ]
+        },
+        {
+          "id": 12346,
+          "name": "How Does It Really Work?",
+          "description": "Such a great exhibit. Check it out!",
+          "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg",
+          "components": [
+            {
+              "id": 12346,
+              "name": "Cups and Balls 2",
+              "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg"
+            },
+            {
+              "id": 54326,
+              "name": "Spinning Disc 2",
+              "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg"
+            }
+          ]
         }
       ]
     }

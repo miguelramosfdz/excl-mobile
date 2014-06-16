@@ -17,7 +17,7 @@
 		</Tab>
 		<Tab title="Rozay" icon="KS_nav_views.png">
 			<Window id="win" title="win">
-				<Require type="view" src="post" id="postTab"/>
+				<Require type="view" src="rozay" id="postTab"/>
 			</Window>
 		</Tab>
 		<Tab title="Visual Demo" icon="KS_nav_views.png">
