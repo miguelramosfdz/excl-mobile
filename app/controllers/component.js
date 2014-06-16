@@ -15,7 +15,7 @@ function init() {
 	// }
 	// });
 
-	var url = "http://api.openweathermap.org/data/2.5/weather?q=Houston,us&mode=json&units=imperial";
+	var url = "http://api.openweathermap.org/data/2.5/weather?q=Dayton,us&mode=json&units=imperial";
 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 		$.temperatureLabel.text = returnedData.main.temp + " °F";
 		$.cityLabel.text = returnedData.name;
