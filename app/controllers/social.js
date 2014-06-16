@@ -1,25 +1,6 @@
 //top level vars
 var imageFilePath;
 
-function formatButtonIOS(buttonName) {
-	//Format buttons for IOS
-	if (OS_IOS) {
-
-		if (buttonName.backgroundImage != "") {
-			buttonName.title = "";
-		}
-	}
-}
-
-function formatButtonAndroid(buttonName) {
-	//format buttons for Android
-	if (OS_ANDROID) {
-		if (buttonName.backgroundImage != "") {
-			buttonName.title = "";
-		}
-	}
-}
-
 function createShareButtons() {
 	//create view that will serve as temporary backing for sharing buttons
 	var viewSharingTemp = Ti.UI.createView({
@@ -41,8 +22,6 @@ function createShareButtons() {
 	shareText.addEventListener('click', function(e) {
 		sendIntentText();
 	});
-	formatButtonIOS(shareText);
-	formatButtonAndroid(shareText);
 	viewSharingTemp.add(shareText);
 
 	//button to open photo sharing
@@ -57,8 +36,6 @@ function createShareButtons() {
 	shareImage.addEventListener('click', function(e) {
 		openCamera();
 	});
-	formatButtonIOS(shareImage);
-	formatButtonAndroid(shareImage);
 	viewSharingTemp.add(shareImage);
 }
 
