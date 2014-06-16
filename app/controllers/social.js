@@ -171,6 +171,8 @@ function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextUR
 			text : contentTextComment,
 			url : contentTextURL
 		});
+	}
+	else{
 		alert("Sharing is not available on this device");
 	}
 }
