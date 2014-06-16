@@ -4,9 +4,7 @@ var imageFilePath;
 function formatButtonIOS(buttonName) {
 	//Format buttons for IOS
 	if (OS_IOS) {
-		buttonName.borderWidth = "1";
-		buttonName.borderColor = "#000000";
-		buttonName.borderRadius = "1";
+
 		if (buttonName.backgroundImage != "") {
 			buttonName.title = "";
 		}
@@ -80,7 +78,7 @@ function openCamera() {
 			imageFile.write(event.media);
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
-				imageFilePath = event.media.nativePath;
+				imageFilePath = imageFile.nativePath;
 				sendIntentImage();
 			}
 		},
@@ -112,7 +110,7 @@ function sendIntentImage() {
 function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL) {
 	contentTextComment = contentTextComment + contentTextURL; //Android intents don't have a separate URL field
 
-	//Create and send intent intent for android. 
+	//Create and send image intent for android. 
 	var intentImage = Ti.Android.createIntent({
 		type : "image/*",
 		action : Ti.Android.ACTION_SEND
