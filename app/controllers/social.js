@@ -1,8 +1,4 @@
-//separate android/iOS sections into separate functions
-
 //top level vars
-var imageName;
-var imageFile;
 var imageFilePath;
 
 function formatButtonIOS(buttonName) {
@@ -11,13 +7,22 @@ function formatButtonIOS(buttonName) {
 		buttonName.borderWidth = "1";
 		buttonName.borderColor = "#000000";
 		buttonName.borderRadius = "1";
-		//buttonName.backgroundColor = "F8F8F8";
+		if (buttonName.backgroundImage != "") {
+			buttonName.title = "";
+		}
 	}
 }
 
-function createButtonsShare() {
-	//Initialization, which ensures keyboard is hidden and creates share button
+function formatButtonAndroid(buttonName) {
+	//format buttons for Android
+	if (OS_ANDROID) {
+		if (buttonName.backgroundImage != "") {
+			buttonName.title = "";
+		}
+	}
+}
 
+function createShareButtons() {
 	//create view that will serve as temporary backing for sharing buttons
 	var viewSharingTemp = Ti.UI.createView({
 		layout : "vertical",
@@ -26,50 +31,36 @@ function createButtonsShare() {
 	});
 	$.viewShareBase.add(viewSharingTemp);
 
-	//hidden label to aid image intent process
-	var labelTemp = Ti.UI.createLabel({
-		text : "0"
-	});
-	viewSharingTemp.add(labelTemp);
-	
 	//button to open text sharing
-	var openMenuShareText = Ti.UI.createButton({
-		id : 'openMenuShareText',
+	var shareText = Ti.UI.createButton({
+		id : 'shareText',
 		title : "Text",
-		backgroundImage : "../../Resources/shareImage.png",
-		backgroundFocusedImage: "../../Resources/shareImage.png",
-		backgroundSelectedImage: "../../Resources/shareImage.png",
 		height : "40dip",
 		width : "40dip",
-		left : "0"
+		left : "0",
+		backgroundImage : "/images/iconShare.png"
 	});
-	openMenuShareText.addEventListener('click', function(e) {
-		openViewShareText();
+	shareText.addEventListener('click', function(e) {
+		sendIntentText();
 	});
-	formatButtonIOS(openMenuShareText);
-	viewSharingTemp.add(openMenuShareText);
+	formatButtonIOS(shareText);
+	formatButtonAndroid(shareText);
+	viewSharingTemp.add(shareText);
 
 	//button to open photo sharing
 	var shareImage = Ti.UI.createButton({
 		id : 'shareImage',
-		backgroundImage : "http://icons.iconarchive.com/icons/visualpharm/icons8-metro-style/512/Photo-Video-Slr-camera-icon.png",
+		text : "Camera",
 		height : "40dip",
 		width : "40dip",
-		left : "0"
+		left : "0",
+		backgroundImage : "/images/iconCamera.png"
 	});
 	shareImage.addEventListener('click', function(e) {
-		//create invisible imageview to hold picture so that the intent is not triggered until after the picture is taken
-
-		//open camera and save image to view
-		imageFilePath = "";
 		openCamera();
-		while (imageFilePath.text == "") {
-			//do nothing
-			Ti.API.info("itz going");
-		};
-		sendIntentImage();
 	});
 	formatButtonIOS(shareImage);
+	formatButtonAndroid(shareImage);
 	viewSharingTemp.add(shareImage);
 }
 
@@ -84,268 +75,115 @@ function openCamera() {
 
 			//create image file and save name for future use
 			var fileName = 'cmh' + new Date().getTime() + '.jpg';
-			imageName = fileName;
 			//save file
-			imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
+			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 			//save file path to be shared
+			
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
-				imageFilePath = event.media.nativePath;
+				imageFilePath = imageFile.nativePath;
+				sendIntentImage();
 			}
-			labelTemp.text = "1";
-			alert("path: " + imageFilePath);
+			alert("File: " + imageFilePath);
+            alert(JSON.stringify(event.media));
 		},
 		cancel : function() {
 		},
 		error : function(Error) {
-			alert("Camera functionality not working");
+			alert("Camera not working");
 		}
 	});
 }
 
 function sendIntentImage() {
 	//create and send an image intent
-
+	
+	//Get text to be sent from WP
+	contentTextComment = "#cmh #awesome";
+	contentTextSubject = "Having fun at Children's Museum of Houston!";
+	contentTextURL = "http://www.cmhouston.org";
+	
 	if (OS_ANDROID) {
-		var intentImage = Ti.Android.createIntent({
-			type : "image/*",
-			action : Ti.Android.ACTION_SEND
-		});
-		intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-		intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-		Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
+		sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL);
 	} else if (OS_IOS) {
-		//Use TiSocial.Framework module
-		var Social = require('dk.napp.social');
-		if (Social.isActivityViewSupported()) {
-			Social.activityView({
-				image : imageFilePath,
-				url : 'http://www.cmhouston.org'
-			});
-		} else {
-			alert("Sharing is not available on this device");
-		}
+		sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL);
 	} else {
-		alert("Unsupported platform");
+		alert("Unsupported platform (image sharing)");
 	}
-
-	//close sharing menu?
 }
 
-function openViewShareText() {
-	//Holds all functionality related to sharing text
+function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL) {
+	contentTextComment = contentTextComment + contentTextURL; //Android intents don't have a separate URL field
 
-	//create scrolling view
-	var viewScroll = Ti.UI.createScrollView({
-		contentWidth : 'auto',
-		contentHeight : 'auto',
-		showVerticalScrollIndicator : true,
-		showHorizontalScrollIndicator : true
+	//Create and send intent intent for android. 
+	var intentImage = Ti.Android.createIntent({
+		type : "image/*",
+		action : Ti.Android.ACTION_SEND
 	});
-	//create viewSharingAllContent, which will serve as the background view for all sharing content, then post to page
-	var viewSharingAllContent = Ti.UI.createView({
-		backgroundColor : "#FFFFFF"
-	});
-	viewSharingAllContent.addEventListener('load', function(e) {
-		//Set keyboard to hide for Android
-		if (OS_ANDROID) {
-			inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
-			inputSubject.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
-		}
-	});
-	viewScroll.add(viewSharingAllContent);
-	$.viewShareBase.add(viewScroll);
+	intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+	intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
+	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
+}
 
-	//Rows in the viewSharingAllContent
-	var rowOne = Ti.UI.createView({
-		layout : "horizontal",
-		top : "0dip",
-		width : "100%",
-	});
-	viewSharingAllContent.add(rowOne);
-	var rowTwo = Ti.UI.createView({
-		layout : "horizontal",
-		top : "50dip",
-		width : "100%",
-	});
-	viewSharingAllContent.add(rowTwo);
-	var rowThree = Ti.UI.createView({
-		layout : "horizontal",
-		top : "100dip",
-		width : "100%",
-	});
-	viewSharingAllContent.add(rowThree);
-	var rowFour = Ti.UI.createView({
-		layout : "horizontal",
-		top : "250dip"
-	});
-	viewSharingAllContent.add(rowFour);
-	var rowFive = Ti.UI.createView({
-		layout : "horizontal",
-		top : "325dip",
-		left : 0
-	});
-	viewSharingAllContent.add(rowFive);
-	var rowSix = Ti.UI.createView({
-		layout : "horizontal",
-		top : "375dip",
-		width : "100%",
-	});
-	viewSharingAllContent.add(rowSix);
-	var rowSeven = Ti.UI.createView({
-		layout : "horizontal",
-		top : "700dip",
-		width : "50%",
-		left : "20%"
-	});
-	viewSharingAllContent.add(rowSeven);
-
-	//Back button closes sharing view and returns to app
-	var closeViewSharingAllContent = Ti.UI.createButton({
-		title : "Back",
-		height : "45dip"
-	});
-	formatButtonIOS(closeViewSharingAllContent);
-	closeViewSharingAllContent.addEventListener("click", function(e) {
-		$.viewShareBase.remove(viewScroll);
-		if (OS_ANDROID) {
-			Ti.UI.Android.hideSoftKeyboard();
-		}
-	});
-	rowOne.add(closeViewSharingAllContent);
-
-	function createIntentText(contentTextComment, contentTextSubject) {
-		//function to create a text intent/iOS equivalent
-		
-		//Note: in kiosk mode, restrict available apps to email only
-		if (OS_ANDROID) {
-			var intentText = Ti.Android.createIntent({
-				action : Ti.Android.ACTION_SEND,
-				type : 'text/plain'
-			});
-			intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
-			intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
-			intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-			Ti.Android.createIntentChooser(intentText, "Send Message");
-			Ti.Android.currentActivity.startActivity(intentText);
-
-		} else if (OS_IOS) {
-			//Use TiSocial.Framework module
-			var Social = require('dk.napp.social');
-			if (Social.isActivityViewSupported()) {
-				Social.activityView({
-					text : contentText,
-					url : 'http://www.cmhouston.org'
-				});
-			} else {
-				alert("Sharing is not available on this device");
-			}
-		}//end text sharing for iOS
-		else {
-			alert("Unsupported platform");
-		}
+function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL) {
+	//Use TiSocial.Framework module to send image to other apps
+	var Social = require('dk.napp.social');
+	if (Social.isActivityViewSupported()) {
+		Social.activityView({
+			image : imageFilePath,
+			text : contentTextComment, //Note that contentTextSubject is unused; there is no field for that
+			url : contentTextURL
+		});
+	} else {
+		alert("Photo sharing is not available on this device");
 	}
+}
 
-	//Text area for subject input
-	var textSubjectSelected = false;
-	var inputSubject = Ti.UI.createTextArea({
-		width : "100%",
-		height : '45dip',
-		borderRadius : "15",
-		backgroundColor : "#FFFFFF",
-		borderColor : "#000000",
-		font : {
-			fontSize : 12,
-			color : "#000000"
-		},
-		keyboardType : Ti.UI.KEYBOARD_ASCII,
-		returnKeyType : Ti.UI.RETURNKEY_DONE,
-		textAlign : 'left',
-		hintText : '(Subject, if applicable)',
-		scrollable : true,
-		borderColor : "#000000",
-		borderWidth : "1"
-	});
+function sendIntentText() {
+	//function to send information to other apps
 
-	//control focus/blur of inputSubject
-	inputSubject.addEventListener('click', function(e) {
-		if (OS_ANDROID) {
-			inputSubject.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
-		}
-		inputSubject.keyboardType = Ti.UI.KEYBOARD_ASCII;
-		inputSubject.returnKeyType = Ti.UI.RETURNKEY_DONE;
-		inputSubject.font.color = "#000000";
-		inputSubject.focus();
-		//show text editting buttons
-		clearTextComment.visible = true;
-	});
-	rowTwo.add(inputSubject);
+	//Get text to be sent from WP
+	contentTextComment = "#cmh #awesome";
+	contentTextSubject = "Having fun at Children's Museum of Houston!";
+	contentTextURL = "http://www.cmhouston.org";
 
-	//Text area for comment input
-	var textCommentSelected = false;
-	var inputComment = Ti.UI.createTextArea({
-		width : "100%",
-		height : '95dip',
-		borderRadius : "15",
-		borderColor : "#000000",
-		borderWidth : "1",
-		backgroundColor : "#FFFFFF",
-		borderColor : "#000000",
-		font : {
-			fontSize : 12,
-			color : "#000000"
-		},
-		keyboardType : Ti.UI.KEYBOARD_ASCII,
-		returnKeyType : Ti.UI.RETURNKEY_DONE,
-		textAlign : 'left',
-		hintText : '(Type here)\n\n\n(Double-tap box if "Hide Keyboard" button does not appear)',
-		scrollable : true,
-	});
-
-	//control focus/blur of inputComment
-	inputComment.addEventListener('click', function(e) {
-		if (OS_ANDROID) {
-			inputComment.softKeyboardOnFocus = Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
-		}
-		inputComment.keyboardType = Ti.UI.KEYBOARD_ASCII;
-		inputComment.returnKeyType = Ti.UI.RETURNKEY_DONE;
-		inputComment.font.color = "#000000";
-		inputComment.focus();
-		//show text editting buttons
-		clearTextComment.visible = true;
-	});
-
-	rowThree.add(inputComment);
-
-	//Warning label for Facebook
-	var labelWarningFacebookText = Ti.UI.createLabel({
-		text : "Facebook & Instagram do not allow pre-population of text fields. Your comment will be copied to the clipboard for you.",
-		font : {
-			size : 4,
-			color : "#000000"
-		}
-	});
+	//Note: in kiosk mode, restrict available apps to email only
 	if (OS_ANDROID) {
-		rowFour.add(labelWarningFacebookText);
+		sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL);
+	} else if (OS_IOS) {
+		sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL);
+	} else {
+		alert("Unsupported platform (text sharing)");
 	}
+}
 
-	//clear text button for inputComment
-	var clearTextComment = Ti.UI.createButton({
-		title : "Clear Text",
-		font : {
-			size : 8,
-			color : "#000000"
-		},
-		visible : false
+function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL) {
+	//Create and send text intent for android. Includes area for main text and url text to be appended and a subject header
+	var intentText = Ti.Android.createIntent({
+		action : Ti.Android.ACTION_SEND,
+		type : 'text/plain'
 	});
-	formatButtonIOS(clearTextComment);
-	clearTextComment.addEventListener('click', function(e) {
-		inputComment.value = "";
-		inputSubject.value = "";
-		clearTextComment.visible = false;
-	});
-	rowThree.add(clearTextComment);
+	contentTextComment = contentTextComment + "\n"+ contentTextURL;
+	//Android doesn't have a separate URL field
+	intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
+	intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
+	intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
+	Ti.Android.createIntentChooser(intentText, "Send Message");
+	Ti.Android.currentActivity.startActivity(intentText);
+}
+
+function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL) {
+	//Use TiSocial.Framework module to share text
+	var Social = require('dk.napp.social');
+	if (Social.isActivityViewSupported()) {
+		Social.activityView({
+			text : contentTextComment,
+			url : contentTextURL
+		});
+	} else {
+		alert("Text sharing is not available on this device");
+	}
 }
 
 //Run initialization
-createButtonsShare();
+createShareButtons();

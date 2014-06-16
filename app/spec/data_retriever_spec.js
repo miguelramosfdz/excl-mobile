@@ -1,12 +1,14 @@
 var dataRetriever = require('../lib/dataRetriever');
-var tiCalls = require('../lib/exclCommonTiApi');
+var apiCalls = require('../lib/customCalls/apiCalls');
+var networkCalls = require('../lib/customCalls/networkCalls');
+var parseCalls = require('../lib/customCalls/parseCalls');
 
 describe("Testing parsedJson", function() {
 	it("should return 'parsed' json data", function() {
 		// Arrange
 		var dataToSend = "\"social-media-settings\": {\"liking\": true,\"sharing\": false,\"commenting\": true},";
 		var expectedData = "\"social-media-settings\": {\"liking\":expectedData true,\"sharing\": false,\"commenting\": true},";
-		spyOn(tiCalls, 'parse').andReturn(expectedData);
+		spyOn(parseCalls, 'parse').andReturn(expectedData);
 
 		// Act
 		var returnedData = dataRetriever.parseJson(dataToSend);
@@ -20,14 +22,13 @@ describe("Testing network", function() {
 	it("should return valid http client", function() {
 		// Arrange
 		var url = "http://api.openweathermap.org/data/2.5/weather?q=Houston,us&mode=json&units=imperial";
-		spyOn(tiCalls, 'network').andReturn({
+		var openFunctionCalled, sendFunctionCalled = false;
+		spyOn(networkCalls, 'network').andReturn({
 			open : function() {
-				// console.log("open method called yo!");
-				// return "Open method called";
+				openFunctionCalled = true;
 			},
 			send : function() {
-				// console.log("send method has arived");
-				// return "Send method called";
+				sendFunctionCalled = true;
 			},
 		});
 
@@ -35,6 +36,8 @@ describe("Testing network", function() {
 		dataRetriever.fetchDataFromUrl(url);
 
 		// Assert
+		expect(openFunctionCalled).toBe(true);
+		expect(sendFunctionCalled).toBe(true);
 		
 	});
 });
