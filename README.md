@@ -9,4 +9,4 @@
 
 ### Lib Docs ###
 
-* [Navigation Controller](https://bitbucket.org/parivedasolutions/cmh-excl-mobile/raw/e376a4f72198bb5a4acddbcc4faa2f28cd4b0fa5/docs/NavigationController.md) 
+* [Navigation Controller](https://bitbucket.org/parivedasolutions/cmh-excl-mobile/src/69a92a6fc66ac3d0390dc79c6ae1a5eabee388ff/docs/NavigationController.md?at=master) 
