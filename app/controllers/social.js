@@ -11,15 +11,20 @@ function formatButtonIOS(buttonName, backgroundImageUrl) {
 		buttonName.borderColor = "#000000";
 		buttonName.borderRadius = "1";
 		buttonName.backgroundImage = backgroundImageUrl;
+		if (buttonName.backgroundImage != "") {
+			buttonName.title = "";
+		}
 	}
 }
 
-function formatButtonAndroid(buttonName, backgroundImageUrl){
+function formatButtonAndroid(buttonName, backgroundImageUrl) {
 	//format buttons for Android
-	if(OS_ANDROID) {
+	if (OS_ANDROID) {
 		buttonName.backgroundImage = backgroundImageUrl;
+		if (buttonName.backgroundImage != "") {
+			buttonName.title = "";
+		}
 	}
-	
 }
 
 function createButtonsShare() {
@@ -51,6 +56,7 @@ function createButtonsShare() {
 	//button to open photo sharing
 	var shareImage = Ti.UI.createButton({
 		id : 'shareImage',
+		text : "Image",
 		height : "40dip",
 		width : "40dip",
 		left : "0"
@@ -102,7 +108,7 @@ function sendIntentImage() {
 	}
 }
 
-function sendIntentImageAndroid(){
+function sendIntentImageAndroid() {
 	var intentImage = Ti.Android.createIntent({
 		type : "image/*",
 		action : Ti.Android.ACTION_SEND
@@ -112,7 +118,7 @@ function sendIntentImageAndroid(){
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
 }
 
-function sendIntentImageiOS(){
+function sendIntentImageiOS() {
 	//Use TiSocial.Framework module
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
@@ -125,15 +131,14 @@ function sendIntentImageiOS(){
 	}
 }
 
-
 function sendIntentText() {
 	//function to create a text intent/iOS equivalent
-	
+
 	//Get text to be sent from WP
 	contentTextComment = "#cmh #awesome";
 	contentTextSubject = "Having fun at Children's Museum of Houston!";
 	contentTextURL = "http://www.cmhouston.org";
-	
+
 	//Note: in kiosk mode, restrict available apps to email only
 	if (OS_ANDROID) {
 		sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL);
@@ -144,12 +149,13 @@ function sendIntentText() {
 	}
 }
 
-function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL){
+function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL) {
 	var intentText = Ti.Android.createIntent({
 		action : Ti.Android.ACTION_SEND,
 		type : 'text/plain'
 	});
-	contentTextComment = contentTextComment + " " + contentTextURL; //Android doesn't have a separate URL field
+	contentTextComment = contentTextComment + " " + contentTextURL;
+	//Android doesn't have a separate URL field
 	intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
 	intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
 	intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
@@ -157,7 +163,7 @@ function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTe
 	Ti.Android.currentActivity.startActivity(intentText);
 }
 
-function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL){
+function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL) {
 	//Use TiSocial.Framework module
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
