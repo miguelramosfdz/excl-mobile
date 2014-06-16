@@ -26,12 +26,6 @@ function createButtonsShare() {
 	});
 	$.viewShareBase.add(viewSharingTemp);
 
-	//hidden label to aid image intent process
-	var labelTemp = Ti.UI.createLabel({
-		text : "0"
-	});
-	viewSharingTemp.add(labelTemp);
-	
 	//button to open text sharing
 	var shareText = Ti.UI.createButton({
 		id : 'shareText',
@@ -58,16 +52,7 @@ function createButtonsShare() {
 		left : "0"
 	});
 	shareImage.addEventListener('click', function(e) {
-		//create invisible imageview to hold picture so that the intent is not triggered until after the picture is taken
-
-		//open camera and save image to view
-		imageFilePath = "";
 		openCamera();
-		while (imageFilePath.text == "") {
-			//do nothing
-			Ti.API.info("itz going");
-		};
-		sendIntentImage();
 	});
 	formatButtonIOS(shareImage);
 	viewSharingTemp.add(shareImage);
@@ -91,9 +76,8 @@ function openCamera() {
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = event.media.nativePath;
+				sendIntentImage();
 			}
-			labelTemp.text = "1";
-			alert("path: " + imageFilePath);
 		},
 		cancel : function() {
 		},
