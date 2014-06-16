@@ -24,7 +24,7 @@ var playSoundBtn = Ti.UI.createButton({
 	top : '380dp'
 });
 
-$.post.add(playSoundBtn);
+$.rozay.add(playSoundBtn);
 
 var playStatus = false;
 

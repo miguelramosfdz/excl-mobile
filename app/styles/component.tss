@@ -1,20 +1,21 @@
 
 "#temperatureLabel": {
 	color: "#000",
-    font: {
-        fontSize: '40dp',
-        fontWeight: 'bold'
-    },
-    top: 10
+	font: {
+		fontSize: '40dp',
+		fontWeight: 'bold'
+	},
+	top: 10
 }
 "#cityLabel": {
 	color: "#000",
-    font: {
-        fontSize: '30dp'
-    },
-    top: 10
+	font: {
+		fontSize: '30dp'
+	},
+	top: 10
 },
 "#refreshButton": {
 	color: "#000",
 	top: 20
 }
+
