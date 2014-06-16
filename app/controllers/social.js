@@ -109,6 +109,7 @@ function sendIntentImage() {
 }
 
 function sendIntentImageAndroid() {
+	//Create and send intent intent for android. 
 	var intentImage = Ti.Android.createIntent({
 		type : "image/*",
 		action : Ti.Android.ACTION_SEND
@@ -119,7 +120,7 @@ function sendIntentImageAndroid() {
 }
 
 function sendIntentImageiOS() {
-	//Use TiSocial.Framework module
+	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
@@ -132,7 +133,7 @@ function sendIntentImageiOS() {
 }
 
 function sendIntentText() {
-	//function to create a text intent/iOS equivalent
+	//function to send information to other apps
 
 	//Get text to be sent from WP
 	contentTextComment = "#cmh #awesome";
@@ -150,11 +151,12 @@ function sendIntentText() {
 }
 
 function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL) {
+	//Create and send text intent for android. Includes area for main text and url text to be appended and a subject header
 	var intentText = Ti.Android.createIntent({
 		action : Ti.Android.ACTION_SEND,
 		type : 'text/plain'
 	});
-	contentTextComment = contentTextComment + " " + contentTextURL;
+	contentTextComment = contentTextComment + "\n"+ contentTextURL;
 	//Android doesn't have a separate URL field
 	intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
 	intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
@@ -164,7 +166,7 @@ function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTe
 }
 
 function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL) {
-	//Use TiSocial.Framework module
+	//Use TiSocial.Framework module to share text
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
