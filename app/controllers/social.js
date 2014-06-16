@@ -1,5 +1,3 @@
-//separate android/iOS sections into separate functions
-
 //top level vars
 var imageFilePath;
 
@@ -25,8 +23,6 @@ function formatButtonAndroid(buttonName) {
 }
 
 function createShareButtons() {
-	//Initialization, which ensures keyboard is hidden and creates share button
-
 	//create view that will serve as temporary backing for sharing buttons
 	var viewSharingTemp = Ti.UI.createView({
 		layout : "vertical",
@@ -42,7 +38,7 @@ function createShareButtons() {
 		height : "40dip",
 		width : "40dip",
 		left : "0",
-		backgroundImage : "http://cf-wp-prod.sharethis.com/wp-content/uploads/2013/08/ST_LOGO.jpg"
+		backgroundImage : "/images/iconShare.png"
 	});
 	shareText.addEventListener('click', function(e) {
 		sendIntentText();
@@ -58,7 +54,7 @@ function createShareButtons() {
 		height : "40dip",
 		width : "40dip",
 		left : "0",
-		backgroundImage : "http://cdn.macrumors.com/article-new/2012/11/iphone-camera-icon.jpg"
+		backgroundImage : "/images/iconCamera.png"
 	});
 	shareImage.addEventListener('click', function(e) {
 		openCamera();
