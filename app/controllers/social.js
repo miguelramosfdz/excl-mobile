@@ -1,3 +1,8 @@
+//top level vars
+var imageName;
+var imageFile;
+var imageFilePath;
+
 function formatButtonIOS(buttonName) {
 	//Format buttons for IOS
 	if (OS_IOS) {
@@ -13,23 +18,22 @@ function createButtonsShare() {
 
 	//create view that will serve as temporary backing for sharing buttons
 	var viewSharingTemp = Ti.UI.createView({
-		layout : "horizontal",
+		layout : "vertical",
 		width : "100%",
-		height: "200dip"
+		height : "200dip"
 	});
 	$.viewShareBase.add(viewSharingTemp);
 
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
 		id : 'openMenuShareText',
-		Title : "Share",
-		//backgroundImage : "http://i.stack.imgur.com/P1ELC.png",
-		// height : "40dip",
-		// width : "40dip",
-		font : {
-			fontSize : 30
-		},
-		left : "10%"
+		title : "Share",
+		backgroundImage : "../../Resources/shareImage.png",
+		backgroundFocusedImage: "../../Resources/shareImage.png",
+		backgroundSelectedImage: "../../Resources/shareImage.png",
+		height : "40dip",
+		width : "40dip",
+		left : "0"
 	});
 	openMenuShareText.addEventListener('click', function(e) {
 		openViewShareText();
@@ -38,31 +42,33 @@ function createButtonsShare() {
 	viewSharingTemp.add(openMenuShareText);
 
 	//button to open photo sharing
-	var openCamera = Ti.UI.createButton({
-		id : 'openCamera',
-		Title : "Camera",
-		//backgroundImage : "http://www.vodeblog.com/wp-content/uploads/2012/01/volume-button-camera-shutter-enable_thumb.png",
-		// height : "40dip",
-		// width : "40dip",
-		font : {
-			fontSize : 30
-		},	
-		left : "30%"
+	var shareImage = Ti.UI.createButton({
+		id : 'shareImage',
+		backgroundImage : "http://icons.iconarchive.com/icons/visualpharm/icons8-metro-style/512/Photo-Video-Slr-camera-icon.png",
+		height : "40dip",
+		width : "40dip",
+		left : "0"
 	});
-	openCamera.addEventListener('click', function(e) {
-		shareImage();
+	shareImage.addEventListener('click', function(e) {
+		//create invisible imageview to hold picture so that the intent is not triggered until after the picture is taken
+
+		//open camera and save image to view
+		openCamera();
+		alert("File: " + imageFilePath);
+
+		//sendIntentImage();
 	});
-	formatButtonIOS(openCamera);
-	viewSharingTemp.add(openCamera);
+	formatButtonIOS(shareImage);
+	viewSharingTemp.add(shareImage);
+
+	var labelTemp = Ti.UI.createLabel({
+		text : "this is the label"
+	});
+	viewSharingTemp.add(labelTemp);
 }
 
-function shareImage() {
+function openCamera() {
 	//Holds all functionality related to sharing image through camera
-
-	//top level vars
-	var imageName;
-	var imageFile;
-	var imageFilePath;
 
 	//Save process for camera and updates view to display new picture
 	Titanium.Media.showCamera({
@@ -74,7 +80,7 @@ function shareImage() {
 			var fileName = 'cmh' + new Date().getTime() + '.jpg';
 			imageName = fileName;
 			//save file
-			imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
+			imageFile = /*Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) :*/ Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
@@ -87,7 +93,11 @@ function shareImage() {
 			alert("Camera functionality not working");
 		}
 	});
+}
+
+function sendIntentImage() {
 	//create and send an image intent
+
 	if (OS_ANDROID) {
 		var intentImage = Ti.Android.createIntent({
 			type : "image/*",

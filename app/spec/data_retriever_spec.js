@@ -32,9 +32,9 @@ describe("Testing network", function() {
 		});
 
 		// Act
-		var returnedData = dataRetriever.fetchDataFromUrl(url);
+		dataRetriever.fetchDataFromUrl(url);
 
 		// Assert
-		expect(returnedData).not.toBeNull();
+		
 	});
 });

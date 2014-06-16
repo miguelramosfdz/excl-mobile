@@ -9,3 +9,6 @@
 // object. For example:
 //
 // Alloy.Globals.someGlobalFunction = function(){};
+
+var NavigationController = require('NavigationController');
+Alloy.Globals.navController = new NavigationController();
