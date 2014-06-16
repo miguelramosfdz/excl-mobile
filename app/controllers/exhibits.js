@@ -1,5 +1,4 @@
 var args = arguments[0] || {};
-
 var json = {
   "status": "ok",
   "error": "Optional Error Message",
@@ -35,13 +34,48 @@ var json = {
               "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg"
             }
           ]
+        }, 
+        {
+          "id": 12345,
+          "name": "How Doesn't It Work?",
+          "description": "Such a great exhibit. Check it out!",
+          "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg",
+          "components": [
+            {
+              "id": 12345,
+              "name": "Cups or Balls",
+              "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg"
+            },
+            {
+              "id": 54321,
+              "name": "Spun Disc",
+              "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg"
+            }
+          ]
         }
       ]
     }
   }
 };
 
+var exhibitIndex = 0;
+var numOfExhibits = json.data.museum.exhibits.length;
+var exhibitViews = [];
+var componentsInExhibit = [];
+var componentsRow = createPlainRow();
 var tableData = [];
+
+var scrollView = Ti.UI.createScrollView({
+	layout: 'horizontal',
+	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
+	height : '100%',
+	showHorizontalScrollIndicator: true,
+	width: '100%',
+	contentWidth: 'auto',
+	scrollType: 'horizontal',
+	horizontalWrap: false
+});// Can Do in XML
+
 // simulate data from wordpress using Jess' model
 
 // Modify with new MODULE methods
@@ -74,86 +108,104 @@ function createHeadingRow() {
 	return row;
 }
 
-
-
-function createExhibitsCarousel(headingText, exhibits){
-	
+function createExhibitsCarousel(exhibits){
+	// These parts should be defined by TSS
 	var row = createPlainRow();
-	var headingRow = createHeadingRow();
-
-	var heading = Ti.UI.createLabel({
-		color : 'black',
-		font : {
-			fontFamily : 'Arial',
-			fontSize : 22,
-			fontWeight : 'bold'
-		},
-		text : headingText,
-		textAlign : 'center',
-	});
-	headingRow.add(heading);
-	tableData.push(headingRow);
-
-	var imageWrappers = [];
 	
-	for (var i = 0; i < exhibits.length; i++){//imageCollection.length; i++) {
-		var tempImage = Ti.UI.createImageView({
-			image : exhibits[i].image,
-			defaultImage : 'http://placehold.it/700x300',
-			width : '100%',
-			height : '100%'
-		});
-		var tempWrapper = Ti.UI.createView({
-			width : '100%',
-			height : '100%',
-			backgroundColor: 'white',
-			opacity: '50%',
-		});
-		
-		var labelTint = Ti.UI.createView({
-			backgroundColor: 'black',
-			opacity: 0.5,
-			height: '20%',
-			top: 0
-		});
-		
-		var label = Ti.UI.createLabel({
-			text: exhibits[i].name,
-			top: 0,
-			left: 10,
-			color: 'white',
-			font: {
-				fontFamily : 'Arial',
-				fontSize : 22,
-				fontWeight : 'bold'
-			}
-		});
-		
-		labelTint.add(label);
-		tempWrapper.add(tempImage);
-		tempWrapper.add(labelTint);
-		//imageWrappers[i] = tempImage;
-		imageWrappers[i] = tempWrapper;
+	var view = Ti.UI.createView({	
+		top: '5%',
+		backgroundColor: 'red'
+	});	// ADD THIS PART TO XML ^^
+	
+	for(i = exhibits.length -1 ; i >= 0; i--){
+		exhibitViews[i] = createLabeledPicView(exhibits[i]);
+		view.add(exhibitViews[i]);
+		exhibitViews[i].hide();
+		//$.addClass(exhibitImages[i], "exhibitImage"); 
 	}
-
-	var scrollableView = Ti.UI.createScrollableView({
-		views : imageWrappers,
-		showPagingControl : true,
-		pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
-		maxZoomScale : 5,
-		minZoomScale : 1,
-		borderRadius : 4,
-		height : '90%',
-		width : '90%',
-	});
-	row.add(scrollableView);
+	view.addEventListener('swipe', swipeHandler);
+	exhibitViews[0].show();
+	row.add(view);
 	tableData.push(row);
 }
 
-function createComponentsScrollView(componentsMessage, components){
-	var row = createPlainRow();
-	var headingRow = createHeadingRow();
+function swipeHandler(e){
+	if(numOfExhibits>0){
+		if(e.direction = 'right'){
+			exhibitViews[exhibitIndex].hide();
+			removeComponents();
+			exhibitIndex= (exhibitIndex+1)%numOfExhibits;
+			exhibitViews[exhibitIndex].show();
+			showComponents(exhibitIndex);
+		}
+		else if(e.direction = 'left'){
+			exhibitViews[exhibitIndex].hide();
+			removeComponents();
+			exhibitIndex--;
+			if(exhibitIndex=-1)
+				exhibitIndex=numOfExhibits -1;
+				
+			exhibitViews[exhibitIndex].show();
+			showcomponents(exhibitIndex);
+		}
+	}
+	//alert("swipe!");
+}
+
+function removeComponents(){
+	if(scrollView.children.length>0)
+		scrollView.removeAllChildren();
+}
+
+function showComponents(index){
+	if(index<componentsInExhibit.length);
+		//scrollView.add(componentsInExhibit[index].children[0]);
+		alert(componentsInExhibit[index].children.length);
+}
+
+function createLabeledPicView(item){
+	var itemContainer = Ti.UI.createView();
 	
+	var image = Ti.UI.createImageView({
+		height: '100%',
+		width: '100%'
+	});//$.addClass(exhibitImages[i], "exhibitImage"); 
+	image.image = item.image;
+	
+	itemContainer.add(image);
+	itemContainer.add(createTitleLabel(item.name));
+	return itemContainer;
+}
+
+function createTitleLabel(name){
+	var titleLabel = Ti.UI.createView({
+		backgroundColor: 'black',
+		opacity: 0.5,
+		height: '20%',
+		top: 0
+	});
+	//$.addClass(exhibitImages[i], "exhibitTitleShadow"); 
+	
+	var label = Ti.UI.createLabel({
+		text: name,
+		top: 0,
+		left: 10,
+		color: 'white',
+		font: {
+			fontFamily : 'Arial',
+			fontSize : 22,
+			fontWeight : 'bold'
+		}
+	});
+	//$.addClass(exhibitImages[i], "exhibitTitle"); 
+
+	titleLabel.add(label);
+
+	return titleLabel;
+}
+
+function createComponentHeading(componentHeading){
+		var headingRow = createHeadingRow();	
 	var heading = Ti.UI.createLabel({
 		color : 'black',
 		font : {
@@ -161,68 +213,42 @@ function createComponentsScrollView(componentsMessage, components){
 			fontSize : 22,
 			fontWeight : 'bold'
 		},
-		text : componentsMessage,
+		text : componentHeading,
 		textAlign : 'center',
 	});
-	row.height = 100;
 	headingRow.add(heading);
 	tableData.push(headingRow);
+}
+
+function createComponentsScrollView(exhibits){
+
+	var image;
+	componentsRow.height = 100;
+	var component;
+	var components;
 	
-	var image; 	
-	var scrollView = Ti.UI.createScrollView({
-		layout: 'horizontal',
-		//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
-		height : '100%',
-		showHorizontalScrollIndicator: true,
-		width: '100%',
-		contentWidth: 'auto',
-		scrollType: 'horizontal',
-		horizontalWrap: false
-	});
-	
-	for (var i = 0; i < components.length; i++){//imageCollection.length; i++) {
-		image = Ti.UI.createImageView({
-			image : components[i].image,
-			defaultImage : 'http://placehold.it/700x300',
-			height: '100%',
-			width: 200
-		});				
-		
-		var wrapper = Ti.UI.createView({
-			backgroundColor: 'white',
-			width: 200,
-			left: 10,
-			right: 10
-		});
-		var labelTint = Ti.UI.createView({
-			backgroundColor: 'black',
-			opacity: 0.5,
-			height: '20%',
-			top: 0
-		});
-		var label = Ti.UI.createLabel({
-			text: components[i].name,
-			top: 0,
-			left: 10,
-			color: 'white',
-			font: {
-				fontFamily : 'Arial',
-				fontSize : 14,
-				fontWeight : 'bold'
-			}
-		});	
-		
-		image.addEventListener('click', openComponent);
-		
-		labelTint.add(label);
-		wrapper.add(image);
-		wrapper.add(labelTint);
-		
-		scrollView.add(wrapper);
+	for (var i = 0; i < exhibits.length; i++){
+		components = Ti.UI.createView({
+			layout: 'horizontal',
+			horizontalWrap: false,
+			width: 'auto'
+		});// TSS CLASS
+
+		for(var j = 0; j< exhibits[i].components.length; j++){
+			component = createLabeledPicView(exhibits[i].components[j]);
+			component.left = 5;
+			component.right = 5;
+			component.width = 200;
+			//$.addClass blah
+			component.componentId = exhibits[i].components[j].id;
+			component.addEventListener('click', openComponent);
+			components.add(component);
+		}			
+		componentsInExhibit[i] = components;
 	}
-	
-	row.add(scrollView);
-	tableData.push(row);
+	scrollView.add(componentsInExhibit[0]);
+	componentsRow.add(scrollView);
+	tableData.push(componentsRow);
 }
 
 function createExhibitText(text){
@@ -247,8 +273,11 @@ function createExhibitText(text){
 
 
 
-createExhibitsCarousel("All Exhibits", json.data.museum.exhibits);
-createComponentsScrollView("Check out our Stations", json.data.museum.exhibits[0].components);
+//createExhibitsCarousel2("All Exhibits", json.data.museum.exhibits);
+createExhibitsCarousel(json.data.museum.exhibits);
+createComponentHeading("Check out our Stations");
+createComponentsScrollView(json.data.museum.exhibits);
+
 createExhibitText("Blah blah blah blah blah blah blah blah,\nBlah blah blah.");
 
 var tableView = Ti.UI.createTableView({
