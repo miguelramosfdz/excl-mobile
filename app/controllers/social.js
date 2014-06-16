@@ -1,3 +1,5 @@
+//separate android/iOS sections into separate functions
+
 //top level vars
 var imageName;
 var imageFile;
@@ -24,10 +26,16 @@ function createButtonsShare() {
 	});
 	$.viewShareBase.add(viewSharingTemp);
 
+	//hidden label to aid image intent process
+	var labelTemp = Ti.UI.createLabel({
+		text : "0"
+	});
+	viewSharingTemp.add(labelTemp);
+	
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
 		id : 'openMenuShareText',
-		title : "Share",
+		title : "Text",
 		backgroundImage : "../../Resources/shareImage.png",
 		backgroundFocusedImage: "../../Resources/shareImage.png",
 		backgroundSelectedImage: "../../Resources/shareImage.png",
@@ -53,18 +61,12 @@ function createButtonsShare() {
 		//create invisible imageview to hold picture so that the intent is not triggered until after the picture is taken
 
 		//open camera and save image to view
+		imageFilePath = "";
 		openCamera();
-		alert("File: " + imageFilePath);
 
-		//sendIntentImage();
 	});
 	formatButtonIOS(shareImage);
 	viewSharingTemp.add(shareImage);
-
-	var labelTemp = Ti.UI.createLabel({
-		text : "this is the label"
-	});
-	viewSharingTemp.add(labelTemp);
 }
 
 function openCamera() {
@@ -80,11 +82,20 @@ function openCamera() {
 			var fileName = 'cmh' + new Date().getTime() + '.jpg';
 			imageName = fileName;
 			//save file
-			imageFile = /*Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) :*/ Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
+			imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = event.media.nativePath;
+
+				alert("image: " + imageFilePath);
+
+				while (imageFilePath.text == "") {
+					//do nothing
+					Ti.API.info("itz going");
+				};
+				sendIntentImage();
+
 			}
 		},
 		cancel : function() {
@@ -97,31 +108,36 @@ function openCamera() {
 
 function sendIntentImage() {
 	//create and send an image intent
-
 	if (OS_ANDROID) {
-		var intentImage = Ti.Android.createIntent({
-			type : "image/*",
-			action : Ti.Android.ACTION_SEND
-		});
-		intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-		intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-		Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
+		sendIntentImageAndroid();
 	} else if (OS_IOS) {
-		//Use TiSocial.Framework module
-		var Social = require('dk.napp.social');
-		if (Social.isActivityViewSupported()) {
-			Social.activityView({
-				image : imageFilePath,
-				url : 'http://www.cmhouston.org'
-			});
-		} else {
-			alert("Sharing is not available on this device");
-		}
+		sendIntentImageiOS();
 	} else {
 		alert("Unsupported platform");
 	}
+}
 
-	//close sharing menu?
+function sendIntentImageAndroid(){
+	var intentImage = Ti.Android.createIntent({
+		type : "image/*",
+		action : Ti.Android.ACTION_SEND
+	});
+	intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+	intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
+	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
+}
+
+function sendIntentImageiOS(){
+	//Use TiSocial.Framework module
+	var Social = require('dk.napp.social');
+	if (Social.isActivityViewSupported()) {
+		Social.activityView({
+			image : imageFilePath,
+			url : 'http://www.cmhouston.org'
+		});
+	} else {
+		alert("Sharing is not available on this device");
+	}
 }
 
 function openViewShareText() {
@@ -199,7 +215,7 @@ function openViewShareText() {
 	});
 	formatButtonIOS(closeViewSharingAllContent);
 	closeViewSharingAllContent.addEventListener("click", function(e) {
-		$.viewShareBase.remove(viewSharingAllContent);
+		$.viewShareBase.remove(viewScroll);
 		if (OS_ANDROID) {
 			Ti.UI.Android.hideSoftKeyboard();
 		}
@@ -208,31 +224,39 @@ function openViewShareText() {
 
 	function createIntentText(contentTextComment, contentTextSubject) {
 		//function to create a text intent/iOS equivalent
-		if (OS_ANDROID) {
-			var intentText = Ti.Android.createIntent({
-				action : Ti.Android.ACTION_SEND,
-				type : 'text/plain'
-			});
-			intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
-			intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
-			intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-			Ti.Android.createIntentChooser(intentText, "Send Message");
-			Ti.Android.currentActivity.startActivity(intentText);
 
+		//Note: in kiosk mode, restrict available apps to email only
+		if (OS_ANDROID) {
+			createIntentTextAndroid(contentTextComment, contentTextSubject);
 		} else if (OS_IOS) {
-			//Use TiSocial.Framework module
-			var Social = require('dk.napp.social');
-			if (Social.isActivityViewSupported()) {
-				Social.activityView({
-					text : contentText,
-					url : 'http://www.cmhouston.org'
-				});
-			} else {
-				alert("Sharing is not available on this device");
-			}
-		}//end text sharing for iOS
-		else {
+			createIntentTextiOS(contentTextComment, contentTextSubject);
+		} else {
 			alert("Unsupported platform");
+		}
+	}
+	
+	function createIntentTextAndroid(contentTextComment, contentTextSubject){
+		var intentText = Ti.Android.createIntent({
+			action : Ti.Android.ACTION_SEND,
+			type : 'text/plain'
+		});
+		intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
+		intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
+		intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
+		Ti.Android.createIntentChooser(intentText, "Send Message");
+		Ti.Android.currentActivity.startActivity(intentText);
+	}
+	
+	function createIntentTextiOS(contentTextComment, contentTextSubject){
+		//Use TiSocial.Framework module
+		var Social = require('dk.napp.social');
+		if (Social.isActivityViewSupported()) {
+			Social.activityView({
+				text : contentText,
+				url : 'http://www.cmhouston.org'
+			});
+		} else {
+			alert("Sharing is not available on this device");
 		}
 	}
 
@@ -267,7 +291,6 @@ function openViewShareText() {
 		inputSubject.font.color = "#000000";
 		inputSubject.focus();
 		//show text editting buttons
-		closeInputKeyboard.visible = true;
 		clearTextComment.visible = true;
 	});
 	rowTwo.add(inputSubject);
@@ -303,7 +326,6 @@ function openViewShareText() {
 		inputComment.font.color = "#000000";
 		inputComment.focus();
 		//show text editting buttons
-		closeInputKeyboard.visible = true;
 		clearTextComment.visible = true;
 	});
 
@@ -311,7 +333,7 @@ function openViewShareText() {
 
 	//Warning label for Facebook
 	var labelWarningFacebookText = Ti.UI.createLabel({
-		text : "Facebook & Instagram do not allow pre-population of text fields. Your comment will be copied to clipboard for you.",
+		text : "Facebook & Instagram do not allow pre-population of text fields. Your comment will be copied to the clipboard for you.",
 		font : {
 			size : 4,
 			color : "#000000"
@@ -334,6 +356,7 @@ function openViewShareText() {
 	clearTextComment.addEventListener('click', function(e) {
 		inputComment.value = "";
 		inputSubject.value = "";
+		clearTextComment.visible = false;
 	});
 	rowThree.add(clearTextComment);
 }

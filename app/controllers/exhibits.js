@@ -48,7 +48,7 @@ var tableData = [];
 function openComponent(e){
 		
 	var componentWindow = Alloy.createController('componentlanding').getView();
-	//componentWindow.open();  
+	componentWindow.open();  
 }
 
 // -----------------------------------------------------------------------
@@ -261,3 +261,4 @@ var tableView = Ti.UI.createTableView({
 
 $.exhibits.title = "Exhibits";
 $.exhibits.add(tableView);
+
