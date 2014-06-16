@@ -131,7 +131,7 @@ function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentT
 
 function openInstagram(imageFilePathInstagram){
 	alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
-	var docviewer = Ti.UI.iOS.createDocumentViewer({url: imageFilePathInstagram});
+	var docviewer = Ti.UI.iOS.createDocumentViewer({url: "/images/alexbutton.png"}); //Testing a sample image
  	alert("Created docviewer");
     var annotationObj = new Object();
     annotationObj.InstagramCaption = "Caption sample";
