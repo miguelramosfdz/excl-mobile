@@ -5,6 +5,11 @@
 				<Require type="view" src="social" id="weatherTab"/>
 			</Window>
 		</Tab>
+		<Tab title="Visual Demo" icon="KS_nav_views.png">
+			<Window id="exhibitsWindow" title="Visual Demo">
+				<Require type="view" src="demoIndex" id="demoTab"/>
+			</Window>
+		</Tab>
 		<Tab title="Exhibit" icon="KS_nav_ui.png">
 			<Window id="exhibitWindow" title="Exhibit">
 				<Require type="view" src="exhibit" id="exhibitTab"/>
@@ -18,11 +23,6 @@
 		<Tab title="Rozay" icon="KS_nav_views.png">
 			<Window id="win" title="win">
 				<Require type="view" src="rozay" id="postTab"/>
-			</Window>
-		</Tab>
-		<Tab title="Visual Demo" icon="KS_nav_views.png">
-			<Window id="exhibitsWindow" title="Visual Demo">
-				<Require type="view" src="demoIndex" id="demoTab"/>
 			</Window>
 		</Tab>
 		<Tab title="Navigation Demo" icon="KS_nav_views.png">

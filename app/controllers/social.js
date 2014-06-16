@@ -5,7 +5,7 @@ var imageFilePathInstagram;
 function formatButtonIOS(buttonName) {
 	//Format buttons for IOS
 	if (OS_IOS) {
-
+		//remove title field if image is present
 		if (buttonName.backgroundImage != "") {
 			buttonName.title = "";
 		}
@@ -15,6 +15,7 @@ function formatButtonIOS(buttonName) {
 function formatButtonAndroid(buttonName) {
 	//format buttons for Android
 	if (OS_ANDROID) {
+		//remove title field if image is present
 		if (buttonName.backgroundImage != "") {
 			buttonName.title = "";
 		}
@@ -34,10 +35,10 @@ function createShareButtons() {
 	var shareText = Ti.UI.createButton({
 		id : 'shareText',
 		title : "Text",
-		height : "40dip",
-		width : "40dip",
+		height : "70dip",
+		width : "60dip",
 		left : "0",
-		backgroundImage : "/images/iconShare.png"
+		backgroundImage : "/images/alexbutton.png"
 	});
 	shareText.addEventListener('click', function(e) {
 		sendIntentText();
@@ -82,7 +83,7 @@ function openCamera() {
 			var imageFileInstagram = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileNameInstagram) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileNameInstagram);
 			imageFileInstagram.write(event.media);
 			//save file path to be shared
-			
+
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
 				imageFilePathInstagram = imageFileInstagram.nativePath;
@@ -99,12 +100,12 @@ function openCamera() {
 
 function sendIntentImage() {
 	//create and send an image intent
-	
+
 	//Get text to be sent from WP
 	contentTextComment = "#cmh #awesome";
 	contentTextSubject = "Having fun at Children's Museum of Houston!";
 	contentTextURL = "http://www.cmhouston.org";
-	
+
 	if (OS_ANDROID) {
 		sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL);
 	} else if (OS_IOS) {
@@ -115,16 +116,17 @@ function sendIntentImage() {
 }
 
 function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL) {
-	contentTextComment = contentTextComment + contentTextURL; //Android intents don't have a separate URL field
+	contentTextComment = contentTextComment + contentTextURL;
+	//Android intents don't have a separate URL field
 
-	//Create and send image intent for android. 
+	//Create and send image intent for android.
 	var intentImage = Ti.Android.createIntent({
 		type : "image/*",
 		action : Ti.Android.ACTION_SEND
 	});
 	intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
 	intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
+	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share photo via"));
 }
 
 function openInstagram(imageFilePathInstagram){
@@ -192,13 +194,12 @@ function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTe
 		action : Ti.Android.ACTION_SEND,
 		type : 'text/plain'
 	});
-	contentTextComment = contentTextComment + "\n"+ contentTextURL;
+	contentTextComment = contentTextComment + "\n" + contentTextURL;
 	//Android doesn't have a separate URL field
 	intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
 	intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
 	intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-	Ti.Android.createIntentChooser(intentText, "Send Message");
-	Ti.Android.currentActivity.startActivity(intentText);
+	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentText, "Send message via"));
 }
 
 function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL) {
