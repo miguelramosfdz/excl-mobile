@@ -24,10 +24,16 @@ function createButtonsShare() {
 	});
 	$.viewShareBase.add(viewSharingTemp);
 
+	//hidden label to aid image intent process
+	var labelTemp = Ti.UI.createLabel({
+		text : "0"
+	});
+	viewSharingTemp.add(labelTemp);
+	
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
 		id : 'openMenuShareText',
-		title : "Share",
+		title : "Text",
 		backgroundImage : "../../Resources/shareImage.png",
 		backgroundFocusedImage: "../../Resources/shareImage.png",
 		backgroundSelectedImage: "../../Resources/shareImage.png",
@@ -53,18 +59,16 @@ function createButtonsShare() {
 		//create invisible imageview to hold picture so that the intent is not triggered until after the picture is taken
 
 		//open camera and save image to view
+		imageFilePath = "";
 		openCamera();
-		alert("File: " + imageFilePath);
-
-		//sendIntentImage();
+		while (imageFilePath.text == "") {
+			//do nothing
+			Ti.API.info("itz going");
+		};
+		sendIntentImage();
 	});
 	formatButtonIOS(shareImage);
 	viewSharingTemp.add(shareImage);
-
-	var labelTemp = Ti.UI.createLabel({
-		text : "this is the label"
-	});
-	viewSharingTemp.add(labelTemp);
 }
 
 function openCamera() {
@@ -86,6 +90,8 @@ function openCamera() {
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = event.media.nativePath;
 			}
+			labelTemp.text = "1";
+			alert("path: " + imageFilePath);
 		},
 		cancel : function() {
 		},
@@ -199,7 +205,7 @@ function openViewShareText() {
 	});
 	formatButtonIOS(closeViewSharingAllContent);
 	closeViewSharingAllContent.addEventListener("click", function(e) {
-		$.viewShareBase.remove(viewSharingAllContent);
+		$.viewShareBase.remove(viewSharingTemp);
 		if (OS_ANDROID) {
 			Ti.UI.Android.hideSoftKeyboard();
 		}
@@ -208,6 +214,8 @@ function openViewShareText() {
 
 	function createIntentText(contentTextComment, contentTextSubject) {
 		//function to create a text intent/iOS equivalent
+		
+		//Note: in kiosk mode, restrict available apps to email only
 		if (OS_ANDROID) {
 			var intentText = Ti.Android.createIntent({
 				action : Ti.Android.ACTION_SEND,
@@ -267,7 +275,6 @@ function openViewShareText() {
 		inputSubject.font.color = "#000000";
 		inputSubject.focus();
 		//show text editting buttons
-		closeInputKeyboard.visible = true;
 		clearTextComment.visible = true;
 	});
 	rowTwo.add(inputSubject);
@@ -303,7 +310,6 @@ function openViewShareText() {
 		inputComment.font.color = "#000000";
 		inputComment.focus();
 		//show text editting buttons
-		closeInputKeyboard.visible = true;
 		clearTextComment.visible = true;
 	});
 
@@ -334,6 +340,7 @@ function openViewShareText() {
 	clearTextComment.addEventListener('click', function(e) {
 		inputComment.value = "";
 		inputSubject.value = "";
+		clearTextComment.visible = false;
 	});
 	rowThree.add(clearTextComment);
 }
