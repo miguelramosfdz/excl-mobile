@@ -24,6 +24,12 @@ function createButtonsShare() {
 	});
 	$.viewShareBase.add(viewSharingTemp);
 
+	//hidden label to aid image intent process
+	var labelTemp = Ti.UI.createLabel({
+		text : "0"
+	});
+	viewSharingTemp.add(labelTemp);
+	
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
 		id : 'openMenuShareText',
@@ -50,18 +56,15 @@ function createButtonsShare() {
 		//create invisible imageview to hold picture so that the intent is not triggered until after the picture is taken
 
 		//open camera and save image to view
+		imageFilePath = "";
 		openCamera();
-		alert("File: " + imageFilePath);
-
-		//sendIntentImage();
+		while (imageFilePath.text == "") {
+			//do nothing
+		};
+		sendIntentImage();
 	});
 	formatButtonIOS(shareImage);
 	viewSharingTemp.add(shareImage);
-
-	var labelTemp = Ti.UI.createLabel({
-		text : "this is the label"
-	});
-	viewSharingTemp.add(labelTemp);
 }
 
 function openCamera() {
@@ -83,6 +86,8 @@ function openCamera() {
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = event.media.nativePath;
 			}
+			labelTemp.text = "1";
+			alert("path: " + imageFilePath);
 		},
 		cancel : function() {
 		},
@@ -196,7 +201,7 @@ function openViewShareText() {
 	});
 	formatButtonIOS(closeViewSharingAllContent);
 	closeViewSharingAllContent.addEventListener("click", function(e) {
-		$.viewShareBase.remove(viewSharingAllContent);
+		$.viewShareBase.remove(viewSharingTemp);
 		if (OS_ANDROID) {
 			Ti.UI.Android.hideSoftKeyboard();
 		}
