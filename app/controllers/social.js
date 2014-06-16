@@ -4,23 +4,21 @@
 var imageFile;
 var imageFilePath;
 
-function formatButtonIOS(buttonName, backgroundImageUrl) {
+function formatButtonIOS(buttonName) {
 	//Format buttons for IOS
 	if (OS_IOS) {
 		buttonName.borderWidth = "1";
 		buttonName.borderColor = "#000000";
 		buttonName.borderRadius = "1";
-		buttonName.backgroundImage = backgroundImageUrl;
 		if (buttonName.backgroundImage != "") {
 			buttonName.title = "";
 		}
 	}
 }
 
-function formatButtonAndroid(buttonName, backgroundImageUrl) {
+function formatButtonAndroid(buttonName) {
 	//format buttons for Android
 	if (OS_ANDROID) {
-		buttonName.backgroundImage = backgroundImageUrl;
 		if (buttonName.backgroundImage != "") {
 			buttonName.title = "";
 		}
@@ -44,28 +42,30 @@ function createButtonsShare() {
 		title : "Text",
 		height : "40dip",
 		width : "40dip",
-		left : "0"
+		left : "0",
+		backgroundImage : "http://cf-wp-prod.sharethis.com/wp-content/uploads/2013/08/ST_LOGO.jpg"
 	});
 	shareText.addEventListener('click', function(e) {
 		sendIntentText();
 	});
-	formatButtonIOS(shareText, "http://cf-wp-prod.sharethis.com/wp-content/uploads/2013/08/ST_LOGO.jpg");
-	formatButtonAndroid(shareText, "http://cf-wp-prod.sharethis.com/wp-content/uploads/2013/08/ST_LOGO.jpg");
+	formatButtonIOS(shareText);
+	formatButtonAndroid(shareText);
 	viewSharingTemp.add(shareText);
 
 	//button to open photo sharing
 	var shareImage = Ti.UI.createButton({
 		id : 'shareImage',
-		text : "Image",
+		text : "Camera",
 		height : "40dip",
 		width : "40dip",
-		left : "0"
+		left : "0",
+		backgroundImage : "http://cdn.macrumors.com/article-new/2012/11/iphone-camera-icon.jpg"
 	});
 	shareImage.addEventListener('click', function(e) {
 		openCamera();
 	});
-	formatButtonIOS(shareImage, "http://admin.eexamstudy.com/images/News/075076207264ios-camera-icon1.jpg");
-	formatButtonAndroid(shareImage, "http://admin.eexamstudy.com/images/News/075076207264ios-camera-icon1.jpg");
+	formatButtonIOS(shareImage);
+	formatButtonAndroid(shareImage);
 	viewSharingTemp.add(shareImage);
 }
 
@@ -116,6 +116,8 @@ function sendIntentImage() {
 
 function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL) {
 	contentTextComment = contentTextComment + contentTextURL; //Android intents don't have a separate URL field
+
+	//Create and send intent intent for android. 
 	var intentImage = Ti.Android.createIntent({
 		type : "image/*",
 		action : Ti.Android.ACTION_SEND
@@ -126,7 +128,7 @@ function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentT
 }
 
 function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL) {
-	//Use TiSocial.Framework module
+	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
@@ -140,7 +142,7 @@ function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextU
 }
 
 function sendIntentText() {
-	//function to create a text intent/iOS equivalent
+	//function to send information to other apps
 
 	//Get text to be sent from WP
 	contentTextComment = "#cmh #awesome";
@@ -158,11 +160,12 @@ function sendIntentText() {
 }
 
 function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL) {
+	//Create and send text intent for android. Includes area for main text and url text to be appended and a subject header
 	var intentText = Ti.Android.createIntent({
 		action : Ti.Android.ACTION_SEND,
 		type : 'text/plain'
 	});
-	contentTextComment = contentTextComment + " " + contentTextURL;
+	contentTextComment = contentTextComment + "\n"+ contentTextURL;
 	//Android doesn't have a separate URL field
 	intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
 	intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
@@ -172,15 +175,14 @@ function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTe
 }
 
 function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL) {
-	//Use TiSocial.Framework module
+	//Use TiSocial.Framework module to share text
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
 			text : contentTextComment,
 			url : contentTextURL
 		});
-	}
-	else{
+	} else {
 		alert("Sharing is not available on this device");
 	}
 }
