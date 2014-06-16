@@ -1,18 +1,25 @@
 //separate android/iOS sections into separate functions
 
 //top level vars
-var imageName;
 var imageFile;
 var imageFilePath;
 
-function formatButtonIOS(buttonName) {
+function formatButtonIOS(buttonName, backgroundImageUrl) {
 	//Format buttons for IOS
 	if (OS_IOS) {
 		buttonName.borderWidth = "1";
 		buttonName.borderColor = "#000000";
 		buttonName.borderRadius = "1";
-		//buttonName.backgroundColor = "F8F8F8";
+		buttonName.backgroundImage = backgroundImageUrl;
 	}
+}
+
+function formatButtonAndroid(buttonName, backgroundImageUrl){
+	//format buttons for Android
+	if(OS_ANDROID) {
+		buttonName.backgroundImage = backgroundImageUrl;
+	}
+	
 }
 
 function createButtonsShare() {
@@ -30,9 +37,6 @@ function createButtonsShare() {
 	var shareText = Ti.UI.createButton({
 		id : 'shareText',
 		title : "Text",
-		backgroundImage : "../../Resources/shareImage.png",
-		backgroundFocusedImage: "../../Resources/shareImage.png",
-		backgroundSelectedImage: "../../Resources/shareImage.png",
 		height : "40dip",
 		width : "40dip",
 		left : "0"
@@ -40,13 +44,13 @@ function createButtonsShare() {
 	shareText.addEventListener('click', function(e) {
 		sendIntentText();
 	});
-	formatButtonIOS(shareText);
+	formatButtonIOS(shareText, "");
+	formatButtonAndroid(shareText, "https://cdn3.iconfinder.com/data/icons/pictofoundry-pro-vector-set/512/Share-512.png");
 	viewSharingTemp.add(shareText);
 
 	//button to open photo sharing
 	var shareImage = Ti.UI.createButton({
 		id : 'shareImage',
-		backgroundImage : "http://icons.iconarchive.com/icons/visualpharm/icons8-metro-style/512/Photo-Video-Slr-camera-icon.png",
 		height : "40dip",
 		width : "40dip",
 		left : "0"
@@ -54,7 +58,8 @@ function createButtonsShare() {
 	shareImage.addEventListener('click', function(e) {
 		openCamera();
 	});
-	formatButtonIOS(shareImage);
+	formatButtonIOS(shareImage, "");
+	formatButtonAndroid(shareImage, "http://icons.iconarchive.com/icons/visualpharm/icons8-metro-style/512/Photo-Video-Slr-camera-icon.png");
 	viewSharingTemp.add(shareImage);
 }
 
@@ -69,7 +74,6 @@ function openCamera() {
 
 			//create image file and save name for future use
 			var fileName = 'cmh' + new Date().getTime() + '.jpg';
-			imageName = fileName;
 			//save file
 			imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
