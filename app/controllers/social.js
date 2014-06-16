@@ -63,11 +63,7 @@ function createButtonsShare() {
 		//open camera and save image to view
 		imageFilePath = "";
 		openCamera();
-		while (imageFilePath.text == "") {
-			//do nothing
-			Ti.API.info("itz going");
-		};
-		sendIntentImage();
+
 	});
 	formatButtonIOS(shareImage);
 	viewSharingTemp.add(shareImage);
@@ -91,9 +87,16 @@ function openCamera() {
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = event.media.nativePath;
+
+				alert("image: " + imageFilePath);
+
+				while (imageFilePath.text == "") {
+					//do nothing
+					Ti.API.info("itz going");
+				};
+				sendIntentImage();
+
 			}
-			labelTemp.text = "1";
-			alert("path: " + imageFilePath);
 		},
 		cancel : function() {
 		},
@@ -216,7 +219,7 @@ function openViewShareText() {
 
 	function createIntentText(contentTextComment, contentTextSubject) {
 		//function to create a text intent/iOS equivalent
-		
+
 		//Note: in kiosk mode, restrict available apps to email only
 		if (OS_ANDROID) {
 			var intentText = Ti.Android.createIntent({
