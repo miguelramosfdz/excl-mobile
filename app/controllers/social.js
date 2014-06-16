@@ -1,7 +1,6 @@
 //separate android/iOS sections into separate functions
 
 //top level vars
-var imageFile;
 var imageFilePath;
 
 function formatButtonIOS(buttonName) {
@@ -25,7 +24,7 @@ function formatButtonAndroid(buttonName) {
 	}
 }
 
-function createButtonsShare() {
+function createShareButtons() {
 	//Initialization, which ensures keyboard is hidden and creates share button
 
 	//create view that will serve as temporary backing for sharing buttons
@@ -81,7 +80,7 @@ function openCamera() {
 			//create image file and save name for future use
 			var fileName = 'cmh' + new Date().getTime() + '.jpg';
 			//save file
-			imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
+			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
@@ -92,7 +91,7 @@ function openCamera() {
 		cancel : function() {
 		},
 		error : function(Error) {
-			alert("Camera functionality not working");
+			alert("Camera not working");
 		}
 	});
 }
@@ -104,7 +103,7 @@ function sendIntentImage() {
 	} else if (OS_IOS) {
 		sendIntentImageiOS();
 	} else {
-		alert("Unsupported platform");
+		alert("Unsupported platform (image sharing)");
 	}
 }
 
@@ -128,7 +127,7 @@ function sendIntentImageiOS() {
 			url : 'http://www.cmhouston.org'
 		});
 	} else {
-		alert("Sharing is not available on this device");
+		alert("Photo sharing is not available on this device");
 	}
 }
 
@@ -146,7 +145,7 @@ function sendIntentText() {
 	} else if (OS_IOS) {
 		sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL);
 	} else {
-		alert("Unsupported platform");
+		alert("Unsupported platform (text sharing)");
 	}
 }
 
@@ -174,9 +173,9 @@ function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextUR
 			url : contentTextURL
 		});
 	} else {
-		alert("Sharing is not available on this device");
+		alert("Text sharing is not available on this device");
 	}
 }
 
 //Run initialization
-createButtonsShare();
+createShareButtons();
