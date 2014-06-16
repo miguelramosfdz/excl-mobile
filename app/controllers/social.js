@@ -49,8 +49,8 @@ function createButtonsShare() {
 	shareText.addEventListener('click', function(e) {
 		sendIntentText();
 	});
-	formatButtonIOS(shareText, "");
-	formatButtonAndroid(shareText, "https://cdn3.iconfinder.com/data/icons/pictofoundry-pro-vector-set/512/Share-512.png");
+	formatButtonIOS(shareText, "http://cf-wp-prod.sharethis.com/wp-content/uploads/2013/08/ST_LOGO.jpg");
+	formatButtonAndroid(shareText, "http://cf-wp-prod.sharethis.com/wp-content/uploads/2013/08/ST_LOGO.jpg");
 	viewSharingTemp.add(shareText);
 
 	//button to open photo sharing
@@ -64,8 +64,8 @@ function createButtonsShare() {
 	shareImage.addEventListener('click', function(e) {
 		openCamera();
 	});
-	formatButtonIOS(shareImage, "");
-	formatButtonAndroid(shareImage, "http://icons.iconarchive.com/icons/visualpharm/icons8-metro-style/512/Photo-Video-Slr-camera-icon.png");
+	formatButtonIOS(shareImage, "http://admin.eexamstudy.com/images/News/075076207264ios-camera-icon1.jpg");
+	formatButtonAndroid(shareImage, "http://admin.eexamstudy.com/images/News/075076207264ios-camera-icon1.jpg");
 	viewSharingTemp.add(shareImage);
 }
 
