@@ -1,6 +1,6 @@
 var args = arguments[0] || {};
 
-// $.NavDemo2.title = 'Window ' + Alloy.Globals.navController.windowStack.length;
+$.NavDemo2.title = 'Window ' + Alloy.Globals.navController.windowStack.length;
 Alloy.Globals.navController.addKioskModeListener($.home);
 $.updateForKioskMode = updatePage;
 	
