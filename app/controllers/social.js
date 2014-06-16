@@ -168,7 +168,7 @@ function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextUR
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
-			text : contentTextComment,
+			//text : contentTextComment,
 			url : contentTextURL
 		});
 	}
