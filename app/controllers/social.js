@@ -33,7 +33,7 @@ function createButtonsShare() {
 	//button to open text sharing
 	var openMenuShareText = Ti.UI.createButton({
 		id : 'openMenuShareText',
-		title : "Share",
+		title : "Text",
 		backgroundImage : "../../Resources/shareImage.png",
 		backgroundFocusedImage: "../../Resources/shareImage.png",
 		backgroundSelectedImage: "../../Resources/shareImage.png",
@@ -63,6 +63,7 @@ function createButtonsShare() {
 		openCamera();
 		while (imageFilePath.text == "") {
 			//do nothing
+			Ti.API.info("itz going");
 		};
 		sendIntentImage();
 	});
