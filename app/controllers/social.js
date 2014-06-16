@@ -98,16 +98,24 @@ function openCamera() {
 
 function sendIntentImage() {
 	//create and send an image intent
+	
+	//Get text to be sent from WP
+	contentTextComment = "#cmh #awesome";
+	contentTextSubject = "Having fun at Children's Museum of Houston!";
+	contentTextURL = "http://www.cmhouston.org";
+	
 	if (OS_ANDROID) {
-		sendIntentImageAndroid();
+		sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL);
 	} else if (OS_IOS) {
-		sendIntentImageiOS();
+		sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL);
 	} else {
 		alert("Unsupported platform (image sharing)");
 	}
 }
 
-function sendIntentImageAndroid() {
+function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL) {
+	contentTextComment = contentTextComment + contentTextURL; //Android intents don't have a separate URL field
+
 	//Create and send intent intent for android. 
 	var intentImage = Ti.Android.createIntent({
 		type : "image/*",
@@ -118,13 +126,14 @@ function sendIntentImageAndroid() {
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share with..."));
 }
 
-function sendIntentImageiOS() {
+function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
 			image : imageFilePath,
-			url : 'http://www.cmhouston.org'
+			text : contentTextComment, //Note that contentTextSubject is unused; there is no field for that
+			url : contentTextURL
 		});
 	} else {
 		alert("Photo sharing is not available on this device");
@@ -169,7 +178,7 @@ function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextUR
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
-			//text : contentTextComment,
+			text : contentTextComment,
 			url : contentTextURL
 		});
 	} else {
