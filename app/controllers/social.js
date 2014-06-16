@@ -4,23 +4,21 @@
 var imageFile;
 var imageFilePath;
 
-function formatButtonIOS(buttonName, backgroundImageUrl) {
+function formatButtonIOS(buttonName) {
 	//Format buttons for IOS
 	if (OS_IOS) {
 		buttonName.borderWidth = "1";
 		buttonName.borderColor = "#000000";
 		buttonName.borderRadius = "1";
-		buttonName.backgroundImage = backgroundImageUrl;
 		if (buttonName.backgroundImage != "") {
 			buttonName.title = "";
 		}
 	}
 }
 
-function formatButtonAndroid(buttonName, backgroundImageUrl) {
+function formatButtonAndroid(buttonName) {
 	//format buttons for Android
 	if (OS_ANDROID) {
-		buttonName.backgroundImage = backgroundImageUrl;
 		if (buttonName.backgroundImage != "") {
 			buttonName.title = "";
 		}
@@ -44,28 +42,30 @@ function createButtonsShare() {
 		title : "Text",
 		height : "40dip",
 		width : "40dip",
-		left : "0"
+		left : "0",
+		backgroundImage : "http://cf-wp-prod.sharethis.com/wp-content/uploads/2013/08/ST_LOGO.jpg"
 	});
 	shareText.addEventListener('click', function(e) {
 		sendIntentText();
 	});
-	formatButtonIOS(shareText, "http://cf-wp-prod.sharethis.com/wp-content/uploads/2013/08/ST_LOGO.jpg");
-	formatButtonAndroid(shareText, "http://cf-wp-prod.sharethis.com/wp-content/uploads/2013/08/ST_LOGO.jpg");
+	formatButtonIOS(shareText);
+	formatButtonAndroid(shareText);
 	viewSharingTemp.add(shareText);
 
 	//button to open photo sharing
 	var shareImage = Ti.UI.createButton({
 		id : 'shareImage',
-		text : "Image",
+		text : "Camera",
 		height : "40dip",
 		width : "40dip",
-		left : "0"
+		left : "0",
+		backgroundImage : "http://cdn.macrumors.com/article-new/2012/11/iphone-camera-icon.jpg"
 	});
 	shareImage.addEventListener('click', function(e) {
 		openCamera();
 	});
-	formatButtonIOS(shareImage, "http://admin.eexamstudy.com/images/News/075076207264ios-camera-icon1.jpg");
-	formatButtonAndroid(shareImage, "http://admin.eexamstudy.com/images/News/075076207264ios-camera-icon1.jpg");
+	formatButtonIOS(shareImage);
+	formatButtonAndroid(shareImage);
 	viewSharingTemp.add(shareImage);
 }
 
@@ -171,8 +171,7 @@ function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextUR
 			//text : contentTextComment,
 			url : contentTextURL
 		});
-	}
-	else{
+	} else {
 		alert("Sharing is not available on this device");
 	}
 }
