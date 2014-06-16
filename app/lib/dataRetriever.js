@@ -1,21 +1,26 @@
-var tiCalls;
+var apiCalls, networkCalls, parseCalls;
 
-function setPathForLibDirectory(nameOfLib) {
+// there is probably cleaner way of doing writing this function...
+function setPathForLibDirectory(apiCallsLib, networkCallsLib, parseCallsLib) {
 	if ( typeof Titanium == 'undefined') {
 		// this is required for jasmine-node to run via terminal
-		tiCalls = require('../lib/' + nameOfLib);
+		apiCalls = require('../lib/customCalls/' + apiCallsLib);
+		networkCalls = require('../lib/customCalls/' + networkCallsLib);
+		parseCalls = require('../lib/customCalls/' + parseCallsLib);
 	} else {
-		tiCalls = require(nameOfLib);
+		apiCalls = require('customCalls/' + apiCallsLib);
+		networkCalls = require('customCalls/' + networkCallsLib);
+		parseCalls = require('customCalls/' + parseCallsLib);
 	}
 }
 
 function parseJson(responseText) {
-	json = tiCalls.parse(responseText);
+	json = parseCalls.parse(responseText);
 	return json;
 }
 
 function fetchDataFromUrl(url, onSuccess) {
-	var client = tiCalls.network(url, onSuccess);
+	var client = networkCalls.network(url, onSuccess);
 
 	if (client) {
 		client.open("GET", url);
@@ -24,6 +29,6 @@ function fetchDataFromUrl(url, onSuccess) {
 
 }
 
-setPathForLibDirectory('exclCommonTiApi');
+setPathForLibDirectory('apiCalls', 'networkCalls', 'parseCalls');
 module.exports.parseJson = parseJson;
 module.exports.fetchDataFromUrl = fetchDataFromUrl;
