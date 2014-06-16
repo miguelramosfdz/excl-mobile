@@ -1,7 +1,5 @@
 # ExCL Mobile App #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
 ### Install Steps ###
 
 1. Clone the cmh-excl-mobile repository (go to https://bitbucket.org/parivedasolutions/cmh-excl-mobile to see your clone link) from bitbucket to anywhere on your computer
