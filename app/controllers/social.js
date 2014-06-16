@@ -214,6 +214,8 @@ function openViewShareText() {
 
 	function createIntentText(contentTextComment, contentTextSubject) {
 		//function to create a text intent/iOS equivalent
+		
+		//Note: in kiosk mode, restrict available apps to email only
 		if (OS_ANDROID) {
 			var intentText = Ti.Android.createIntent({
 				action : Ti.Android.ACTION_SEND,
@@ -273,7 +275,6 @@ function openViewShareText() {
 		inputSubject.font.color = "#000000";
 		inputSubject.focus();
 		//show text editting buttons
-		closeInputKeyboard.visible = true;
 		clearTextComment.visible = true;
 	});
 	rowTwo.add(inputSubject);
@@ -309,7 +310,6 @@ function openViewShareText() {
 		inputComment.font.color = "#000000";
 		inputComment.focus();
 		//show text editting buttons
-		closeInputKeyboard.visible = true;
 		clearTextComment.visible = true;
 	});
 
@@ -340,6 +340,7 @@ function openViewShareText() {
 	clearTextComment.addEventListener('click', function(e) {
 		inputComment.value = "";
 		inputSubject.value = "";
+		clearTextComment.visible = false;
 	});
 	rowThree.add(clearTextComment);
 }
