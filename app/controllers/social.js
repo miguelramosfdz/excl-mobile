@@ -1,5 +1,31 @@
 //top level vars
 var imageFilePath;
+var dataRetriever = require("dataRetriever");
+var jsonURL = "http://www.mocky.io/v2/539f5f5fa7039ff6083fcb90";
+
+function retrievePostTags(componentId, postId) {
+	//Retrieve social media message, which contains social media tags
+	var postTags = "";
+	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
+		if (returnedData) {
+			for (var i = 0; i < returnedData.data.component.posts.length; j++) {
+				//find correct post
+				if (returnedData.data.component.posts[i].id == postId) {
+
+					alert("found post");
+
+					//pull tags to array
+					postTags = returnedData.data.component.posts[i].jsonObj['social-media-message'];
+
+					alert("postTags = " + postTags);
+
+				};
+			};
+		}
+	});
+	alert("passed everything");
+	return postTags;
+}
 
 function formatButtonIOS(buttonName) {
 	//Format buttons for IOS
@@ -61,6 +87,19 @@ function createShareButtons() {
 	formatButtonIOS(shareImage);
 	formatButtonAndroid(shareImage);
 	viewSharingTemp.add(shareImage);
+
+	//JSON test button
+	var getTags = Ti.UI.createButton({
+		text : "Get tags",
+		height : "40dip",
+		width : "40dip",
+		left : "0"
+	});
+	getTags.addEventListener('click', function(e) {
+		var test = retrievePostTags("12435", "123");
+		alert("returned: " + test);
+	});
+	viewSharingTemp.add(getTags);
 }
 
 function openCamera() {
