@@ -167,6 +167,34 @@ NavigationController.prototype.isInKioskMode = function() {
 	return this.kioskMode;
 };
 
+function setKioskMode(that) {
+	if (that.kioskMode == false) {
+		Ti.API.debug("activating kiosk mode");
+    	that.kioskMode = true;
+    	that.setLockedHome();
+	    var confirm = Ti.UI.createAlertDialog({
+		    title: 'Activated Kiosk Mode',
+		    buttonNames: ['OK']
+		});
+		var view = that.windowStack[that.windowStack.length - 1];
+		view.updateForKioskMode(view);
+		confirm.show();	
+	} else {
+		that.kioskMode = false;
+		that.resetHome();
+		Ti.API.debug("deactivating kiosk mode");
+		var confirm = Ti.UI.createAlertDialog({
+		    title: 'Deactivated Kiosk Mode',
+		    buttonNames: ['OK']
+		});
+		var view = that.windowStack[that.windowStack.length - 1];
+		view.updateForKioskMode(view);
+		confirm.show();	
+	}
+	Ti.API.debug("Kisok Mode after: " + that.kioskMode);
+	Ti.API.debug("Home page: " + that.lockedHomePage);
+};
+
 /*
  * Add kiosk mode listener to passed in element. Will activate on three 
  * long clicks if done withing three minutes.
@@ -187,10 +215,15 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 			if (OS_IOS) {// For IOS
 				var dialog = Ti.UI.createAlertDialog({
 				    title: 'Enter code',
+				    passwordMask:true,
 				    style: Ti.UI.iPhone.AlertDialogStyle.PLAIN_TEXT_INPUT,
 				    buttonNames: ['OK', 'Cancel']
 				});
-				dialog.addEventListener('click', function(e){});
+				dialog.addEventListener('click', function(e){
+					if (e.text == "friend") {
+						setKioskMode(that);
+					}
+				});
 				dialog.show();
 			} else if (OS_ANDROID) {// For Andriod
 				var textfield = Ti.UI.createTextField({
@@ -210,31 +243,7 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 				dialog.addEventListener('click', function(e) {
 				    Ti.API.debug("kioskMode before: " + that.kioskMode);
 				    if (textfield.value == "friend") {
-				    	if (that.kioskMode == false) {
-				    		Ti.API.debug("activating kiosk mode");
-					    	that.kioskMode = true;
-					    	that.setLockedHome();
-						    var confirm = Ti.UI.createAlertDialog({
-							    title: 'Activated Kiosk Mode',
-							    buttonNames: ['OK']
-							});
-							var view = that.windowStack[that.windowStack.length - 1];
-							view.updateForKioskMode(view);
-							confirm.show();	
-				    	} else {
-				    		that.kioskMode = false;
-				    		that.resetHome();
-				    		Ti.API.debug("deactivating kiosk mode");
-				    		var confirm = Ti.UI.createAlertDialog({
-							    title: 'Deactivated Kiosk Mode',
-							    buttonNames: ['OK']
-							});
-							var view = that.windowStack[that.windowStack.length - 1];
-							view.updateForKioskMode(view);
-							confirm.show();	
-				    	}
-				    	Ti.API.debug("Kisok Mode after: " + that.kioskMode);
-						Ti.API.debug("Home page: " + this.lockedHomePage);
+						setKioskMode(that);
 				    }
 				});
 				dialog.show();

@@ -27,6 +27,9 @@ function retrievePostTags(componentId, postId) {
 	return postTags;
 }
 
+var imageFilePathInstagram;
+
+
 function formatButtonIOS(buttonName) {
 	//Format buttons for IOS
 	if (OS_IOS) {
@@ -60,10 +63,10 @@ function createShareButtons() {
 	var shareText = Ti.UI.createButton({
 		id : 'shareText',
 		title : "Text",
-		height : "40dip",
-		width : "40dip",
+		height : "70dip",
+		width : "60dip",
 		left : "0",
-		backgroundImage : "/images/iconShare.png"
+		backgroundImage : "/images/alexbutton.png"
 	});
 	shareText.addEventListener('click', function(e) {
 		sendIntentText();
@@ -113,13 +116,18 @@ function openCamera() {
 
 			//create image file and save name for future use
 			var fileName = 'cmh' + new Date().getTime() + '.jpg';
+			var fileNameInstagram = 'cmh' + new Date().getTime() + '.jpg'; //Or .ig?
+			alert("Instagram file name" + fileNameInstagram);
 			//save file
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
+			var imageFileInstagram = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileNameInstagram) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileNameInstagram);
+			imageFileInstagram.write(event.media);
 			//save file path to be shared
 
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
+				imageFilePathInstagram = imageFileInstagram.nativePath;
 				sendIntentImage();
 			}
 		},
@@ -162,6 +170,21 @@ function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentT
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share photo via"));
 }
 
+function openInstagram(imageFilePathInstagram){
+	alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
+	var docviewer = Ti.UI.iOS.createDocumentViewer({url: imageFilePathInstagram});
+ 	alert("Created docviewer");
+    var annotationObj = new Object();
+    annotationObj.InstagramCaption = "Caption sample";
+ 
+    docviewer.UTI = "com.instagram.exclusivegram";
+   // docviewer.annotation = annotationObj.InstagramCaption;
+ 
+    docviewer.show();
+    alert("Showed docviewer");
+    
+}
+
 function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
@@ -170,11 +193,23 @@ function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextU
 			image : imageFilePath,
 			text : contentTextComment, //Note that contentTextSubject is unused; there is no field for that
 			url : contentTextURL
-		});
+		},[
+			{
+				title : "Instagram",
+				type : "open.instagram",
+				image : "/images/instagram-256.png",
+				//callback : openInstagram(imageFilePath)
+				callback: function(e){
+					openInstagram(imageFilePathInstagram);
+				}
+			}
+		]);
 	} else {
 		alert("Photo sharing is not available on this device");
 	}
 }
+
+
 
 function sendIntentText() {
 	//function to send information to other apps

@@ -61,15 +61,7 @@ function openPostLanding(e){
 //-----------------------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
-function createPlainRow() {
-	var row = Ti.UI.createTableViewRow({
-		// height: (Ti.Platform.displayCaps.platformHeight / 8),
-		height : '190dp',
-		top: '10dp',
-		backgroundColor : 'black',
-	});
-	return row;
-}
+
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -80,8 +72,7 @@ function createHeadingRow() {
 			backgroundColor : 'yellow',
 			color:'black',
 			text: "Cups and Balls",
-			textAlign : 'center',
-			width:'50%'
+			textAlign : 'center'
 		});
 		
 		var heading = Ti.UI.createLabel({
@@ -93,6 +84,16 @@ function createHeadingRow() {
 		},
 		text :'Article 1',
 		textAlign : 'center'
+	});
+	return row;
+}
+
+function createPlainRow() {
+	var row = Ti.UI.createTableViewRow({
+		// height: (Ti.Platform.displayCaps.platformHeight / 8),
+		height : '190dp',
+		top: '10dp',
+		backgroundColor : 'black',
 	});
 	return row;
 }
