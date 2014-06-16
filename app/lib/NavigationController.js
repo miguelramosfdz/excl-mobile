@@ -12,8 +12,15 @@ function NavigationController() {
 	this.lockedHomePage;
 };
 
-NavigationController.prototype.open = function(/*Ti.UI.Window*/windowToOpen) {
+NavigationController.prototype.open = function(/*Ti.UI.Window*/controller) {
 	Ti.API.log("Open function.");
+	
+	var windowToOpen = controller.getView();
+	if (controller.updateForKioskMode && typeof(controller.updateForKioskMode) === 'function') {
+		windowToOpen.updateForKioskMode = controller.updateForKioskMode;
+	} else {
+		windowToOpen.updateForKioskMode = function(view){};
+	}
 	
 	// Capture Android back button
 	var that = this;
@@ -175,15 +182,15 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 		Ti.API.info('what up?');
 		
 		if (count === 300) {
-			if (false) {// For IOS
-				// var dialog = Ti.UI.createAlertDialog({
-				    // title: 'Enter code',
-				    // style: Ti.UI.iPhone.AlertDialogStyle.PLAIN_TEXT_INPUT,
-				    // buttonNames: ['OK', 'Cancel']
-				// });
-				// dialog.addEventListener('click', kioskDialog);
-				// dialog.show();
-			} else if (true) {// For Andriod
+			if (OS_IOS) {// For IOS
+				var dialog = Ti.UI.createAlertDialog({
+				    title: 'Enter code',
+				    style: Ti.UI.iPhone.AlertDialogStyle.PLAIN_TEXT_INPUT,
+				    buttonNames: ['OK', 'Cancel']
+				});
+				dialog.addEventListener('click', kioskDialog);
+				dialog.show();
+			} else if (OS_ANDROID) {// For Andriod
 				var textfield = Ti.UI.createTextField({
 					passwordMask:true,
 					hintText:'Enter code',
@@ -210,7 +217,7 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 							    buttonNames: ['OK']
 							});
 							var view = that.windowStack[that.windowStack.length - 1];
-							view.reload(view);
+							view.updateForKioskMode(view);
 							confirm.show();	
 				    	} else {
 				    		that.kioskMode = false;
@@ -221,7 +228,7 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 							    buttonNames: ['OK']
 							});
 							var view = that.windowStack[that.windowStack.length - 1];
-							view.reload(view);
+							view.updateForKioskMode(view);
 							confirm.show();	
 				    	}
 				    	Ti.API.log("Kisok Mode after: " + that.kioskMode);
