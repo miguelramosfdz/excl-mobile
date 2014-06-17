@@ -152,6 +152,8 @@ function sendIntentImageAndroid(contentTextComment, imageFilePath) {
 }
 
 function openInstagram(imageFilePathInstagram) {
+	
+	/*
 	alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
 	var docviewer = Ti.UI.iOS.createDocumentViewer({
 		url : "/images/alexbutton.png"
@@ -166,6 +168,11 @@ function openInstagram(imageFilePathInstagram) {
 
 	docviewer.show();
 	alert("Showed docviewer");
+	*/
+	var instagramURL = "instagram://camera&caption=hello%20world";
+	if (Titanium.Platform.canOpenURL(instagramURL)){
+		Titanium.Platform.openURL(instagramURL);
+	}
 
 }
 
