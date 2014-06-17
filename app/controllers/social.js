@@ -63,10 +63,10 @@ function createShareButtons() {
 	var shareText = Ti.UI.createButton({
 		id : 'shareText',
 		title : "Text",
-		height : "70dip",
-		width : "60dip",
+		height : "40dip",
+		width : "40dip",
 		left : "0",
-		backgroundImage : "/images/alexbutton.png"
+		backgroundImage : "/images/iconShare.png"
 	});
 	shareText.addEventListener('click', function(e) {
 		sendIntentText();
