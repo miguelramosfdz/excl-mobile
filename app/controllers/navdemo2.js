@@ -2,7 +2,7 @@ var args = arguments[0] || {};
 
 // Here we define the callback function for what actions to take on entering and 
 // exiting kiosk mode. This is optional.
-$.onEnterKioskMode = function(view) {  
+function onEnterKioskMode(view) {  
 	var x;
 	for (x in view.children) {
 		Ti.API.log(JSON.stringify(view.children[x]));
@@ -12,7 +12,7 @@ $.onEnterKioskMode = function(view) {
 		}
 	}
 };
-$.onExitKioskMode = function(view) {  
+function onExitKioskMode(view) {  
 	var x;
 	for (x in view.children) {
 		Ti.API.log(JSON.stringify(view.children[x]));
@@ -32,7 +32,7 @@ $.NavDemo2.title = 'Window ' + Alloy.Globals.navController.windowStack.length;
 
 // This is opening a new window
 function addClick(e){
-	Alloy.Globals.navController.open(Alloy.createController('navdemo2'));
+	Alloy.Globals.navController.open(Alloy.createController('navdemo2').getView(), onEnterKioskMode, onExitKioskMode);
 }
 
 // This is activating the home functionality
@@ -41,7 +41,7 @@ function homeClick(e) {
 }
 
 // All the following is just initializing the demo page
-if (!Alloy.Globals.navController.kioskMode) {
+if (!Alloy.Globals.navController.isInKioskMode()) {
 	$.openMenuShare.visible = true;
 } else {
 	$.openMenuShare.visible = false;

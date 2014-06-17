@@ -12,17 +12,15 @@ function NavigationController() {
 	this.lockedHomePage;
 };
 
-NavigationController.prototype.open = function(/*Ti.UI.Window*/controller) {
+NavigationController.prototype.open = function(windowToOpen, onEnterKioskMode, onExitKioskMode) {
 	
-	// Set onEnterKioskMode and onExitKioskMode functions
-	var windowToOpen = controller.getView();
-	if (controller.onEnterKioskMode && typeof(controller.onEnterKioskMode) === 'function') {
-		windowToOpen.onEnterKioskMode = controller.onEnterKioskMode;
+	if (onEnterKioskMode && typeof(onEnterKioskMode) === 'function') {
+		windowToOpen.onEnterKioskMode = onEnterKioskMode;
 	} else {
 		windowToOpen.onEnterKioskMode = function(view){};
 	}
-	if (controller.onExitKioskMode && typeof(controller.onExitKioskMode) === 'function') {
-		windowToOpen.onExitKioskMode = controller.onExitKioskMode;
+	if (onExitKioskMode && typeof(onExitKioskMode) === 'function') {
+		windowToOpen.onExitKioskMode = onExitKioskMode;
 	} else {
 		windowToOpen.onExitKioskMode = function(view){};
 	}
@@ -103,6 +101,7 @@ NavigationController.prototype.open = function(/*Ti.UI.Window*/controller) {
 			this.navGroup.openWindow(windowToOpen);
 		}
 	}
+	return windowToOpen;
 }; // end of open function
 
 // Note: without a parameter, close automatically closes 1 window
