@@ -169,10 +169,21 @@ function openInstagram(imageFilePathInstagram) {
 	docviewer.show();
 	alert("Showed docviewer");
 	*/
+	
+	/*//Use iPhone URL schemes to open app- doesn't reliably open to a specific page, haven't gotten the caption to work
+	//Doesn't seem like there's an easy way to upload a recently taken photo
 	var instagramURL = "instagram://camera&caption=hello%20world";
 	if (Titanium.Platform.canOpenURL(instagramURL)){
 		Titanium.Platform.openURL(instagramURL);
 	}
+	*/
+	
+	//WebView attempt
+	instaWebView = Titanium.UI.createWebView({url: 'www.instagram.com'});
+	var instaWindow = Titanium.UI.createWindow();
+	instaWindow.add(instaWebView);
+	$.rozay.add(instaWindow);
+	instaWindow.open({modal:true});
 
 }
 
