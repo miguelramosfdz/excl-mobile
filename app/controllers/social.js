@@ -1,7 +1,7 @@
 //top level vars
 var imageFilePath;
 var dataRetriever = require("dataRetriever");
-var jsonURL = "http://www.mocky.io/v2/539f5f5fa7039ff6083fcb90";
+var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/23";
 
 function retrievePostTags(componentId, postId) {
 	//Retrieve social media message, which contains social media tags
