@@ -13,24 +13,26 @@ function NavigationController() {
 };
 
 NavigationController.prototype.open = function(/*Ti.UI.Window*/controller) {
-	Ti.API.debug("Open function.");
 	
+	// Set onEnterKioskMode and onExitKioskMode functions
 	var windowToOpen = controller.getView();
-	if (controller.updateForKioskMode && typeof(controller.updateForKioskMode) === 'function') {
-		windowToOpen.updateForKioskMode = controller.updateForKioskMode;
+	if (controller.onEnterKioskMode && typeof(controller.onEnterKioskMode) === 'function') {
+		windowToOpen.onEnterKioskMode = controller.onEnterKioskMode;
 	} else {
-		windowToOpen.updateForKioskMode = function(view){};
+		windowToOpen.onEnterKioskMode = function(view){};
+	}
+	if (controller.onExitKioskMode && typeof(controller.onExitKioskMode) === 'function') {
+		windowToOpen.onExitKioskMode = controller.onExitKioskMode;
+	} else {
+		windowToOpen.onExitKioskMode = function(view){};
 	}
 	
 	// Capture Android back button
 	if (OS_ANDROID) {
-		var that = this;
+		var self = this;
 		windowToOpen.addEventListener("android:back", function(e){
-			if(that.windowStack[that.windowStack.length-1] == that.lockedHomePage) {
-				Ti.API.debug("at Home!");
-			} else {
-				Ti.API.debug("We're Going Back!");
-				that.close(1);
+			if(self.windowStack[self.windowStack.length-1] != self.lockedHomePage) {
+				self.close();
 			}
 		});	
 	}
@@ -39,46 +41,40 @@ NavigationController.prototype.open = function(/*Ti.UI.Window*/controller) {
 	this.windowStack.push(windowToOpen);
 
 	//grab a copy of the current nav controller for use in the callback
-	var that = this;
+	var self = this;
 	
 	var lastPushed = windowToOpen;
 	windowToOpen.addEventListener('close', function() {
-		if (that.windowStack.length > 1) // don't pop the last Window, which is the base one
+		if (self.windowStack.length > 1) // don't pop the last Window, which is the base one
 		{
-			Ti.API.debug("Event 'close': " + this.title);
-			var popped = that.windowStack.pop();
+			var popped = self.windowStack.pop();
 		
+			// Last window should NOT have been popped. Push it back on the stack!
 			if (lastPushed != popped)
 			{
-				Ti.API.debug("Last window should NOT have been popped. Push it back on the stack!");
-				that.windowStack.push(popped);
+				self.windowStack.push(popped);
 			}
 			
 			// close dependent window ?
 			if (this.toClose) {
-				Ti.API.debug("Invoke close on dependent window:" + this.toClose.title);
 			 	// close "parent" window, do not use animation (it looks weird with animation)
-			 	//(that.navGroup) ? that.navGroupWindow.close(this.toClose, {animated : false}) : this.toClose.close({animated:false});
-			 	(that.navGroup) ? that.navGroup.closeWindow(this.toClose, {animated : true}) : this.toClose.close({animated:true});
+			 	//(self.navGroup) ? self.navGroupWindow.close(this.toClose, {animated : false}) : this.toClose.close({animated:false});
+			 	(self.navGroup) ? self.navGroup.closeWindow(this.toClose, {animated : true}) : this.toClose.close({animated:true});
 			}
 			
 			// open dependent window ?
 			if (this.toOpen) {
 				Ti.API.debug("Invoke open on dependent window:" + this.toOpen.title);
-			 	that.open(this.toOpen);
+			 	self.open(this.toOpen);
 			} 
-		
-			Ti.API.debug("End event 'close'. Stack: " + that.windowStack.map(function(v) {return v.title;}));
 		} // end if windowStack.length > 1, and end of my hack
 	}); // end eventListener 'close'
 	
 	windowToOpen.addEventListener('set.to.close', function(dict) {
-		Ti.API.debug("Event 'set.to.close': " + this.title);
 		this.toClose = dict.win;
 	});
 	
 	windowToOpen.addEventListener('set.to.open', function(dict) {
-		Ti.API.debug("Event 'set.to.open': " + this.title);
 		this.toOpen = dict.win;
 	});
 
@@ -89,7 +85,6 @@ NavigationController.prototype.open = function(/*Ti.UI.Window*/controller) {
 	if (this.windowStack.length === 1) {
 		this.homePage = windowToOpen;
 		this.lockedHomePage = this.homePage;
-		Ti.API.debug("Initialy setting homePage to: " + windowToOpen.title);
 		if (Ti.Platform.osname === 'android') {
 			windowToOpen.exitOnClose = true;
 			windowToOpen.open();
@@ -108,12 +103,10 @@ NavigationController.prototype.open = function(/*Ti.UI.Window*/controller) {
 			this.navGroup.openWindow(windowToOpen);
 		}
 	}
-	Ti.API.debug("End Open. Stack: " + this.windowStack.map(function(v) {return v.title;}));
 }; // end of open function
 
 // Note: without a parameter, close automatically closes 1 window
 NavigationController.prototype.close = function(numWindows) {
-	Ti.API.debug("close function.");
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedHomePage){
 		if (numWindows > 1) {
 			// setup chain reaction by setting up the flags on all the windows
@@ -132,84 +125,70 @@ NavigationController.prototype.close = function(numWindows) {
 			(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
 		}
 	}
-	Ti.API.debug("End Home. Stack: " + this.windowStack.map(function(v) {return v.title;}));
 };// end of close function
 
 // go back to the initial window of the NavigationController
 NavigationController.prototype.home = function() {
-	Ti.API.debug("Home function. lockedHomePage: " + this.lockedHomePage.title + " windowStack.length: " + this.windowStack.length);
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedHomePage) {
 		// setup chain reaction by setting up the flags on all the windows
 		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedHomePage; i--)		//NOPE!
 		{
 			// set dependent window
-			Ti.API.debug("this.windowStack[i]: " + this.windowStack[i].title);
-			Ti.API.debug("this.windowStack[i-1]: " + this.windowStack[i-1].title);
 			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
        	}
         // start chain reaction, close first window
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
 	}
-	Ti.API.debug("End Home. Stack: " + this.windowStack.map(function(v) {return v.title;}));
 };// end of home function
 
 NavigationController.prototype.setLockedHome = function(){
 	this.lockedHomePage = this.windowStack[this.windowStack.length - 1];
-	Ti.API.debug("set locked Home to: " + this.lockedHomePage.title);
 };
 
 NavigationController.prototype.resetHome = function(){
 	this.lockedHomePage = this.homePage;
-	Ti.API.debug("Reset Home to: " + this.lockedHomePage);
 };
 
 NavigationController.prototype.isInKioskMode = function() {
 	return this.kioskMode;
 };
 
-function setKioskMode(that) {
-	if (that.kioskMode == false) {
-		Ti.API.debug("activating kiosk mode");
-    	that.kioskMode = true;
-    	that.setLockedHome();
+function setKioskMode(self) {
+	if (self.kioskMode == false) {
+    	self.kioskMode = true;
+    	self.setLockedHome();
 	    var confirm = Ti.UI.createAlertDialog({
 		    title: 'Activated Kiosk Mode',
 		    buttonNames: ['OK']
 		});
-		var view = that.windowStack[that.windowStack.length - 1];
-		view.updateForKioskMode(view);
+		var view = self.windowStack[self.windowStack.length - 1];
+		view.onEnterKioskMode(view);
 		confirm.show();	
 	} else {
-		that.kioskMode = false;
-		that.resetHome();
-		Ti.API.debug("deactivating kiosk mode");
+		self.kioskMode = false;
+		self.resetHome();
 		var confirm = Ti.UI.createAlertDialog({
 		    title: 'Deactivated Kiosk Mode',
 		    buttonNames: ['OK']
 		});
-		var view = that.windowStack[that.windowStack.length - 1];
-		view.updateForKioskMode(view);
+		var view = self.windowStack[self.windowStack.length - 1];
+		view.onExitKioskMode(view);
 		confirm.show();	
 	}
-	Ti.API.debug("Kisok Mode after: " + that.kioskMode);
-	Ti.API.debug("Home page: " + that.lockedHomePage);
 };
 
 /*
  * Add kiosk mode listener to passed in element. Will activate on three 
- * long clicks if done withing three minutes.
+ * long clicks if done withing three seconds.
  */ 
 NavigationController.prototype.addKioskModeListener = function(element) {
-	Ti.API.debug("Adding kiosk mode listener");
 	var count = 0;
-	var that = this;
+	var self = this;
 	element.addEventListener('longclick', function(e){
 		count += 100;
 		setTimeout(function(){
 			count -= 100;
-			Ti.API.debug('oops!');
 		}, 3000);
-		Ti.API.debug('what up?');
 		
 		if (count === 300) {
 			if (OS_IOS) {// For IOS
@@ -221,7 +200,7 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 				});
 				dialog.addEventListener('click', function(e){
 					if (e.text == "friend") {
-						setKioskMode(that);
+						setKioskMode(self);
 					}
 				});
 				dialog.show();
@@ -241,9 +220,8 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 				    buttonNames: ['OK', 'cancel']
 				});
 				dialog.addEventListener('click', function(e) {
-				    Ti.API.debug("kioskMode before: " + that.kioskMode);
 				    if (textfield.value == "friend") {
-						setKioskMode(that);
+						setKioskMode(self);
 				    }
 				});
 				dialog.show();
