@@ -1,5 +1,34 @@
 //top level vars
 var imageFilePath;
+var dataRetriever = require("dataRetriever");
+var jsonURL = "http://www.mocky.io/v2/539f5f5fa7039ff6083fcb90";
+
+function retrievePostTags(componentId, postId) {
+	//Retrieve social media message, which contains social media tags
+	var postTags = "";
+	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
+		if (returnedData) {
+			for (var i = 0; i < returnedData.data.component.posts.length; j++) {
+				//find correct post
+				if (returnedData.data.component.posts[i].id == postId) {
+
+					alert("found post");
+
+					//pull tags to array
+					postTags = returnedData.data.component.posts[i].jsonObj['social-media-message'];
+
+					alert("postTags = " + postTags);
+
+				};
+			};
+		}
+	});
+	alert("passed everything");
+	return postTags;
+}
+
+var imageFilePathInstagram;
+
 
 function formatButtonIOS(buttonName) {
 	//Format buttons for IOS
@@ -61,6 +90,19 @@ function createShareButtons() {
 	formatButtonIOS(shareImage);
 	formatButtonAndroid(shareImage);
 	viewSharingTemp.add(shareImage);
+
+	//JSON test button
+	var getTags = Ti.UI.createButton({
+		text : "Get tags",
+		height : "40dip",
+		width : "40dip",
+		left : "0"
+	});
+	getTags.addEventListener('click', function(e) {
+		var test = retrievePostTags("12435", "123");
+		alert("returned: " + test);
+	});
+	viewSharingTemp.add(getTags);
 }
 
 function openCamera() {
@@ -74,13 +116,18 @@ function openCamera() {
 
 			//create image file and save name for future use
 			var fileName = 'cmh' + new Date().getTime() + '.jpg';
+			var fileNameInstagram = 'cmh' + new Date().getTime() + '.jpg'; //Or .ig?
+			alert("Instagram file name" + fileNameInstagram);
 			//save file
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
+			var imageFileInstagram = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileNameInstagram) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileNameInstagram);
+			imageFileInstagram.write(event.media);
 			//save file path to be shared
 
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
+				imageFilePathInstagram = imageFileInstagram.nativePath;
 				sendIntentImage();
 			}
 		},
@@ -123,6 +170,21 @@ function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentT
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share photo via"));
 }
 
+function openInstagram(imageFilePathInstagram){
+	alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
+	var docviewer = Ti.UI.iOS.createDocumentViewer({url: "/images/alexbutton.png"}); //Testing a sample image
+ 	alert("Created docviewer");
+    var annotationObj = new Object();
+    annotationObj.InstagramCaption = "Caption sample";
+ 
+    docviewer.UTI = "com.instagram.exclusivegram";
+   // docviewer.annotation = annotationObj.InstagramCaption;
+ 
+    docviewer.show();
+    alert("Showed docviewer");
+    
+}
+
 function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
@@ -131,11 +193,23 @@ function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextU
 			image : imageFilePath,
 			text : contentTextComment, //Note that contentTextSubject is unused; there is no field for that
 			url : contentTextURL
-		});
+		},[
+			{
+				title : "Instagram",
+				type : "open.instagram",
+				image : "/images/instagram-256.png",
+				//callback : openInstagram(imageFilePath)
+				callback: function(e){
+					openInstagram(imageFilePathInstagram);
+				}
+			}
+		]);
 	} else {
 		alert("Photo sharing is not available on this device");
 	}
 }
+
+
 
 function sendIntentText() {
 	//function to send information to other apps
