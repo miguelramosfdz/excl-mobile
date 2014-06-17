@@ -47,3 +47,8 @@ playSoundBtn.addEventListener('click', function() {
 var sound = Ti.Media.createSound({
 	url : '/schemin.mp3',
 });
+
+//Sharing library
+var sharingService = require("sharing/sharing");
+sharingService.createShareButtons();
+
