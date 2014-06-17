@@ -1,33 +1,27 @@
-//top level vars
-//var imageFilePath;
-var dataRetriever = require("dataRetriever");
-var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/23";
-var postId = "41";
-var componentId = "23";
+
 
 function retrievePostTags(componentId, postId) {
 	//Retrieve social media message, which contains social media tags
 	var postTags = "";
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
+			alert("length: " + returnedData.data.component.posts.length);
 			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
-				//find correct post
+				//find correct post	
+				alert("post id: " + returnedData.data.component.posts[i].id);
 				if (returnedData.data.component.posts[i].id == postId) {
-					//pull tags from post
-					postTags = returnedData.data.component.posts[i]['social-media-message'];
-				} else {
-					alert("Could not find specified post ID");
-				}
+					alert("found post");
+					//pull tags to array
+					postTags = returnedData.data.component.posts[i].jsonObj['social-media-message'];
+					alert("postTags = " + postTags);
+				};
 			};
-		} else {
-			alert("Data not retrieved");
 		}
 	});
-	//send tags
+	alert("passed everything");
 	return postTags;
 }
 
-var imageFilePathInstagram;
 
 function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	//removes the title field of a button if a background image is detected
@@ -245,6 +239,3 @@ function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextUR
 		alert("Text sharing is not available on this device");
 	}
 }
-
-//Run initialization
-createShareButtons();
