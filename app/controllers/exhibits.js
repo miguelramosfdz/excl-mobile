@@ -79,7 +79,7 @@ var json = {
       ]
     }
   }
-};
+}; // Extract to required file
 
 var exhibitIndex = 0;
 var numOfExhibits = json.data.museum.exhibits.length;
@@ -166,7 +166,7 @@ function createExhibitsCarousel(exhibits){
 	tableData.push(row);
 }
 
-// This is like our itemTemplate
+// Extract into a service in the Lib folder -> make into a widget when we write this in XML
 function createLabeledPicView(item, type){
 	var itemContainer = Ti.UI.createView();
 	
@@ -177,7 +177,7 @@ function createLabeledPicView(item, type){
 	image.image = item.image;
 	
 	itemContainer.add(image);
-	itemContainer.add(createTitleLabel(item.name));
+	itemContainer.add(createTitleLabel(item.name, type));
 	return itemContainer;
 }
 
@@ -201,7 +201,7 @@ function createTitleLabel(name, type){
 			fontWeight : 'bold'
 		}
 	});
-	//$.addClass(exhibitImages[i], "exhibitTitle"); 
+	//$.addClass(label, "myLabel"); 
 
 	titleLabel.add(label);
 
@@ -235,7 +235,6 @@ function createComponentsScrollView(exhibits){
 			component.left = 5;
 			component.right = 5;
 			component.width = 200;
-			//$.addClass blah
 			component.componentId = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[i].add(component);
