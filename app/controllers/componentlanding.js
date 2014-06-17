@@ -81,16 +81,7 @@ var json = {
             },
             {
               "type": "text",
-              "body": "The cups and balls is a classic performance of magic with innumerable adaptations. The 
-			  effect known as acetabula et calculi was performed by Roman conjurers as far back as two thousand 
-			  years ago.[1] One popularly circulated picture, thought to date from 2500 B.C. from the walls of a 
-			  burial chamber in Beni Hasan, Egypt,[2] shows two men kneeling over four inverted bowls. It was taken
-			  by early Egyptologists Wilkinson[3] and Newberry[4] as evidence that the cups and balls effect, or its
-			  related deceptive gambling game, thimblerig, possibly dates back to Ancient Egypt. Because of its 
-			  context, modern Egyptologists regard the image as a game using pots[5] or cups[6] but details of the
-			  game are unknown. The illustration is unique in ancient Egyptian art, so whether or not the game utilizes
-			  sleight of hand trickery may never be known unless a future discovery produces a similar image in a more 
-			  explanatory context."
+              "body": "The cups and balls is a classic performance of magic with innumerable adaptations. The effect known as acetabula et calculi was performed by Roman conjurers as far back as two thousand years ago.[1] One popularly circulated picture, thought to date from 2500 B.C. from the walls of a burial chamber in Beni Hasan, Egypt,[2] shows two men kneeling over four inverted bowls. It was taken by early Egyptologists Wilkinson[3] and Newberry[4] as evidence that the cups and balls effect, or its related deceptive gambling game, thimblerig, possibly dates back to Ancient Egypt. Because of its context, modern Egyptologists regard the image as a game using pots[5] or cups[6] but details of the game are unknown. The illustration is unique in ancient Egyptian art, so whether or not the game utilizes sleight of hand trickery may never be known unless a future discovery produces a similar image in a more explanatory context."
             },
 
           ],
@@ -119,11 +110,7 @@ var json = {
             },
             {
               "type": "text",
-              "body": "Every time you jump, you experience gravity. It pulls you back down to the ground. Without gravity, you'd float off into the atmosphere -- 
-						along with all of the other matter on Earth.
-						You see gravity at work any time you drop a book, step on a scale or toss a ball up into the air. It's such a constant presence in our lives, 
-						we seldom marvel at the mystery of it -- but even with several well-received theories out there attempting to explain why a book falls to the
-						ground (and at the same rate as a pebble or a couch, at that), they're still just theories. The mystery of gravity's pull is pretty much intact."
+              "body": "Every time you jump, you experience gravity. It pulls you back down to the ground. Without gravity, you'd float off into the atmosphere -- along with all of the other matter on Earth. You see gravity at work any time you drop a book, step on a scale or toss a ball up into the air. It's such a constant presence in our lives, we seldom marvel at the mystery of it -- but even with several well-received theories out there attempting to explain why a book falls to the ground (and at the same rate as a pebble or a couch, at that), they're still just theories. The mystery of gravity's pull is pretty much intact." 
             },
 
           ],
@@ -181,14 +168,7 @@ var json = {
             },
             {
               "type": "text",
-              "body": "Before asking why you *should* care, perhaps it would be worth thinking about the fact that
-			  you *do* care. Human beings are emotional and moral beings - we simply aren't capable of observing 
-			  other people's behaviour without reacting emotionally and morally (though not always rightly!) to it.
-			  Because we are good at thinking, we can learn to override our initial emotional reactions and behave 
-			  as detached, scientific observers in certain circumstances. But this requires an effort, even if we 
-			  don't recognise it as such.We care about other people because we can't help it. When we cease to care 
-			  altogether, we cease to function as humans. The important question, then, is how we live with caring 
-			  about other people, given how painful and demanding that is. "
+              "body": "Before asking why you *should* care, perhaps it would be worth thinking about the fact that you *do* care. Human beings are emotional and moral beings - we simply aren't capable of observing other people's behaviour without reacting emotionally and morally (though not always rightly!) to it. Because we are good at thinking, we can learn to override our initial emotional reactions and behave as detached, scientific observers in certain circumstances. But this requires an effort, even if we don't recognise it as such.We care about other people because we can't help it. When we cease to care altogether, we cease to function as humans. The important question, then, is how we live with caring about other people, given how painful and demanding that is."
             },
 
           ],
@@ -241,18 +221,15 @@ var json = {
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
-/*var componentIndex = 0;
-var numOfExhibits = json.data.museum.exhibits.length;
-var exhibitViews = [];
-var componentsInExhibit = [];
-var componentsRow = createPlainRow();*/
+var postIndex = 0;
+
+var numOfPosts = json.data.component.posts.length;
+var tableData = [];
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
-var tableData = [];
-// simulate data from wordpress using Jess' model
 
-// Modify with new MODULE methods
+// Opens Post Landing Page
 function openPostLanding(e){
 		
 	var postLandingWindow = Alloy.createController('postlanding').getView();
@@ -260,64 +237,30 @@ function openPostLanding(e){
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-//-----------------------------------------------------------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------------------------------------------------------
-
-function createHeadingRow() {
-		var row = Ti.UI.createTableViewRow({
-			height : '40dp',
-			backgroundColor : 'yellow',
-			color:'black',
-			text: "Cups and Balls",
-			textAlign : 'center'
-		});
-		
-		var heading = Ti.UI.createLabel({
-		color : 'black',
-		font : {
-			fontFamily : 'Arial',
-			fontSize : 22,
-			fontWeight : 'bold'
-		},
-		text :'Article 1',
-		textAlign : 'center'
-	});
-	return row;
-}
-
-function createPlainRow() {
+function createRow() {
 	var row = Ti.UI.createTableViewRow({
-		// height: (Ti.Platform.displayCaps.platformHeight / 8),
-		height : '190dp',
+		height : '150dp',
 		top: '10dp',
-		backgroundColor : 'black',
+		backgroundColor : 'yellow',
 	});
 	return row;
 }
 
-function createExhibitsCarousel(exhibits){
+function createPosts(posts){
 	
-	var row = createPlainRow();
-	var headingRow = createHeadingRow();
-
-
-	tableData.push(headingRow);
-
+	var row = createRow();
 	var imageWrappers = [];
 	
-	for (var i = 0; i < exhibits.length; i++){//imageCollection.length; i++) {
-		var tempImage = Ti.UI.createImageView({
-			image : exhibits[i].image,
+	for (var i = 0; i < posts.length; i++){
+		var postThumbnail = Ti.UI.createImageView({
+			image : posts[i].thumbnail,
 			defaultImage : 'http://placehold.it/700x300',
 			width : '100%',
 			height : '100%'
 		});
 				
-		tempImage.addEventListener('click', openPostLanding);
+		postThumbnail.addEventListener('click', openPostLanding);
 
 		var tempWrapper = Ti.UI.createView({
 			width : '100%',
@@ -334,7 +277,7 @@ function createExhibitsCarousel(exhibits){
 		});
 		
 		var label = Ti.UI.createLabel({
-			text: exhibits[i].name,
+			text: posts[i].name,
 			top: 0,
 			left: 10,
 			color: 'white',
@@ -346,16 +289,15 @@ function createExhibitsCarousel(exhibits){
 		});
 		
 		labelTint.add(label);
-		tempWrapper.add(tempImage);
 		tempWrapper.add(labelTint);
-		//imageWrappers[i] = tempImage;
+		tempWrapper.add(postThumbnail);
 		imageWrappers[i] = tempWrapper;
 	}
 
 	var scrollableView = Ti.UI.createScrollableView({
 		views : imageWrappers,
 		showPagingControl : true,
-		pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
+		pagingControlTimeout : 2, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
 		maxZoomScale : 5,
 		minZoomScale : 1,
 		borderRadius : 4,
@@ -367,10 +309,9 @@ function createExhibitsCarousel(exhibits){
 }
 
 
-createExhibitsCarousel(json.data.museum.exhibits);
+createPosts(json.data.component.posts);
 
 var tableView = Ti.UI.createTableView({
-	// backgroundColor : '#07B5BE',
 	backgroundColor : 'white',
 	data : tableData,
 	width: '100%',
@@ -380,5 +321,6 @@ var tableView = Ti.UI.createTableView({
 
 $.componentlanding.title = "Component";
 $.componentlanding.add(tableView);
+
 
 
