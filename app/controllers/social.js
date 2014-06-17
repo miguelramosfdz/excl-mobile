@@ -10,28 +10,20 @@ function retrievePostTags(componentId, postId) {
 	var postTags = "";
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
-
-			alert("length: " + returnedData.data.component.posts.length);
-
 			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
 				//find correct post
-				
-				alert("post id: " + returnedData.data.component.posts[i].id);
-				
 				if (returnedData.data.component.posts[i].id == postId) {
-
-					alert("found post");
-
-					//pull tags to array
-					postTags = returnedData.data.component.posts[i].jsonObj['social-media-message'];
-
-					alert("postTags = " + postTags);
-
-				};
+					//pull tags from post
+					postTags = returnedData.data.component.posts[i]['social-media-message'];
+				} else {
+					alert("Could not find specified post ID");
+				}
 			};
+		} else {
+			alert("Data not retrieved");
 		}
 	});
-	alert("passed everything");
+	//send tags
 	return postTags;
 }
 
