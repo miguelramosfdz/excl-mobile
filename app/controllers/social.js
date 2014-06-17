@@ -118,7 +118,7 @@ function openCamera() {
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
 				imageFilePathInstagram = imageFileInstagram.nativePath;
-				sendIntentImage();
+				sendIntentImage(imageFilePath);
 			}
 		},
 		cancel : function() {
@@ -129,7 +129,7 @@ function openCamera() {
 	});
 }
 
-function sendIntentImage() {
+function sendIntentImage(imageFilePath) {
 	//create and send an image intent
 
 	//Get text to be sent from WP
@@ -138,15 +138,15 @@ function sendIntentImage() {
 	contentTextURL = "http://www.cmhouston.org";
 
 	if (OS_ANDROID) {
-		sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL);
+		sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL, imageFilePath);
 	} else if (OS_IOS) {
-		sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL);
+		sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL, imageFilePath);
 	} else {
 		alert("Unsupported platform (image sharing)");
 	}
 }
 
-function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL) {
+function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL, imageFilePath) {
 	contentTextComment = contentTextComment + contentTextURL;
 	//Android intents don't have a separate URL field
 
@@ -178,7 +178,7 @@ function openInstagram(imageFilePathInstagram) {
 
 }
 
-function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL) {
+function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL, imageFilePath) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
