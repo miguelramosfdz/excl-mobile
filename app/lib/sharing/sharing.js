@@ -1,5 +1,3 @@
-
-
 function retrievePostTags(componentId, postId) {
 	//Retrieve social media message, which contains social media tags
 	var postTags = "";
@@ -7,7 +5,7 @@ function retrievePostTags(componentId, postId) {
 		if (returnedData) {
 			alert("length: " + returnedData.data.component.posts.length);
 			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
-				//find correct post	
+				//find correct post
 				alert("post id: " + returnedData.data.component.posts[i].id);
 				if (returnedData.data.component.posts[i].id == postId) {
 					alert("found post");
@@ -21,7 +19,6 @@ function retrievePostTags(componentId, postId) {
 	alert("passed everything");
 	return postTags;
 }
-
 
 function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	//removes the title field of a button if a background image is detected
@@ -37,7 +34,6 @@ function createShareButtons() {
 		width : "100%",
 		height : "200dip"
 	});
-	$.viewShareBase.add(viewSharingTemp);
 
 	//button to open text sharing
 	var shareText = Ti.UI.createButton({
@@ -81,6 +77,10 @@ function createShareButtons() {
 		alert("returned: " + test);
 	});
 	viewSharingTemp.add(getTags);
+	
+	// $.viewShareBase.add(viewSharingTemp);
+	return viewSharingTemp;
+
 }
 
 function openCamera() {
@@ -95,20 +95,20 @@ function openCamera() {
 		success : function(event) {
 			//create image file and save name for future use
 			var fileName = 'excl' + new Date().getTime() + '.jpg';
-			
+
 			//save file
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
-			
+
 			//Instagram-specific code
-			if (OS_IOS){
+			if (OS_IOS) {
 				var fileNameInstagram = 'excl' + new Date().getTime() + '.jpg';
-				//Or .ig?			
+				//Or .ig?
 				alert("Instagram file name" + fileNameInstagram);
 				var imageFileInstagram = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileNameInstagram) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileNameInstagram);
 				imageFileInstagram.write(event.media);
 			}
-			
+
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
@@ -239,3 +239,6 @@ function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextUR
 		alert("Text sharing is not available on this device");
 	}
 }
+
+module.exports.retrievePostTags = retrievePostTags;
+module.exports.createShareButtons = createShareButtons;
