@@ -121,7 +121,7 @@ var exhibitsSwipeableView = Ti.UI.createView({
 
 
 function openComponent(e){
-	var componentWindow = Alloy.createController('componentlanding');
+	var componentWindow = Alloy.createController('componentlanding').getView();
 	componentWindow.componentId = e.source.componentId;
 	
 	alert("component Id: "+e.source.componentId);
@@ -283,7 +283,7 @@ function swipeHandler(e){
 			// Show new exhibit and it's 
 			exhibitViews[exhibitIndex].show();
 			showComponents(exhibitIndex);
-			setExhibitText(json.data.mueseum.exhibit[exhibitIndex])
+			setExhibitText(json.data.museum.exhibits[exhibitIndex]);
 		}
 		else if(e.direction = 'left'){
 			exhibitViews[exhibitIndex].hide();
