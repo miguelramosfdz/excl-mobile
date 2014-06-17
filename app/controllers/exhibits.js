@@ -1,4 +1,6 @@
 var args = arguments[0] || {};
+var dataRetriever = require('dataRetriever');
+
 var json = {
   "status": "ok",
   "error": "Optional Error Message",
@@ -79,38 +81,23 @@ var json = {
       ]
     }
   }
-}; // Extract to required file
+}; // Extract to required file*/
+
 
 var exhibitIndex = 0;
 var numOfExhibits = json.data.museum.exhibits.length;
 var exhibitViews = [];
 var componentsInExhibit = [];
 var componentsRow = createPlainRow();
-
 var tableData = [];
 
-var componentHeading = Ti.UI.createLabel({
-	color : 'black',
-	font : {
-		fontFamily : 'Arial',
-		fontSize : 22,
-		fontWeight : 'bold'
-	},
-	text : componentHeading,
-	textAlign : 'center',
-});// XML
-	
-
-var scrollView = Ti.UI.createScrollView({
-	layout: 'horizontal',
-	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
-	height : '100%',
-	showHorizontalScrollIndicator: true,
-	width: '100%',
-	contentWidth: 'auto',
-	scrollType: 'horizontal',
-	horizontalWrap: false
-});// XML
+/*
+var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";
+dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+	alert("we Did It!");
+});
+var json = dataRetriever.parseJson();
+*/
 
 var exhibitsSwipeableView = Ti.UI.createView({	
 	top: '5%',
@@ -158,13 +145,11 @@ function createExhibitsCarousel(exhibits){
 	
 	for(i = exhibits.length -1 ; i >= 0; i--){
 		exhibitViews[i] = createLabeledPicView(exhibits[i], '22');		// will later say 'exhibit', and will create the pic item of that class
-		exhibitsSwipeableView.add(exhibitViews[i]);
+		$.exhibitsSwipeableView.add(exhibitViews[i]);
 		exhibitViews[i].hide();
 		//$.addClass(exhibitImages[i], "exhibitImage"); 
 	}
 	exhibitViews[0].show();
-	row.add(exhibitsSwipeableView);
-	tableData.push(row);
 }
 
 // Extract into a service in the Lib folder -> make into a widget when we write this in XML
@@ -210,17 +195,15 @@ function createTitleLabel(name, type){
 }
 
 function createComponentHeading(componentHeadingText){
-	var headingRow = createHeadingRow();	
-
-	componentHeading.text = componentHeadingText;
-	headingRow.add(componentHeading);
-	tableData.push(headingRow);
+	$.componentHeading.text = componentHeadingText;
+	
+	//tableData.push(headingRow);
 }
 
 function createComponentsScrollView(exhibits){
 
 	var image;
-	componentsRow.height = 100;
+	$.componentScrollView.height = 100;
 	var component;
 	var components;
 	
@@ -240,12 +223,10 @@ function createComponentsScrollView(exhibits){
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[i].add(component);
 		}			
-		scrollView.add(componentsInExhibit[i]);
+		$.componentScrollView.add(componentsInExhibit[i]);
 		componentsInExhibit[i].width = 0;
 	}
 	componentsInExhibit[0].width = 'auto';
-	componentsRow.add(scrollView);
-	tableData.push(componentsRow);
 }
 
 function setExhibitText(text){
@@ -306,14 +287,14 @@ function removeComponents(index){
 	if(componentsInExhibit.length>0){
 		componentsInExhibit[index].width = 0;
 	}
-	scrollView.contentWidth = 0;
+	$.componentScrollView.contentWidth = 0;
 }
 
 function showComponents(index){
 	if(index<componentsInExhibit.length){
 		componentsInExhibit[index].width = 'auto';
 		//alert("At index "+index+" the number of children is: "+componentsInExhibit[index].children.length);
-		scrollView.contentWidth = componentsInExhibit[index].size.width;
+		$.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
 	}
 }
 
@@ -333,8 +314,9 @@ var tableView = Ti.UI.createTableView({
 	width: '90%',
 	left: '5%'
 });
+//tableView.data = tableData;
 
-exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
+$.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
 $.exhibits.title = "Exhibits";
-$.exhibits.add(tableView);
+//$.exhibits.add(tableView);
 

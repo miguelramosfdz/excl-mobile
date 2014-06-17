@@ -3,13 +3,43 @@
   
 }
 
-"myLabel": {		
-		top: 0,
-		left: 10,
-		color: 'white',
-		font: {
-			fontFamily : 'Arial',
-			fontSize : 32,
-			fontWeight : 'bold'
-		}
+".largePictureRow": {
+	top: '5%',
+	backgroundColor : 'cyan',
+	height: '200dp'
+}
+
+"#tableView": {
+	backgroundColor : 'white',
+	width: '90%',
+	left: '5%'
+}
+
+"#exhibitsSwipeableView": {	
+	backgroundColor: 'cyan'
+}	// XML
+
+".headingRow": {
+	height : '50dp',
+	backgroundColor : 'cyan',
+}
+
+".headingText": {
+	color : 'black',
+	font : {
+		fontFamily : 'Arial',
+		fontSize : 22,
+		fontWeight : 'bold'
+	},
+	textAlign : 'center',
+}
+
+".componentScrollView": {
+	layout: 'horizontal',
+	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
+	showHorizontalScrollIndicator: true,
+	width: '100%',
+	contentWidth: 'auto',
+	scrollType: 'horizontal',
+	horizontalWrap: false
 }
