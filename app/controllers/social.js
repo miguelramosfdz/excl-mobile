@@ -107,19 +107,23 @@ function openCamera() {
 		saveToPhotoGallery : true,
 		mediaTypes : Titanium.Media.MEDIA_TYPE_PHOTO,
 		success : function(event) {
-
 			//create image file and save name for future use
 			var fileName = 'excl' + new Date().getTime() + '.jpg';
-			var fileNameInstagram = 'excl' + new Date().getTime() + '.jpg';
-			//Or .ig?
-			alert("Instagram file name" + fileNameInstagram);
+			
 			//save file
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
-			var imageFileInstagram = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileNameInstagram) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileNameInstagram);
-			imageFileInstagram.write(event.media);
+			
+			//Instagram-specific code
+			if (OS_IOS){
+				var fileNameInstagram = 'excl' + new Date().getTime() + '.jpg';
+				//Or .ig?			
+				alert("Instagram file name" + fileNameInstagram);
+				var imageFileInstagram = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileNameInstagram) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileNameInstagram);
+				imageFileInstagram.write(event.media);
+			}
+			
 			//save file path to be shared
-
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
 				imageFilePathInstagram = imageFileInstagram.nativePath;
