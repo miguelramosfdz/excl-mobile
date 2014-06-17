@@ -104,7 +104,6 @@ function openCamera() {
 			if (OS_IOS) {
 				var fileNameInstagram = 'excl' + new Date().getTime() + '.jpg';
 				//Or .ig?
-				alert("Instagram file name" + fileNameInstagram);
 				var imageFileInstagram = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileNameInstagram) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileNameInstagram);
 				imageFileInstagram.write(event.media);
 			}
@@ -128,22 +127,18 @@ function sendIntentImage(imageFilePath) {
 	//create and send an image intent
 
 	//Get text to be sent from WP
-	contentTextComment = "#cmh #awesome";
-	contentTextSubject = "Having fun at Children's Museum of Houston!";
-	contentTextURL = "http://www.cmhouston.org";
+	contentTextComment = "#cmh #awesome http://www.cmhouston.org";
 
 	if (OS_ANDROID) {
-		sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL, imageFilePath);
+		sendIntentImageAndroid(contentTextComment, imageFilePath);
 	} else if (OS_IOS) {
-		sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL, imageFilePath);
+		sendIntentImageiOS(contentTextComment, imageFilePath);
 	} else {
 		alert("Unsupported platform (image sharing)");
 	}
 }
 
-function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentTextURL, imageFilePath) {
-	contentTextComment = contentTextComment + contentTextURL;
-	//Android intents don't have a separate URL field
+function sendIntentImageAndroid(contentTextComment, imageFilePath) {
 
 	//Create and send image intent for android.
 	var intentImage = Ti.Android.createIntent({
@@ -152,10 +147,13 @@ function sendIntentImageAndroid(contentTextComment, contentTextSubject, contentT
 	});
 	intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
 	intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
+	intentImage.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share photo via"));
 }
 
 function openInstagram(imageFilePathInstagram) {
+	
+	/*
 	alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
 	var docviewer = Ti.UI.iOS.createDocumentViewer({
 		url : "/images/alexbutton.png"
@@ -170,17 +168,32 @@ function openInstagram(imageFilePathInstagram) {
 
 	docviewer.show();
 	alert("Showed docviewer");
+	*/
+	
+	/*//Use iPhone URL schemes to open app- doesn't reliably open to a specific page, haven't gotten the caption to work
+	//Doesn't seem like there's an easy way to upload a recently taken photo
+	var instagramURL = "instagram://camera&caption=hello%20world";
+	if (Titanium.Platform.canOpenURL(instagramURL)){
+		Titanium.Platform.openURL(instagramURL);
+	}
+	*/
+	
+	//WebView attempt
+	instaWebView = Titanium.UI.createWebView({url: 'www.instagram.com'});
+	var instaWindow = Titanium.UI.createWindow();
+	instaWindow.add(instaWebView);
+	$.rozay.add(instaWindow);
+	instaWindow.open({modal:true});
 
 }
 
-function sendIntentImageiOS(contentTextComment, contentTextSubject, contentTextURL, imageFilePath) {
+function sendIntentImageiOS(contentTextComment, imageFilePath) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
 			image : imageFilePath,
-			text : contentTextComment, //Note that contentTextSubject is unused; there is no field for that
-			url : contentTextURL
+			text : contentTextComment, 
 		}, [{
 			title : "Instagram",
 			type : "open.instagram",
@@ -199,41 +212,36 @@ function sendIntentText() {
 	//function to send information to other apps
 
 	//Get text to be sent from WP
-	contentTextComment = "#cmh #awesome";
-	contentTextSubject = "Having fun at Children's Museum of Houston!";
-	contentTextURL = "http://www.cmhouston.org";
+	contentTextComment = "#cmh #awesome http://www.cmhouston.org";
 
 	//Note: in kiosk mode, restrict available apps to email only
 	if (OS_ANDROID) {
-		sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL);
+		sendIntentTextAndroid(contentTextComment);
 	} else if (OS_IOS) {
-		sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL);
+		sendIntentTextiOS(contentTextComment);
 	} else {
 		alert("Unsupported platform (text sharing)");
 	}
 }
 
-function sendIntentTextAndroid(contentTextComment, contentTextSubject, contentTextURL) {
-	//Create and send text intent for android. Includes area for main text and url text to be appended and a subject header
+function sendIntentTextAndroid(contentTextComment) {
+	//Create and send text intent for android. Includes area for main text and url text to be appended
 	var intentText = Ti.Android.createIntent({
 		action : Ti.Android.ACTION_SEND,
 		type : 'text/plain'
 	});
-	contentTextComment = contentTextComment + "\n" + contentTextURL;
-	//Android doesn't have a separate URL field
-	intentText.putExtra(Ti.Android.EXTRA_SUBJECT, contentTextSubject);
+
 	intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
 	intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentText, "Send message via"));
 }
 
-function sendIntentTextiOS(contentTextComment, contentTextSubject, contentTextURL) {
+function sendIntentTextiOS(contentTextComment) {
 	//Use TiSocial.Framework module to share text
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
-			text : contentTextComment,
-			url : contentTextURL
+			text : contentTextComment
 		});
 	} else {
 		alert("Text sharing is not available on this device");

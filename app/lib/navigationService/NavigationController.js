@@ -1,9 +1,5 @@
-// Note: This version works for Android and iOS for Titanium 3.2.0. 
-// Most of the changes to make it compatible with Ti 3.2.0 were:
-// this.navGroup.close(someWindow) changed to this.navGroup.closeWindow(someWindow)
-// most of the time
-// this.navGroup.open(someWindow) changed to this.navGroup.openWindow(someWindow)
-// most of the time
+// NavigationController
+// This version works for Android and iOS for Titanium 3.2.0. 
 
 function NavigationController() {
 	this.windowStack = [];
@@ -12,17 +8,20 @@ function NavigationController() {
 	this.lockedHomePage;
 };
 
+
+// Open new window and add it to window stack
 NavigationController.prototype.open = function(windowToOpen, onEnterKioskMode, onExitKioskMode) {
 	
+	// Add or define onEnterKioskMode or onExitKioskMode functionality
 	if (onEnterKioskMode && typeof(onEnterKioskMode) === 'function') {
 		windowToOpen.onEnterKioskMode = onEnterKioskMode;
 	} else {
-		windowToOpen.onEnterKioskMode = function(view){};
+		windowToOpen.onEnterKioskMode = function(window){};
 	}
 	if (onExitKioskMode && typeof(onExitKioskMode) === 'function') {
 		windowToOpen.onExitKioskMode = onExitKioskMode;
 	} else {
-		windowToOpen.onExitKioskMode = function(view){};
+		windowToOpen.onExitKioskMode = function(window){};
 	}
 	
 	// Capture Android back button
@@ -83,7 +82,7 @@ NavigationController.prototype.open = function(windowToOpen, onEnterKioskMode, o
 	if (this.windowStack.length === 1) {
 		this.homePage = windowToOpen;
 		this.lockedHomePage = this.homePage;
-		if (Ti.Platform.osname === 'android') {
+		if (OS_ANDROID) {
 			windowToOpen.exitOnClose = true;
 			windowToOpen.open();
 		} else {
@@ -95,138 +94,142 @@ NavigationController.prototype.open = function(windowToOpen, onEnterKioskMode, o
 			this.navGroup.open();
 		}
 	} else {// All subsequent windows
-		if (Ti.Platform.osname === 'android') {
+		if (OS_ANDROID) {
 			windowToOpen.open();
 		} else {
 			this.navGroup.openWindow(windowToOpen);
 		}
 	}
 	return windowToOpen;
-}; // end of open function
+};
 
 // Note: without a parameter, close automatically closes 1 window
 NavigationController.prototype.close = function(numWindows) {
-	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedHomePage){
+	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedHomePage) {
 		if (numWindows > 1) {
 			// setup chain reaction by setting up the flags on all the windows
 			var i = this.windowStack.length - 1;
-			for (var j = 1; j < numWindows; j++)
-			{
+			for (var j = 1; j < numWindows; j++) {
 				// set dependent window
 				this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
 				i--;
 	       	}
 	        // start chain reaction, close first window
 			(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
-		}
-		else
-		{
+		} else {
 			(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
 		}
 	}
-};// end of close function
+};
 
 // go back to the initial window of the NavigationController
 NavigationController.prototype.home = function() {
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedHomePage) {
 		// setup chain reaction by setting up the flags on all the windows
-		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedHomePage; i--)		//NOPE!
-		{
+		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedHomePage; i--) {
 			// set dependent window
 			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
        	}
         // start chain reaction, close first window
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
 	}
-};// end of home function
+};
 
+// Lock home page to current top of stack
 NavigationController.prototype.setLockedHome = function(){
 	this.lockedHomePage = this.windowStack[this.windowStack.length - 1];
 };
 
+// Reset home page to original home
 NavigationController.prototype.resetHome = function(){
 	this.lockedHomePage = this.homePage;
 };
 
+// Return true if in kiosk mode and false otherwise
 NavigationController.prototype.isInKioskMode = function() {
 	return this.kioskMode;
 };
 
-function setKioskMode(self) {
+
+// Handles updateing kiosk mode status.
+// Used in addKioskModeListener()
+function updateKioskMode(self) {
+	
+	// Create confirmation dialog
+	var confirm = Ti.UI.createAlertDialog({
+	    title: '',
+	    buttonNames: ['OK']
+	});
+	
+	// Get top window to access call back functions
+	var window = self.windowStack[self.windowStack.length - 1];
+	
+	// Deactivate kiosk mode if active or vice versa
 	if (self.kioskMode == false) {
     	self.kioskMode = true;
     	self.setLockedHome();
-	    var confirm = Ti.UI.createAlertDialog({
-		    title: 'Activated Kiosk Mode',
-		    buttonNames: ['OK']
-		});
-		var view = self.windowStack[self.windowStack.length - 1];
-		view.onEnterKioskMode(view);
-		confirm.show();	
+    	confirm.title = 'Activated Kiosk Mode';
+		window.onEnterKioskMode(window);	
 	} else {
 		self.kioskMode = false;
 		self.resetHome();
-		var confirm = Ti.UI.createAlertDialog({
-		    title: 'Deactivated Kiosk Mode',
-		    buttonNames: ['OK']
-		});
-		var view = self.windowStack[self.windowStack.length - 1];
-		view.onExitKioskMode(view);
-		confirm.show();	
+	    confirm.title = 'Deactivated Kiosk Mode';
+		window.onExitKioskMode(window);	
 	}
+	confirm.show();
 };
 
-/*
- * Add kiosk mode listener to passed in element. Will activate on three 
- * long clicks if done withing three seconds.
- */ 
+// Handles kiosk mode dialog
+// Used in addKioskModeListener()
+function handleKioskModeDialog(self) {	
+	if (OS_IOS) {
+		var dialog = Ti.UI.createAlertDialog({
+		    title: 'Enter code',
+		    style: Ti.UI.iPhone.AlertDialogStyle.PLAIN_TEXT_INPUT,
+		    passwordMask:true,
+		    buttonNames: ['OK', 'Cancel']
+		});
+		dialog.addEventListener('click', function(e){
+			if (e.text == "friend") {
+				updateKioskMode(self);
+			}
+		});
+	} else if (OS_ANDROID) {
+		var textfield = Ti.UI.createTextField({
+			passwordMask:true,
+		    height:35,
+		    top:100,
+		    left:30,
+		    width:250,
+		    borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+		});
+		var dialog = Ti.UI.createAlertDialog({
+		    title: 'Enter code',
+		    androidView: textfield,
+		    passwordMask:true,
+		    buttonNames: ['OK', 'Cancel']
+		});
+		dialog.addEventListener('click', function(e) {
+		    if (textfield.value == "friend") {
+				updateKioskMode(self);
+		    }
+		});
+	}
+	dialog.show();
+};
+
+// Add kiosk mode listener to passed in element. Will activate on three 
+// long clicks if done withing three seconds. 
 NavigationController.prototype.addKioskModeListener = function(element) {
 	var count = 0;
 	var self = this;
 	element.addEventListener('longclick', function(e){
 		count += 100;
-		setTimeout(function(){
-			count -= 100;
-		}, 3000);
-		
+		setTimeout(function(){count -= 100;}, 3000);
 		if (count === 300) {
-			if (OS_IOS) {// For IOS
-				var dialog = Ti.UI.createAlertDialog({
-				    title: 'Enter code',
-				    passwordMask:true,
-				    style: Ti.UI.iPhone.AlertDialogStyle.PLAIN_TEXT_INPUT,
-				    buttonNames: ['OK', 'Cancel']
-				});
-				dialog.addEventListener('click', function(e){
-					if (e.text == "friend") {
-						setKioskMode(self);
-					}
-				});
-				dialog.show();
-			} else if (OS_ANDROID) {// For Andriod
-				var textfield = Ti.UI.createTextField({
-					passwordMask:true,
-					hintText:'Enter code',
-				    height:35,
-				    top:100,
-				    left:30,
-				    width:250,
-				    borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
-				});
-				var dialog = Ti.UI.createAlertDialog({
-				    title: 'Admin Lock',
-				    androidView: textfield,
-				    buttonNames: ['OK', 'cancel']
-				});
-				dialog.addEventListener('click', function(e) {
-				    if (textfield.value == "friend") {
-						setKioskMode(self);
-				    }
-				});
-				dialog.show();
-			}
-		} // end if (count==300)	
-	}); // end addEventListener
-}; // end of addKioskModeListener
+			handleKioskModeDialog(self);
+		}	
+	});
+};
 
 module.exports = NavigationController;
