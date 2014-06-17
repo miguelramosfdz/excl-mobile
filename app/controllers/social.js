@@ -2,6 +2,8 @@
 //var imageFilePath;
 var dataRetriever = require("dataRetriever");
 var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/23";
+var postId = "41";
+var componentId = "23";
 
 function retrievePostTags(componentId, postId) {
 	//Retrieve social media message, which contains social media tags
@@ -13,6 +15,9 @@ function retrievePostTags(componentId, postId) {
 
 			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
 				//find correct post
+				
+				alert("post id: " + returnedData.data.component.posts[i].id);
+				
 				if (returnedData.data.component.posts[i].id == postId) {
 
 					alert("found post");
@@ -86,7 +91,7 @@ function createShareButtons() {
 		left : "0"
 	});
 	getTags.addEventListener('click', function(e) {
-		var test = retrievePostTags("12435", "123");
+		var test = retrievePostTags(componentId, postId);
 		alert("returned: " + test);
 	});
 	viewSharingTemp.add(getTags);
