@@ -89,6 +89,18 @@ var componentsRow = createPlainRow();
 
 var tableData = [];
 
+var componentHeading = Ti.UI.createLabel({
+	color : 'black',
+	font : {
+		fontFamily : 'Arial',
+		fontSize : 22,
+		fontWeight : 'bold'
+	},
+	text : componentHeading,
+	textAlign : 'center',
+});// XML
+	
+
 var scrollView = Ti.UI.createScrollView({
 	layout: 'horizontal',
 	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
@@ -98,19 +110,20 @@ var scrollView = Ti.UI.createScrollView({
 	contentWidth: 'auto',
 	scrollType: 'horizontal',
 	horizontalWrap: false
-});// Can Do in XML
+});// XML
 
 var exhibitsSwipeableView = Ti.UI.createView({	
 	top: '5%',
-	backgroundColor: 'red'
-});	// ADD THIS PART TO XML ^^
+	backgroundColor: 'cyan'
+});	// XML
 
 // simulate data from wordpress using Jess' model
 
-// Modify with new MODULE methods
+
 function openComponent(e){
-		
 	var componentWindow = Alloy.createController('componentlanding').getView();
+	componentWindow.componentId = e.source.componentId;
+	alert("component Id: "+e.source.componentId);
 	componentWindow.open();  
 }
 
@@ -121,10 +134,10 @@ function createPlainRow() {
 		// height: (Ti.Platform.displayCaps.platformHeight / 8),
 		height : '190dp',
 		top: '10dp',
-		backgroundColor : 'grey',
+		backgroundColor : 'white',
 	});
 	return row;
-}
+}// XML
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
@@ -132,22 +145,18 @@ function createHeadingRow() {
 	var row = Ti.UI.createTableViewRow({
 		// height: (Ti.Platform.displayCaps.platformHeight / 8),
 		height : '50dp',
-		backgroundColor : 'blue',
+		backgroundColor : 'cyan',
 	});
 	return row;
-}
+}// XML
+
 
 function createExhibitsCarousel(exhibits){
 	// These parts should be defined by TSS
 	var row = createPlainRow();
 	
-	var view = Ti.UI.createView({	
-		top: '5%',
-		backgroundColor: 'red'
-	});	// ADD THIS PART TO XML ^^
-	
 	for(i = exhibits.length -1 ; i >= 0; i--){
-		exhibitViews[i] = createLabeledPicView(exhibits[i]);
+		exhibitViews[i] = createLabeledPicView(exhibits[i], '22');		// will later say 'exhibit', and will create the pic item of that class
 		exhibitsSwipeableView.add(exhibitViews[i]);
 		exhibitViews[i].hide();
 		//$.addClass(exhibitImages[i], "exhibitImage"); 
@@ -157,7 +166,8 @@ function createExhibitsCarousel(exhibits){
 	tableData.push(row);
 }
 
-function createLabeledPicView(item){
+// This is like our itemTemplate
+function createLabeledPicView(item, type){
 	var itemContainer = Ti.UI.createView();
 	
 	var image = Ti.UI.createImageView({
@@ -171,7 +181,7 @@ function createLabeledPicView(item){
 	return itemContainer;
 }
 
-function createTitleLabel(name){
+function createTitleLabel(name, type){
 	var titleLabel = Ti.UI.createView({
 		backgroundColor: 'black',
 		opacity: 0.5,
@@ -187,7 +197,7 @@ function createTitleLabel(name){
 		color: 'white',
 		font: {
 			fontFamily : 'Arial',
-			fontSize : 22,
+			fontSize : type,
 			fontWeight : 'bold'
 		}
 	});
@@ -198,19 +208,11 @@ function createTitleLabel(name){
 	return titleLabel;
 }
 
-function createComponentHeading(componentHeading){
-		var headingRow = createHeadingRow();	
-	var heading = Ti.UI.createLabel({
-		color : 'black',
-		font : {
-			fontFamily : 'Arial',
-			fontSize : 22,
-			fontWeight : 'bold'
-		},
-		text : componentHeading,
-		textAlign : 'center',
-	});
-	headingRow.add(heading);
+function createComponentHeading(componentHeadingText){
+	var headingRow = createHeadingRow();	
+
+	componentHeading.text = componentHeadingText;
+	headingRow.add(componentHeading);
 	tableData.push(headingRow);
 }
 
@@ -229,7 +231,7 @@ function createComponentsScrollView(exhibits){
 		});// TSS CLASS
 
 		for(var j = 0; j< exhibits[i].components.length; j++){
-			component = createLabeledPicView(exhibits[i].components[j]);
+			component = createLabeledPicView(exhibits[i].components[j], '12');	// Later type will be 'component' and that wil be linked to the TSS class
 			component.left = 5;
 			component.right = 5;
 			component.width = 200;
@@ -246,7 +248,7 @@ function createComponentsScrollView(exhibits){
 	tableData.push(componentsRow);
 }
 
-function createExhibitText(text){
+function setExhibitText(text){
 	var textRow = createHeadingRow();
 	
 	var label = Ti.UI.createLabel({
@@ -257,21 +259,28 @@ function createExhibitText(text){
 			fontWeight : 'bold'
 		},
 		width: 'auto',
+		left: 20,
 		horizontalWrap: true,
 		text : text
 	});
 	textRow.top = 20;
+	textRow.height = '100%';
 	textRow.add(label);
 	textRow.height = 120;
 	tableData.push(textRow);
-}
+} // XML
 
+// Break into two more functions
 function swipeHandler(e){
 	if(numOfExhibits>0){
 		if(e.direction = 'right'){
 			exhibitViews[exhibitIndex].hide();
 			removeComponents(exhibitIndex);
+			
+			// Incrememnt Index
 			exhibitIndex= (exhibitIndex+1)%numOfExhibits;
+			
+			// Show new exhibit and it's 
 			exhibitViews[exhibitIndex].show();
 			showComponents(exhibitIndex);
 		}
@@ -279,9 +288,12 @@ function swipeHandler(e){
 			exhibitViews[exhibitIndex].hide();
 			removeComponents(exhibitIndex);
 			exhibitIndex--;
+			
+			// Decrement index 
 			if(exhibitIndex=-1)
 				exhibitIndex=numOfExhibits -1;
-				
+			
+			// Show new Exhibit and it's contents
 			exhibitViews[exhibitIndex].show();
 			showcomponents(exhibitIndex);
 		}
@@ -311,11 +323,11 @@ createExhibitsCarousel(json.data.museum.exhibits);
 createComponentHeading("Check out our Stations");
 createComponentsScrollView(json.data.museum.exhibits);
 
-createExhibitText("Blah blah blah blah blah blah blah blah,\nBlah blah blah.");
+setExhibitText("Lorem ipsem antrhhc buert sdjr bejsu ache thfk ook nsj rhjejjc kkdjf eifj nivi rjf,\nAsd ehw tn iidjs thne shcu ndusr.");
 
 var tableView = Ti.UI.createTableView({
 	// backgroundColor : '#07B5BE',
-	backgroundColor : 'grey',
+	backgroundColor : 'white',
 	data : tableData,
 	width: '90%',
 	left: '5%'
