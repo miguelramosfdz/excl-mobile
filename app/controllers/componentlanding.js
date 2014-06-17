@@ -240,7 +240,7 @@ function openPostLanding(e){
 
 function createRow() {
 	var row = Ti.UI.createTableViewRow({
-		height : '150dp',
+		height : '180dp',
 		top: '10dp',
 		backgroundColor : 'yellow',
 	});
@@ -309,6 +309,7 @@ function createPosts(posts){
 }
 
 
+// Create the post sections
 createPosts(json.data.component.posts);
 
 var tableView = Ti.UI.createTableView({
@@ -317,6 +318,8 @@ var tableView = Ti.UI.createTableView({
 	width: '100%',
 	height:'100%'
 });
+
+
 
 
 $.componentlanding.title = "Component";
