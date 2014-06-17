@@ -104,7 +104,6 @@ function openCamera() {
 			if (OS_IOS) {
 				var fileNameInstagram = 'excl' + new Date().getTime() + '.jpg';
 				//Or .ig?
-				alert("Instagram file name" + fileNameInstagram);
 				var imageFileInstagram = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileNameInstagram) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileNameInstagram);
 				imageFileInstagram.write(event.media);
 			}
