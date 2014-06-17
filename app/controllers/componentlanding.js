@@ -241,6 +241,12 @@ var json = {
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
+/*var componentIndex = 0;
+var numOfExhibits = json.data.museum.exhibits.length;
+var exhibitViews = [];
+var componentsInExhibit = [];
+var componentsRow = createPlainRow();*/
+
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
 var tableData = [];
