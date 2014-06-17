@@ -3,8 +3,8 @@ Using the NavigationController
 
 * Instantiate singleton controller in alloy.js with: 
 
-	`var NavigationController = require('NavigationController');`
-	`Alloy.Globals.navController = new NavigationController();`
+	`var NavigationController = require('NavigationController');
+	 Alloy.Globals.navController = new NavigationController();`
 	
 	
 * Open new windows with:

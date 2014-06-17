@@ -19,37 +19,60 @@ var json = {
       "exhibits": [
         {
           "id": 12345,
-          "name": "How Does It Work?",
+          "name": "Water Animals",
           "description": "Such a great exhibit. Check it out!",
           "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg",
           "components": [
             {
               "id": 12345,
-              "name": "Cups and Balls",
-              "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg"
+              "name": "Mammals",
+              "image": "http://media.carbonated.tv/76127_story__unlikely%20friends.jpg"
             },
             {
               "id": 54321,
-              "name": "Spinning Disc",
-              "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg"
+              "name": "Fish",
+              "image": "http://upload.wikimedia.org/wikipedia/commons/9/94/Mandarin_Fish_-_mating.jpg"
             }
           ]
         }, 
         {
-          "id": 12345,
-          "name": "How Doesn't It Work?",
+          "id": 12344,
+          "name": "Land Animals",
           "description": "Such a great exhibit. Check it out!",
-          "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg",
+          "image": "http://k-science.wikispaces.com/file/view/Lion.jpg/302874032/240x263/Lion.jpg",
           "components": [
             {
               "id": 12345,
-              "name": "Cups or Balls",
-              "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg"
+              "name": "Mammals",
+              "image": "http://oddstuffmagazine.com/wp-content/uploads/2011/09/animals03.jpg"
             },
             {
               "id": 54321,
-              "name": "Spun Disc",
-              "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg"
+              "name": "Reptiles",
+              "image": "http://www.liveknowledgeworld.com/wp-content/uploads/2013/12/Reptiles_wallpapers_1.jpg"
+            },           
+            {
+              "id": 54321,
+              "name": "Arachnids",
+              "image": "http://www.clusterflock.org/wp-content/uploads/2008/11/spider.png"
+            }
+          ]
+        }, 
+        {
+          "id": 12346,
+          "name": "Flying Animals",
+          "description": "Such a great exhibit. Check it out!",
+          "image": "http://cdn.theanimals.pics/pictures/hdwallpaperbackgrounds.info/wp-content/uploads/2012/02/Flying-Eagle-HD-Wallpaper.jpg",
+          "components": [
+            {
+              "id": 12345,
+              "name": "Birds",
+              "image": "http://www.pouted.com/wp-content/uploads/2013/04/Beautiful-Birds-Wallpapers-15.jpg"
+            },
+            {
+              "id": 54321,
+              "name": "Insects",
+              "image": "http://www.redorbit.com/media/uploads/2011/10/sciencepress-100411-001-617x416.jpg"
             }
           ]
         }
@@ -63,6 +86,7 @@ var numOfExhibits = json.data.museum.exhibits.length;
 var exhibitViews = [];
 var componentsInExhibit = [];
 var componentsRow = createPlainRow();
+
 var tableData = [];
 
 var scrollView = Ti.UI.createScrollView({
@@ -75,6 +99,11 @@ var scrollView = Ti.UI.createScrollView({
 	scrollType: 'horizontal',
 	horizontalWrap: false
 });// Can Do in XML
+
+var exhibitsSwipeableView = Ti.UI.createView({	
+	top: '5%',
+	backgroundColor: 'red'
+});	// ADD THIS PART TO XML ^^
 
 // simulate data from wordpress using Jess' model
 
@@ -119,48 +148,13 @@ function createExhibitsCarousel(exhibits){
 	
 	for(i = exhibits.length -1 ; i >= 0; i--){
 		exhibitViews[i] = createLabeledPicView(exhibits[i]);
-		view.add(exhibitViews[i]);
+		exhibitsSwipeableView.add(exhibitViews[i]);
 		exhibitViews[i].hide();
 		//$.addClass(exhibitImages[i], "exhibitImage"); 
 	}
-	view.addEventListener('swipe', swipeHandler);
 	exhibitViews[0].show();
-	row.add(view);
+	row.add(exhibitsSwipeableView);
 	tableData.push(row);
-}
-
-function swipeHandler(e){
-	if(numOfExhibits>0){
-		if(e.direction = 'right'){
-			exhibitViews[exhibitIndex].hide();
-			removeComponents();
-			exhibitIndex= (exhibitIndex+1)%numOfExhibits;
-			exhibitViews[exhibitIndex].show();
-			showComponents(exhibitIndex);
-		}
-		else if(e.direction = 'left'){
-			exhibitViews[exhibitIndex].hide();
-			removeComponents();
-			exhibitIndex--;
-			if(exhibitIndex=-1)
-				exhibitIndex=numOfExhibits -1;
-				
-			exhibitViews[exhibitIndex].show();
-			showcomponents(exhibitIndex);
-		}
-	}
-	//alert("swipe!");
-}
-
-function removeComponents(){
-	if(scrollView.children.length>0)
-		scrollView.removeAllChildren();
-}
-
-function showComponents(index){
-	if(index<componentsInExhibit.length);
-		//scrollView.add(componentsInExhibit[index].children[0]);
-		alert(componentsInExhibit[index].children.length);
 }
 
 function createLabeledPicView(item){
@@ -228,7 +222,7 @@ function createComponentsScrollView(exhibits){
 	var components;
 	
 	for (var i = 0; i < exhibits.length; i++){
-		components = Ti.UI.createView({
+		componentsInExhibit[i] = Ti.UI.createView({
 			layout: 'horizontal',
 			horizontalWrap: false,
 			width: 'auto'
@@ -242,11 +236,12 @@ function createComponentsScrollView(exhibits){
 			//$.addClass blah
 			component.componentId = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
-			components.add(component);
+			componentsInExhibit[i].add(component);
 		}			
-		componentsInExhibit[i] = components;
+		scrollView.add(componentsInExhibit[i]);
+		componentsInExhibit[i].width = 0;
 	}
-	scrollView.add(componentsInExhibit[0]);
+	componentsInExhibit[0].width = 'auto';
 	componentsRow.add(scrollView);
 	tableData.push(componentsRow);
 }
@@ -271,6 +266,44 @@ function createExhibitText(text){
 	tableData.push(textRow);
 }
 
+function swipeHandler(e){
+	if(numOfExhibits>0){
+		if(e.direction = 'right'){
+			exhibitViews[exhibitIndex].hide();
+			removeComponents(exhibitIndex);
+			exhibitIndex= (exhibitIndex+1)%numOfExhibits;
+			exhibitViews[exhibitIndex].show();
+			showComponents(exhibitIndex);
+		}
+		else if(e.direction = 'left'){
+			exhibitViews[exhibitIndex].hide();
+			removeComponents(exhibitIndex);
+			exhibitIndex--;
+			if(exhibitIndex=-1)
+				exhibitIndex=numOfExhibits -1;
+				
+			exhibitViews[exhibitIndex].show();
+			showcomponents(exhibitIndex);
+		}
+	}
+	//alert("swipe!");
+}
+
+function removeComponents(index){
+	if(componentsInExhibit.length>0){
+		componentsInExhibit[index].width = 0;
+	}
+	scrollView.contentWidth = 0;
+}
+
+function showComponents(index){
+	if(index<componentsInExhibit.length){
+		componentsInExhibit[index].width = 'auto';
+		//alert("At index "+index+" the number of children is: "+componentsInExhibit[index].children.length);
+		scrollView.contentWidth = componentsInExhibit[index].size.width;
+	}
+}
+
 
 
 //createExhibitsCarousel2("All Exhibits", json.data.museum.exhibits);
@@ -288,6 +321,7 @@ var tableView = Ti.UI.createTableView({
 	left: '5%'
 });
 
+exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
 $.exhibits.title = "Exhibits";
 $.exhibits.add(tableView);
 
