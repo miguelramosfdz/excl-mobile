@@ -3,6 +3,32 @@
 
 var dataRetriever = require("dataRetriever");
 var imageFilePathInstagram = "";
+
+/*
+ * Functions to toggle activated buttons, changing the share buttons' enabled and backgroundimage status
+ */
+function toggleTextShareButtonStatusActive(shareTextButtonId){
+	//Changes background and enabled status of sharetextbutton to active/clicked mode
+	shareTextButtonId.enabled = false;
+	shareTextButtonId.backgroundImage = "/images/iconShareActive.png";
+}
+function toggleTextShareButtonStatusInactive(shareTextButtonId){
+	//Changes background and enabled status of sharetextbutton to inactive/ready mode
+	shareTextButtonId.enabled = true;
+	shareTextButtonId.backgroundImage = "/images/iconShareInactive.png";
+}
+function toggleImageShareButtonStatusActive(shareImageButtonId){
+	//Changes background and enabled status of shareimagebutton to active/clicked mode
+	shareImageButtonId.enabled = false;
+	shareImageButtonId.backgroundImage = "/images/iconCameraActive.png";
+}
+function toggleImageShareButtonStatusInactive(shareImageButtonId){
+	//Changes background and enabled status of shareimagebutton to inactive/ready mode
+	shareImageButtonId.enabled = true;
+	shareImageButtonId.backgroundImage = "/images/iconCameraInactive.png";
+}
+
+
 /*
  * Returns the button for text sharing
  * File that calls the function is responsible for placing it in the correct view
@@ -15,14 +41,13 @@ function createTextShareButton(postId, json) {
 		height : "40dip",
 		width : "40dip",
 		left : "0",
-		top: "0",
-		backgroundImage : "/images/iconShareInactive.png",
-		enabled: true
+		top: "0"
 	});
+toggleTextShareButtonInactive(shareTextButton);
 
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
-		shareTextButton.enabled = false;
+		toggleTextShareButtonActive(shareTextButton);
 		sendIntentText(postId, json, shareTextButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
@@ -43,13 +68,12 @@ function createImageShareButton(postId, json) {
 		height : "40dip",
 		width : "40dip",
 		left : "70dip",
-		top: "0",
-		backgroundImage : "/images/iconCameraInactive.png",
-		enabled: true
+		top: "0"
 	});
-
+toggleImageShareButtonInactive(shareImageButton);
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
+		toggleImageShareButtonActive(shareImageButton);
 		openCamera(postId, json, shareImageButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
@@ -92,7 +116,7 @@ function retrieveTextPostTags(postId, json, shareTextButtonId) {
 			foundPost = true;
 			var postTags = json.data.component.posts[i].social_media_message;
 			//enable text share button again
-			shareTextButtonId.enabled = true;
+			toggleTextShareButtonInactive(shareTextButtonId);
 			//send tags to intents and start intents
 			sendIntentText(postTags);
 		}
@@ -205,7 +229,7 @@ function retrieveImagePostTags(postId, json, imageFilePath, shareImageButtonId) 
 			foundPost = true;
 			postTags = json.data.component.posts[i].social_media_message;
 			//reenable share button
-			shareImageButtonId.enabled = true;
+			toggleImageShareButtonInactive(shareImageButtonId);
 			//send tags to intents and start intents
 			sendIntentImage(postTags, imageFilePath);
 		}
