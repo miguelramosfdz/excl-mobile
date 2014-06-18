@@ -1,4 +1,5 @@
 //Hi Alex!!
+//hey there stranger
 
 var dataRetriever = require("dataRetriever");
 var imageFilePathInstagram = "";
@@ -71,7 +72,7 @@ function retrieveTextPostTags(postId, json, shareTextButtonId) {
 			foundPost = true;
 			var postTags = json.data.component.posts[i].social_media_message;
 			//enable text share button again
-					shareTextButtonId.enabled = true;
+			shareTextButtonId.enabled = true;
 			//send tags to intents and start intents
 			sendIntentText(postTags);
 		}
@@ -170,7 +171,7 @@ function openCamera(postId, json, shareImageButtonId) {
 /*
  * Opens camera and saves the photo the user takes; calls sendIntentImage
  */
-function retrieveImagePostTags(postId, json, imageFilePath) {
+function retrieveImagePostTags(postId, json, imageFilePath, shareImageButtonId) {
 	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
 	var postTags = "";
 	var foundPost = false;
@@ -181,7 +182,7 @@ function retrieveImagePostTags(postId, json, imageFilePath) {
 			foundPost = true;
 			postTags = json.data.component.posts[i].social_media_message;
 			//reenable share button
-					shareImageButtonId.enabled = true;
+			shareImageButtonId.enabled = true;
 			//send tags to intents and start intents
 			sendIntentImage(postTags, imageFilePath);
 		}
