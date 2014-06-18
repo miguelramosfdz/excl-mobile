@@ -20,11 +20,11 @@ var playSoundBtn = Ti.UI.createButton({
 	height : 50, //define height
 	title : 'Play Sound',
 	id : 'soundBtn',
-	left : '115dp',
-	top : '380dp'
+	left : '25%',
+	top : '400dip'
 });
 
-$.rozay.add(playSoundBtn);
+$.scrollViewRozay.add(playSoundBtn);
 
 var playStatus = false;
 
@@ -51,11 +51,12 @@ var sound = Ti.Media.createSound({
 //Sharing library
 var sharingService = require("sharing/sharing");
 
-var postId = 41; //Will get from the json somewhere along the line
+var postId = 41;
+//Will get from the json somewhere along the line
 var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/23";
 
 var createdTextShareButton = sharingService.createTextShareButton(postId, jsonURL);
-$.rozay.add(createdTextShareButton);
+$.scrollViewRozay.add(createdTextShareButton);
 var createdImageShareButton = sharingService.createImageShareButton(postId, jsonURL);
-$.rozay.add(createdImageShareButton);
+$.scrollViewRozay.add(createdImageShareButton);
 

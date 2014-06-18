@@ -12,12 +12,15 @@ function createTextShareButton(postId, jsonURL) {
 		height : "40dip",
 		width : "40dip",
 		left : "0",
-		backgroundImage : "/images/iconShare.png"
+		top: "0",
+		backgroundImage : "/images/iconShare.png",
+		enabled: true
 	});
 
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
-		retrieveTextPostTags(postId, jsonURL);
+		shareTextButton.enabled = false;
+		retrieveTextPostTags(postId, jsonURL, shareTextButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
 
@@ -36,13 +39,15 @@ function createImageShareButton(postId, jsonURL) {
 		text : "Camera",
 		height : "40dip",
 		width : "40dip",
-		left : "30",
-		backgroundImage : "/images/iconCamera.png"
+		left : "70dip",
+		top: "0",
+		backgroundImage : "/images/iconCamera.png",
+		enabled: true
 	});
 
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
-		openCamera(postId, jsonURL);
+		openCamera(postId, jsonURL, shareImageButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
 
@@ -52,7 +57,7 @@ function createImageShareButton(postId, jsonURL) {
 /*
  * Calls the platform-specific sendIntent function for text
  */
-function retrieveTextPostTags(postId, jsonURL) {
+function retrieveTextPostTags(postId, jsonURL, shareTextButtonId) {
 	//Retrieve social media message, which contains social media tags. This is used for text intents/iOS equivalents.
 	
 	//Remove JSON parsing - assume that the post page will supply the postId
@@ -65,6 +70,8 @@ function retrieveTextPostTags(postId, jsonURL) {
 					//pull tags from post if you have not found the post yet
 					foundPost = true;
 					var postTags = returnedData.data.component.posts[i].social_media_message;
+					//enable text share button again
+					shareTextButtonId.enabled = true;
 					//send tags to intents and start intents
 					if (OS_ANDROID) {
 						sendIntentTextAndroid(postTags);
@@ -111,7 +118,7 @@ function sendIntentTextiOS(postTags) {
 	}
 }
 
-function openCamera(postId, jsonURL) {
+function openCamera(postId, jsonURL, shareImageButtonId) {
 	//Holds all functionality related to sharing image through camera
 
 	var imageFilePath;
@@ -142,7 +149,7 @@ function openCamera(postId, jsonURL) {
 				imageFilePathInstagram = imageFileInstagram.nativePath;
 
 				//send file path to intent creation
-				retrieveImagePostTags(postId, jsonURL, imageFilePath);
+				retrieveImagePostTags(postId, jsonURL, imageFilePath, shareImageButtonId);
 			}
 		},
 		cancel : function() {
@@ -156,7 +163,7 @@ function openCamera(postId, jsonURL) {
 /*
  * Opens camera and saves the photo the user takes; calls sendIntentImage
  */
-function retrieveImagePostTags(postId, jsonURL, imageFilePath) {
+function retrieveImagePostTags(postId, jsonURL, imageFilePath, shareImageButtonId) {
 	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
 	var postTags = "";
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
@@ -168,6 +175,8 @@ function retrieveImagePostTags(postId, jsonURL, imageFilePath) {
 					//pull tags from post
 					foundPost = true;
 					postTags = returnedData.data.component.posts[i].social_media_message;
+					//reenable share button
+					shareImageButtonId.enabled = true;
 					//send tags to intents and start intents
 					sendIntentImage(postTags, imageFilePath);
 				}
