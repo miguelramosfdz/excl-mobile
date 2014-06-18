@@ -113,9 +113,9 @@ function retrieveJson(jsonURL) {
 
 
 function openComponent(e){
-	//alert("Component Id: "+e.source.itemId);
-	var componentWindow = Alloy.createController('componentlanding').getView();
-	Alloy.Globals.navController.open(componentWindow, e.source.itemId);
+	alert("Component Id: "+e.source.itemId);
+	var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
+	Alloy.Globals.navController.open(componentWindow);
 }
 
 function createExhibitsCarousel(exhibits){
