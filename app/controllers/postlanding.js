@@ -55,7 +55,7 @@ function displaySocialMediaButtons(json) {
 }
 
 function jackOfAllTrades() {
-	var url = "http://www.mocky.io/v2/53a1f69eb4ac144807024b81"; //Jen
+	var url = "http://www.mocky.io/v2/53a1f69eb4ac144807024b81"; //Jen; this is the updated version of Muhammad's snippet (from wordpress, 6/18/2014)
 	//var url = "http://www.mocky.io/v2/53a0c3b0e100e89e0b3e40ac"; //Muhammad
 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 		changeTitleOfThePage(returnedData.name);
