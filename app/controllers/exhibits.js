@@ -1,5 +1,6 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
+var componentID = 23;
 
 /*
 var json = {
@@ -102,12 +103,19 @@ function retrieveJson(jsonURL) {
 }
 
 
-function openComponent(e){	
-	alert("component Id: "+e.source.id);
+function openComponent(){	
+	/*alert("component Id: "+e.source.id);
 	
 	var componentWindow = Alloy.createController('componentlanding').getView();
 	componentWindow.componentId = e.source.componentId;
-	Alloy.Globals.navController.open(componentWindow);
+	Alloy.Globals.navController.open(componentWindow);*/
+	
+	/*var componentWindow = Alloy.createController('componentlanding').getView();
+	componentWindow.componentId = componentID;
+	Alloy.Globals.navController.open(componentWindow, componentID);*/
+	
+	var componentWindow = Alloy.createController('componentlanding', componentID).getView();
+	Alloy.Globals.navController.open(componentWindow, componentID);
 }
 
 function createExhibitsCarousel(exhibits){
