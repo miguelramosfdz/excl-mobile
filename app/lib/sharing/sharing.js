@@ -102,14 +102,14 @@ function sendIntentText(json, shareTextButtonId) {
 	} else {
 		alert("Unsupported platform");
 	}
+	//Reenable text share button
+	toggleTextShareButtonStatusInactive(shareTextButtonId);
 }
 
 /*
  * Sends an Android intent with prepopulated text content
  */
 function sendIntentTextAndroid(postTags, shareTextButtonId) {
-	//Reenable text share button
-	toggleTextShareButtonStatusInactive(shareTextButtonId);
 	//Create and send text intent for android. Includes area for main text and url text to be appended
 	var intentText = Ti.Android.createIntent({
 		action : Ti.Android.ACTION_SEND,
@@ -124,8 +124,6 @@ function sendIntentTextAndroid(postTags, shareTextButtonId) {
  * Opens iOS share menu and sends prepopulated text content
  */
 function sendIntentTextiOS(postTags, shareTextButtonId) {
-	//Reenable text share button
-	toggleTextShareButtonStatusInactive(shareTextButtonId);
 	//Use TiSocial.Framework module to share text
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {

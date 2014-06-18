@@ -1,7 +1,7 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
 
-/*
+
 var json = {
   "status": "ok",
   "error": "Optional Error Message",
@@ -92,6 +92,14 @@ var exhibitIndex = 0;
 var numOfExhibits;
 var exhibitViews = [];
 var componentsInExhibit = [];
+
+var museum = Alloy.createModel("museum");
+museum.fetch();
+
+//Ti.API.info("\n\n\n\n\n\n"+JSON.stringify(data)+"\n\n\n\n\n\n\n");
+
+
+
 
 function retrieveJson(jsonURL) {
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
@@ -242,8 +250,8 @@ function showComponents(index){
 }
 
 
-retrieveJson(url);
-
+//retrieveJson(url);
+populateWindow(json);
 function populateWindow(json){
 	numOfExhibits = json.data.museum.exhibits.length;
 	createExhibitsCarousel(json.data.museum.exhibits);
@@ -257,7 +265,12 @@ $.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
 $.exhibits.title = "Exhibits";
 //$.exhibits.add(tableView);
 
+//var myWidget = Widget.createController('itemCarousel').getView();
+//$.testWidget.add(myWidget);
 
+for(i=json.data.museum.exhibits.length-1; i>=0; i--){
+	$.myWidget.addItem(json.data.museum.exhibits[i], openComponent);
+}
 
 function openPostLanding(e){
 	var componentWindow = Alloy.createController('postlanding').getView();
