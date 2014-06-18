@@ -16,8 +16,8 @@ function createTextShareButton(postId, jsonURL) {
 	});
 
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
-	shareTextButton.addEventListener('click', function(e) {
-		retrieveTextPostTags(postId, jsonURL);
+	shareTextButton.addEventListener('click', function(shareTextButtonClicked) {
+			retrieveTextPostTags(postId, jsonURL);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
 
@@ -36,13 +36,12 @@ function createImageShareButton(postId, jsonURL) {
 		text : "Camera",
 		height : "40dip",
 		width : "40dip",
-		left : "30",
+		left : "70dip",
 		backgroundImage : "/images/iconCamera.png"
 	});
-
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
-		openCamera(postId, jsonURL);
+			openCamera(postId, jsonURL);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
 
@@ -54,7 +53,7 @@ function createImageShareButton(postId, jsonURL) {
  */
 function retrieveTextPostTags(postId, jsonURL) {
 	//Retrieve social media message, which contains social media tags. This is used for text intents/iOS equivalents.
-	
+
 	//Remove JSON parsing - assume that the post page will supply the postId
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
@@ -132,8 +131,8 @@ function openCamera(postId, jsonURL) {
 			if (OS_IOS) {
 				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
 				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
-				
-				if (!imageFileInstagram.exists()){
+
+				if (!imageFileInstagram.exists()) {
 					imageFileInstagram.write(event.media);
 				}
 			}
@@ -241,49 +240,51 @@ function sendIntentImageiOS(postTags, imageFilePath) {
 function openInstagram(imageFilePathInstagram) {
 
 	/*
-	alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
-	var docviewer = Ti.UI.iOS.createDocumentViewer({
-	url : "/images/alexbutton.png"
-	});
-	//Testing a sample image
-	alert("Created docviewer");
-	var annotationObj = new Object();
-	annotationObj.InstagramCaption = "Caption sample";
+	 alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
+	 var docviewer = Ti.UI.iOS.createDocumentViewer({
+	 url : "/images/alexbutton.png"
+	 });
+	 //Testing a sample image
+	 alert("Created docviewer");
+	 var annotationObj = new Object();
+	 annotationObj.InstagramCaption = "Caption sample";
 
-	docviewer.UTI = "com.instagram.exclusivegram";
-	// docviewer.annotation = annotationObj.InstagramCaption;
+	 docviewer.UTI = "com.instagram.exclusivegram";
+	 // docviewer.annotation = annotationObj.InstagramCaption;
 
-	docviewer.show();
-	alert("Showed docviewer");
-	*/
+	 docviewer.show();
+	 alert("Showed docviewer");
+	 */
 
 	/*//Use iPhone URL schemes to open app- doesn't reliably open to a specific page, haven't gotten the caption to work
-	//Doesn't seem like there's an easy way to upload a recently taken photo
-	var instagramURL = "instagram://camera&caption=hello%20world";
-	if (Titanium.Platform.canOpenURL(instagramURL)){
-	Titanium.Platform.openURL(instagramURL);
-	}
-	*/
+	 //Doesn't seem like there's an easy way to upload a recently taken photo
+	 var instagramURL = "instagram://camera&caption=hello%20world";
+	 if (Titanium.Platform.canOpenURL(instagramURL)){
+	 Titanium.Platform.openURL(instagramURL);
+	 }
+	 */
 
 	/*
-	//WebView attempt
-	instaWebView = Titanium.UI.createWebView({
-		url : 'www.instagram.com'
-	});
-	var instaWindow = Titanium.UI.createWindow();
-	instaWindow.add(instaWebView);
-	instaWindow.open({
-		modal : true
-	});
-	*/
+	 //WebView attempt
+	 instaWebView = Titanium.UI.createWebView({
+	 url : 'www.instagram.com'
+	 });
+	 var instaWindow = Titanium.UI.createWindow();
+	 instaWindow.add(instaWebView);
+	 instaWindow.open({
+	 modal : true
+	 });
+	 */
 
 	alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
 
-	var docViewer = Ti.UI.iOS.createDocumentViewer({ url : imageFilePathInstagram });
+	var docViewer = Ti.UI.iOS.createDocumentViewer({
+		url : imageFilePathInstagram
+	});
 	docViewer.UTI = "com.instagram.exclusivegram";
 	docViewer.show({
-		view: Ti.UI.currentWindow,
-		animated : true 
+		view : Ti.UI.currentWindow,
+		animated : true
 	});
 }
 
