@@ -2,6 +2,7 @@ var dataRetriever = require('../lib/dataRetriever');
 var apiCalls = require('../lib/customCalls/apiCalls');
 var networkCalls = require('../lib/customCalls/networkCalls');
 var parseCalls = require('../lib/customCalls/parseCalls');
+var tagsChecker = require('../lib/sharing/sharing');
 
 describe("Testing parsedJson", function() {
 	it("should return 'parsed' json data", function() {
@@ -38,6 +39,28 @@ describe("Testing network", function() {
 		// Assert
 		expect(openFunctionCalled).toBe(true);
 		expect(sendFunctionCalled).toBe(true);
+		
+	});
+});
+
+describe("Testing post tags", function() {
+	it("should return a non-empty string", function() {
+		// Arrange
+		var tagsReceived = false;
+		spyOn(networkCalls, 'network').andReturn({
+			open : function() {
+				openFunctionCalled = true;
+			},
+			send : function() {
+				sendFunctionCalled = true;
+			},
+		});
+
+		// Act
+		tagsChecker.retrieveTextPostTags(postId, jsonURL);
+
+		// Assert
+		expect(tagsReceived).toBe(true);
 		
 	});
 });
