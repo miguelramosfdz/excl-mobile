@@ -154,13 +154,16 @@ function sendIntentTextiOS(postTags) {
 function openCamera(postId, json, shareImageButtonId) {
 	//Holds all functionality related to sharing image through camera
 
+	//declare variable to store image file path
 	var imageFilePath;
-
+	//reenable sharing button to account for premature exiting of camera
+	toggleImageShareButtonStatusInactive(shareImageButtonId);
 	//Save process for camera and updates view to display new picture
 	Titanium.Media.showCamera({
 		saveToPhotoGallery : true,
 		mediaTypes : Titanium.Media.MEDIA_TYPE_PHOTO,
 		success : function(event) {
+
 			//create image file and save name for future use
 			var fileName = 'excl' + new Date().getTime() + '.jpg';
 
@@ -199,7 +202,7 @@ function openCamera(postId, json, shareImageButtonId) {
 function sendIntentImage(postId, json, imageFilePath, shareImageButtonId) {
 	postTags = getPostTags(postId, json);
 	//reenable share button
-	toggleImageShareButtonStatusInactive(shareTextButtonId);
+	toggleImageShareButtonStatusInactive(shareImageButtonId);
 	if (OS_ANDROID) {
 		sendIntentImageAndroid(postTags, imageFilePath);
 	} else if (OS_IOS) {
