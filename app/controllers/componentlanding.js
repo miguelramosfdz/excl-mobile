@@ -98,7 +98,7 @@ var json = {
         },
 		
 		{
-          "section": "How Does It Work?",
+          "section": "How's It Work?",
           "id": 101,
           "name": "Gravity",
           "thumbnail": "http://discovermagazine.com/~/media/Images/Issues/2013/July-Aug/apple-gravity.jpg",
@@ -220,99 +220,200 @@ var json = {
   }
 };
 
-//-----------------------------------------------------------------------------------------------------------------------------------------
+
 var postIndex = 0;
-
-var numOfPosts = json.data.component.posts.length;
+var numOfSections = 0;
 var tableData = [];
+var postViews = [];
+var sections = [];
+var numOfPosts = json.data.component.posts.length; //stores how many posts there are into a variable (shows how many post sections will be created)
 
-//-----------------------------------------------------------------------------------------------------------------------------------------
+/*-----------------------------------------------------------------------------------------------------------------------------------------
+ * To do list
+ * 
+ * Set up the tableviewrows for each post
+ */
 
-
-// Opens Post Landing Page
-function openPostLanding(e){
-		
-	var postLandingWindow = Alloy.createController('postlanding').getView();
-	postLandingWindow.open();  
+function init(posts){
+	for (i=0; i<posts.length; i++){
+		if (sectionExists(posts[i].section)){
+			// addPost()
+		}
+		else{
+			createSection(posts[i].section);
+			// addPost();
+		}
+	}
 }
 
-//-----------------------------------------------------------------------------------------------------------------------------------------
+function sectionExists(section){
+	for(i=0; i<sections.length; i++)
+	{
+		if (section = sections[i].name)
+		{
+			return true;
+		}
+		
+	}
+	return false;
+}
 
-function createRow() {
+function createSection(posts){
+	createSectionHeading(posts);
+	createPostCarousel(posts);
+}
+
+// function addPost(){
+	// var newPost = 
+// }
+
+var postSwipeableView = Ti.UI.createView({	
+	top: '5%',
+	backgroundColor: 'cyan'
+});	// XML
+
+var sectionHeading = Ti.UI.createLabel({
+	color : 'black',
+	font : {
+		fontFamily : 'Arial',
+		fontSize : 22,
+		fontWeight : 'bold'
+	},
+	text : sectionHeading,
+	textAlign : 'center',
+});// XML
+
+
+function createRow() {											//createPlainRow()
 	var row = Ti.UI.createTableViewRow({
-		height : '180dp',
+		height : '190dp',
 		top: '10dp',
-		backgroundColor : 'yellow',
+		backgroundColor : 'white',
 	});
 	return row;
+}// XML
+
+
+function createTitleLabel(name, type){
+	var titleLabel = Ti.UI.createView({
+		backgroundColor: 'black',
+		opacity: 0.5,
+		height: '20%',
+		top: 0
+	});
+	var label = Ti.UI.createLabel({
+		text: name,
+		top: 0,
+		left: 10,
+		color: 'white',
+		font: {
+			fontFamily : 'Arial',
+			fontSize : type,
+			fontWeight : 'bold'
+		}
+	});
+	
+	titleLabel.add(label);
+	return titleLabel;
 }
 
-function createPosts(posts){
+function createLabeledPostView(item, type){				//createLabeledPicView()
+	var itemContainer = Ti.UI.createView();
 	
-	var row = createRow();
-	var imageWrappers = [];
-	
-	for (var i = 0; i < posts.length; i++){
-		var postThumbnail = Ti.UI.createImageView({
-			image : posts[i].thumbnail,
-			defaultImage : 'http://placehold.it/700x300',
-			width : '100%',
-			height : '100%'
-		});
-				
-		postThumbnail.addEventListener('click', openPostLanding);
-
-		var tempWrapper = Ti.UI.createView({
-			width : '100%',
-			height : '100%',
-			backgroundColor: 'white',
-			opacity: '50%',
-		});
-		
-		var labelTint = Ti.UI.createView({
-			backgroundColor: 'black',
-			opacity: 0.5,
-			height: '20%',
-			top: 0
-		});
-		
-		var label = Ti.UI.createLabel({
-			text: posts[i].name,
-			top: 0,
-			left: 10,
-			color: 'white',
-			font: {
-				fontFamily : 'Arial',
-				fontSize : 22,
-				fontWeight : 'bold'
-			}
-		});
-		
-		labelTint.add(label);
-		tempWrapper.add(labelTint);
-		tempWrapper.add(postThumbnail);
-		imageWrappers[i] = tempWrapper;
-	}
-
-	var scrollableView = Ti.UI.createScrollableView({
-		views : imageWrappers,
-		showPagingControl : true,
-		pagingControlTimeout : 2, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
-		maxZoomScale : 5,
-		minZoomScale : 1,
-		borderRadius : 4,
-		height : '90%',
-		width : '90%',
+	var image = Ti.UI.createImageView({
+		height: '100%',
+		width: '100%'
 	});
-	row.add(scrollableView);
+	image.image = item.image;
+	
+	itemContainer.add(image);
+	itemContainer.add(createTitleLabel(item.name, type));
+	return itemContainer;
+}
+
+
+function createPostCarousel(posts){							//createExhibitsCarousel()
+	// These parts should be defined by TSS
+	var row = createRow();									//createPlainRow()
+	
+	for(i=0; i>=posts.length; i++){
+		postViews[i] = createLabeledPostView(posts[i], '22');		// will later say 'exhibit', and will create the pic item of that class
+		postSwipeableView.add(postViews[i]);
+		postViews[i].hide();
+	}
+	// postViews[0].show();
+	row.add(postSwipeableView);
 	tableData.push(row);
 }
 
 
-// Create the post sections
-createPosts(json.data.component.posts);
+function createHeadingRow() {
+	var row = Ti.UI.createTableViewRow({
+		height : '50dp',
+		backgroundColor : 'cyan',
+	});
+	return row;
+}// XML
 
-var tableView = Ti.UI.createTableView({
+
+function createSectionHeading(headingTitle){
+	var headingRow = createHeadingRow();	
+	sectionHeading.text = headingTitle;
+	headingRow.add(sectionHeading);
+	tableData.push(headingRow);
+}
+
+
+
+
+/*function swipeHandler(e){
+	if(numOfExhibits>0){
+		if(e.direction = 'right'){
+			postViews[exhibitIndex].hide();
+			removeComponents(exhibitIndex);
+			
+			// Incrememnt Index
+			exhibitIndex= (exhibitIndex+1)%numOfExhibits;
+			
+			// Show new exhibit and it's 
+			postViews[exhibitIndex].show();
+			showComponents(exhibitIndex);
+			setExhibitText(json.data.museum.exhibits[exhibitIndex]);
+		}
+		else if(e.direction = 'left'){
+			postViews[exhibitIndex].hide();
+			removeComponents(exhibitIndex);
+			exhibitIndex--;
+			
+			// Decrement index 
+			if(exhibitIndex=-1)
+				exhibitIndex=numOfExhibits -1;
+			
+			// Show new Exhibit and it's contents
+			postViews[exhibitIndex].show();
+			showcomponents(exhibitIndex);
+		}
+	}
+	//alert("swipe!");
+}*/
+
+
+
+
+
+
+
+
+function openPostLanding(e){
+	var postLandingWindow = Alloy.createController('postlanding').getView;
+	//Alloy.Globals.navController.open(postLandingWindow);
+}
+
+
+createPostCarousel(json.data.component.posts);   //pulls dummy data for function
+init(json.data.component.posts);
+
+var tableView = Ti.UI.createTableView({		//has to be under everything to work
 	backgroundColor : 'white',
 	data : tableData,
 	width: '100%',
@@ -320,10 +421,5 @@ var tableView = Ti.UI.createTableView({
 });
 
 
-
-
-$.componentlanding.title = "Component";
+$.componentlanding.title = "Component landing loaded!";
 $.componentlanding.add(tableView);
-
-
-
