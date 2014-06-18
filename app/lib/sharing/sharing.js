@@ -1,5 +1,5 @@
 var dataRetriever = require("dataRetriever");
-
+var imageFilePathInstagram = "";
 /*
  * Deprecated; split into createTextShareButton and createImageShareButton
  * By splitting it, we also have no need for viewSharingTemp, which was the view that held the two buttons
@@ -157,38 +157,6 @@ function sendIntentTextiOS(postTags) {
 	}
 }
 
-/*
- * Opens camera and saves the photo the user takes; calls sendIntentImage
- */
-function retrieveImagePostTags(postId, jsonURL, imageFilePath) {
-	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
-	var postTags = "";
-	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
-		if (returnedData) {
-			var foundPost = false;
-			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
-				//find correct post
-				if (returnedData.data.component.posts[i].id == postId) {
-					//pull tags from post
-					foundPost = true;
-					postTags = returnedData.data.component.posts[i].social_media_message;
-					//send tags to intents and start intents
-					if (OS_ANDROID) {
-						sendIntentImageAndroid(postTags, imageFilePath);
-					} else if (OS_IOS) {
-						sendIntentImageiOS(postTags, imageFilePath);
-					} else {
-						alert("Unsupported platform (photo sharing)");
-					}
-				}
-			}
-			if (found == false) {
-				alert("Specified post ID not found");
-			}
-		}
-	});
-}
-
 function openCamera(postId, jsonURL) {
 	//Holds all functionality related to sharing image through camera
 
@@ -208,10 +176,12 @@ function openCamera(postId, jsonURL) {
 
 			//Instagram-specific code
 			if (OS_IOS) {
-				var fileNameInstagram = 'excl' + new Date().getTime() + '.jpg';
-				//Or .ig?
-				var imageFileInstagram = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileNameInstagram) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileNameInstagram);
-				imageFileInstagram.write(event.media);
+				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
+				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
+				
+				if (!imageFileInstagram.exists()){
+					imageFileInstagram.write(event.media);
+				}
 			}
 
 			//save file path to be shared
@@ -232,18 +202,41 @@ function openCamera(postId, jsonURL) {
 }
 
 /*
+ * Opens camera and saves the photo the user takes; calls sendIntentImage
+ */
+function retrieveImagePostTags(postId, jsonURL, imageFilePath) {
+	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
+	var postTags = "";
+	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
+		if (returnedData) {
+			var foundPost = false;
+			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
+				//find correct post
+				if (returnedData.data.component.posts[i].id == postId) {
+					//pull tags from post
+					foundPost = true;
+					postTags = returnedData.data.component.posts[i].social_media_message;
+					//send tags to intents and start intents
+					sendIntentImage(postTags, imageFilePath);
+				}
+			}
+			if (found == false) {
+				alert("Specified post ID not found");
+			}
+		}
+	});
+}
+
+/*
  * Calls the platform-specific sendIntent function for an image
  */
-function sendIntentImage(imageFilePath) {
+function sendIntentImage(postTags, imageFilePath) {
 	//create and send an image intent
 
-	//Get text to be sent from WP
-	contentTextComment = "#cmh #awesome http://www.cmhouston.org";
-
 	if (OS_ANDROID) {
-		sendIntentImageAndroid(contentTextComment, imageFilePath);
+		sendIntentImageAndroid(postTags, imageFilePath);
 	} else if (OS_IOS) {
-		sendIntentImageiOS(contentTextComment, imageFilePath);
+		sendIntentImageiOS(postTags, imageFilePath);
 	} else {
 		alert("Unsupported platform (image sharing)");
 	}
@@ -318,6 +311,7 @@ function openInstagram(imageFilePathInstagram) {
 	}
 	*/
 
+	/*
 	//WebView attempt
 	instaWebView = Titanium.UI.createWebView({
 		url : 'www.instagram.com'
@@ -327,7 +321,16 @@ function openInstagram(imageFilePathInstagram) {
 	instaWindow.open({
 		modal : true
 	});
+	*/
 
+	alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
+
+	var docViewer = Ti.UI.iOS.createDocumentViewer({ url : imageFilePathInstagram });
+	docViewer.UTI = "com.instagram.exclusivegram";
+	docViewer.show({
+		view: Ti.UI.currentWindow,
+		animated : true 
+	});
 }
 
 function eraseButtonTitleIfBackgroundPresent(buttonName) {

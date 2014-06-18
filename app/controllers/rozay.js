@@ -56,5 +56,6 @@ var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/23";
 
 var createdTextShareButton = sharingService.createTextShareButton(postId, jsonURL);
 $.rozay.add(createdTextShareButton);
-var createdImageShareButton = sharingService.createImageShareButton(postId, jsonURL);
+var createdImageShareButton = sharingService.createImageShareButton(postId, jsonURL, $.rozay);
 $.rozay.add(createdImageShareButton);
+
