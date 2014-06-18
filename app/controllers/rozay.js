@@ -1,5 +1,3 @@
-//What up??
-
 var args = arguments[0] || {};
 
 // var URL = "https://www.youtube.com/watch?v=59jMFCMgRBQ";
@@ -113,7 +111,6 @@ var sharingService = require("sharing/sharing");
 
 var postId = 41;
 //Will get from the json somewhere along the line
-var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/23";
 
 var createdTextShareButton = sharingService.createTextShareButton(postId, json);
 $.scrollViewRozay.add(createdTextShareButton);
