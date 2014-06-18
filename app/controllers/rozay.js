@@ -50,5 +50,7 @@ var sound = Ti.Media.createSound({
 
 //Sharing library
 var sharingService = require("sharing/sharing");
-var createdButtons = sharingService.createShareButtons();
-$.rozay.add(createdButtons);
+var createdTextShareButton = sharingService.createTextShareButton();
+$.rozay.add(createdTextShareButton);
+var createdImageShareButton = sharingService.createImageShareButton();
+$.rozay.add(createdImageShareButton);
