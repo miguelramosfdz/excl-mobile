@@ -257,3 +257,9 @@ $.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
 $.exhibits.title = "Exhibits";
 //$.exhibits.add(tableView);
 
+
+
+function openPostLanding(e){
+	var componentWindow = Alloy.createController('postlanding').getView();
+	Alloy.Globals.navController.open(componentWindow);
+}
