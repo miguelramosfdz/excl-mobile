@@ -5,12 +5,12 @@
 // //associates retrieveSharing to sharing.js
 // var retrieveSharing;
 // function setPathForLibDirectory(retrieveSharingLib) {
-	// if ( typeof Titanium == 'undefined') {
-		// // this is required for jasmine-node to run via terminal
-		// retrieveSharing = require("../../lib/" + retrieveSharingLib);
-	// } else {
-		// retrieveSharing = require(retrieveSharingLib);
-	// }
+// if ( typeof Titanium == 'undefined') {
+// // this is required for jasmine-node to run via terminal
+// retrieveSharing = require("../../lib/" + retrieveSharingLib);
+// } else {
+// retrieveSharing = require(retrieveSharingLib);
+// }
 // }
 
 /*
@@ -40,6 +40,7 @@ function sendIntentText(json, shareTextButtonId) {
 	} else {
 		alert("Unsupported platform");
 	}
+}
 
 /*
  * Returns the button for image sharing
