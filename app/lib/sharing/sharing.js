@@ -129,13 +129,11 @@ function openCamera(postId, jsonURL) {
 			imageFile.write(event.media);
 
 			//Instagram-specific code
-			if (OS_IOS) {
-				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
-				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
-				
-				if (!imageFileInstagram.exists()){
-					imageFileInstagram.write(event.media);
-				}
+			var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
+			var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
+			
+			if (!imageFileInstagram.exists()){
+				imageFileInstagram.write(event.media);
 			}
 
 			//save file path to be shared
