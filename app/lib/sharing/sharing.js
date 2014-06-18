@@ -1,4 +1,13 @@
-var dataRetriever = require("dataRetriever");
+var dataRetriever;
+function setPathForLibDirectory(dataRetrieverLib) {
+	if ( typeof Titanium == 'undefined') {
+		// this is required for jasmine-node to run via terminal
+		dataRetriever = require("../../lib/" + dataRetrieverLib);
+	} else {
+		dataRetriever = require(dataRetrieverLib);
+	}
+}
+
 var imageFilePathInstagram = "";
 
 /*
@@ -87,7 +96,7 @@ function createImageShareButton(json, rightNavButton) {
 function getPostTags(json) {
 	//Retrieve social media message, which contains social media tags. This is used for text and image intents/iOS equivalents.
 	postTags = json.social_media_message;
-	
+
 	return postTags;
 }
 
@@ -159,20 +168,20 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 
-			if (OS_IOS){
+			if (OS_IOS) {
 				//Instagram-specific code
 				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
 				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
-	
+
 				if (!imageFileInstagram.exists()) {
 					imageFileInstagram.write(event.media);
 				}
 			}
-	
+
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
-				if (OS_IOS){
+				if (OS_IOS) {
 					imageFilePathInstagram = imageFileInstagram.nativePath;
 				}
 
@@ -309,6 +318,7 @@ function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	}
 }
 
+setPathForLibDirectory('dataRetriever');
 //These functions can be called by outside files:
 module.exports.createTextShareButton = createTextShareButton;
 module.exports.createImageShareButton = createImageShareButton;
