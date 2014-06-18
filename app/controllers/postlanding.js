@@ -17,10 +17,42 @@ function changeTitleOfThePage(name) {
 	$.postlanding.title = name;
 }
 
-function displaySocialMediaButtons(json, liking, sharingText, sharingImage, commenting) {
-	liking = sharingText = sharingImage = commenting = true;
+function displaySocialMediaButtons(json) {
+	var json = {
+		id : 41,
+		name : "Spin the Disc",
+		section : "What do I do?",
+		parts : [{
+			id : 52,
+			name : "Test Part",
+			type : "image",
+			url : "http://testpart.com",
+			thumbnail : false,
+			body : ""
+		}, {
+			id : 42,
+			name : "Spin the Disc Video",
+			type : "text",
+			url : "",
+			thumbnail : false,
+			body : "Try spinning the disc!! It is so much fun!!!"
+		}],
+		thumbnail : "http://placehold.it/700x300/000",
+		liking : true,
+		text_sharing : false,
+		image_sharing : false,
+		commenting : false,
+		social_media_message : "#SpunTheDisc and it was great! #cmh",
+		like_count : false,
+		comments : [{
+			id : "2",
+			body : "This is a comment on the spinning disc post",
+			date : "2014-06-16 16:20:13"
+		}]
+	}; 
+	
 	var row = createPlainRow();
-	if (liking) {
+	if (json.liking) {
 		// display liking button
 		var image = Ti.UI.createImageView({
 			image : '/icons/like_button.png',
@@ -29,17 +61,17 @@ function displaySocialMediaButtons(json, liking, sharingText, sharingImage, comm
 		});
 		row.add(image);
 	}
-	if (sharingText) {
+	if (json.text_sharing) {
 		// display shareText button
 		shareTextButton = sharingService.createShareTextButton(json);
 		row.add(shareTextButton);
 	}
-	if (sharingImage){
+	if (json.image_sharing){
 		//display shareImage button
 		shareImageButton = sharingService.createShareImageButton(json);
 		row.add(shareTextButton);
 	}
-	if (commenting) {
+	if (json.commenting) {
 		// display comment button
 		var image = Ti.UI.createImageView({
 			image : '/icons/comment_button.png',
@@ -53,10 +85,11 @@ function displaySocialMediaButtons(json, liking, sharingText, sharingImage, comm
 }
 
 function jackOfAllTrades() {
-	var url = "http://www.mocky.io/v2/5185415ba171ea3a00704eed";
+	var url = "http://www.mocky.io/v2/5185415ba171ea3a00704eed"; //Jen
+	//var url = "http://www.mocky.io/v2/53a0c3b0e100e89e0b3e40ac"; //Muhammad
 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 		changeTitleOfThePage(returnedData.name);
-		displaySocialMediaButtons(returnedData.liking, returnedData.sharing, returnedData.commenting);
+		displaySocialMediaButtons(returnedData);
 
 		allParts = returnedData.parts;
 		for (var i = 0; i < allParts.length; i++) {

@@ -1,7 +1,8 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
+var componentID = 23;
 
-/*
+
 var json = {
   "status": "ok",
   "error": "Optional Error Message",
@@ -93,6 +94,15 @@ var numOfExhibits;
 var exhibitViews = [];
 var componentsInExhibit = [];
 
+/*
+var museum = Alloy.createModel("museum");
+museum.fetch();
+*/
+//Ti.API.info("\n\n\n\n\n\n"+JSON.stringify(data)+"\n\n\n\n\n\n\n");
+
+
+
+
 function retrieveJson(jsonURL) {
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
@@ -102,12 +112,19 @@ function retrieveJson(jsonURL) {
 }
 
 
-function openComponent(e){	
-	alert("component Id: "+e.source.id);
+function openComponent(){	
+	/*alert("component Id: "+e.source.id);
 	
 	var componentWindow = Alloy.createController('componentlanding').getView();
 	componentWindow.componentId = e.source.componentId;
-	Alloy.Globals.navController.open(componentWindow);
+	Alloy.Globals.navController.open(componentWindow);*/
+	
+	/*var componentWindow = Alloy.createController('componentlanding').getView();
+	componentWindow.componentId = componentID;
+	Alloy.Globals.navController.open(componentWindow, componentID);*/
+	
+	var componentWindow = Alloy.createController('componentlanding', componentID).getView();
+	Alloy.Globals.navController.open(componentWindow, componentID);
 }
 
 function createExhibitsCarousel(exhibits){
@@ -242,8 +259,8 @@ function showComponents(index){
 }
 
 
-retrieveJson(url);
-
+//retrieveJson(url);
+populateWindow(json);
 function populateWindow(json){
 	numOfExhibits = json.data.museum.exhibits.length;
 	createExhibitsCarousel(json.data.museum.exhibits);
@@ -256,6 +273,19 @@ function populateWindow(json){
 $.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
 $.exhibits.title = "Exhibits";
 //$.exhibits.add(tableView);
+
+//var myWidget = Widget.createController('itemCarousel').getView();
+//$.testWidget.add(myWidget);
+
+
+
+var myWidget = Widget.createWidget("itemCarousel");
+$.testWidget.add(myWidget);
+
+for(i=json.data.museum.exhibits.length-1; i>=0; i--){
+	myWidget.addItem(json.data.museum.exhibits[i], openComponent);
+}
+
 
 
 
