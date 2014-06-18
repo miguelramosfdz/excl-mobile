@@ -233,7 +233,7 @@ var numOfPosts = json.data.component.posts.length; //stores how many posts there
  * 
  * Set up the tableviewrows for each post
  */
-/*
+
 function init(posts){
 	for (i=0; i<posts.length; i++){
 		if (sectionExists(posts[i].section)){
@@ -396,7 +396,7 @@ function createSectionHeading(headingTitle){
 	}
 	//alert("swipe!");
 }//*/
-/*
+
 
 
 
@@ -418,7 +418,7 @@ var tableView = Ti.UI.createTableView({		//has to be under everything to work
 	data : tableData,
 	width: '100%',
 	height:'100%'
-});//*/
+});
 
 
 $.componentlanding.title = "Component landing loaded!";
