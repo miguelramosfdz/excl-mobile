@@ -61,9 +61,9 @@ function createTextShareButton() {
 		backgroundImage : "/images/iconShare.png"
 	});
 
-	//Add a listener so that when clicked, sendIntentText is called
+	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
-		sendIntentText();
+		retrieveTextPostTags(postId);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
 
