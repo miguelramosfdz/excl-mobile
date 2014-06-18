@@ -46,6 +46,7 @@ function createTextShareButton(json) {
 
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
+		//toggleTextShareButtonStatusActive(shareTextButton);
 		toggleTextShareButtonStatusActive(shareTextButton);
 		sendIntentText(json, shareTextButton);
 	});
@@ -102,7 +103,7 @@ function sendIntentText(json, shareTextButtonId) {
 	} else {
 		alert("Unsupported platform");
 	}
-	//Reenable text share button
+	//Reenable share text button
 	toggleTextShareButtonStatusInactive(shareTextButtonId);
 }
 
@@ -130,6 +131,8 @@ function sendIntentTextiOS(postTags, shareTextButtonId) {
 		Social.activityView({
 			text : postTags
 		});
+		//Reenable share text button
+		toggleTextShareButtonStatusInactive(shareTextButtonId);
 	} else {
 		alert("Text sharing is not available on this device");
 	}
@@ -147,7 +150,6 @@ function openCamera(json, shareImageButtonId) {
 	Titanium.Media.showCamera({
 		saveToPhotoGallery : true,
 		mediaTypes : Titanium.Media.MEDIA_TYPE_PHOTO,
-
 		success : function(event) {
 
 			//create image file and save name for future use
