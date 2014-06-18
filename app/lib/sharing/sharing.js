@@ -40,7 +40,7 @@ function createTextShareButton(json) {
 		height : "40dip",
 		width : "40dip",
 		left : "0",
-		top : "0"
+		top : "300dip"
 	});
 	toggleTextShareButtonStatusInactive(shareTextButton);
 
@@ -68,7 +68,7 @@ function createImageShareButton(json) {
 		height : "40dip",
 		width : "40dip",
 		left : "70dip",
-		top : "0"
+		top : "300dip"
 	});
 	toggleImageShareButtonStatusInactive(shareImageButton);
 	//Add a listener so that when clicked, openCamera is called
