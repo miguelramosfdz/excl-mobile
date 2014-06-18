@@ -87,9 +87,12 @@ var json = {
 //Sharing library
 var sharingService = require("sharing/sharing");
 
+var rightNavButton = Ti.UI.createButton({
+	title : ' '
+});
+
 var createdTextShareButton = sharingService.createTextShareButton(json);
 $.scrollViewRozay.add(createdTextShareButton);
 
-var createdImageShareButton = sharingService.createImageShareButton(json);
+var createdImageShareButton = sharingService.createImageShareButton(json, rightNavButton);
 $.scrollViewRozay.add(createdImageShareButton);
-
