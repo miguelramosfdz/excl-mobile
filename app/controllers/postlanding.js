@@ -124,4 +124,5 @@ function jackOfAllTrades() {
 	});
 }
 
+Ti.API.info(args);
 jackOfAllTrades();
