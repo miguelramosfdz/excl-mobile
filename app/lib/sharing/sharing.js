@@ -109,7 +109,7 @@ function getPostTags(postId, json) {
  */
 function sendIntentText(postId, json, shareTextButtonId) {
 	postTags = getPostTags(postId, json);
-	toggleTextShareButtonStatusActive(shareTextButtonId);
+	toggleTextShareButtonStatusInactive(shareTextButtonId);
 	if (OS_ANDROID) {
 		sendIntentTextAndroid(postTags);
 	} else if (OS_IOS) {
@@ -199,7 +199,7 @@ function openCamera(postId, json, shareImageButtonId) {
 function sendIntentImage(postId, json, imageFilePath, shareImageButtonId) {
 	postTags = getPostTags(postId, json);
 	//reenable share button
-	toggleImageShareButtonStatusActive(shareTextButtonId);
+	toggleImageShareButtonStatusInactive(shareTextButtonId);
 	if (OS_ANDROID) {
 		sendIntentImageAndroid(postTags, imageFilePath);
 	} else if (OS_IOS) {
