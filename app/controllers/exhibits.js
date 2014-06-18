@@ -1,6 +1,7 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
 
+
 var json = {
   "status": "ok",
   "error": "Optional Error Message",
@@ -22,7 +23,7 @@ var json = {
         {
           "id": 12345,
           "name": "Water Animals",
-          "description": "Such a great exhibit. Check it out!",
+          "description": "<This area would contain the information for an exhibit>",
           "image": "http://2.bp.blogspot.com/-Aa7MNnxjsqc/UAaxfj35ohI/AAAAAAAANBo/VVfnQt399rQ/s1600/Dolphin.jpg",
           "components": [
             {
@@ -40,7 +41,7 @@ var json = {
         {
           "id": 12344,
           "name": "Land Animals",
-          "description": "Such a great exhibit. Check it out!",
+          "description": "<This area would also contain the information for a different exhibit>",
           "image": "http://k-science.wikispaces.com/file/view/Lion.jpg/302874032/240x263/Lion.jpg",
           "components": [
             {
@@ -83,27 +84,27 @@ var json = {
   }
 }; // Extract to required file*/
 
+var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";
 
+
+var json;
 var exhibitIndex = 0;
 var numOfExhibits = json.data.museum.exhibits.length;
 var exhibitViews = [];
 var componentsInExhibit = [];
-var tableData = [];
 
-/*
-var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";
-dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-	alert("we Did It!");
-});
-var json = dataRetriever.parseJson();
-*/
-
-
-// simulate data from wordpress using Jess' model
-
+function getJSON(url) {
+	var myJson;
+	dataRetriever.fetchDataFromUrl(url, function(data){
+		if(data){
+			myJson = data;
+		}
+	});
+	return myJson;
+}//*/
 
 function openComponent(e){	
-	alert("component Id: "+e.source.componentId);
+	alert("component Id: "+e.source.id);
 	
 	var componentWindow = Alloy.createController('componentlanding').getView();
 	componentWindow.componentId = e.source.componentId;
@@ -181,7 +182,7 @@ function createComponentsScrollView(exhibits){
 			component.left = 5;
 			component.right = 5;
 			component.width = '225dp';
-			component.componentId = exhibits[i].components[j].id;
+			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[i].add(component);
 		}			
@@ -208,7 +209,7 @@ function swipeHandler(e){
 			// Show new exhibit and it's 
 			exhibitViews[exhibitIndex].show();
 			showComponents(exhibitIndex);
-			setExhibitText(json.data.museum.exhibits[exhibitIndex]);
+			setExhibitText(json.data.museum.exhibits[exhibitIndex].description);
 		}
 		else if(e.direction = 'left'){
 			exhibitViews[exhibitIndex].hide();
@@ -222,9 +223,9 @@ function swipeHandler(e){
 			// Show new Exhibit and it's contents
 			exhibitViews[exhibitIndex].show();
 			showcomponents(exhibitIndex);
+			setExhibitText(json.data.museum.exhibits[exhibitIndex].description);
 		}
 	}
-	//alert("swipe!");
 }
 
 function removeComponents(index){
@@ -237,28 +238,16 @@ function removeComponents(index){
 function showComponents(index){
 	if(index<componentsInExhibit.length){
 		componentsInExhibit[index].width = 'auto';
-		//alert("At index "+index+" the number of children is: "+componentsInExhibit[index].children.length);
 		$.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
 	}
 }
 
-
-
-//createExhibitsCarousel2("All Exhibits", json.data.museum.exhibits);
+//json = getJSON(jsonURL);
 createExhibitsCarousel(json.data.museum.exhibits);
 createComponentHeading("Check out our Stations");
 createComponentsScrollView(json.data.museum.exhibits);
 
-setExhibitText("Lorem ipsem antrhhc buert sdjr bejsu ache thfk ook nsj rhjejjc kkdjf eifj nivi rjf,\nAsd ehw tn iidjs thne shcu ndusr.");
-
-var tableView = Ti.UI.createTableView({
-	// backgroundColor : '#07B5BE',
-	backgroundColor : 'white',
-	data : tableData,
-	width: '90%',
-	left: '5%'
-});
-//tableView.data = tableData;
+setExhibitText(json.data.museum.exhibits[0].description);
 
 $.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
 $.exhibits.title = "Exhibits";
