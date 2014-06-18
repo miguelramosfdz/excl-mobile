@@ -1,0 +1,7 @@
+<Alloy>
+	<View id="navBar">
+		<Button id="back" class="nav" onClick="back">back</Button>
+		<Label id="pageTitle" class="nav"/>
+		<Button id="flyout" class="nav" onClick="menu">menu</Button>
+	</View>
+</Alloy>

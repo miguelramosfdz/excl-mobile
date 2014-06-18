@@ -42,28 +42,25 @@ describe("Testing network", function() {
 
 	});
 });
-
-describe("Testing post tags", function() {
-	it("should return a non-empty string", function() {
-		// Arrange
-		var tagsReceived = false;
-		//retrieve from file for real implementation
-		var postId = 41;
-		var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/23";
-		spyOn(networkCalls, 'network').andReturn({
-			open : function() {
-				openFunctionCalled = true;
-			},
-			send : function() {
-				sendFunctionCalled = true;
-			},
-		});
-
-		// Act
-		sharingValidator.retrieveTextPostTags(postId, jsonURL);
-
-		// Assert
-		expect(tagsReceived).toBe(true);
-
+/*
+ * Unit testing for sharing
+ * --button creation x 2
+ * --photo saved
+ * --icon images present
+ */
+describe("Testing share text button creation", function(){
+	it("should create a share button for text", function() {
+		//Arrange
+		var detectedButton = false;
+		var fakeCreation = sharingValidator.createTextShareButton(json);
+		var json = "#OMG I JUST WENT PEE!";
+		//need to retrieve var json
+		//sharingValidator.createTextShareButton(json) = jasmine.createSpy("Button creation spy")
+		
+		//Act
+		sharingValidator.createTextShareButton(json);
+		
+		//Asert
+		expect(someResult).tobe("Some value");
 	});
 });

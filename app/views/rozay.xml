@@ -1,8 +1,11 @@
+
 <Alloy>
 	<View class="full-view">
-		<Label class="title">Rick Ross says</Label>
-		<ImageView id="logo" class="logo" image="/RickRoss.jpg" />
-		
-		<Label class="description">"Welcome, Big Dawgs!"</Label>
+		<ScrollView id="scrollViewRozay" class="scroll">
+			<Label class="title">Rick Ross says</Label>
+			<ImageView id="logo" class="logo" image="/RickRoss.jpg" />
+			<Label class="description">"Welcome, Big Dawgs!"</Label>
+		</ScrollView>
 	</View>
 </Alloy>
+
