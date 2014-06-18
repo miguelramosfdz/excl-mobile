@@ -18,7 +18,8 @@ var args = arguments[0] || {};
 var playSoundBtn = Ti.UI.createButton({
 	width : 150, //define width
 	height : 50, //define height
-	title : 'Play Sound',
+	//title : 'Play Sound',
+	title : "",
 	id : 'soundBtn',
 	left : '25%',
 	top : '400dip'
@@ -89,6 +90,7 @@ var sharingService = require("sharing/sharing");
 
 var createdTextShareButton = sharingService.createTextShareButton(json);
 $.scrollViewRozay.add(createdTextShareButton);
+
 var createdImageShareButton = sharingService.createImageShareButton(json);
 $.scrollViewRozay.add(createdImageShareButton);
 

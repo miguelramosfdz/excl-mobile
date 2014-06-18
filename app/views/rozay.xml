@@ -1,9 +1,21 @@
+<!--
 <Alloy>
 	<View class="full-view">
 		<ScrollView id="scrollViewRozay" class="scroll">
 			<Label class="title">Rick Ross says</Label>
 			<ImageView id="logo" class="logo" image="/RickRoss.jpg" />
 			<Label class="description">"Welcome, Big Dawgs!"</Label>
+		</ScrollView>
+	</View>
+</Alloy>
+-->
+
+<Alloy>
+	<View class="full-view">
+		<ScrollView id="scrollViewRozay" class="scroll">
+			<Label class="title"></Label>
+			<ImageView id="logo" class="logo" image="" />
+			<Label class="description"></Label>
 		</ScrollView>
 	</View>
 </Alloy>
