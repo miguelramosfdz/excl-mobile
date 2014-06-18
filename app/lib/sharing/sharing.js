@@ -1,10 +1,14 @@
-var dataRetriever;
-function setPathForLibDirectory(dataRetrieverLib) {
+/*
+ * This page contains everything that is left with sharing
+ */
+
+var retrieveNetworkSharing;
+function setPathForLibDirectory(retrieveNetworkSharingLib) {
 	if ( typeof Titanium == 'undefined') {
 		// this is required for jasmine-node to run via terminal
-		dataRetriever = require("../../lib/" + dataRetrieverLib);
+		retrieveNetworkSharing = require("../../lib/" + retrieveNetworkSharingLib);
 	} else {
-		dataRetriever = require(dataRetrieverLib);
+		retrieveNetworkSharing = require(retrieveNetworkSharingLib);
 	}
 }
 
@@ -43,16 +47,8 @@ function toggleImageShareButtonStatusInactive(shareImageButtonId) {
  */
 function createTextShareButton(json) {
 	//button to open text sharing
-	var shareTextButton = Ti.UI.createButton({
-		id : 'shareTextButton',
-		title : "Text",
-		height : "40dip",
-		width : "40dip",
-		left : "0",
-		top : "0"
-	});
+	var shareTextButton = retrieveNetworkSharing.createTextShareButton();	
 	toggleTextShareButtonStatusInactive(shareTextButton);
-
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
 		//toggleTextShareButtonStatusActive(shareTextButton);
@@ -60,7 +56,6 @@ function createTextShareButton(json) {
 		sendIntentText(json, shareTextButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
-
 	return shareTextButton;
 }
 
@@ -71,19 +66,12 @@ function createTextShareButton(json) {
  */
 function createImageShareButton(json, rightNavButton) {
 	//button to open photo sharing
-	var shareImageButton = Ti.UI.createButton({
-		id : 'shareImageButton',
-		text : "Camera",
-		height : "40dip",
-		width : "40dip",
-		left : "70dip",
-		top : "0"
-	});
+	var shareImageButton = retrieveNetworkSharing.createImageShareButton();
 	toggleImageShareButtonStatusInactive(shareImageButton);
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
 		toggleImageShareButtonStatusActive(shareImageButton);
-		openCamera(json, shareImageButton, rightNavButton);
+		retrieveNetworkSharing.openCamera(json, shareImageButton, rightNavButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
 
@@ -106,7 +94,7 @@ function getPostTags(json) {
 function sendIntentText(json, shareTextButtonId) {
 	postTags = getPostTags(json);
 	if (OS_ANDROID) {
-		sendIntentTextAndroid(postTags, shareTextButtonId);
+		retrieveNetworkSharing.sendIntentTextAndroid(postTags, shareTextButtonId);
 	} else if (OS_IOS) {
 		sendIntentTextiOS(postTags, shareTextButtonId);
 	} else {
@@ -114,20 +102,6 @@ function sendIntentText(json, shareTextButtonId) {
 	}
 	//Reenable share text button
 	toggleTextShareButtonStatusInactive(shareTextButtonId);
-}
-
-/*
- * Sends an Android intent with prepopulated text content
- */
-function sendIntentTextAndroid(postTags, shareTextButtonId) {
-	//Create and send text intent for android. Includes area for main text and url text to be appended
-	var intentText = Ti.Android.createIntent({
-		action : Ti.Android.ACTION_SEND,
-		type : 'text/plain'
-	});
-	intentText.putExtra(Ti.Android.EXTRA_TEXT, postTags);
-	intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
-	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentText, "Send message via"));
 }
 
 /*
@@ -148,58 +122,6 @@ function sendIntentTextiOS(postTags, shareTextButtonId) {
 }
 
 /*
- * Opens the camera, saves the picture the user takes; calls sendIntent function
- */
-function openCamera(json, shareImageButtonId, rightNavButton) {
-	//Holds all functionality related to sharing image through camera
-
-	//declare variable to store image file path
-	var imageFilePath;
-	//Save process for camera and updates view to display new picture
-	Titanium.Media.showCamera({
-		saveToPhotoGallery : true,
-		mediaTypes : Titanium.Media.MEDIA_TYPE_PHOTO,
-		success : function(event) {
-
-			//create image file and save name for future use
-			var fileName = 'excl' + new Date().getTime() + '.jpg';
-
-			//save file
-			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
-			imageFile.write(event.media);
-
-			if (OS_IOS) {
-				//Instagram-specific code
-				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
-				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
-
-				if (!imageFileInstagram.exists()) {
-					imageFileInstagram.write(event.media);
-				}
-			}
-
-			//save file path to be shared
-			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
-				imageFilePath = imageFile.nativePath;
-				if (OS_IOS) {
-					imageFilePathInstagram = imageFileInstagram.nativePath;
-				}
-
-				//send file path to intent creation
-				sendIntentImage(json, imageFilePath, shareImageButtonId, rightNavButton);
-			}
-		},
-		cancel : function() {
-			//reenable sharing button to account for premature exiting of camera
-			toggleImageShareButtonStatusInactive(shareImageButtonId);
-		},
-		error : function(Error) {
-			alert("Camera not working");
-		}
-	});
-}
-
-/*
  * Calls the platform-specific sendIntent function for an image
  */
 function sendIntentImage(json, imageFilePath, shareImageButtonId, rightNavButton) {
@@ -207,27 +129,12 @@ function sendIntentImage(json, imageFilePath, shareImageButtonId, rightNavButton
 	//reenable share button
 	toggleImageShareButtonStatusInactive(shareImageButtonId);
 	if (OS_ANDROID) {
-		sendIntentImageAndroid(postTags, imageFilePath);
+		retrieveNetworkSharing.sendIntentImageAndroid(postTags, imageFilePath);
 	} else if (OS_IOS) {
 		sendIntentImageiOS(postTags, imageFilePath, rightNavButton);
 	} else {
 		alert("Unsupported platform (image sharing)");
 	}
-}
-
-/*
- * Sends an Android intent with prepopulated text content and the image that was just taken
- */
-function sendIntentImageAndroid(postTags, imageFilePath) {
-	//Create and send image intent for android.
-	var intentImage = Ti.Android.createIntent({
-		type : "image/*",
-		action : Ti.Android.ACTION_SEND
-	});
-	intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
-	intentImage.putExtra(Ti.Android.EXTRA_TEXT, postTags);
-	intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share photo via"));
 }
 
 /*
@@ -298,9 +205,7 @@ function openInstagram(imageFilePathInstagram, rightNavButton) {
 
 	alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
 
-	var docViewer = Ti.UI.iOS.createDocumentViewer({
-		url : imageFilePathInstagram
-	});
+	var docViewer = retrieveNetworkSharing.openInstagramView(imageFilePathInstagram);
 	docViewer.UTI = "com.instagram.exclusivegram";
 	docViewer.show({
 		view : rightNavButton,
@@ -318,7 +223,7 @@ function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	}
 }
 
-setPathForLibDirectory('dataRetriever');
+setPathForLibDirectory('sharingNetwork');
 //These functions can be called by outside files:
 module.exports.createTextShareButton = createTextShareButton;
 module.exports.createImageShareButton = createImageShareButton;
