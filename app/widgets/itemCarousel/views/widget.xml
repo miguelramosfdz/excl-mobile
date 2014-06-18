@@ -1,0 +1,3 @@
+<Alloy>
+	<View id="carouselView" onSwipe="swipeHandler"/>
+</Alloy>

@@ -13,6 +13,9 @@
 			<TableViewRow class="infoRow">
 				<Label id="exhibitInfoLabel"></Label>
 			</TableViewRow>
+			<TableViewRow class="largePictureRow" id="testWidget">
+				<Widget src="itemCarousel" id="myWidget"/>
+			</TableViewRow>
 		</TableView>
 	</Window>
 </Alloy>
