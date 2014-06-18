@@ -4,7 +4,7 @@ var imageFilePathInstagram = "";
  * Returns the button for text sharing
  * File that calls the function is responsible for placing it in the correct view
  */
-function createTextShareButton(postId, jsonURL) {
+function createTextShareButton(postId, json) {
 	//button to open text sharing
 	var shareTextButton = Ti.UI.createButton({
 		id : 'shareTextButton',
@@ -17,7 +17,7 @@ function createTextShareButton(postId, jsonURL) {
 
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
-		retrieveTextPostTags(postId, jsonURL);
+		retrieveTextPostTags(postId, json);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
 
@@ -29,7 +29,7 @@ function createTextShareButton(postId, jsonURL) {
  * When clicked, the openCamera function is called, which then calls sendIntentImage
  * File taht calls the function is responsible for placing it in the correct view
  */
-function createImageShareButton(postId, jsonURL) {
+function createImageShareButton(postId, json) {
 	//button to open photo sharing
 	var shareImageButton = Ti.UI.createButton({
 		id : 'shareImageButton',
@@ -42,7 +42,7 @@ function createImageShareButton(postId, jsonURL) {
 
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
-		openCamera(postId, jsonURL);
+		openCamera(postId, json);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
 
@@ -51,37 +51,41 @@ function createImageShareButton(postId, jsonURL) {
 
 /*
  * Calls the platform-specific sendIntent function for text
+ * Deprecated- now passing in straight json structure rather than URL; no more URL calls within sharing library
  */
-function retrieveTextPostTags(postId, jsonURL) {
+function retrieveTextPostTags(postId, json) {
 	//Retrieve social media message, which contains social media tags. This is used for text intents/iOS equivalents.
-	
-	//Remove JSON parsing - assume that the post page will supply the postId
-	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
-		if (returnedData) {
-			var foundPost = false;
-			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
-				//find correct post
-				if (returnedData.data.component.posts[i].id == postId && foundPost == false) {
-					//pull tags from post if you have not found the post yet
-					foundPost = true;
-					var postTags = returnedData.data.component.posts[i].social_media_message;
-					//send tags to intents and start intents
-					if (OS_ANDROID) {
-						sendIntentTextAndroid(postTags);
-					} else if (OS_IOS) {
-						sendIntentTextiOS(postTags);
-					} else {
-						alert("Unsupported platform (text sharing)");
-					}
-				}
-			}
-			if (found == false) {
-				alert("Specified post ID not found");
-			}
+	var foundPost = false;
+	for (var i = 0; i < json.data.component.posts.length; i++) {
+		//find correct post
+		if (json.data.component.posts[i].id == postId && foundPost == false) {
+			//pull tags from post if you have not found the post yet
+			foundPost = true;
+			var postTags = json.data.component.posts[i].social_media_message;
+			//send tags to intents and start intents
+			sendIntentText(postTags);
 		}
-	});
+	}
+	if (foundPost == false) {
+		alert("Specified post ID not found");
+	}
 }
 
+/*
+ * Calls the platform-appropriate sendIntentText function
+ */
+function sendIntentText(postTags)
+{
+	if (OS_ANDROID){
+		sendIntentTextAndroid(postTags);
+	}
+	else if (OS_IOS){
+		sendIntentTextiOS(postTags);
+	}
+	else{
+		alert("Unsupported platform");
+	}
+}
 /*
  * Sends an Android intent with prepopulated text content
  */
@@ -111,7 +115,7 @@ function sendIntentTextiOS(postTags) {
 	}
 }
 
-function openCamera(postId, jsonURL) {
+function openCamera(postId, json) {
 	//Holds all functionality related to sharing image through camera
 
 	var imageFilePath;
@@ -142,7 +146,7 @@ function openCamera(postId, jsonURL) {
 				imageFilePathInstagram = imageFileInstagram.nativePath;
 
 				//send file path to intent creation
-				retrieveImagePostTags(postId, jsonURL, imageFilePath);
+				retrieveImagePostTags(postId, json, imageFilePath);
 			}
 		},
 		cancel : function() {
@@ -156,27 +160,23 @@ function openCamera(postId, jsonURL) {
 /*
  * Opens camera and saves the photo the user takes; calls sendIntentImage
  */
-function retrieveImagePostTags(postId, jsonURL, imageFilePath) {
+function retrieveImagePostTags(postId, json, imageFilePath) {
 	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
 	var postTags = "";
-	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
-		if (returnedData) {
-			var foundPost = false;
-			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
-				//find correct post
-				if (returnedData.data.component.posts[i].id == postId) {
-					//pull tags from post
-					foundPost = true;
-					postTags = returnedData.data.component.posts[i].social_media_message;
-					//send tags to intents and start intents
-					sendIntentImage(postTags, imageFilePath);
-				}
-			}
-			if (found == false) {
-				alert("Specified post ID not found");
-			}
+	var foundPost = false;
+	for (var i = 0; i < json.data.component.posts.length; i++) {
+		//find correct post
+		if (json.data.component.posts[i].id == postId) {
+			//pull tags from post
+			foundPost = true;
+			postTags = json.data.component.posts[i].social_media_message;
+			//send tags to intents and start intents
+			sendIntentImage(postTags, imageFilePath);
 		}
-	});
+	}
+	if (foundPost == false) {
+		alert("Specified post ID not found");
+	}
 }
 
 /*
