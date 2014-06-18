@@ -15,6 +15,7 @@ function init(){
 
 $.addItem = function(item, onClick){
 	itemViews[numOfItems] = createLabeledPicView(item);
+	itemViews[numOfItems].itemId = item.id;
 	itemViews[numOfItems].addEventListener("click", onClick);		
 	$.carouselView.add(itemViews[numOfItems]);
 	itemViews[numOfItems].hide();
@@ -26,7 +27,8 @@ function createLabeledPicView(item){
 	var itemContainer = Ti.UI.createView();
 	var image = Ti.UI.createImageView({
 		height: '100%',
-		width: '100%'
+		width: '100%',
+		itemId: 'blank'
 	});
 	image.image = item.image;
 	

@@ -52,8 +52,10 @@ describe("Testing share text button creation", function(){
 	it("should create a share button for text", function() {
 		//Arrange
 		var detectedButton = false;
+		var fakeCreation = sharingValidator.createTextShareButton(json);
+		var json = "#OMG I JUST WENT PEE!";
 		//need to retrieve var json
-		
+		//sharingValidator.createTextShareButton(json) = jasmine.createSpy("Button creation spy")
 		
 		//Act
 		sharingValidator.createTextShareButton(json);

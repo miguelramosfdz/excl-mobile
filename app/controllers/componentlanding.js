@@ -4,7 +4,9 @@ var componentID = args;
 // var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/" + componentID;
 var url = "http://www.mocky.io/v2/53a1e425b4ac142006024b75";
 var allSections = [];
+var sectionCarousels = [];
 var tableData = [];
+var sectionsThatAlreadyExist = [];
 
 function changeTitleOfThePage(name) {
 	$.componentlanding.title = name;
@@ -12,11 +14,21 @@ function changeTitleOfThePage(name) {
 
 function createNewSection(titleOfSection) {
 	createSectionHeading(titleOfSection);
+	createSectionCarousel(titleOfSection);
 	// createPostCarousel();
 }
 
-function addToExistingSection() {
+function createSectionCarousel(titleOfSection){
+	var row = createRow();
+	var sectionIndex = sectionsThatAlreadyExist.indexOf(titleOfSection);
+	sectionCarousels[sectionIndex] = Alloy.createWidget("itemCarousel");
+	row.add(sectionCarousels[sectionIndex].getView());
+	tableData.push(row);
+}
 
+function addToExistingSection(post) {
+	var sectionIndex = sectionsThatAlreadyExist.indexOf(post.section);
+	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
 }
 
 function createRow() {
@@ -71,12 +83,16 @@ function createSection(posts) {
 	createPostCarousel(posts);
 }
 
+function goToPostLandingPage(post){
+	var componentWindow = Alloy.createController('postlanding', post).getView();
+	Alloy.Globals.navController.open(componentWindow, post);
+}
+
 function init() {
 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 		changeTitleOfThePage(returnedData.data.component.name);
 		var allPosts = returnedData.data.component.posts;
 
-		sectionsThatAlreadyExist = [];
 		for (var i = 0; i < allPosts.length; i++) {
 			if (allPosts[i].section) {
 				if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
@@ -86,6 +102,7 @@ function init() {
 				} else {
 					// section already exists
 				}
+				addToExistingSection(allPosts[i]);
 			}
 		}
 		Ti.API.info(sectionsThatAlreadyExist);

@@ -1,0 +1,22 @@
+"#navBar": {
+	backgroundColor: 'black',
+	height: '20dp'
+},
+
+"Label": {
+	color: '#fff',
+	font: {
+		fontSize: 18,
+		fontWeight: 'bold'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE
+}
+
+".nav": {
+	color: '#fff',
+	font: {
+		fontSize: 18,
+		fontWeight: 'bold'
+	},
+}
