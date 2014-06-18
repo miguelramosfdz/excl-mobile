@@ -50,7 +50,11 @@ var sound = Ti.Media.createSound({
 
 //Sharing library
 var sharingService = require("sharing/sharing");
-var createdTextShareButton = sharingService.createTextShareButton();
+
+var postId = 41; //Will get from the json somewhere along the line
+var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/23";
+
+var createdTextShareButton = sharingService.createTextShareButton(postId, jsonURL);
 $.rozay.add(createdTextShareButton);
-var createdImageShareButton = sharingService.createImageShareButton();
+var createdImageShareButton = sharingService.createImageShareButton(postId, jsonURL);
 $.rozay.add(createdImageShareButton);
