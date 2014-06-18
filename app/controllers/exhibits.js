@@ -88,7 +88,6 @@ var exhibitIndex = 0;
 var numOfExhibits = json.data.museum.exhibits.length;
 var exhibitViews = [];
 var componentsInExhibit = [];
-var componentsRow = createPlainRow();
 var tableData = [];
 
 /*
@@ -99,55 +98,23 @@ dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 var json = dataRetriever.parseJson();
 */
 
-var exhibitsSwipeableView = Ti.UI.createView({	
-	top: '5%',
-	backgroundColor: 'cyan'
-});	// XML
 
 // simulate data from wordpress using Jess' model
 
 
-function openComponent(e){
+function openComponent(e){	
+	alert("component Id: "+e.source.componentId);
+	
 	var componentWindow = Alloy.createController('componentlanding').getView();
 	componentWindow.componentId = e.source.componentId;
-	
-	alert("component Id: "+e.source.componentId);
 	Alloy.Globals.navController.open(componentWindow);
 }
 
-// -----------------------------------------------------------------------
-// -----------------------------------------------------------------------
-function createPlainRow() {
-	var row = Ti.UI.createTableViewRow({
-		// height: (Ti.Platform.displayCaps.platformHeight / 8),
-		height : '190dp',
-		top: '10dp',
-		backgroundColor : 'white',
-	});
-	return row;
-}// XML
-
-// -----------------------------------------------------------------------
-// -----------------------------------------------------------------------
-function createHeadingRow() {
-	var row = Ti.UI.createTableViewRow({
-		// height: (Ti.Platform.displayCaps.platformHeight / 8),
-		height : '50dp',
-		backgroundColor : 'cyan',
-	});
-	return row;
-}// XML
-
-
 function createExhibitsCarousel(exhibits){
-	// These parts should be defined by TSS
-	var row = createPlainRow();
-	
 	for(i = exhibits.length -1 ; i >= 0; i--){
-		exhibitViews[i] = createLabeledPicView(exhibits[i], '22');		// will later say 'exhibit', and will create the pic item of that class
+		exhibitViews[i] = createLabeledPicView(exhibits[i], '25dp');		// will later say 'exhibit', and will create the pic item of that class
 		$.exhibitsSwipeableView.add(exhibitViews[i]);
 		exhibitViews[i].hide();
-		//$.addClass(exhibitImages[i], "exhibitImage"); 
 	}
 	exhibitViews[0].show();
 }
@@ -155,11 +122,10 @@ function createExhibitsCarousel(exhibits){
 // Extract into a service in the Lib folder -> make into a widget when we write this in XML
 function createLabeledPicView(item, type){
 	var itemContainer = Ti.UI.createView();
-	
 	var image = Ti.UI.createImageView({
 		height: '100%',
 		width: '100%'
-	});//$.addClass(exhibitImages[i], "exhibitImage"); 
+	});
 	image.image = item.image;
 	
 	itemContainer.add(image);
@@ -196,16 +162,12 @@ function createTitleLabel(name, type){
 
 function createComponentHeading(componentHeadingText){
 	$.componentHeading.text = componentHeadingText;
-	
-	//tableData.push(headingRow);
 }
 
 function createComponentsScrollView(exhibits){
 
 	var image;
-	$.componentScrollView.height = 100;
 	var component;
-	var components;
 	
 	for (var i = 0; i < exhibits.length; i++){
 		componentsInExhibit[i] = Ti.UI.createView({
@@ -215,10 +177,10 @@ function createComponentsScrollView(exhibits){
 		});// TSS CLASS
 
 		for(var j = 0; j< exhibits[i].components.length; j++){
-			component = createLabeledPicView(exhibits[i].components[j], '12');	// Later type will be 'component' and that wil be linked to the TSS class
+			component = createLabeledPicView(exhibits[i].components[j], '15dp');	// Later type will be 'component' and that wil be linked to the TSS class
 			component.left = 5;
 			component.right = 5;
-			component.width = 200;
+			component.width = '225dp';
 			component.componentId = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[i].add(component);
@@ -230,26 +192,8 @@ function createComponentsScrollView(exhibits){
 }
 
 function setExhibitText(text){
-	var textRow = createHeadingRow();
-	
-	var label = Ti.UI.createLabel({
-		color : 'black',
-		font : {
-			fontFamily : 'Arial',
-			fontSize : 12,
-			fontWeight : 'bold'
-		},
-		width: 'auto',
-		left: 20,
-		horizontalWrap: true,
-		text : text
-	});
-	textRow.top = 20;
-	textRow.height = '100%';
-	textRow.add(label);
-	textRow.height = 120;
-	tableData.push(textRow);
-} // XML
+	$.exhibitInfoLabel.text = text;
+} 
 
 // Break into two more functions
 function swipeHandler(e){

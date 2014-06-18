@@ -10,6 +10,9 @@
 			<TableViewRow>
 				<ScrollView id="componentScrollView"></ScrollView>
 			</TableViewRow>
+			<TableViewRow class="infoRow">
+				<Label id="exhibitInfoLabel"></Label>
+			</TableViewRow>
 		</TableView>
 	</Window>
 </Alloy>
