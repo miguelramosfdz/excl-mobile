@@ -11,18 +11,27 @@
     color: "#111",
     font: {
         //fontFamily:'Helvetica',
-        fontSize: '32dp',
+        fontSize: '32dip',
         //fontStyle: 'normal',
         fontWeight: 'bold'
     },
     top: "20"
 }
 ".logo": {
-	height: "300dp",
-	width:"300dp"
+	height: "300dip",
+	width:"300dip"
 	
 }
 ".description": {
 	bottom:"20",
     color: "#000"
+}
+
+".scroll":{
+	contentWidth : 'auto',
+	contentHeight : 'auto',
+	showVerticalScrollIndicator : true,
+	showHorizontalScrollIndicator : true,
+	height : '100%',
+	width : '100%'
 }
