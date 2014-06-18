@@ -109,11 +109,10 @@ function getPostTags(postId, json) {
  */
 function sendIntentText(postId, json, shareTextButtonId) {
 	postTags = getPostTags(postId, json);
-	toggleTextShareButtonStatusInactive(shareTextButtonId);
 	if (OS_ANDROID) {
-		sendIntentTextAndroid(postTags);
+		sendIntentTextAndroid(postTags, shareTextButtonId);
 	} else if (OS_IOS) {
-		sendIntentTextiOS(postTags);
+		sendIntentTextiOS(postTags, shareTextButtonId);
 	} else {
 		alert("Unsupported platform");
 	}
@@ -122,7 +121,9 @@ function sendIntentText(postId, json, shareTextButtonId) {
 /*
  * Sends an Android intent with prepopulated text content
  */
-function sendIntentTextAndroid(postTags) {
+function sendIntentTextAndroid(postTags, shareTextButtonId) {
+	//Reenable text share button
+	toggleTextShareButtonStatusInactive(shareTextButtonId);
 	//Create and send text intent for android. Includes area for main text and url text to be appended
 	var intentText = Ti.Android.createIntent({
 		action : Ti.Android.ACTION_SEND,
@@ -136,7 +137,9 @@ function sendIntentTextAndroid(postTags) {
 /*
  * Opens iOS share menu and sends prepopulated text content
  */
-function sendIntentTextiOS(postTags) {
+function sendIntentTextiOS(postTags, shareTextButtonId) {
+	//Reenable text share button
+	toggleTextShareButtonStatusInactive(shareTextButtonId);
 	//Use TiSocial.Framework module to share text
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
@@ -156,12 +159,11 @@ function openCamera(postId, json, shareImageButtonId) {
 
 	//declare variable to store image file path
 	var imageFilePath;
-	//reenable sharing button to account for premature exiting of camera
-	toggleImageShareButtonStatusInactive(shareImageButtonId);
 	//Save process for camera and updates view to display new picture
 	Titanium.Media.showCamera({
 		saveToPhotoGallery : true,
 		mediaTypes : Titanium.Media.MEDIA_TYPE_PHOTO,
+
 		success : function(event) {
 
 			//create image file and save name for future use
@@ -189,6 +191,8 @@ function openCamera(postId, json, shareImageButtonId) {
 			}
 		},
 		cancel : function() {
+			//reenable sharing button to account for premature exiting of camera
+			toggleImageShareButtonStatusInactive(shareImageButtonId);
 		},
 		error : function(Error) {
 			alert("Camera not working");
