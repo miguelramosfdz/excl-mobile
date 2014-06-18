@@ -103,30 +103,6 @@ function getPostTags(postId, json){
 }
 
 /*
- * Deprecated
- * Calls the platform-specific sendIntent function for text
- */
-function retrieveTextPostTags(postId, json, shareTextButtonId) {
-	//Retrieve social media message, which contains social media tags. This is used for text intents/iOS equivalents.
-	var foundPost = false;
-	for (var i = 0; i < json.data.component.posts.length; i++) {
-		//find correct post
-		if (json.data.component.posts[i].id == postId && foundPost == false) {
-			//pull tags from post if you have not found the post yet
-			foundPost = true;
-			var postTags = json.data.component.posts[i].social_media_message;
-			//enable text share button again
-			toggleTextShareButtonInactive(shareTextButtonId);
-			//send tags to intents and start intents
-			sendIntentText(postTags);
-		}
-	}
-	if (foundPost == false) {
-		alert("Specified post ID not found");
-	}
-}
-
-/*
  * Calls the platform-appropriate sendIntentText function
  */
 function sendIntentText(postId, json, shareTextButtonId){
@@ -172,6 +148,9 @@ function sendIntentTextiOS(postTags) {
 	}
 }
 
+/*
+ * Opens the camera, saves the picture the user takes; calls sendIntent function
+ */
 function openCamera(postId, json, shareImageButtonId) {
 	//Holds all functionality related to sharing image through camera
 
@@ -212,31 +191,6 @@ function openCamera(postId, json, shareImageButtonId) {
 			alert("Camera not working");
 		}
 	});
-}
-
-/*
- * Deprecated
- * Opens camera and saves the photo the user takes; calls sendIntentImage
- */
-function retrieveImagePostTags(postId, json, imageFilePath, shareImageButtonId) {
-	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
-	var postTags = "";
-	var foundPost = false;
-	for (var i = 0; i < json.data.component.posts.length; i++) {
-		//find correct post
-		if (json.data.component.posts[i].id == postId) {
-			//pull tags from post
-			foundPost = true;
-			postTags = json.data.component.posts[i].social_media_message;
-			//reenable share button
-			toggleImageShareButtonInactive(shareImageButtonId);
-			//send tags to intents and start intents
-			sendIntentImage(postTags, imageFilePath);
-		}
-	}
-	if (foundPost == false) {
-		alert("Specified post ID not found");
-	}
 }
 
 /*
@@ -346,6 +300,9 @@ function openInstagram(imageFilePathInstagram) {
 	});
 }
 
+/*
+ * If the background image is present, the title is unnecessary
+ */
 function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	//removes the title field of a button if a background image is detected
 	if (buttonName.backgroundImage != "") {
