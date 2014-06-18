@@ -1,58 +1,13 @@
+//Hi Alex!!
+//hey there stranger
+
 var dataRetriever = require("dataRetriever");
-
-/*
- * Deprecated; split into createTextShareButton and createImageShareButton
- * By splitting it, we also have no need for viewSharingTemp, which was the view that held the two buttons
- * Instead, each function now returns their respective button, and the file that calls the function is responsible for placing it in the correct view
- */
-function createShareButtons(postId, jsonURL) {
-	//create view that will serve as temporary backing for sharing buttons
-	var viewSharingTemp = Ti.UI.createView({
-		layout : "vertical",
-		width : "100%",
-		height : "200dip"
-	});
-
-	//button to open text sharing
-	var shareText = Ti.UI.createButton({
-		id : 'shareText',
-		title : "Text",
-		height : "40dip",
-		width : "40dip",
-		left : "0",
-		backgroundImage : "/images/iconShare.png"
-	});
-	shareText.addEventListener('click', function(e) {
-		retrieveTextPostTags(postId, jsonURL);
-	});
-	eraseButtonTitleIfBackgroundPresent(shareText);
-	viewSharingTemp.add(shareText);
-
-	//button to open photo sharing
-	var shareImage = Ti.UI.createButton({
-		id : 'shareImage',
-		text : "Camera",
-		height : "40dip",
-		width : "40dip",
-		left : "0",
-		backgroundImage : "/images/iconCamera.png"
-	});
-	shareImage.addEventListener('click', function(e) {
-		openCamera(postId, jsonURL);
-	});
-	eraseButtonTitleIfBackgroundPresent(shareImage);
-	viewSharingTemp.add(shareImage);
-
-	// $.viewShareBase.add(viewSharingTemp);
-	return viewSharingTemp;
-
-}
-
+var imageFilePathInstagram = "";
 /*
  * Returns the button for text sharing
  * File that calls the function is responsible for placing it in the correct view
  */
-function createTextShareButton(postId, jsonURL) {
+function createTextShareButton(postId, json) {
 	//button to open text sharing
 	var shareTextButton = Ti.UI.createButton({
 		id : 'shareTextButton',
@@ -60,12 +15,15 @@ function createTextShareButton(postId, jsonURL) {
 		height : "40dip",
 		width : "40dip",
 		left : "0",
-		backgroundImage : "/images/iconShare.png"
+		top: "0",
+		backgroundImage : "/images/iconShare.png",
+		enabled: true
 	});
 
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
-		retrieveTextPostTags(postId, jsonURL);
+		shareTextButton.enabled = false;
+		retrieveTextPostTags(postId, json, shareTextButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
 
@@ -77,20 +35,22 @@ function createTextShareButton(postId, jsonURL) {
  * When clicked, the openCamera function is called, which then calls sendIntentImage
  * File taht calls the function is responsible for placing it in the correct view
  */
-function createImageShareButton(postId, jsonURL) {
+function createImageShareButton(postId, json) {
 	//button to open photo sharing
 	var shareImageButton = Ti.UI.createButton({
 		id : 'shareImageButton',
 		text : "Camera",
 		height : "40dip",
 		width : "40dip",
-		left : "0",
-		backgroundImage : "/images/iconCamera.png"
+		left : "70dip",
+		top: "0",
+		backgroundImage : "/images/iconCamera.png",
+		enabled: true
 	});
 
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
-		openCamera(postId, jsonURL);
+		openCamera(postId, json, shareImageButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
 
@@ -99,35 +59,44 @@ function createImageShareButton(postId, jsonURL) {
 
 /*
  * Calls the platform-specific sendIntent function for text
+ * Deprecated- now passing in straight json structure rather than URL; no more URL calls within sharing library
  */
-function retrieveTextPostTags(postId, jsonURL) {
+
+function retrieveTextPostTags(postId, json, shareTextButtonId) {
 	//Retrieve social media message, which contains social media tags. This is used for text intents/iOS equivalents.
-	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
-		if (returnedData) {
-			var foundPost = false;
-			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
-				//find correct post
-				if (returnedData.data.component.posts[i].id == postId && foundPost == false) {
-					//pull tags from post if you have not found the post yet
-					foundPost = true;
-					var postTags = returnedData.data.component.posts[i].social_media_message;
-					//send tags to intents and start intents
-					if (OS_ANDROID) {
-						sendIntentTextAndroid(postTags);
-					} else if (OS_IOS) {
-						sendIntentTextiOS(postTags);
-					} else {
-						alert("Unsupported platform (text sharing)");
-					}
-				}
-			}
-			if (found == false) {
-				alert("Specified post ID not found");
-			}
+	var foundPost = false;
+	for (var i = 0; i < json.data.component.posts.length; i++) {
+		//find correct post
+		if (json.data.component.posts[i].id == postId && foundPost == false) {
+			//pull tags from post if you have not found the post yet
+			foundPost = true;
+			var postTags = json.data.component.posts[i].social_media_message;
+			//enable text share button again
+			shareTextButtonId.enabled = true;
+			//send tags to intents and start intents
+			sendIntentText(postTags);
 		}
-	});
+	}
+	if (foundPost == false) {
+		alert("Specified post ID not found");
+	}
 }
 
+/*
+ * Calls the platform-appropriate sendIntentText function
+ */
+function sendIntentText(postTags)
+{
+	if (OS_ANDROID){
+		sendIntentTextAndroid(postTags);
+	}
+	else if (OS_IOS){
+		sendIntentTextiOS(postTags);
+	}
+	else{
+		alert("Unsupported platform");
+	}
+}
 /*
  * Sends an Android intent with prepopulated text content
  */
@@ -157,39 +126,7 @@ function sendIntentTextiOS(postTags) {
 	}
 }
 
-/*
- * Opens camera and saves the photo the user takes; calls sendIntentImage
- */
-function retrieveImagePostTags(postId, jsonURL, imageFilePath) {
-	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
-	var postTags = "";
-	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
-		if (returnedData) {
-			var foundPost = false;
-			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
-				//find correct post
-				if (returnedData.data.component.posts[i].id == postId) {
-					//pull tags from post
-					foundPost = true;
-					postTags = returnedData.data.component.posts[i].social_media_message;
-					//send tags to intents and start intents
-					if (OS_ANDROID) {
-						sendIntentImageAndroid(postTags, imageFilePath);
-					} else if (OS_IOS) {
-						sendIntentImageiOS(postTags, imageFilePath);
-					} else {
-						alert("Unsupported platform (photo sharing)");
-					}
-				}
-			}
-			if (found == false) {
-				alert("Specified post ID not found");
-			}
-		}
-	});
-}
-
-function openCamera(postId, jsonURL) {
+function openCamera(postId, json, shareImageButtonId) {
 	//Holds all functionality related to sharing image through camera
 
 	var imageFilePath;
@@ -207,10 +144,10 @@ function openCamera(postId, jsonURL) {
 			imageFile.write(event.media);
 
 			//Instagram-specific code
-			if (OS_IOS) {
-				var fileNameInstagram = 'excl' + new Date().getTime() + '.jpg';
-				//Or .ig?
-				var imageFileInstagram = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileNameInstagram) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileNameInstagram);
+			var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
+			var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
+			
+			if (!imageFileInstagram.exists()){
 				imageFileInstagram.write(event.media);
 			}
 
@@ -220,7 +157,7 @@ function openCamera(postId, jsonURL) {
 				imageFilePathInstagram = imageFileInstagram.nativePath;
 
 				//send file path to intent creation
-				retrieveImagePostTags(postId, jsonURL, imageFilePath);
+				retrieveImagePostTags(postId, json, imageFilePath, shareImageButtonId);
 			}
 		},
 		cancel : function() {
@@ -232,18 +169,39 @@ function openCamera(postId, jsonURL) {
 }
 
 /*
+ * Opens camera and saves the photo the user takes; calls sendIntentImage
+ */
+function retrieveImagePostTags(postId, json, imageFilePath, shareImageButtonId) {
+	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
+	var postTags = "";
+	var foundPost = false;
+	for (var i = 0; i < json.data.component.posts.length; i++) {
+		//find correct post
+		if (json.data.component.posts[i].id == postId) {
+			//pull tags from post
+			foundPost = true;
+			postTags = json.data.component.posts[i].social_media_message;
+			//reenable share button
+			shareImageButtonId.enabled = true;
+			//send tags to intents and start intents
+			sendIntentImage(postTags, imageFilePath);
+		}
+	}
+	if (foundPost == false) {
+		alert("Specified post ID not found");
+	}
+}
+
+/*
  * Calls the platform-specific sendIntent function for an image
  */
-function sendIntentImage(imageFilePath) {
+function sendIntentImage(postTags, imageFilePath) {
 	//create and send an image intent
 
-	//Get text to be sent from WP
-	contentTextComment = "#cmh #awesome http://www.cmhouston.org";
-
 	if (OS_ANDROID) {
-		sendIntentImageAndroid(contentTextComment, imageFilePath);
+		sendIntentImageAndroid(postTags, imageFilePath);
 	} else if (OS_IOS) {
-		sendIntentImageiOS(contentTextComment, imageFilePath);
+		sendIntentImageiOS(postTags, imageFilePath);
 	} else {
 		alert("Unsupported platform (image sharing)");
 	}
@@ -318,6 +276,7 @@ function openInstagram(imageFilePathInstagram) {
 	}
 	*/
 
+	/*
 	//WebView attempt
 	instaWebView = Titanium.UI.createWebView({
 		url : 'www.instagram.com'
@@ -327,7 +286,16 @@ function openInstagram(imageFilePathInstagram) {
 	instaWindow.open({
 		modal : true
 	});
+	*/
 
+	alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
+
+	var docViewer = Ti.UI.iOS.createDocumentViewer({ url : imageFilePathInstagram });
+	docViewer.UTI = "com.instagram.exclusivegram";
+	docViewer.show({
+		view: Ti.UI.currentWindow,
+		animated : true 
+	});
 }
 
 function eraseButtonTitleIfBackgroundPresent(buttonName) {

@@ -2,7 +2,7 @@
 	<Window class="container" backgroundColor='white'>
 		<TableView id="tableView">
 			<TableViewRow class="largePictureRow" id="exhibitsSwipeableRow" >
-				<View id="exhibitsSwipeableView"></View>
+				<View id="exhibitsSwipeableView" onClick="openPostLanding"></View>
 			</TableViewRow>
 			<TableViewRow class="headingRow">
 				<Label id="componentHeading" class="headingText"></Label>
