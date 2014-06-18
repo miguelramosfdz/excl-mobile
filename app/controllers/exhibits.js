@@ -1,7 +1,7 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
 
-/*
+
 var json = {
   "status": "ok",
   "error": "Optional Error Message",
@@ -101,7 +101,7 @@ function getJSON(url) {
 		}
 	});
 	return myJson;
-}
+}//*/
 
 function openComponent(e){	
 	alert("component Id: "+e.source.id);
@@ -242,7 +242,7 @@ function showComponents(index){
 	}
 }
 
-json = getJSON(jsonURL);
+//json = getJSON(jsonURL);
 createExhibitsCarousel(json.data.museum.exhibits);
 createComponentHeading("Check out our Stations");
 createComponentsScrollView(json.data.museum.exhibits);
