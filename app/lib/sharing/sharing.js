@@ -1,54 +1,6 @@
 var dataRetriever = require("dataRetriever");
 
 /*
- * Deprecated; split into createTextShareButton and createImageShareButton
- * By splitting it, we also have no need for viewSharingTemp, which was the view that held the two buttons
- * Instead, each function now returns their respective button, and the file that calls the function is responsible for placing it in the correct view
- */
-function createShareButtons(postId, jsonURL) {
-	//create view that will serve as temporary backing for sharing buttons
-	var viewSharingTemp = Ti.UI.createView({
-		layout : "vertical",
-		width : "100%",
-		height : "200dip"
-	});
-
-	//button to open text sharing
-	var shareText = Ti.UI.createButton({
-		id : 'shareText',
-		title : "Text",
-		height : "40dip",
-		width : "40dip",
-		left : "0",
-		backgroundImage : "/images/iconShare.png"
-	});
-	shareText.addEventListener('click', function(e) {
-		retrieveTextPostTags(postId, jsonURL);
-	});
-	eraseButtonTitleIfBackgroundPresent(shareText);
-	viewSharingTemp.add(shareText);
-
-	//button to open photo sharing
-	var shareImage = Ti.UI.createButton({
-		id : 'shareImage',
-		text : "Camera",
-		height : "40dip",
-		width : "40dip",
-		left : "0",
-		backgroundImage : "/images/iconCamera.png"
-	});
-	shareImage.addEventListener('click', function(e) {
-		openCamera(postId, jsonURL);
-	});
-	eraseButtonTitleIfBackgroundPresent(shareImage);
-	viewSharingTemp.add(shareImage);
-
-	// $.viewShareBase.add(viewSharingTemp);
-	return viewSharingTemp;
-
-}
-
-/*
  * Returns the button for text sharing
  * File that calls the function is responsible for placing it in the correct view
  */
@@ -84,7 +36,7 @@ function createImageShareButton(postId, jsonURL) {
 		text : "Camera",
 		height : "40dip",
 		width : "40dip",
-		left : "0",
+		left : "30",
 		backgroundImage : "/images/iconCamera.png"
 	});
 
