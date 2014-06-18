@@ -2,7 +2,7 @@ var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
 var componentID = 23;
 
-
+/*
 var json = {
   "status": "ok",
   "error": "Optional Error Message",
@@ -112,9 +112,10 @@ function retrieveJson(jsonURL) {
 }
 
 
-function openComponent(){
-	var componentWindow = Alloy.createController('componentlanding', componentID).getView();
-	Alloy.Globals.navController.open(componentWindow, componentID);
+function openComponent(e){
+	//alert("Component Id: "+e.source.itemId);
+	var componentWindow = Alloy.createController('componentlanding').getView();
+	Alloy.Globals.navController.open(componentWindow, e.source.itemId);
 }
 
 function createExhibitsCarousel(exhibits){
@@ -131,7 +132,8 @@ function createLabeledPicView(item, type){
 	var itemContainer = Ti.UI.createView();
 	var image = Ti.UI.createImageView({
 		height: '100%',
-		width: '100%'
+		width: '100%',
+		itemId: item.id
 	});
 	image.image = item.image;
 	
@@ -249,8 +251,8 @@ function showComponents(index){
 }
 
 
-//retrieveJson(url);
-populateWindow(json);
+retrieveJson(url);
+//populateWindow(json);
 function populateWindow(json){
 	numOfExhibits = json.data.museum.exhibits.length;
 	createExhibitsCarousel(json.data.museum.exhibits);
