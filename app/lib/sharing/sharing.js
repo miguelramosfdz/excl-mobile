@@ -23,7 +23,7 @@ function createTextShareButton(postId, json) {
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
 		shareTextButton.enabled = false;
-		retrieveTextPostTags(postId, json, shareTextButton);
+		sendIntentText(postId, json, shareTextButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
 
@@ -33,7 +33,7 @@ function createTextShareButton(postId, json) {
 /*
  * Returns the button for image sharing
  * When clicked, the openCamera function is called, which then calls sendIntentImage
- * File taht calls the function is responsible for placing it in the correct view
+ * File that calls the function is responsible for placing it in the correct view
  */
 function createImageShareButton(postId, json) {
 	//button to open photo sharing
@@ -58,10 +58,30 @@ function createImageShareButton(postId, json) {
 }
 
 /*
- * Calls the platform-specific sendIntent function for text
- * Deprecated- now passing in straight json structure rather than URL; no more URL calls within sharing library
+ * Gets the postTag from the json
  */
+function getPostTags(postId, json){
+	//Retrieve social media message, which contains social media tags. This is used for text and image intents/iOS equivalents.
+	postTags = "";
+	var foundPost = false;
+	for (var i = 0; i < json.data.component.posts.length; i++) {
+		//find correct post
+		if (json.data.component.posts[i].id == postId && foundPost == false) {
+			//pull tags from post if you have not found the post yet
+			foundPost = true;
+			var postTags = json.data.component.posts[i].social_media_message;
+		}
+	}
+	if (foundPost == false) {
+		alert("Specified post ID not found");
+	}
+	return postTags;
+}
 
+/*
+ * Deprecated
+ * Calls the platform-specific sendIntent function for text
+ */
 function retrieveTextPostTags(postId, json, shareTextButtonId) {
 	//Retrieve social media message, which contains social media tags. This is used for text intents/iOS equivalents.
 	var foundPost = false;
@@ -85,8 +105,9 @@ function retrieveTextPostTags(postId, json, shareTextButtonId) {
 /*
  * Calls the platform-appropriate sendIntentText function
  */
-function sendIntentText(postTags)
-{
+function sendIntentText(postId, json, shareTextButtonId){
+	postTags = getPostTags(postId, json);
+	shareTextButtonId.enabled = true;
 	if (OS_ANDROID){
 		sendIntentTextAndroid(postTags);
 	}
@@ -97,6 +118,7 @@ function sendIntentText(postTags)
 		alert("Unsupported platform");
 	}
 }
+
 /*
  * Sends an Android intent with prepopulated text content
  */
@@ -157,7 +179,7 @@ function openCamera(postId, json, shareImageButtonId) {
 				imageFilePathInstagram = imageFileInstagram.nativePath;
 
 				//send file path to intent creation
-				retrieveImagePostTags(postId, json, imageFilePath, shareImageButtonId);
+				sendIntentImage(postId, json, imageFilePath, shareImageButtonId);
 			}
 		},
 		cancel : function() {
@@ -169,6 +191,7 @@ function openCamera(postId, json, shareImageButtonId) {
 }
 
 /*
+ * Deprecated
  * Opens camera and saves the photo the user takes; calls sendIntentImage
  */
 function retrieveImagePostTags(postId, json, imageFilePath, shareImageButtonId) {
@@ -195,9 +218,10 @@ function retrieveImagePostTags(postId, json, imageFilePath, shareImageButtonId) 
 /*
  * Calls the platform-specific sendIntent function for an image
  */
-function sendIntentImage(postTags, imageFilePath) {
-	//create and send an image intent
-
+function sendIntentImage(postId, json, imageFilePath, shareImageButtonId) {
+	postTags = getPostTags(postId, json);
+	//reenable share button
+	shareImageButtonId.enabled = true;
 	if (OS_ANDROID) {
 		sendIntentImageAndroid(postTags, imageFilePath);
 	} else if (OS_IOS) {
