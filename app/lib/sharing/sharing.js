@@ -109,7 +109,7 @@ function createImageShareButton(){
 }
 
 /*
- * Sends the 
+ * Calls the platform-specific sendIntent function for text
  */
 function sendIntentText() {
 	//function to send information to other apps
@@ -127,6 +127,9 @@ function sendIntentText() {
 	}
 }
 
+/*
+ * Sends an Android intent with prepopulated text content
+ */
 function sendIntentTextAndroid(contentTextComment) {
 	//Create and send text intent for android. Includes area for main text and url text to be appended
 	var intentText = Ti.Android.createIntent({
@@ -139,6 +142,9 @@ function sendIntentTextAndroid(contentTextComment) {
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentText, "Send message via"));
 }
 
+/*
+ * Opens iOS share menu and sends prepopulated text content
+ */
 function sendIntentTextiOS(contentTextComment) {
 	//Use TiSocial.Framework module to share text
 	var Social = require('dk.napp.social');
@@ -151,6 +157,9 @@ function sendIntentTextiOS(contentTextComment) {
 	}
 }
 
+/*
+ * Opens camera and saves the photo the user takes; calls sendIntentImage
+ */
 function openCamera() {
 	//Holds all functionality related to sharing image through camera
 
@@ -191,6 +200,9 @@ function openCamera() {
 	});
 }
 
+/*
+ * Calls the platform-specific sendIntent function for an image
+ */
 function sendIntentImage(imageFilePath) {
 	//create and send an image intent
 
@@ -206,6 +218,9 @@ function sendIntentImage(imageFilePath) {
 	}
 }
 
+/*
+ * Sends an Android intent with prepopulated text content and the image that was just taken
+ */
 function sendIntentImageAndroid(contentTextComment, imageFilePath) {
 
 	//Create and send image intent for android.
@@ -219,6 +234,9 @@ function sendIntentImageAndroid(contentTextComment, imageFilePath) {
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share photo via"));
 }
 
+/*
+ * Opens iOS share menu and sends prepopulated text content and image that was just taken
+ */
 function sendIntentImageiOS(contentTextComment, imageFilePath) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
@@ -240,6 +258,9 @@ function sendIntentImageiOS(contentTextComment, imageFilePath) {
 	}
 }
 
+/*
+ * iOS doesn't automatically deal with Instagram, so this function is called when the custom Instagram button is pressed in the iOS sharing menu
+ */
 function openInstagram(imageFilePathInstagram) {
 	
 	/*
