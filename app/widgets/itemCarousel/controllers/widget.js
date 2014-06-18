@@ -29,7 +29,7 @@ function createLabeledPicView(item){
 		width: '100%',
 		itemId: 'blank'
 	});
-	image.image = item.image;
+	image.image = item.thumbnail;
 	
 	itemContainer.add(image);
 	itemContainer.add(createTitleLabel(item.name));
