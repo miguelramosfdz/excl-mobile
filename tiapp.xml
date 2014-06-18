@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
-    <id>com.cmh.excl</id>
+    <id>com.parivedasolutions.excl</id>
     <name>ExCL</name>
     <version>1.0</version>
     <publisher>ryan.henderson</publisher>
@@ -60,8 +60,7 @@
     <plugins>
         <plugin version="1.0">ti.alloy</plugin>
     </plugins>
-	
-	<modules>
-		<module platform="iphone">dk.napp.social</module> 
-	</modules>
+    <modules>
+        <module platform="iphone">dk.napp.social</module>
+    </modules>
 </ti:app>
