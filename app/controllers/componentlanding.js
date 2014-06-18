@@ -381,33 +381,3 @@ $.componentlanding.title = "Component landing loaded!";
 $.componentlanding.add(tableView);
 
 
-/*
-
-
-init(){
-	for each post{
-		if (sectionExists())
-			add to section(post)
-		else
-			create and add(post)
-			numOfSections++
-	}
-}
-
-function sectionExists(){
-	return true;
-}
-
-init();
-
-
-
-*/
-
-
-
-
-
-
-
-
