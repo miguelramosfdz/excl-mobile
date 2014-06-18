@@ -1,3 +1,4 @@
+
 <Alloy>
 	<View class="full-view">
 		<ScrollView id="scrollViewRozay" class="scroll">
@@ -7,3 +8,4 @@
 		</ScrollView>
 	</View>
 </Alloy>
+

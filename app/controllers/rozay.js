@@ -89,6 +89,7 @@ var sharingService = require("sharing/sharing");
 
 var createdTextShareButton = sharingService.createTextShareButton(json);
 $.scrollViewRozay.add(createdTextShareButton);
+
 var createdImageShareButton = sharingService.createImageShareButton(json);
 $.scrollViewRozay.add(createdImageShareButton);
 
