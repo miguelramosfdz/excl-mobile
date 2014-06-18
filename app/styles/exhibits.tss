@@ -3,7 +3,60 @@
   
 }
 
-".exhibitImage": {
+".largePictureRow": {
+	top: '5%',
+	backgroundColor : 'cyan',
+	height: '200dp'
+}
+
+"#tableView": {
+	backgroundColor : 'white',
+}
+
+"#exhibitsSwipeableView": {	
+	backgroundColor: 'cyan'
+}	// XML
+
+".headingRow": {
+	height : '50dp',
+	backgroundColor : 'cyan',
+}
+
+".headingText": {
+	color : 'black',
+	font : {
+		fontFamily : 'Arial',
+		fontSize : '22dp',
+		fontWeight : 'bold'
+	},
+	textAlign : 'center',
+}
+
+"#componentScrollView": {
+	layout: 'horizontal',
+	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
+	showHorizontalScrollIndicator: true,
 	width: '100%',
-	height: '20%'
+	height: '120dp',
+	contentWidth: 'auto',
+	scrollType: 'horizontal',
+	horizontalWrap: false
+}
+
+".infoRow": {
+	top: '10dp',
+	height: '145dp',
+	backgroundColor: 'cyan'
+}
+
+"#exhibitInfoLabel": {
+	color : 'black',
+	font : {
+		fontFamily : 'Arial',
+		fontSize : '15dp',
+		fontWeight : 'bold'
+	},
+	width: 'auto',
+	left: '20dp',
+	horizontalWrap: true,
 }

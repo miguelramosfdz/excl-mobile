@@ -1,35 +1,48 @@
 var args = arguments[0] || {};
 
-$.NavDemo2.title = 'Window ' + Alloy.Globals.navController.windowStack.length;
+// Here we define the callback function for what actions to take on entering and 
+// exiting kiosk mode. This is optional.
+function onEnterKioskMode(view) {  
+	var x;
+	for (x in view.children) {
+		Ti.API.log(JSON.stringify(view.children[x]));
+		if (view.children[x].myClass == "noKiosk") {
+			Ti.API.log("Removing: "+JSON.stringify(view.children[x]));
+			view.children[x].visible = false;
+		}
+	}
+};
+function onExitKioskMode(view) {  
+	var x;
+	for (x in view.children) {
+		Ti.API.log(JSON.stringify(view.children[x]));
+		if (view.children[x].myClass == "noKiosk") {
+			Ti.API.log("Removing: "+JSON.stringify(view.children[x]));
+			view.children[x].visible = true;
+			// view.remove(x);
+		}
+	}
+};
+
+// Here we are adding a kiosk mode listener (three long clicks, for example) to the 'home' button on the page.
 Alloy.Globals.navController.addKioskModeListener($.home);
-$.updateForKioskMode = updatePage;
-	
+
+// This is just setting a helpful window title for the demo.
+$.NavDemo2.title = 'Window ' + Alloy.Globals.navController.windowStack.length;
+
+// This is opening a new window
 function addClick(e){
-	Alloy.Globals.navController.open(Alloy.createController('navdemo2'));
+	Alloy.Globals.navController.open(Alloy.createController('navdemo2').getView(), onEnterKioskMode, onExitKioskMode);
 }
 
+// This is activating the home functionality
 function homeClick(e) {
 	Alloy.Globals.navController.home();
 }
 
-function updatePage(view) {  
-	var x;
-	if (!Alloy.Globals.navController.kioskMode) {
-		for (x in view.children) {
-			Ti.API.log(JSON.stringify(view.children[x]));
-			if (view.children[x].myClass == "noKiosk") {
-				Ti.API.log("Removing: "+JSON.stringify(view.children[x]));
-				view.children[x].visible = true;
-			}
-		}
-	} else {
-		for (x in view.children) {
-			Ti.API.log(JSON.stringify(view.children[x]));
-			if (view.children[x].myClass == "noKiosk") {
-				Ti.API.log("Removing: "+JSON.stringify(view.children[x]));
-				view.children[x].visible = false;
-				// view.remove(x);
-			}
-		}
-	}
-}
+// All the following is just initializing the demo page
+if (!Alloy.Globals.navController.isInKioskMode()) {
+	$.openMenuShare.visible = true;
+} else {
+	$.openMenuShare.visible = false;
+}	

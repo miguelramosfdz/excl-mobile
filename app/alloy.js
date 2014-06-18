@@ -10,5 +10,5 @@
 //
 // Alloy.Globals.someGlobalFunction = function(){};
 
-var NavigationController = require('NavigationController');
+var NavigationController = require('navigationService/NavigationController');
 Alloy.Globals.navController = new NavigationController();

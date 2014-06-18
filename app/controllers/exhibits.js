@@ -1,4 +1,6 @@
 var args = arguments[0] || {};
+var dataRetriever = require('dataRetriever');
+
 var json = {
   "status": "ok",
   "error": "Optional Error Message",
@@ -79,99 +81,59 @@ var json = {
       ]
     }
   }
-};
+}; // Extract to required file*/
+
 
 var exhibitIndex = 0;
 var numOfExhibits = json.data.museum.exhibits.length;
 var exhibitViews = [];
 var componentsInExhibit = [];
-var componentsRow = createPlainRow();
-
 var tableData = [];
 
-var scrollView = Ti.UI.createScrollView({
-	layout: 'horizontal',
-	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
-	height : '100%',
-	showHorizontalScrollIndicator: true,
-	width: '100%',
-	contentWidth: 'auto',
-	scrollType: 'horizontal',
-	horizontalWrap: false
-});// Can Do in XML
+/*
+var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";
+dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+	alert("we Did It!");
+});
+var json = dataRetriever.parseJson();
+*/
 
-var exhibitsSwipeableView = Ti.UI.createView({	
-	top: '5%',
-	backgroundColor: 'red'
-});	// ADD THIS PART TO XML ^^
 
 // simulate data from wordpress using Jess' model
 
-// Modify with new MODULE methods
-function openComponent(e){
-		
+
+function openComponent(e){	
+	alert("component Id: "+e.source.componentId);
+	
 	var componentWindow = Alloy.createController('componentlanding').getView();
-	componentWindow.open();  
-}
-
-// -----------------------------------------------------------------------
-// -----------------------------------------------------------------------
-function createPlainRow() {
-	var row = Ti.UI.createTableViewRow({
-		// height: (Ti.Platform.displayCaps.platformHeight / 8),
-		height : '190dp',
-		top: '10dp',
-		backgroundColor : 'grey',
-	});
-	return row;
-}
-
-// -----------------------------------------------------------------------
-// -----------------------------------------------------------------------
-function createHeadingRow() {
-	var row = Ti.UI.createTableViewRow({
-		// height: (Ti.Platform.displayCaps.platformHeight / 8),
-		height : '50dp',
-		backgroundColor : 'blue',
-	});
-	return row;
+	componentWindow.componentId = e.source.componentId;
+	Alloy.Globals.navController.open(componentWindow);
 }
 
 function createExhibitsCarousel(exhibits){
-	// These parts should be defined by TSS
-	var row = createPlainRow();
-	
-	var view = Ti.UI.createView({	
-		top: '5%',
-		backgroundColor: 'red'
-	});	// ADD THIS PART TO XML ^^
-	
 	for(i = exhibits.length -1 ; i >= 0; i--){
-		exhibitViews[i] = createLabeledPicView(exhibits[i]);
-		exhibitsSwipeableView.add(exhibitViews[i]);
+		exhibitViews[i] = createLabeledPicView(exhibits[i], '25dp');		// will later say 'exhibit', and will create the pic item of that class
+		$.exhibitsSwipeableView.add(exhibitViews[i]);
 		exhibitViews[i].hide();
-		//$.addClass(exhibitImages[i], "exhibitImage"); 
 	}
 	exhibitViews[0].show();
-	row.add(exhibitsSwipeableView);
-	tableData.push(row);
 }
 
-function createLabeledPicView(item){
+// Extract into a service in the Lib folder -> make into a widget when we write this in XML
+function createLabeledPicView(item, type){
 	var itemContainer = Ti.UI.createView();
-	
 	var image = Ti.UI.createImageView({
 		height: '100%',
 		width: '100%'
-	});//$.addClass(exhibitImages[i], "exhibitImage"); 
+	});
 	image.image = item.image;
 	
 	itemContainer.add(image);
-	itemContainer.add(createTitleLabel(item.name));
+	itemContainer.add(createTitleLabel(item.name, type));
 	return itemContainer;
 }
 
-function createTitleLabel(name){
+function createTitleLabel(name, type){
 	var titleLabel = Ti.UI.createView({
 		backgroundColor: 'black',
 		opacity: 0.5,
@@ -187,39 +149,25 @@ function createTitleLabel(name){
 		color: 'white',
 		font: {
 			fontFamily : 'Arial',
-			fontSize : 22,
+			fontSize : type,
 			fontWeight : 'bold'
 		}
 	});
-	//$.addClass(exhibitImages[i], "exhibitTitle"); 
+	//$.addClass(label, "myLabel"); 
 
 	titleLabel.add(label);
 
 	return titleLabel;
 }
 
-function createComponentHeading(componentHeading){
-		var headingRow = createHeadingRow();	
-	var heading = Ti.UI.createLabel({
-		color : 'black',
-		font : {
-			fontFamily : 'Arial',
-			fontSize : 22,
-			fontWeight : 'bold'
-		},
-		text : componentHeading,
-		textAlign : 'center',
-	});
-	headingRow.add(heading);
-	tableData.push(headingRow);
+function createComponentHeading(componentHeadingText){
+	$.componentHeading.text = componentHeadingText;
 }
 
 function createComponentsScrollView(exhibits){
 
 	var image;
-	componentsRow.height = 100;
 	var component;
-	var components;
 	
 	for (var i = 0; i < exhibits.length; i++){
 		componentsInExhibit[i] = Ti.UI.createView({
@@ -229,59 +177,49 @@ function createComponentsScrollView(exhibits){
 		});// TSS CLASS
 
 		for(var j = 0; j< exhibits[i].components.length; j++){
-			component = createLabeledPicView(exhibits[i].components[j]);
+			component = createLabeledPicView(exhibits[i].components[j], '15dp');	// Later type will be 'component' and that wil be linked to the TSS class
 			component.left = 5;
 			component.right = 5;
-			component.width = 200;
-			//$.addClass blah
+			component.width = '225dp';
 			component.componentId = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[i].add(component);
 		}			
-		scrollView.add(componentsInExhibit[i]);
+		$.componentScrollView.add(componentsInExhibit[i]);
 		componentsInExhibit[i].width = 0;
 	}
 	componentsInExhibit[0].width = 'auto';
-	componentsRow.add(scrollView);
-	tableData.push(componentsRow);
 }
 
-function createExhibitText(text){
-	var textRow = createHeadingRow();
-	
-	var label = Ti.UI.createLabel({
-		color : 'black',
-		font : {
-			fontFamily : 'Arial',
-			fontSize : 12,
-			fontWeight : 'bold'
-		},
-		width: 'auto',
-		horizontalWrap: true,
-		text : text
-	});
-	textRow.top = 20;
-	textRow.add(label);
-	textRow.height = 120;
-	tableData.push(textRow);
-}
+function setExhibitText(text){
+	$.exhibitInfoLabel.text = text;
+} 
 
+// Break into two more functions
 function swipeHandler(e){
 	if(numOfExhibits>0){
 		if(e.direction = 'right'){
 			exhibitViews[exhibitIndex].hide();
 			removeComponents(exhibitIndex);
+			
+			// Incrememnt Index
 			exhibitIndex= (exhibitIndex+1)%numOfExhibits;
+			
+			// Show new exhibit and it's 
 			exhibitViews[exhibitIndex].show();
 			showComponents(exhibitIndex);
+			setExhibitText(json.data.museum.exhibits[exhibitIndex]);
 		}
 		else if(e.direction = 'left'){
 			exhibitViews[exhibitIndex].hide();
 			removeComponents(exhibitIndex);
 			exhibitIndex--;
+			
+			// Decrement index 
 			if(exhibitIndex=-1)
 				exhibitIndex=numOfExhibits -1;
-				
+			
+			// Show new Exhibit and it's contents
 			exhibitViews[exhibitIndex].show();
 			showcomponents(exhibitIndex);
 		}
@@ -293,14 +231,14 @@ function removeComponents(index){
 	if(componentsInExhibit.length>0){
 		componentsInExhibit[index].width = 0;
 	}
-	scrollView.contentWidth = 0;
+	$.componentScrollView.contentWidth = 0;
 }
 
 function showComponents(index){
 	if(index<componentsInExhibit.length){
 		componentsInExhibit[index].width = 'auto';
 		//alert("At index "+index+" the number of children is: "+componentsInExhibit[index].children.length);
-		scrollView.contentWidth = componentsInExhibit[index].size.width;
+		$.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
 	}
 }
 
@@ -311,17 +249,18 @@ createExhibitsCarousel(json.data.museum.exhibits);
 createComponentHeading("Check out our Stations");
 createComponentsScrollView(json.data.museum.exhibits);
 
-createExhibitText("Blah blah blah blah blah blah blah blah,\nBlah blah blah.");
+setExhibitText("Lorem ipsem antrhhc buert sdjr bejsu ache thfk ook nsj rhjejjc kkdjf eifj nivi rjf,\nAsd ehw tn iidjs thne shcu ndusr.");
 
 var tableView = Ti.UI.createTableView({
 	// backgroundColor : '#07B5BE',
-	backgroundColor : 'grey',
+	backgroundColor : 'white',
 	data : tableData,
 	width: '90%',
 	left: '5%'
 });
+//tableView.data = tableData;
 
-exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
+$.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
 $.exhibits.title = "Exhibits";
-$.exhibits.add(tableView);
+//$.exhibits.add(tableView);
 
