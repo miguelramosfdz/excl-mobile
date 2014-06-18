@@ -284,6 +284,7 @@ function swipeHandler(e){
 			exhibitViews[exhibitIndex].show();
 			showComponents(exhibitIndex);
 			setExhibitText(json.data.mueseum.exhibit[exhibitIndex])
+			setExhibitText(json.data.museum.exhibits[exhibitIndex]);
 		}
 		else if(e.direction = 'left'){
 			exhibitViews[exhibitIndex].hide();
