@@ -279,13 +279,13 @@ $.exhibits.title = "Exhibits";
 
 
 
-var myWidget = Widget.createWidget("itemCarousel");
+/*var myWidget = Widget.createWidget("itemCarousel");
 $.testWidget.add(myWidget);
 
 for(i=json.data.museum.exhibits.length-1; i>=0; i--){
 	myWidget.addItem(json.data.museum.exhibits[i], openComponent);
 }
-
+*/
 
 
 
