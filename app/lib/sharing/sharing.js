@@ -60,7 +60,7 @@ function createTextShareButton(json) {
  * When clicked, the openCamera function is called, which then calls sendIntentImage
  * File that calls the function is responsible for placing it in the correct view
  */
-function createImageShareButton(json) {
+function createImageShareButton(json, rightNavButton) {
 	//button to open photo sharing
 	var shareImageButton = Ti.UI.createButton({
 		id : 'shareImageButton',
@@ -74,7 +74,7 @@ function createImageShareButton(json) {
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
 		toggleImageShareButtonStatusActive(shareImageButton);
-		openCamera(json, shareImageButton);
+		openCamera(json, shareImageButton, rightNavButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
 
@@ -141,7 +141,7 @@ function sendIntentTextiOS(postTags, shareTextButtonId) {
 /*
  * Opens the camera, saves the picture the user takes; calls sendIntent function
  */
-function openCamera(json, shareImageButtonId) {
+function openCamera(json, shareImageButtonId, rightNavButton) {
 	//Holds all functionality related to sharing image through camera
 
 	//declare variable to store image file path
@@ -177,7 +177,7 @@ function openCamera(json, shareImageButtonId) {
 				}
 
 				//send file path to intent creation
-				sendIntentImage(json, imageFilePath, shareImageButtonId);
+				sendIntentImage(json, imageFilePath, shareImageButtonId, rightNavButton);
 			}
 		},
 		cancel : function() {
@@ -193,14 +193,14 @@ function openCamera(json, shareImageButtonId) {
 /*
  * Calls the platform-specific sendIntent function for an image
  */
-function sendIntentImage(json, imageFilePath, shareImageButtonId) {
+function sendIntentImage(json, imageFilePath, shareImageButtonId, rightNavButton) {
 	postTags = getPostTags(json);
 	//reenable share button
 	toggleImageShareButtonStatusInactive(shareImageButtonId);
 	if (OS_ANDROID) {
 		sendIntentImageAndroid(postTags, imageFilePath);
 	} else if (OS_IOS) {
-		sendIntentImageiOS(postTags, imageFilePath);
+		sendIntentImageiOS(postTags, imageFilePath, rightNavButton);
 	} else {
 		alert("Unsupported platform (image sharing)");
 	}
@@ -224,7 +224,7 @@ function sendIntentImageAndroid(postTags, imageFilePath) {
 /*
  * Opens iOS share menu and sends prepopulated text content and image that was just taken
  */
-function sendIntentImageiOS(postTags, imageFilePath) {
+function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
@@ -237,7 +237,7 @@ function sendIntentImageiOS(postTags, imageFilePath) {
 			image : "/images/instagram-256.png",
 			//callback : openInstagram(imageFilePath)
 			callback : function(e) {
-				openInstagram(imageFilePathInstagram);
+				openInstagram(imageFilePathInstagram, rightNavButton);
 			}
 		}]);
 	} else {
@@ -248,7 +248,7 @@ function sendIntentImageiOS(postTags, imageFilePath) {
 /*
  * iOS doesn't automatically deal with Instagram, so this function is called when the custom Instagram button is pressed in the iOS sharing menu
  */
-function openInstagram(imageFilePathInstagram) {
+function openInstagram(imageFilePathInstagram, rightNavButton) {
 
 	/*
 	 alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
@@ -294,7 +294,7 @@ function openInstagram(imageFilePathInstagram) {
 	});
 	docViewer.UTI = "com.instagram.exclusivegram";
 	docViewer.show({
-		view : Ti.UI.currentWindow,
+		view : rightNavButton,
 		animated : true
 	});
 }
