@@ -223,7 +223,7 @@ function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	}
 }
 
-setPathForLibDirectory('retrieveNetworkSharing');
+setPathForLibDirectory('sharingNetwork');
 //These functions can be called by outside files:
 module.exports.createTextShareButton = createTextShareButton;
 module.exports.createImageShareButton = createImageShareButton;
