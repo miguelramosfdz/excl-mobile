@@ -13,6 +13,8 @@
 			<TableViewRow class="infoRow">
 				<Label id="exhibitInfoLabel"></Label>
 			</TableViewRow>
+			<TableViewRow class="largePictureRow" id="testWidget">
+			</TableViewRow>
 		</TableView>
 	</Window>
 </Alloy>
