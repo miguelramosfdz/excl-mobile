@@ -26,7 +26,8 @@ function createLabeledPicView(item){
 	var itemContainer = Ti.UI.createView();
 	var image = Ti.UI.createImageView({
 		height: '100%',
-		width: '100%'
+		width: '100%',
+		itemId: 'blank'
 	});
 	image.image = item.image;
 	
