@@ -15,6 +15,7 @@ function init(){
 
 $.addItem = function(item, onClick){
 	itemViews[numOfItems] = createLabeledPicView(item);
+	itemViews[numOfItems].itemId = item.id;
 	itemViews[numOfItems].addEventListener("click", onClick);		
 	$.carouselView.add(itemViews[numOfItems]);
 	itemViews[numOfItems].hide();
@@ -29,7 +30,7 @@ function createLabeledPicView(item){
 		width: '100%',
 		itemId: 'blank'
 	});
-	image.image = item.thumbnail;
+	image.image = item.image;
 	
 	itemContainer.add(image);
 	itemContainer.add(createTitleLabel(item.name));
