@@ -2,6 +2,7 @@ var dataRetriever = require('../lib/dataRetriever');
 var apiCalls = require('../lib/customCalls/apiCalls');
 var networkCalls = require('../lib/customCalls/networkCalls');
 var parseCalls = require('../lib/customCalls/parseCalls');
+var sharingValidator = require('../lib/sharing/sharing');
 
 describe("Testing parsedJson", function() {
 	it("should return 'parsed' json data", function() {
@@ -38,6 +39,31 @@ describe("Testing network", function() {
 		// Assert
 		expect(openFunctionCalled).toBe(true);
 		expect(sendFunctionCalled).toBe(true);
-		
+
+	});
+});
+
+describe("Testing post tags", function() {
+	it("should return a non-empty string", function() {
+		// Arrange
+		var tagsReceived = false;
+		//retrieve from file for real implementation
+		var postId = 41;
+		var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/23";
+		spyOn(networkCalls, 'network').andReturn({
+			open : function() {
+				openFunctionCalled = true;
+			},
+			send : function() {
+				sendFunctionCalled = true;
+			},
+		});
+
+		// Act
+		sharingValidator.retrieveTextPostTags(postId, jsonURL);
+
+		// Assert
+		expect(tagsReceived).toBe(true);
+
 	});
 });

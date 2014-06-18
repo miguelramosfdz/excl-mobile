@@ -1,10 +1,5 @@
 <Alloy>
 	<TabGroup>
-		<Tab title="Social" icon="KS_nav_views.png">
-			<Window id="win" title="win">
-				<Require type="view" src="social" id="weatherTab"/>
-			</Window>
-		</Tab>
 		<Tab title="Visual Demo" icon="KS_nav_views.png">
 			<Window id="exhibitsWindow" title="Visual Demo">
 				<Require type="view" src="demoIndex" id="demoTab"/>

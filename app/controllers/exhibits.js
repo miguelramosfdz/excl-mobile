@@ -1,7 +1,7 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
 
-
+/*
 var json = {
   "status": "ok",
   "error": "Optional Error Message",
@@ -84,24 +84,23 @@ var json = {
   }
 }; // Extract to required file*/
 
-var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";
+var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";
 
 
 var json;
 var exhibitIndex = 0;
-var numOfExhibits = json.data.museum.exhibits.length;
+var numOfExhibits;
 var exhibitViews = [];
 var componentsInExhibit = [];
 
-function getJSON(url) {
-	var myJson;
-	dataRetriever.fetchDataFromUrl(url, function(data){
-		if(data){
-			myJson = data;
+function retrieveJson(jsonURL) {
+	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
+		if (returnedData) {
+			populateWindow(returnedData);
 		}
 	});
-	return myJson;
-}//*/
+}
+
 
 function openComponent(e){	
 	alert("component Id: "+e.source.id);
@@ -242,14 +241,25 @@ function showComponents(index){
 	}
 }
 
-//json = getJSON(jsonURL);
-createExhibitsCarousel(json.data.museum.exhibits);
-createComponentHeading("Check out our Stations");
-createComponentsScrollView(json.data.museum.exhibits);
 
-setExhibitText(json.data.museum.exhibits[0].description);
+retrieveJson(url);
+
+function populateWindow(json){
+	numOfExhibits = json.data.museum.exhibits.length;
+	createExhibitsCarousel(json.data.museum.exhibits);
+	createComponentHeading("Check out our Stations");
+	createComponentsScrollView(json.data.museum.exhibits);
+	
+	setExhibitText(json.data.museum.exhibits[0].description);
+}
 
 $.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
 $.exhibits.title = "Exhibits";
 //$.exhibits.add(tableView);
 
+
+
+function openPostLanding(e){
+	var componentWindow = Alloy.createController('postlanding').getView();
+	Alloy.Globals.navController.open(componentWindow);
+}
