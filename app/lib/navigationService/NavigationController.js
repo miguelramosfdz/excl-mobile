@@ -182,39 +182,31 @@ function updateKioskMode(self) {
 // Handles kiosk mode dialog
 // Used in addKioskModeListener()
 function handleKioskModeDialog(self) {	
+	var textfield = Ti.UI.createTextField({
+		passwordMask:true,
+	    height:35,
+	    top:100,
+	    left:30,
+	    width:250,
+	    borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+	});
+	var dialog = Ti.UI.createAlertDialog({
+	    title: 'Enter admin code',
+	    androidView: textfield,
+	    buttonNames: ['OK', 'Cancel']
+	});
+	
 	if (OS_IOS) {
-		var dialog = Ti.UI.createAlertDialog({
-		    title: 'Enter code',
-		    style: Ti.UI.iPhone.AlertDialogStyle.PLAIN_TEXT_INPUT,
-		    passwordMask:true,
-		    buttonNames: ['OK', 'Cancel']
-		});
-		dialog.addEventListener('click', function(e){
-			if (e.text == "friend") {
-				updateKioskMode(self);
-			}
-		});
-	} else if (OS_ANDROID) {
-		var textfield = Ti.UI.createTextField({
-			passwordMask:true,
-		    height:35,
-		    top:100,
-		    left:30,
-		    width:250,
-		    borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
-		});
-		var dialog = Ti.UI.createAlertDialog({
-		    title: 'Enter code',
-		    androidView: textfield,
-		    passwordMask:true,
-		    buttonNames: ['OK', 'Cancel']
-		});
-		dialog.addEventListener('click', function(e) {
-		    if (textfield.value == "friend") {
-				updateKioskMode(self);
-		    }
-		});
+		dialog.style = Ti.UI.iPhone.AlertDialogStyle.SECURE_TEXT_INPUT;
 	}
+	
+	dialog.addEventListener('click', function(e) {
+		Ti.API.log(JSON.stringify(e));
+		Ti.API.log(e.text);
+	    if (e.text == "friend" || e.source.androidView.value == "friend") {
+			updateKioskMode(self);
+	    }
+	});
 	dialog.show();
 };
 
@@ -223,13 +215,19 @@ function handleKioskModeDialog(self) {
 NavigationController.prototype.addKioskModeListener = function(element) {
 	var count = 0;
 	var self = this;
-	element.addEventListener('longclick', function(e){
+	var handleKioskModeEntry = function(e){
 		count += 100;
-		setTimeout(function(){count -= 100;}, 3000);
-		if (count === 300) {
+		if (count === 100) {
+			setTimeout(function(){count = 0;}, 3000);
+		} else if (count === 300) {
 			handleKioskModeDialog(self);
-		}	
-	});
+		}
+	};
+	if (OS_IOS) {
+		element.addEventListener('longpress', handleKioskModeEntry);
+	} else if (OS_ANDROID) {
+		element.addEventListener('longclick', handleKioskModeEntry);	
+	}
 };
 
 module.exports = NavigationController;

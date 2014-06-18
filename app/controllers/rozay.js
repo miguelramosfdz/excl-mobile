@@ -20,11 +20,11 @@ var playSoundBtn = Ti.UI.createButton({
 	height : 50, //define height
 	title : 'Play Sound',
 	id : 'soundBtn',
-	left : '115dp',
-	top : '380dp'
+	left : '25%',
+	top : '400dip'
 });
 
-$.rozay.add(playSoundBtn);
+$.scrollViewRozay.add(playSoundBtn);
 
 var playStatus = false;
 
@@ -48,14 +48,47 @@ var sound = Ti.Media.createSound({
 	url : '/schemin.mp3',
 });
 
+
+
+
+var json = {
+	id : 41,
+	name : "Spin the Disc",
+	section : "What do I do?",
+	parts : [{
+		id : 52,
+		name : "Test Part",
+		type : "image",
+		url : "http://testpart.com",
+		thumbnail : false,
+		body : ""
+	}, {
+		id : 42,
+		name : "Spin the Disc Video",
+		type : "text",
+		url : "",
+		thumbnail : false,
+		body : "Try spinning the disc!! It is so much fun!!!"
+	}],
+	thumbnail : "http://placehold.it/700x300/000",
+	liking : true,
+	text_sharing : false,
+	image_sharing : false,
+	commenting : false,
+	social_media_message : "#SpunTheDisc and it was great! #cmh",
+	like_count : false,
+	comments : [{
+		id : "2",
+		body : "This is a comment on the spinning disc post",
+		date : "2014-06-16 16:20:13"
+	}]
+}; 
+
 //Sharing library
 var sharingService = require("sharing/sharing");
 
-var postId = 41; //Will get from the json somewhere along the line
-var jsonURL = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/23";
-
-var createdTextShareButton = sharingService.createTextShareButton(postId, jsonURL);
-$.rozay.add(createdTextShareButton);
-var createdImageShareButton = sharingService.createImageShareButton(postId, jsonURL);
-$.rozay.add(createdImageShareButton);
+var createdTextShareButton = sharingService.createTextShareButton(json);
+$.scrollViewRozay.add(createdTextShareButton);
+var createdImageShareButton = sharingService.createImageShareButton(json);
+$.scrollViewRozay.add(createdImageShareButton);
 
