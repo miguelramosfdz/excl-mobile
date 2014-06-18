@@ -50,70 +50,45 @@ var sound = Ti.Media.createSound({
 
 
 
+
 var json = {
-	status : "ok",
-	data : {
-		component : {
-			id : 23,
-			name : "Spinning Disc",
-			posts : [{
-				id : 53,
-				name : "Test Component",
-				section : false,
-				parts : false,
-				liking : true,
-				text_sharing : false,
-				image_sharing : false,
-				commenting : true,
-				social_media_message : "",
-				like_count : false,
-				comments : false
-			}, {
-				id : 41,
-				name : "Spin the Disc",
-				section : "What do I do?",
-				parts : [{
-					id : 52,
-					name : "Test Part",
-					type : "image",
-					url : "http://testpart.com",
-					thumbnail : false,
-					body : ""
-				}, {
-					id : 42,
-					name : "Spin the Disc Video",
-					type : "text",
-					url : "",
-					thumbnail : false,
-					body : "Try spinning the disc!! It is so much fun!!!"
-				}],
-				liking : true,
-				text_sharing : false,
-				image_sharing : false,
-				commenting : false,
-				social_media_message : "#SpunTheDisc and it was great! #cmh",
-				like_count : false,
-				comments : [{
-					id : "2",
-					body : "This is a comment on the spinning disc post",
-					date : "2014-06-16 16:20:13"
-				}]
-			}]
-		}
-	}
+	id : 41,
+	name : "Spin the Disc",
+	section : "What do I do?",
+	parts : [{
+		id : 52,
+		name : "Test Part",
+		type : "image",
+		url : "http://testpart.com",
+		thumbnail : false,
+		body : ""
+	}, {
+		id : 42,
+		name : "Spin the Disc Video",
+		type : "text",
+		url : "",
+		thumbnail : false,
+		body : "Try spinning the disc!! It is so much fun!!!"
+	}],
+	thumbnail : "http://placehold.it/700x300/000",
+	liking : true,
+	text_sharing : false,
+	image_sharing : false,
+	commenting : false,
+	social_media_message : "#SpunTheDisc and it was great! #cmh",
+	like_count : false,
+	comments : [{
+		id : "2",
+		body : "This is a comment on the spinning disc post",
+		date : "2014-06-16 16:20:13"
+	}]
 }; 
-
-
 
 //Sharing library
 var sharingService = require("sharing/sharing");
 
-
-var postId = 41;
-//Will get from the json somewhere along the line
-
-var createdTextShareButton = sharingService.createTextShareButton(postId, json);
+var createdTextShareButton = sharingService.createTextShareButton(json);
 $.scrollViewRozay.add(createdTextShareButton);
-var createdImageShareButton = sharingService.createImageShareButton(postId, json);
+var createdImageShareButton = sharingService.createImageShareButton(json);
 $.scrollViewRozay.add(createdImageShareButton);
 
