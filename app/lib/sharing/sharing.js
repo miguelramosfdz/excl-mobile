@@ -41,19 +41,6 @@ function createShareButtons() {
 	eraseButtonTitleIfBackgroundPresent(shareImage);
 	viewSharingTemp.add(shareImage);
 
-	//JSON test button
-	var getTags = Ti.UI.createButton({
-		text : "Get tags",
-		height : "40dip",
-		width : "40dip",
-		left : "0"
-	});
-	getTags.addEventListener('click', function(e) {
-		var test = retrievePostTags(componentId, postId);
-		alert("returned: " + test);
-	});
-	viewSharingTemp.add(getTags);
-	
 	// $.viewShareBase.add(viewSharingTemp);
 	return viewSharingTemp;
 
@@ -63,7 +50,7 @@ function createShareButtons() {
  * Returns the button for text sharing
  * File that calls the function is responsible for placing it in the correct view
  */
-function createTextShareButton(){
+function createTextShareButton() {
 	//button to open text sharing
 	var shareTextButton = Ti.UI.createButton({
 		id : 'shareTextButton',
@@ -73,13 +60,13 @@ function createTextShareButton(){
 		left : "0",
 		backgroundImage : "/images/iconShare.png"
 	});
-	
+
 	//Add a listener so that when clicked, sendIntentText is called
 	shareTextButton.addEventListener('click', function(e) {
 		sendIntentText();
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
-	
+
 	return shareTextButton;
 }
 
@@ -88,7 +75,7 @@ function createTextShareButton(){
  * When clicked, the openCamera function is called, which then calls sendIntentImage
  * File taht calls the function is responsible for placing it in the correct view
  */
-function createImageShareButton(){
+function createImageShareButton() {
 	//button to open photo sharing
 	var shareImageButton = Ti.UI.createButton({
 		id : 'shareImageButton',
@@ -98,57 +85,97 @@ function createImageShareButton(){
 		left : "0",
 		backgroundImage : "/images/iconCamera.png"
 	});
-	
+
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
 		openCamera();
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
-	
+
 	return shareImageButton;
 }
 
 /*
- * Sends the 
+ * Sends the
  */
-function sendIntentText() {
-	//function to send information to other apps
-
-	//Get text to be sent from WP
-	contentTextComment = "#cmh #awesome http://www.cmhouston.org";
-
-	//Note: in kiosk mode, restrict available apps to email only
-	if (OS_ANDROID) {
-		sendIntentTextAndroid(contentTextComment);
-	} else if (OS_IOS) {
-		sendIntentTextiOS(contentTextComment);
-	} else {
-		alert("Unsupported platform (text sharing)");
-	}
+function retrieveTextPostTags(postId) {
+	//Retrieve social media message, which contains social media tags. This is used for text intents/iOS equivalents.
+	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
+		if (returnedData) {
+			var foundPost = false;
+			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
+				//find correct post
+				if (returnedData.data.component.posts[i].id == postId && foundPost == false) {
+					//pull tags from post if you have not found the post yet
+					foundPost = true;
+					var postTags = returnedData.data.component.posts[i].social_media_message;
+					//send tags to intents and start intents
+					if (OS_ANDROID) {
+						sendIntentTextAndroid(postTags);
+					} else if (OS_IOS) {
+						sendIntentTextiOS(postTags);
+					} else {
+						alert("Unsupported platform (text sharing)");
+					}
+				}
+			}
+			if (found == false) {
+				alert("Specified post ID not found");
+			}
+		}
+	});
 }
 
-function sendIntentTextAndroid(contentTextComment) {
-	//Create and send text intent for android. Includes area for main text and url text to be appended
+function sendIntentTextAndroid(postTags) {
+	//Create and send text intent for android. Includes area for main text and url text to be appended and a subject header
 	var intentText = Ti.Android.createIntent({
 		action : Ti.Android.ACTION_SEND,
 		type : 'text/plain'
 	});
-
-	intentText.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
+	intentText.putExtra(Ti.Android.EXTRA_TEXT, postTags);
 	intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentText, "Send message via"));
 }
 
-function sendIntentTextiOS(contentTextComment) {
+function sendIntentTextiOS(postTags) {
 	//Use TiSocial.Framework module to share text
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
-			text : contentTextComment
+			text : postTags
 		});
 	} else {
 		alert("Text sharing is not available on this device");
 	}
+}
+
+function retrieveImagePostTags(postId, imageFilePath) {
+	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
+	var postTags = "";
+	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
+		if (returnedData) {
+			var foundPost = false;
+			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
+				//find correct post
+				if (returnedData.data.component.posts[i].id == postId) {
+					//pull tags from post
+					foundPost = true;
+					postTags = returnedData.data.component.posts[i].social_media_message;
+					//send tags to intents and start intents
+					if (OS_ANDROID) {
+						sendIntentImageAndroid(postTags, imageFilePath);
+					} else if (OS_IOS) {
+						sendIntentImageiOS(postTags, imageFilePath);
+					} else {
+						alert("Unsupported platform (photo sharing)");
+					}
+				}
+			}
+			if (found == false) {
+				alert("Specified post ID not found");
+			}
+		}
+	});
 }
 
 function openCamera() {
@@ -180,7 +207,9 @@ function openCamera() {
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
 				imageFilePathInstagram = imageFileInstagram.nativePath;
-				sendIntentImage(imageFilePath);
+
+				//send file path to intent creation
+				retrieveImagePostTags(postId, imageFilePath);
 			}
 		},
 		cancel : function() {
@@ -191,41 +220,25 @@ function openCamera() {
 	});
 }
 
-function sendIntentImage(imageFilePath) {
-	//create and send an image intent
-
-	//Get text to be sent from WP
-	contentTextComment = "#cmh #awesome http://www.cmhouston.org";
-
-	if (OS_ANDROID) {
-		sendIntentImageAndroid(contentTextComment, imageFilePath);
-	} else if (OS_IOS) {
-		sendIntentImageiOS(contentTextComment, imageFilePath);
-	} else {
-		alert("Unsupported platform (image sharing)");
-	}
-}
-
-function sendIntentImageAndroid(contentTextComment, imageFilePath) {
-
+function sendIntentImageAndroid(postTags, imageFilePath) {
 	//Create and send image intent for android.
 	var intentImage = Ti.Android.createIntent({
 		type : "image/*",
 		action : Ti.Android.ACTION_SEND
 	});
 	intentImage.addCategory(Ti.Android.CATEGORY_DEFAULT);
+	intentImage.putExtra(Ti.Android.EXTRA_TEXT, postTags);
 	intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
-	intentImage.putExtra(Ti.Android.EXTRA_TEXT, contentTextComment);
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share photo via"));
 }
 
-function sendIntentImageiOS(contentTextComment, imageFilePath) {
+function sendIntentImageiOS(postTags, imageFilePath) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
 			image : imageFilePath,
-			text : contentTextComment, 
+			text : postTags
 		}, [{
 			title : "Instagram",
 			type : "open.instagram",
@@ -241,11 +254,11 @@ function sendIntentImageiOS(contentTextComment, imageFilePath) {
 }
 
 function openInstagram(imageFilePathInstagram) {
-	
+
 	/*
 	alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
 	var docviewer = Ti.UI.iOS.createDocumentViewer({
-		url : "/images/alexbutton.png"
+	url : "/images/alexbutton.png"
 	});
 	//Testing a sample image
 	alert("Created docviewer");
@@ -258,43 +271,25 @@ function openInstagram(imageFilePathInstagram) {
 	docviewer.show();
 	alert("Showed docviewer");
 	*/
-	
+
 	/*//Use iPhone URL schemes to open app- doesn't reliably open to a specific page, haven't gotten the caption to work
 	//Doesn't seem like there's an easy way to upload a recently taken photo
 	var instagramURL = "instagram://camera&caption=hello%20world";
 	if (Titanium.Platform.canOpenURL(instagramURL)){
-		Titanium.Platform.openURL(instagramURL);
+	Titanium.Platform.openURL(instagramURL);
 	}
 	*/
-	
+
 	//WebView attempt
-	instaWebView = Titanium.UI.createWebView({url: 'www.instagram.com'});
+	instaWebView = Titanium.UI.createWebView({
+		url : 'www.instagram.com'
+	});
 	var instaWindow = Titanium.UI.createWindow();
 	instaWindow.add(instaWebView);
-	instaWindow.open({modal:true});
-
-}
-
-function retrievePostTags(componentId, postId) {
-	//Retrieve social media message, which contains social media tags
-	var postTags = "";
-	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
-		if (returnedData) {
-			alert("length: " + returnedData.data.component.posts.length);
-			for (var i = 0; i < returnedData.data.component.posts.length; i++) {
-				//find correct post
-				alert("post id: " + returnedData.data.component.posts[i].id);
-				if (returnedData.data.component.posts[i].id == postId) {
-					alert("found post");
-					//pull tags to array
-					postTags = returnedData.data.component.posts[i].jsonObj['social-media-message'];
-					alert("postTags = " + postTags);
-				};
-			};
-		}
+	instaWindow.open({
+		modal : true
 	});
-	alert("passed everything");
-	return postTags;
+
 }
 
 function eraseButtonTitleIfBackgroundPresent(buttonName) {
