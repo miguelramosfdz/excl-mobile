@@ -10,18 +10,17 @@ function NavigationController() {
 
 
 // Open new window and add it to window stack
-NavigationController.prototype.open = function(windowToOpen, onEnterKioskMode, onExitKioskMode) {
+NavigationController.prototype.open = function(windowToOpen, controller) {
 	
-	// Add or define onEnterKioskMode or onExitKioskMode functionality
-	if (onEnterKioskMode && typeof(onEnterKioskMode) === 'function') {
-		windowToOpen.onEnterKioskMode = onEnterKioskMode;
-	} else {
-		windowToOpen.onEnterKioskMode = function(window){};
+	windowToOpen.onEnterKioskMode = function(window){};
+	windowToOpen.onExitKioskMode = function(window){};
+	
+	// Add onEnterKioskMode and/or onExitKioskMode functionality if defined
+	if (controller && controller.onEnterKioskMode && typeof(controller.onEnterKioskMode) === 'function') {
+		windowToOpen.onEnterKioskMode = controller.onEnterKioskMode;
 	}
-	if (onExitKioskMode && typeof(onExitKioskMode) === 'function') {
-		windowToOpen.onExitKioskMode = onExitKioskMode;
-	} else {
-		windowToOpen.onExitKioskMode = function(window){};
+	if (controller && controller.onExitKioskMode && typeof(controller.onExitKioskMode) === 'function') {
+		windowToOpen.onExitKioskMode = controller.onExitKioskMode;
 	}
 	
 	// Capture Android back button
@@ -177,6 +176,7 @@ function updateKioskMode(self) {
 		window.onExitKioskMode(window);	
 	}
 	confirm.show();
+	setTimeout(function(){confirm.hide();}, 2000);
 };
 
 // Handles kiosk mode dialog
@@ -193,7 +193,7 @@ function handleKioskModeDialog(self) {
 	var dialog = Ti.UI.createAlertDialog({
 	    title: 'Enter admin code',
 	    androidView: textfield,
-	    buttonNames: ['OK', 'Cancel']
+	    buttonNames: ['OK']
 	});
 	
 	if (OS_IOS) {
@@ -202,12 +202,19 @@ function handleKioskModeDialog(self) {
 	
 	dialog.addEventListener('click', function(e) {
 		Ti.API.log(JSON.stringify(e));
-		Ti.API.log(e.text);
 	    if (e.text == "friend" || e.source.androidView.value == "friend") {
 			updateKioskMode(self);
+	    } else {
+	    	var errorMsg = Ti.UI.createAlertDialog({
+			    title: 'incorrect code',
+			    buttonNames: ['OK']
+			});
+			errorMsg.show();
+			setTimeout(function(){errorMsg.hide();}, 2000);
 	    }
 	});
 	dialog.show();
+	setTimeout(function(){dialog.hide();}, 9000);
 };
 
 // Add kiosk mode listener to passed in element. Will activate on three 
