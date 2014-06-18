@@ -16,7 +16,7 @@ function createTextShareButton(postId, json) {
 		width : "40dip",
 		left : "0",
 		top: "0",
-		backgroundImage : "/images/iconShare.png",
+		backgroundImage : "/images/iconShareInactive.png",
 		enabled: true
 	});
 
@@ -44,7 +44,7 @@ function createImageShareButton(postId, json) {
 		width : "40dip",
 		left : "70dip",
 		top: "0",
-		backgroundImage : "/images/iconCamera.png",
+		backgroundImage : "/images/iconCameraInactive.png",
 		enabled: true
 	});
 
