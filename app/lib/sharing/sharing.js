@@ -1,3 +1,7 @@
+/*
+ * 
+ */
+
 var dataRetriever;
 function setPathForLibDirectory(dataRetrieverLib) {
 	if ( typeof Titanium == 'undefined') {
