@@ -32,7 +32,7 @@ function toggleImageShareButtonStatusInactive(shareImageButtonId) {
  * Returns the button for text sharing
  * File that calls the function is responsible for placing it in the correct view
  */
-function createTextShareButton(postId, json) {
+function createTextShareButton(json) {
 	//button to open text sharing
 	var shareTextButton = Ti.UI.createButton({
 		id : 'shareTextButton',
@@ -47,7 +47,7 @@ function createTextShareButton(postId, json) {
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
 		toggleTextShareButtonStatusActive(shareTextButton);
-		sendIntentText(postId, json, shareTextButton);
+		sendIntentText(json, shareTextButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
 
@@ -59,7 +59,7 @@ function createTextShareButton(postId, json) {
  * When clicked, the openCamera function is called, which then calls sendIntentImage
  * File that calls the function is responsible for placing it in the correct view
  */
-function createImageShareButton(postId, json) {
+function createImageShareButton(json) {
 	//button to open photo sharing
 	var shareImageButton = Ti.UI.createButton({
 		id : 'shareImageButton',
@@ -73,7 +73,7 @@ function createImageShareButton(postId, json) {
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
 		toggleImageShareButtonStatusActive(shareImageButton);
-		openCamera(postId, json, shareImageButton);
+		openCamera(json, shareImageButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
 
@@ -83,29 +83,18 @@ function createImageShareButton(postId, json) {
 /*
  * Gets the postTag from the json
  */
-function getPostTags(postId, json) {
+function getPostTags(json) {
 	//Retrieve social media message, which contains social media tags. This is used for text and image intents/iOS equivalents.
-	postTags = "";
-	var foundPost = false;
-	for (var i = 0; i < json.data.component.posts.length; i++) {
-		//find correct post
-		if (json.data.component.posts[i].id == postId && foundPost == false) {
-			//pull tags from post if you have not found the post yet
-			foundPost = true;
-			var postTags = json.data.component.posts[i].social_media_message;
-		}
-	}
-	if (foundPost == false) {
-		alert("Specified post ID not found");
-	}
+	postTags = json.social_media_message;
+	
 	return postTags;
 }
 
 /*
  * Calls the platform-appropriate sendIntentText function
  */
-function sendIntentText(postId, json, shareTextButtonId) {
-	postTags = getPostTags(postId, json);
+function sendIntentText(json, shareTextButtonId) {
+	postTags = getPostTags(json);
 	if (OS_ANDROID) {
 		sendIntentTextAndroid(postTags, shareTextButtonId);
 	} else if (OS_IOS) {
@@ -149,7 +138,7 @@ function sendIntentTextiOS(postTags, shareTextButtonId) {
 /*
  * Opens the camera, saves the picture the user takes; calls sendIntent function
  */
-function openCamera(postId, json, shareImageButtonId) {
+function openCamera(json, shareImageButtonId) {
 	//Holds all functionality related to sharing image through camera
 
 	//declare variable to store image file path
@@ -182,7 +171,7 @@ function openCamera(postId, json, shareImageButtonId) {
 				imageFilePathInstagram = imageFileInstagram.nativePath;
 
 				//send file path to intent creation
-				sendIntentImage(postId, json, imageFilePath, shareImageButtonId);
+				sendIntentImage(json, imageFilePath, shareImageButtonId);
 			}
 		},
 		cancel : function() {
@@ -198,8 +187,8 @@ function openCamera(postId, json, shareImageButtonId) {
 /*
  * Calls the platform-specific sendIntent function for an image
  */
-function sendIntentImage(postId, json, imageFilePath, shareImageButtonId) {
-	postTags = getPostTags(postId, json);
+function sendIntentImage(json, imageFilePath, shareImageButtonId) {
+	postTags = getPostTags(json);
 	//reenable share button
 	toggleImageShareButtonStatusInactive(shareImageButtonId);
 	if (OS_ANDROID) {
