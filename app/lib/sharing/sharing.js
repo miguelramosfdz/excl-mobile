@@ -102,6 +102,8 @@ function createImageShareButton(postId, jsonURL) {
  */
 function retrieveTextPostTags(postId, jsonURL) {
 	//Retrieve social media message, which contains social media tags. This is used for text intents/iOS equivalents.
+	
+	//Remove JSON parsing - assume that the post page will supply the postId
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
 			var foundPost = false;
@@ -162,6 +164,8 @@ function sendIntentTextiOS(postTags) {
  */
 function retrieveImagePostTags(postId, jsonURL, imageFilePath) {
 	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
+	
+	//Remove JSON parsing - assume that the post page will supply the postId
 	var postTags = "";
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
