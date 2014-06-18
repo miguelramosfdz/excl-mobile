@@ -1,7 +1,8 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
 var componentID = args;
-var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/" + componentID;
+// var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/" + componentID;
+var url = "http://www.mocky.io/v2/53a1e425b4ac142006024b75";
 var allSections = [];
 var tableData = [];
 
@@ -75,30 +76,19 @@ function init() {
 		changeTitleOfThePage(returnedData.data.component.name);
 		var allPosts = returnedData.data.component.posts;
 
+		sectionsThatAlreadyExist = [];
 		for (var i = 0; i < allPosts.length; i++) {
-			// Getting all section names first
 			if (allPosts[i].section) {
-				if (allSections.indexOf(allPosts[i].section) > -1) {
-					// do nothing
+				if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
+					// create a new section
+					sectionsThatAlreadyExist.push(allPosts[i].section);
+					createNewSection(allPosts[i].section);
 				} else {
-					allSections.push(allPosts[i].section);
+					// section already exists
 				}
 			}
 		}
-
-		// filter the sections and display the 'like ones' together
-		// sorting in ascedning order alphabetically
-		allSections.sort();
-
-		for (var i = 1; i < allPosts.length; i++) {
-			if (allPosts[i - 1] == allPosts[i]) {
-				// section exists
-				addToExistingSection();
-			} else {
-				// create a new sections
-				createNewSection(allPosts[i].section);
-			}
-		}
+		Ti.API.info(sectionsThatAlreadyExist);
 
 		var tableView = Ti.UI.createTableView({//has to be under everything to work
 			backgroundColor : 'white',
