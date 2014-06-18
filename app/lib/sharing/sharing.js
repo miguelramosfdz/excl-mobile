@@ -92,74 +92,30 @@ function getPostTags(json) {
  * Calls the platform-appropriate sendIntentText function
  */
 function sendIntentText(json, shareTextButtonId) {
-	postTags = getPostTags(json);
-	if (OS_ANDROID) {
-		retrieveNetworkSharing.sendIntentTextAndroid(postTags, shareTextButtonId);
-	} else if (OS_IOS) {
-		sendIntentTextiOS(postTags, shareTextButtonId);
-	} else {
-		alert("Unsupported platform");
-	}
+	retrieveNetworkSharing.sendIntentText(json, shareTextButtonId);
 	//Reenable share text button
 	toggleTextShareButtonStatusInactive(shareTextButtonId);
 }
 
-/*
- * Opens iOS share menu and sends prepopulated text content
- */
-function sendIntentTextiOS(postTags, shareTextButtonId) {
-	//Use TiSocial.Framework module to share text
-	var Social = require('dk.napp.social');
-	if (Social.isActivityViewSupported()) {
-		Social.activityView({
-			text : postTags
-		});
-		//Reenable share text button
-		toggleTextShareButtonStatusInactive(shareTextButtonId);
-	} else {
-		alert("Text sharing is not available on this device");
-	}
-}
 
-/*
- * Calls the platform-specific sendIntent function for an image
- */
-function sendIntentImage(json, imageFilePath, shareImageButtonId, rightNavButton) {
-	postTags = getPostTags(json);
-	//reenable share button
-	toggleImageShareButtonStatusInactive(shareImageButtonId);
-	if (OS_ANDROID) {
-		retrieveNetworkSharing.sendIntentImageAndroid(postTags, imageFilePath);
-	} else if (OS_IOS) {
-		sendIntentImageiOS(postTags, imageFilePath, rightNavButton);
-	} else {
-		alert("Unsupported platform (image sharing)");
-	}
-}
 
-/*
- * Opens iOS share menu and sends prepopulated text content and image that was just taken
- */
-function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
-	//Use TiSocial.Framework module to send image to other apps
-	var Social = require('dk.napp.social');
-	if (Social.isActivityViewSupported()) {
-		Social.activityView({
-			image : imageFilePath,
-			text : postTags
-		}, [{
-			title : "Instagram",
-			type : "open.instagram",
-			image : "/images/instagram-256.png",
-			//callback : openInstagram(imageFilePath)
-			callback : function(e) {
-				openInstagram(imageFilePathInstagram, rightNavButton);
-			}
-		}]);
-	} else {
-		alert("Photo sharing is not available on this device");
-	}
-}
+// /*
+ // * Calls the platform-specific sendIntent function for an image
+ // */
+// function sendIntentImage(json, imageFilePath, shareImageButtonId, rightNavButton) {
+	// postTags = getPostTags(json);
+	// //reenable share button
+	// toggleImageShareButtonStatusInactive(shareImageButtonId);
+	// if (OS_ANDROID) {
+		// sendIntentImageAndroid(postTags, imageFilePath);
+	// } else if (OS_IOS) {
+		// sendIntentImageiOS(postTags, imageFilePath, rightNavButton);
+	// } else {
+		// alert("Unsupported platform (image sharing)");
+	// }
+// }
+
+
 
 /*
  * iOS doesn't automatically deal with Instagram, so this function is called when the custom Instagram button is pressed in the iOS sharing menu
@@ -223,7 +179,7 @@ function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	}
 }
 
-setPathForLibDirectory('sharingNetwork');
+setPathForLibDirectory('sharing/sharingNetwork');
 //These functions can be called by outside files:
 module.exports.createTextShareButton = createTextShareButton;
 module.exports.createImageShareButton = createImageShareButton;

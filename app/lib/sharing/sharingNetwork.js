@@ -1,18 +1,17 @@
 /*
- * This file contains all of the Titanium network calls related to Sharing functionality
- */
+* This file contains all of the Titanium network calls related to Sharing functionality
+*/
 
-//associates retrieveSharing to sharing.js
-var retrieveSharing;
-function setPathForLibDirectory(retrieveSharingLib) {
-	if ( typeof Titanium == 'undefined') {
-		// this is required for jasmine-node to run via terminal
-		retrieveSharing = require("../../lib/" + retrieveSharingLib);
-	} else {
-		retrieveSharing = require(retrieveSharingLib);
-	}
-}
-
+// //associates retrieveSharing to sharing.js
+// var retrieveSharing;
+// function setPathForLibDirectory(retrieveSharingLib) {
+	// if ( typeof Titanium == 'undefined') {
+		// // this is required for jasmine-node to run via terminal
+		// retrieveSharing = require("../../lib/" + retrieveSharingLib);
+	// } else {
+		// retrieveSharing = require(retrieveSharingLib);
+	// }
+// }
 
 /*
  * Returns the button for text sharing
@@ -30,6 +29,17 @@ function createTextShareButton() {
 	});
 	return shareTextButton;
 }
+
+//sends intent text based on os
+function sendIntentText(json, shareTextButtonId) {
+	postTags = getPostTags(json);
+	if (OS_ANDROID) {
+		sendIntentTextAndroid(postTags, shareTextButtonId);
+	} else if (OS_IOS) {
+		sendIntentTextiOS(postTags, shareTextButtonId);
+	} else {
+		alert("Unsupported platform");
+	}
 
 /*
  * Returns the button for image sharing
@@ -88,7 +98,13 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 				}
 
 				//send file path to intent creation
-				retrieveSharing.sendIntentImage(json, imageFilePath, shareImageButtonId, rightNavButton);
+				if (OS_ANDROID) {
+					sendIntentImageAndroid(postTags, imageFilePath);
+				} else if (OS_IOS) {
+					sendIntentImageiOS(postTags, imageFilePath, rightNavButton);
+				} else {
+					alert("Unsupported platform (image sharing)");
+				}
 			}
 		},
 		cancel : function() {
@@ -140,9 +156,48 @@ function sendIntentImageAndroid(postTags, imageFilePath) {
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share photo via"));
 }
 
+/*
+ * Opens iOS share menu and sends prepopulated text content
+ */
+function sendIntentTextiOS(postTags, shareTextButtonId) {
+	//Use TiSocial.Framework module to share text
+	var Social = require('dk.napp.social');
+	if (Social.isActivityViewSupported()) {
+		Social.activityView({
+			text : postTags
+		});
+		//Reenable share text button
+		toggleTextShareButtonStatusInactive(shareTextButtonId);
+	} else {
+		alert("Text sharing is not available on this device");
+	}
+}
 
+/*
+ * Opens iOS share menu and sends prepopulated text content and image that was just taken
+ */
+function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
+	//Use TiSocial.Framework module to send image to other apps
+	var Social = require('dk.napp.social');
+	if (Social.isActivityViewSupported()) {
+		Social.activityView({
+			image : imageFilePath,
+			text : postTags
+		}, [{
+			title : "Instagram",
+			type : "open.instagram",
+			image : "/images/instagram-256.png",
+			//callback : openInstagram(imageFilePath)
+			callback : function(e) {
+				openInstagram(imageFilePathInstagram, rightNavButton);
+			}
+		}]);
+	} else {
+		alert("Photo sharing is not available on this device");
+	}
+}
 
 ///////////////////////////////////
 //set associating with sharing.js
-setPathForLibDirectory('sharing');
+// setPathForLibDirectory('sharing/sharing');
 
