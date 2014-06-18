@@ -98,7 +98,7 @@ var json = {
         },
 		
 		{
-          "section": "How Does It Work?",
+          "section": "How's It Work?",
           "id": 101,
           "name": "Gravity",
           "thumbnail": "http://discovermagazine.com/~/media/Images/Issues/2013/July-Aug/apple-gravity.jpg",
@@ -222,8 +222,10 @@ var json = {
 
 
 var postIndex = 0;
+var numOfSections = 0;
 var tableData = [];
 var postViews = [];
+var sections = [];
 var numOfPosts = json.data.component.posts.length; //stores how many posts there are into a variable (shows how many post sections will be created)
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------
@@ -231,6 +233,39 @@ var numOfPosts = json.data.component.posts.length; //stores how many posts there
  * 
  * Set up the tableviewrows for each post
  */
+
+function init(posts){
+	for (i=0; i<posts.length; i++){
+		if (sectionExists(posts[i].section)){
+			// addPost()
+		}
+		else{
+			createSection(posts[i].section);
+			// addPost();
+		}
+	}
+}
+
+function sectionExists(section){
+	for(i=0; i<sections.length; i++)
+	{
+		if (section = sections[i].name)
+		{
+			return true;
+		}
+		
+	}
+	return false;
+}
+
+function createSection(posts){
+	createSectionHeading(posts);
+	createPostCarousel(posts);
+}
+
+// function addPost(){
+	// var newPost = 
+// }
 
 var postSwipeableView = Ti.UI.createView({	
 	top: '5%',
@@ -306,7 +341,7 @@ function createPostCarousel(posts){							//createExhibitsCarousel()
 		postSwipeableView.add(postViews[i]);
 		postViews[i].hide();
 	}
-	//postViews[0].show();
+	// postViews[0].show();
 	row.add(postSwipeableView);
 	tableData.push(row);
 }
@@ -321,12 +356,15 @@ function createHeadingRow() {
 }// XML
 
 
-function createSectionHeading(sectionHeadingText){
+function createSectionHeading(headingTitle){
 	var headingRow = createHeadingRow();	
-	sectionHeading.text = sectionHeadingText;
+	sectionHeading.text = headingTitle;
 	headingRow.add(sectionHeading);
 	tableData.push(headingRow);
 }
+
+
+
 
 /*function swipeHandler(e){
 	if(numOfExhibits>0){
@@ -360,6 +398,12 @@ function createSectionHeading(sectionHeadingText){
 }*/
 
 
+
+
+
+
+
+
 function openPostLanding(e){
 	var postLandingWindow = Alloy.createController('postlanding').getView;
 	//Alloy.Globals.navController.open(postLandingWindow);
@@ -367,7 +411,7 @@ function openPostLanding(e){
 
 
 createPostCarousel(json.data.component.posts);   //pulls dummy data for function
-
+init(json.data.component.posts);
 
 var tableView = Ti.UI.createTableView({		//has to be under everything to work
 	backgroundColor : 'white',
@@ -379,5 +423,3 @@ var tableView = Ti.UI.createTableView({		//has to be under everything to work
 
 $.componentlanding.title = "Component landing loaded!";
 $.componentlanding.add(tableView);
-
-

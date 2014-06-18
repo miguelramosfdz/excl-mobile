@@ -1,9 +1,11 @@
+var dataRetriever = require("dataRetriever");
+
 /*
  * Deprecated; split into createTextShareButton and createImageShareButton
  * By splitting it, we also have no need for viewSharingTemp, which was the view that held the two buttons
  * Instead, each function now returns their respective button, and the file that calls the function is responsible for placing it in the correct view
  */
-function createShareButtons() {
+function createShareButtons(postId, jsonURL) {
 	//create view that will serve as temporary backing for sharing buttons
 	var viewSharingTemp = Ti.UI.createView({
 		layout : "vertical",
@@ -21,7 +23,7 @@ function createShareButtons() {
 		backgroundImage : "/images/iconShare.png"
 	});
 	shareText.addEventListener('click', function(e) {
-		retrieveTextPostTags(postId);
+		retrieveTextPostTags(postId, jsonURL);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareText);
 	viewSharingTemp.add(shareText);
@@ -36,7 +38,7 @@ function createShareButtons() {
 		backgroundImage : "/images/iconCamera.png"
 	});
 	shareImage.addEventListener('click', function(e) {
-		openCamera();
+		openCamera(postId, jsonURL);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImage);
 	viewSharingTemp.add(shareImage);
@@ -50,7 +52,7 @@ function createShareButtons() {
  * Returns the button for text sharing
  * File that calls the function is responsible for placing it in the correct view
  */
-function createTextShareButton() {
+function createTextShareButton(postId, jsonURL) {
 	//button to open text sharing
 	var shareTextButton = Ti.UI.createButton({
 		id : 'shareTextButton',
@@ -63,7 +65,7 @@ function createTextShareButton() {
 
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
-		retrieveTextPostTags(postId);
+		retrieveTextPostTags(postId, jsonURL);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
 
@@ -75,7 +77,7 @@ function createTextShareButton() {
  * When clicked, the openCamera function is called, which then calls sendIntentImage
  * File taht calls the function is responsible for placing it in the correct view
  */
-function createImageShareButton() {
+function createImageShareButton(postId, jsonURL) {
 	//button to open photo sharing
 	var shareImageButton = Ti.UI.createButton({
 		id : 'shareImageButton',
@@ -88,7 +90,7 @@ function createImageShareButton() {
 
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
-		openCamera();
+		openCamera(postId, jsonURL);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
 
@@ -98,7 +100,7 @@ function createImageShareButton() {
 /*
  * Calls the platform-specific sendIntent function for text
  */
-function retrieveTextPostTags(postId) {
+function retrieveTextPostTags(postId, jsonURL) {
 	//Retrieve social media message, which contains social media tags. This is used for text intents/iOS equivalents.
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
@@ -158,7 +160,7 @@ function sendIntentTextiOS(postTags) {
 /*
  * Opens camera and saves the photo the user takes; calls sendIntentImage
  */
-function retrieveImagePostTags(postId, imageFilePath) {
+function retrieveImagePostTags(postId, jsonURL, imageFilePath) {
 	//Retrieve social media message, which contains social media tags. This is used for image intents/iOS equivalent
 	var postTags = "";
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
@@ -187,7 +189,7 @@ function retrieveImagePostTags(postId, imageFilePath) {
 	});
 }
 
-function openCamera() {
+function openCamera(postId, jsonURL) {
 	//Holds all functionality related to sharing image through camera
 
 	var imageFilePath;
@@ -218,7 +220,7 @@ function openCamera() {
 				imageFilePathInstagram = imageFileInstagram.nativePath;
 
 				//send file path to intent creation
-				retrieveImagePostTags(postId, imageFilePath);
+				retrieveImagePostTags(postId, jsonURL, imageFilePath);
 			}
 		},
 		cancel : function() {
