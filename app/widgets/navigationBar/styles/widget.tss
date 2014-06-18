@@ -1,6 +1,6 @@
 "#navBar": {
 	backgroundColor: 'black',
-	height: '20dp'
+	height: '20dp',
 },
 
 "Label": {

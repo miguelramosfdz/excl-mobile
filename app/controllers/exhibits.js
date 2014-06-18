@@ -112,17 +112,7 @@ function retrieveJson(jsonURL) {
 }
 
 
-function openComponent(){	
-	/*alert("component Id: "+e.source.id);
-	
-	var componentWindow = Alloy.createController('componentlanding').getView();
-	componentWindow.componentId = e.source.componentId;
-	Alloy.Globals.navController.open(componentWindow);*/
-	
-	/*var componentWindow = Alloy.createController('componentlanding').getView();
-	componentWindow.componentId = componentID;
-	Alloy.Globals.navController.open(componentWindow, componentID);*/
-	
+function openComponent(){
 	var componentWindow = Alloy.createController('componentlanding', componentID).getView();
 	Alloy.Globals.navController.open(componentWindow, componentID);
 }
@@ -272,21 +262,15 @@ function populateWindow(json){
 
 $.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
 $.exhibits.title = "Exhibits";
-//$.exhibits.add(tableView);
-
-//var myWidget = Widget.createController('itemCarousel').getView();
-//$.testWidget.add(myWidget);
-
-
-// 
-// var myWidget = Alloy.createWidget("itemCarousel").getView();
-// $.testWidget.add(myWidget);
-// for(i=json.data.museum.exhibits.length-1; i>=0; i--){
-	// myWidget.addItem(json.data.museum.exhibits[i], openComponent);
-// }
-
 
 function openPostLanding(e){
 	var componentWindow = Alloy.createController('postlanding').getView();
 	Alloy.Globals.navController.open(componentWindow);
 }
+
+
+
+
+
+
+
