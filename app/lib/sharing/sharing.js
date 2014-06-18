@@ -7,27 +7,29 @@ var imageFilePathInstagram = "";
 /*
  * Functions to toggle activated buttons, changing the share buttons' enabled and backgroundimage status
  */
-function toggleTextShareButtonStatusActive(shareTextButtonId){
+function toggleTextShareButtonStatusActive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to active/clicked mode
 	shareTextButtonId.enabled = false;
 	shareTextButtonId.backgroundImage = "/images/iconShareActive.png";
 }
-function toggleTextShareButtonStatusInactive(shareTextButtonId){
+
+function toggleTextShareButtonStatusInactive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to inactive/ready mode
 	shareTextButtonId.enabled = true;
 	shareTextButtonId.backgroundImage = "/images/iconShareInactive.png";
 }
-function toggleImageShareButtonStatusActive(shareImageButtonId){
+
+function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to active/clicked mode
 	shareImageButtonId.enabled = false;
 	shareImageButtonId.backgroundImage = "/images/iconCameraActive.png";
 }
-function toggleImageShareButtonStatusInactive(shareImageButtonId){
+
+function toggleImageShareButtonStatusInactive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to inactive/ready mode
 	shareImageButtonId.enabled = true;
 	shareImageButtonId.backgroundImage = "/images/iconCameraInactive.png";
 }
-
 
 /*
  * Returns the button for text sharing
@@ -41,9 +43,9 @@ function createTextShareButton(postId, json) {
 		height : "40dip",
 		width : "40dip",
 		left : "0",
-		top: "0"
+		top : "0"
 	});
-toggleTextShareButtonInactive(shareTextButton);
+	toggleTextShareButtonInactive(shareTextButton);
 
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
@@ -68,9 +70,9 @@ function createImageShareButton(postId, json) {
 		height : "40dip",
 		width : "40dip",
 		left : "70dip",
-		top: "0"
+		top : "0"
 	});
-toggleImageShareButtonInactive(shareImageButton);
+	toggleImageShareButtonInactive(shareImageButton);
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
 		toggleImageShareButtonActive(shareImageButton);
@@ -84,7 +86,7 @@ toggleImageShareButtonInactive(shareImageButton);
 /*
  * Gets the postTag from the json
  */
-function getPostTags(postId, json){
+function getPostTags(postId, json) {
 	//Retrieve social media message, which contains social media tags. This is used for text and image intents/iOS equivalents.
 	postTags = "";
 	var foundPost = false;
@@ -105,16 +107,14 @@ function getPostTags(postId, json){
 /*
  * Calls the platform-appropriate sendIntentText function
  */
-function sendIntentText(postId, json, shareTextButtonId){
+function sendIntentText(postId, json, shareTextButtonId) {
 	postTags = getPostTags(postId, json);
-	shareTextButtonId.enabled = true;
-	if (OS_ANDROID){
+	toggleTextShareButtonStatusActive(shareTextButtonId);
+	if (OS_ANDROID) {
 		sendIntentTextAndroid(postTags);
-	}
-	else if (OS_IOS){
+	} else if (OS_IOS) {
 		sendIntentTextiOS(postTags);
-	}
-	else{
+	} else {
 		alert("Unsupported platform");
 	}
 }
@@ -171,8 +171,8 @@ function openCamera(postId, json, shareImageButtonId) {
 			//Instagram-specific code
 			var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
 			var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
-			
-			if (!imageFileInstagram.exists()){
+
+			if (!imageFileInstagram.exists()) {
 				imageFileInstagram.write(event.media);
 			}
 
@@ -199,7 +199,7 @@ function openCamera(postId, json, shareImageButtonId) {
 function sendIntentImage(postId, json, imageFilePath, shareImageButtonId) {
 	postTags = getPostTags(postId, json);
 	//reenable share button
-	shareImageButtonId.enabled = true;
+	toggleImageShareButtonStatusActive(shareTextButtonId);
 	if (OS_ANDROID) {
 		sendIntentImageAndroid(postTags, imageFilePath);
 	} else if (OS_IOS) {
@@ -254,49 +254,51 @@ function sendIntentImageiOS(postTags, imageFilePath) {
 function openInstagram(imageFilePathInstagram) {
 
 	/*
-	alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
-	var docviewer = Ti.UI.iOS.createDocumentViewer({
-	url : "/images/alexbutton.png"
-	});
-	//Testing a sample image
-	alert("Created docviewer");
-	var annotationObj = new Object();
-	annotationObj.InstagramCaption = "Caption sample";
+	 alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
+	 var docviewer = Ti.UI.iOS.createDocumentViewer({
+	 url : "/images/alexbutton.png"
+	 });
+	 //Testing a sample image
+	 alert("Created docviewer");
+	 var annotationObj = new Object();
+	 annotationObj.InstagramCaption = "Caption sample";
 
-	docviewer.UTI = "com.instagram.exclusivegram";
-	// docviewer.annotation = annotationObj.InstagramCaption;
+	 docviewer.UTI = "com.instagram.exclusivegram";
+	 // docviewer.annotation = annotationObj.InstagramCaption;
 
-	docviewer.show();
-	alert("Showed docviewer");
-	*/
+	 docviewer.show();
+	 alert("Showed docviewer");
+	 */
 
 	/*//Use iPhone URL schemes to open app- doesn't reliably open to a specific page, haven't gotten the caption to work
-	//Doesn't seem like there's an easy way to upload a recently taken photo
-	var instagramURL = "instagram://camera&caption=hello%20world";
-	if (Titanium.Platform.canOpenURL(instagramURL)){
-	Titanium.Platform.openURL(instagramURL);
-	}
-	*/
+	 //Doesn't seem like there's an easy way to upload a recently taken photo
+	 var instagramURL = "instagram://camera&caption=hello%20world";
+	 if (Titanium.Platform.canOpenURL(instagramURL)){
+	 Titanium.Platform.openURL(instagramURL);
+	 }
+	 */
 
 	/*
-	//WebView attempt
-	instaWebView = Titanium.UI.createWebView({
-		url : 'www.instagram.com'
-	});
-	var instaWindow = Titanium.UI.createWindow();
-	instaWindow.add(instaWebView);
-	instaWindow.open({
-		modal : true
-	});
-	*/
+	 //WebView attempt
+	 instaWebView = Titanium.UI.createWebView({
+	 url : 'www.instagram.com'
+	 });
+	 var instaWindow = Titanium.UI.createWindow();
+	 instaWindow.add(instaWebView);
+	 instaWindow.open({
+	 modal : true
+	 });
+	 */
 
 	alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
 
-	var docViewer = Ti.UI.iOS.createDocumentViewer({ url : imageFilePathInstagram });
+	var docViewer = Ti.UI.iOS.createDocumentViewer({
+		url : imageFilePathInstagram
+	});
 	docViewer.UTI = "com.instagram.exclusivegram";
 	docViewer.show({
-		view: Ti.UI.currentWindow,
-		animated : true 
+		view : Ti.UI.currentWindow,
+		animated : true
 	});
 }
 
