@@ -1,6 +1,3 @@
-//Hi Alex!!
-//hey there stranger
-
 var dataRetriever = require("dataRetriever");
 var imageFilePathInstagram = "";
 

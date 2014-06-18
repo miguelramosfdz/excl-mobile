@@ -1,4 +1,5 @@
 var dataRetriever = require('dataRetriever');
+var sharingService = require("sharing/sharing");
 var args = arguments[0] || {};
 var tableData = [];
 
@@ -16,8 +17,8 @@ function changeTitleOfThePage(name) {
 	$.postlanding.title = name;
 }
 
-function displaySocialMediaButtons(liking, sharing, commenting) {
-	liking = sharing = commenting = true;
+function displaySocialMediaButtons(json, liking, sharingText, sharingImage, commenting) {
+	liking = sharingText = sharingImage = commenting = true;
 	var row = createPlainRow();
 	if (liking) {
 		// display liking button
@@ -28,14 +29,15 @@ function displaySocialMediaButtons(liking, sharing, commenting) {
 		});
 		row.add(image);
 	}
-	if (sharing) {
-		// display share button
-		var image = Ti.UI.createImageView({
-			image : '/icons/share_button.png',
-			color : 'white',
-			left : '45%'
-		});
-		row.add(image);
+	if (sharingText) {
+		// display shareText button
+		shareTextButton = sharingService.createShareTextButton(json);
+		row.add(shareTextButton);
+	}
+	if (sharingImage){
+		//display shareImage button
+		shareImageButton = sharingService.createShareImageButton(json);
+		row.add(shareTextButton);
 	}
 	if (commenting) {
 		// display comment button
@@ -51,7 +53,7 @@ function displaySocialMediaButtons(liking, sharing, commenting) {
 }
 
 function jackOfAllTrades() {
-	var url = "http://www.mocky.io/v2/53a0c3b0e100e89e0b3e40ac";
+	var url = "http://www.mocky.io/v2/5185415ba171ea3a00704eed";
 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 		changeTitleOfThePage(returnedData.name);
 		displaySocialMediaButtons(returnedData.liking, returnedData.sharing, returnedData.commenting);
