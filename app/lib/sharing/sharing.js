@@ -21,7 +21,7 @@ function createShareButtons() {
 		backgroundImage : "/images/iconShare.png"
 	});
 	shareText.addEventListener('click', function(e) {
-		sendIntentText();
+		retrieveTextPostTags(postId);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareText);
 	viewSharingTemp.add(shareText);
