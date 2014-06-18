@@ -159,18 +159,22 @@ function openCamera(json, shareImageButtonId) {
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 
-			//Instagram-specific code
-			var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
-			var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
-
-			if (!imageFileInstagram.exists()) {
-				imageFileInstagram.write(event.media);
+			if (OS_IOS){
+				//Instagram-specific code
+				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
+				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
+	
+				if (!imageFileInstagram.exists()) {
+					imageFileInstagram.write(event.media);
+				}
 			}
-
+	
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
-				imageFilePathInstagram = imageFileInstagram.nativePath;
+				if (OS_IOS){
+					imageFilePathInstagram = imageFileInstagram.nativePath;
+				}
 
 				//send file path to intent creation
 				sendIntentImage(json, imageFilePath, shareImageButtonId);
