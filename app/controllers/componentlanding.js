@@ -1,7 +1,6 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
 var componentID = args;
-alert(componentID);
 var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13/component/" + componentID;
 
 //var url = "http://www.mocky.io/v2/53a1e425b4ac142006024b75";
@@ -86,7 +85,6 @@ function createSection(posts) {
 }
 
 function goToPostLandingPage(e){
-	alert("Item Id: "+e.source.itemId);
 	var componentWindow = Alloy.createController('postlanding').getView();
 	Alloy.Globals.navController.open(componentWindow, e.source.itemId);
 }
