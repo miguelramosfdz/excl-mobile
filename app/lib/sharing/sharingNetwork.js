@@ -144,5 +144,5 @@ function sendIntentImageAndroid(postTags, imageFilePath) {
 
 ///////////////////////////////////
 //set associating with sharing.js
-setPathForLibDirectory('sharingRetriever');
+setPathForLibDirectory('sharing');
 

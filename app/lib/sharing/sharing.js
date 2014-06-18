@@ -47,7 +47,7 @@ function toggleImageShareButtonStatusInactive(shareImageButtonId) {
  */
 function createTextShareButton(json) {
 	//button to open text sharing
-	var shareTextButton = retrieveSharing.createTextShareButton();	
+	var shareTextButton = retrieveNetworkSharing.createTextShareButton();	
 	toggleTextShareButtonStatusInactive(shareTextButton);
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
@@ -66,7 +66,7 @@ function createTextShareButton(json) {
  */
 function createImageShareButton(json, rightNavButton) {
 	//button to open photo sharing
-	var shareImageButton = retrieveSharing.createImageShareButton();
+	var shareImageButton = retrieveNetworkSharing.createImageShareButton();
 	toggleImageShareButtonStatusInactive(shareImageButton);
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
