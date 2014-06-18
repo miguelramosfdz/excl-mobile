@@ -10,18 +10,17 @@ function NavigationController() {
 
 
 // Open new window and add it to window stack
-NavigationController.prototype.open = function(windowToOpen, onEnterKioskMode, onExitKioskMode) {
+NavigationController.prototype.open = function(windowToOpen, controller) {
 	
-	// Add or define onEnterKioskMode or onExitKioskMode functionality
-	if (onEnterKioskMode && typeof(onEnterKioskMode) === 'function') {
-		windowToOpen.onEnterKioskMode = onEnterKioskMode;
-	} else {
-		windowToOpen.onEnterKioskMode = function(window){};
+	windowToOpen.onEnterKioskMode = function(window){};
+	windowToOpen.onExitKioskMode = function(window){};
+	
+	// Add onEnterKioskMode and/or onExitKioskMode functionality if defined
+	if (controller && controller.onEnterKioskMode && typeof(controller.onEnterKioskMode) === 'function') {
+		windowToOpen.onEnterKioskMode = controller.onEnterKioskMode;
 	}
-	if (onExitKioskMode && typeof(onExitKioskMode) === 'function') {
-		windowToOpen.onExitKioskMode = onExitKioskMode;
-	} else {
-		windowToOpen.onExitKioskMode = function(window){};
+	if (controller && controller.onExitKioskMode && typeof(controller.onExitKioskMode) === 'function') {
+		windowToOpen.onExitKioskMode = controller.onExitKioskMode;
 	}
 	
 	// Capture Android back button
@@ -29,7 +28,7 @@ NavigationController.prototype.open = function(windowToOpen, onEnterKioskMode, o
 		var self = this;
 		windowToOpen.addEventListener("android:back", function(e){
 			if(self.windowStack[self.windowStack.length-1] != self.lockedHomePage) {
-				self.close();
+				self.close(1);
 			}
 		});	
 	}
@@ -55,14 +54,13 @@ NavigationController.prototype.open = function(windowToOpen, onEnterKioskMode, o
 			// close dependent window ?
 			if (this.toClose) {
 			 	// close "parent" window, do not use animation (it looks weird with animation)
-			 	//(self.navGroup) ? self.navGroupWindow.close(this.toClose, {animated : false}) : this.toClose.close({animated:false});
-			 	(self.navGroup) ? self.navGroup.closeWindow(this.toClose, {animated : true}) : this.toClose.close({animated:true});
+			 	(self.navGroup) ? self.navGroupWindow.close(this.toClose, {animated : false}) : this.toClose.close({animated:false});
+			 	// (self.navGroup) ? self.navGroup.closeWindow(this.toClose, {animated : true}) : this.toClose.close({animated:true});
 			}
 			
 			// open dependent window ?
 			if (this.toOpen) {
-				Ti.API.debug("Invoke open on dependent window:" + this.toOpen.title);
-			 	self.open(this.toOpen);
+			 	self.open(this.toOpen, {animated : false});
 			} 
 		} // end if windowStack.length > 1, and end of my hack
 	}); // end eventListener 'close'
@@ -84,20 +82,20 @@ NavigationController.prototype.open = function(windowToOpen, onEnterKioskMode, o
 		this.lockedHomePage = this.homePage;
 		if (OS_ANDROID) {
 			windowToOpen.exitOnClose = true;
-			windowToOpen.open();
+			windowToOpen.open({animated : false});
 		} else {
 			// changed this from Ti.UI.iPhone.createNavigationGroup because it has been deprecated
 			// since Ti 3.2.0
 			this.navGroup = Ti.UI.iOS.createNavigationWindow({
 				window : windowToOpen
 			});
-			this.navGroup.open();
+			this.navGroup.open({animated : false});
 		}
 	} else {// All subsequent windows
 		if (OS_ANDROID) {
-			windowToOpen.open();
+			windowToOpen.open({animated : false});
 		} else {
-			this.navGroup.openWindow(windowToOpen);
+			this.navGroup.openWindow(windowToOpen, {animated : false});
 		}
 	}
 	return windowToOpen;
@@ -131,7 +129,7 @@ NavigationController.prototype.home = function() {
 			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
        	}
         // start chain reaction, close first window
-		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
+		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
 	}
 };
 
@@ -177,6 +175,7 @@ function updateKioskMode(self) {
 		window.onExitKioskMode(window);	
 	}
 	confirm.show();
+	setTimeout(function(){confirm.hide();}, 2000);
 };
 
 // Handles kiosk mode dialog
@@ -193,7 +192,7 @@ function handleKioskModeDialog(self) {
 	var dialog = Ti.UI.createAlertDialog({
 	    title: 'Enter admin code',
 	    androidView: textfield,
-	    buttonNames: ['OK', 'Cancel']
+	    buttonNames: ['OK']
 	});
 	
 	if (OS_IOS) {
@@ -202,12 +201,19 @@ function handleKioskModeDialog(self) {
 	
 	dialog.addEventListener('click', function(e) {
 		Ti.API.log(JSON.stringify(e));
-		Ti.API.log(e.text);
 	    if (e.text == "friend" || e.source.androidView.value == "friend") {
 			updateKioskMode(self);
+	    } else {
+	    	var errorMsg = Ti.UI.createAlertDialog({
+			    title: 'incorrect code',
+			    buttonNames: ['OK']
+			});
+			errorMsg.show();
+			setTimeout(function(){errorMsg.hide();}, 2000);
 	    }
 	});
 	dialog.show();
+	setTimeout(function(){dialog.hide();}, 9000);
 };
 
 // Add kiosk mode listener to passed in element. Will activate on three 
