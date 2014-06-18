@@ -45,11 +45,11 @@ function createTextShareButton(postId, json) {
 		left : "0",
 		top : "0"
 	});
-	toggleTextShareButtonInactive(shareTextButton);
+	toggleTextShareButtonStatusInactive(shareTextButton);
 
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
-		toggleTextShareButtonActive(shareTextButton);
+		toggleTextShareButtonStatusActive(shareTextButton);
 		sendIntentText(postId, json, shareTextButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
@@ -72,10 +72,10 @@ function createImageShareButton(postId, json) {
 		left : "70dip",
 		top : "0"
 	});
-	toggleImageShareButtonInactive(shareImageButton);
+	toggleImageShareButtonStatusInactive(shareImageButton);
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
-		toggleImageShareButtonActive(shareImageButton);
+		toggleImageShareButtonStatusActive(shareImageButton);
 		openCamera(postId, json, shareImageButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
