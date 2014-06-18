@@ -2,6 +2,7 @@ var dataRetriever = require('../lib/dataRetriever');
 var apiCalls = require('../lib/customCalls/apiCalls');
 var networkCalls = require('../lib/customCalls/networkCalls');
 var parseCalls = require('../lib/customCalls/parseCalls');
+var intentChecker = require('../lib/sharing/sharing');
 
 describe("Testing parsedJson", function() {
 	it("should return 'parsed' json data", function() {
