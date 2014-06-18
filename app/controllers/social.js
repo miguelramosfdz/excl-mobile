@@ -18,7 +18,7 @@ function retrievePostTags(componentId, postId) {
 				} else {
 					alert("Could not find specified post ID");
 				}
-			};
+			}
 		} else {
 			alert("Data not retrieved");
 		}

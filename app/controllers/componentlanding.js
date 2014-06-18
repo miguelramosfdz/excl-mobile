@@ -306,7 +306,7 @@ function createPostCarousel(posts){							//createExhibitsCarousel()
 		postSwipeableView.add(postViews[i]);
 		postViews[i].hide();
 	}
-	postViews[0].show();
+	//postViews[0].show();
 	row.add(postSwipeableView);
 	tableData.push(row);
 }
@@ -379,3 +379,35 @@ var tableView = Ti.UI.createTableView({		//has to be under everything to work
 
 $.componentlanding.title = "Component landing loaded!";
 $.componentlanding.add(tableView);
+
+
+/*
+
+
+init(){
+	for each post{
+		if (sectionExists())
+			add to section(post)
+		else
+			create and add(post)
+			numOfSections++
+	}
+}
+
+function sectionExists(){
+	return true;
+}
+
+init();
+
+
+
+*/
+
+
+
+
+
+
+
+
