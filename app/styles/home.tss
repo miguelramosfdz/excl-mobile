@@ -1,6 +1,7 @@
 
 ".container" : {
-  backgroundColor:"white"
+  backgroundColor:"white",
+  fullscreen: true
 },
 "Label" : {
 	
