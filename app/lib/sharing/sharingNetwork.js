@@ -37,7 +37,7 @@ function createImageShareButton() {
 		text : "Camera",
 		height : "40dip",
 		width : "40dip",
-		left : "70dip",
+		left : "40dip",
 		top : "0"
 	});
 	return shareImageButton;
@@ -179,7 +179,8 @@ function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
 
 //Export functions for use by other files
 module.exports.createTextShareButton = createTextShareButton;
-module.exports.sendIntentText = sendIntentText;
+module.exports.sendIntentTextAndroid = sendIntentTextAndroid;
+module.exports.sendIntentTextiOS = sendIntentTextiOS;
 module.exports.createImageShareButton = createImageShareButton;
 module.exports.openCamera = openCamera;
 module.exports.sendIntentImageAndroid = sendIntentImageAndroid;

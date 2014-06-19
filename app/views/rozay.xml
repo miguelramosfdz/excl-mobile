@@ -1,6 +1,10 @@
 
 <Alloy>
 	<View class="full-view">
+		<View id="sharingView" class = "sharingView">
+		</View>
+		<View id="sharingNetworkView" class = "sharingNetworkView">
+		</View>
 		<ScrollView id="scrollViewRozay" class="scroll">
 			<Label class="title">Rick Ross says</Label>
 			<ImageView id="logo" class="logo" image="/RickRoss.jpg" />
