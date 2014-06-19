@@ -1,6 +1,6 @@
 
 <Alloy>
-	<View class="full-view">
+	<Window class="full-view">
 		<View id="sharingView" class = "sharingView">
 		</View>
 		<View id="sharingNetworkView" class = "sharingNetworkView">
@@ -10,6 +10,6 @@
 			<ImageView id="logo" class="logo" image="/RickRoss.jpg" />
 			<Label class="description">"Welcome, Big Dawgs!"</Label>
 		</ScrollView>
-	</View>
+	</Window>
 </Alloy>
 

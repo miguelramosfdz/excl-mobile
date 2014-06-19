@@ -30,7 +30,10 @@ function openComponent(e){
 }
 
 function openExhibitInfo(e){
-	alert("will open additional Exhibit info");
+	//alert("will open additional Exhibit info");
+	
+	var rozayWindow = Alloy.createController('rozay').getView();
+	Alloy.Globals.navController.open(rozayWindow);  
 }
 
 function createExhibitsCarousel(exhibits){
