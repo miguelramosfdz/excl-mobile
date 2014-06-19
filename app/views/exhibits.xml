@@ -2,7 +2,8 @@
 	<Window class="container" backgroundColor='white'>
 		<TableView id="tableView">
 			<TableViewRow class="largePictureRow" id="exhibitsSwipeableRow" >
-				<View id="exhibitsSwipeableView" onClick="openPostLanding"></View>
+				<!--<View id="exhibitsSwipeableView" onClick="openPostLanding"></View>-->
+				<Widget src="itemCarousel" id="exhibitsSwipeableCarousel"/>
 			</TableViewRow>
 			<TableViewRow class="headingRow">
 				<Label id="componentHeading" class="headingText"></Label>

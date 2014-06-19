@@ -85,7 +85,7 @@ var json = {
   }
 }; // Extract to required file*/
 
-var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";
+var url = Alloy.Globals.rootWebServiceUrl;
 
 
 var json;
@@ -93,14 +93,13 @@ var exhibitIndex = 0;
 var numOfExhibits;
 var exhibitViews = [];
 var componentsInExhibit = [];
+var exhibitText = [];
 
 /*
 var museum = Alloy.createModel("museum");
 museum.fetch();
 */
 //Ti.API.info("\n\n\n\n\n\n"+JSON.stringify(data)+"\n\n\n\n\n\n\n");
-
-
 
 
 function retrieveJson(jsonURL) {
@@ -117,13 +116,17 @@ function openComponent(e){
 	Alloy.Globals.navController.open(componentWindow);
 }
 
+function openExhibitInfo(e){
+	alert("will open additional Exhibit info");
+}
+
 function createExhibitsCarousel(exhibits){
-	for(i = exhibits.length -1 ; i >= 0; i--){
-		exhibitViews[i] = createLabeledPicView(exhibits[i], '25dp');		// will later say 'exhibit', and will create the pic item of that class
-		$.exhibitsSwipeableView.add(exhibitViews[i]);
-		exhibitViews[i].hide();
+	$.exhibitsSwipeableCarousel.addToRotateFunc(rotateHandler);
+	for(i = 0 ; i < exhibits.length; i++){
+		exhibitText[i] = exhibits[i].description;
+		$.exhibitsSwipeableCarousel.addItem(exhibits[i], openExhibitInfo);
+		numOfExhibits++;
 	}
-	exhibitViews[0].show();
 }
 
 // Extract into a service in the Lib folder -> make into a widget when we write this in XML
@@ -203,8 +206,28 @@ function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
 } 
 
+function rotateHandler(direction, index, numOfItems){
+	if(numOfExhibits>0){
+		exhibitIndex = index;
+		numOfExhibits = numOfItems;
+		if(direction = "right"){
+			removeComponents(exhibitIndex);		// Incrememnt Index
+			exhibitIndex= (exhibitIndex+1)%numOfExhibits;
+			showComponents(exhibitIndex);
+			setExhibitText(exhibitText[exhibitIndex]);
+		}else if(direction = "left"){
+			removeComponents(exhibitIndex);
+			exhibitIndex--;						// Decrement index 
+			if(exhibitIndex=-1)
+				exhibitIndex=numOfExhibits -1;
+			showcomponents(exhibitIndex);
+			setExhibitText(exhibitText[exhibitIndex]);
+		}
+	}
+}
+/*
 // Break into two more functions
-function swipeHandler(e){
+function swipeHandler2(e){
 	if(numOfExhibits>0){
 		if(e.direction = 'right'){
 			exhibitViews[exhibitIndex].hide();
@@ -234,7 +257,7 @@ function swipeHandler(e){
 		}
 	}
 }
-
+*/
 function removeComponents(index){
 	if(componentsInExhibit.length>0){
 		componentsInExhibit[index].width = 0;
@@ -257,21 +280,14 @@ function populateWindow(json){
 	createExhibitsCarousel(json.data.museum.exhibits);
 	createComponentHeading("Check out our Stations");
 	createComponentsScrollView(json.data.museum.exhibits);
-	
-	setExhibitText(json.data.museum.exhibits[0].description);
+	setExhibitText(exhibitText[0]);
 }
 
-$.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
+//$.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
 $.exhibits.title = "Exhibits";
 
 function openPostLanding(e){
 	var componentWindow = Alloy.createController('postlanding').getView();
 	Alloy.Globals.navController.open(componentWindow);
 }
-
-
-
-
-
-
 

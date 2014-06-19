@@ -49,8 +49,6 @@ var sound = Ti.Media.createSound({
 });
 
 
-
-
 var json = {
 	id : 41,
 	name : "Spin the Disc",
@@ -88,8 +86,11 @@ var json = {
 var sharingService = require("sharing/sharing");
 
 var rightNavButton = Ti.UI.createButton({
-	title : ' '
+	id : 'rightNavButton',
+	title : 'rightNavButton',
+	top: "100dip"
 });
+$.scrollViewRozay.add(rightNavButton);
 
 var createdTextShareButton = sharingService.createTextShareButton(json);
 $.scrollViewRozay.add(createdTextShareButton);

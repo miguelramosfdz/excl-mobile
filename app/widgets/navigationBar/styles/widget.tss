@@ -1,20 +1,23 @@
 "#navBar": {
-	backgroundColor: 'black',
-	height: '20dp',
+	width: Ti.UI.FILL,
+	height: "40dp",
+	backgroundColor: '#FF6600'
 },
 
-"Label": {
-	color: '#fff',
+"#back": {
+	backgroundColor: 'green',
+	color: 'black',
+	left: '0%',
 	font: {
 		fontSize: 18,
 		fontWeight: 'bold'
 	},
-	height: Ti.UI.SIZE,
-	width: Ti.UI.SIZE
-}
+},
 
-".nav": {
-	color: '#fff',
+"#flyout": {
+	backgroundColor: 'yellow',
+	color: 'black',
+	right: '0%',
 	font: {
 		fontSize: 18,
 		fontWeight: 'bold'

@@ -6,4 +6,18 @@
 	},
 	height: Ti.UI.SIZE,
 	width: Ti.UI.SIZE
+},
+
+"#leftArrow": {
+	left: 0,
+	top: '20%',
+	height: "80%",
+	width: "10%"
+}
+
+"#rightArrow": {
+	right: '0',
+	top: '20%',
+	height: "80%",
+	width: "10%"
 }
