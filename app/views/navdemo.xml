@@ -1,5 +1,6 @@
 <Alloy>
 	<View id="NavDemo" layout='vertical' class="container">
+		<Require type="widget" src="navigationBar" id="nav_widget"/>
 		<Button id = "add" onClick = "addClick" title = "Add A New Window" />
 	</View>
 </Alloy>
