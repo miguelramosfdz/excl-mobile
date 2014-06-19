@@ -21,7 +21,7 @@ var networkCalls = {
 			},
 			onerror : function() {
 				// apiCalls.debug(e.error);
-				alert("Could not retrieve weather data!");
+				alert("Could not retrieve any data :()");
 			}
 		});
 
