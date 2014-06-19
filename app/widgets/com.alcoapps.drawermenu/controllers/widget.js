@@ -3,8 +3,8 @@ var duration = 400;
 var parent;
 
 var init=function(opts){
-	$.drawermainview.add(opts.mainview);
-	$.drawermenuview.add(opts.menuview);
+	$.flyoutMainView.add(opts.mainview);
+	$.flyoutMenuView.add(opts.menuview);
 	duration=opts.duration;
 	parent=opts.parent;
 	console.log('initialized');
@@ -38,8 +38,8 @@ var showhidemenu=function(){
 	var newWidth = Ti.Platform.displayCaps.platformWidth;
     	if (OS_ANDROID) 
         	newWidth /= Ti.Platform.displayCaps.logicalDensityFactor;
-	$.drawermainview.width=newWidth;
-	$.drawermainview.animate({
+	$.flyoutMainView.width=newWidth;
+	$.flyoutMainView.animate({
 		right:moveTo,
 		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
 		duration: duration
@@ -51,7 +51,7 @@ Ti.Gesture.addEventListener('orientationchange', function(e) {
     newWidth = Ti.Platform.displayCaps.platformWidth;
     if (OS_ANDROID)
         newWidth /= Ti.Platform.displayCaps.logicalDensityFactor;
-    $.drawermainview.width = newWidth;
+    $.flyoutMainView.width = newWidth;
 });
 
 exports.init=init;
