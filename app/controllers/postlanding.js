@@ -82,7 +82,7 @@ function displayVideo(videoUrl) {
 function displayText(textContent) {
 	var row = createPlainRow('auto');
 	var textBody = Ti.UI.createLabel({
-		width : '100%',
+		width : '94%',
 		right : '3%',
 		left : '3%',
 		color : '#000000',

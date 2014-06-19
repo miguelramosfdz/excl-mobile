@@ -2,3 +2,8 @@
 ".container" : {
   navBarHidden:true
 }
+
+"#scroller": {
+	height: '100%',
+	contentHeight: 'auto'
+}

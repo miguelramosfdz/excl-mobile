@@ -7,6 +7,7 @@ var numOfExhibits;
 var exhibitViews = [];
 var componentsInExhibit = [];
 var exhibitText = [];
+var loaded = false;
 
 /*
 var museum = Alloy.createModel("museum");
@@ -194,6 +195,7 @@ function populateWindow(json){
 	createComponentHeading("Check out our Stations");
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
+	loaded = true;
 }
 
 function openPostLanding(e){
@@ -201,7 +203,6 @@ function openPostLanding(e){
 	Alloy.Globals.navController.open(componentWindow);
 }
 
-
-
+while(exhibitViews.length = 0);
 //var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
 Alloy.Globals.navController.open($.index);
