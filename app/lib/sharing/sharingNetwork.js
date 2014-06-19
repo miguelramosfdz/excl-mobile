@@ -11,7 +11,7 @@ function toggleImageShareButtonStatusInactive(shareImageButtonId) {
 	if (OS_IOS){
 		shareImageButtonId.backgroundImage = "/iphone/icons/iOScamera.png";
 	} else if (OS_ANDROID) {
-		shareImageButtonId.backgroundImage = "icons/icons_android/ic_action_camera.png";
+		shareImageButtonId.backgroundImage = "/images/icons_android/ic_action_camera.png";
 	}
 }
 
@@ -26,8 +26,7 @@ function createTextShareButton() {
 		height : "40dip",
 		width : "40dip",
 		left : "0",
-		top : "0",
-		backgroundColor: "#FFFFFF"
+		top : "0"
 	});
 	return shareTextButton;
 }
@@ -43,8 +42,7 @@ function createImageShareButton() {
 		height : "40dip",
 		width : "40dip",
 		left : "40dip",
-		top : "0",
-		backgroundColor: "#FFFFFF"
+		top : "0"
 	});
 	return shareImageButton;
 }
