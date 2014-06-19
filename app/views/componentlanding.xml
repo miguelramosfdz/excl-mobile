@@ -1,9 +1,11 @@
 <Alloy>
-	<Window class="container" backgroundColor="white">
-		<TableView id="tableView">
-			<TableViewRow>
-				<Widget src="navigationBar" id="navBar"/>
-			</TableViewRow>
-		</TableView>
+	<Window class="container" backgroundColor='white'>
+		<View layout="vertical">
+			<Widget src="navigationBar" id="navBar"/>
+			<ScrollView id="scroller">
+				<TableView id="tableView" >
+				</TableView>
+			</ScrollView>
+		</View>
 	</Window>
 </Alloy>
