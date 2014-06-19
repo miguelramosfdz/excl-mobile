@@ -106,6 +106,8 @@ function init() {
 		changeTitleOfThePage(returnedData.data.component.name);
 		allPosts = returnedData.data.component.posts;
 
+		tableData.push($.navBar);
+
 		for (var i = 0; i < allPosts.length; i++) {
 			if (allPosts[i].section) {
 				if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
@@ -126,8 +128,9 @@ function init() {
 			width : '100%',
 			height : '100%'
 		});*/
-		for(i=0;i<tableData.length; i++)
-			$.tableView.add(tableData[i]);
+		$.tableView.data = tableData;
+		//for(i=0;i<tableData.length; i++)
+		//	$.tableView.add(tableData[i]);
 		//$.componentlanding.add(tableView);
 
 	});

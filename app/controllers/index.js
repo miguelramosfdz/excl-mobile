@@ -30,10 +30,7 @@ function openComponent(e){
 }
 
 function openExhibitInfo(e){
-	//alert("will open additional Exhibit info");
-	
-	var rozayWindow = Alloy.createController('rozay').getView();
-	Alloy.Globals.navController.open(rozayWindow);  
+	//alert("will open additional Exhibit info"); 
 }
 
 function createExhibitsCarousel(exhibits){
@@ -104,10 +101,10 @@ function createComponentsScrollView(exhibits){
 		});// TSS CLASS
 
 		for(var j = 0; j< exhibits[i].components.length; j++){
-			component = createLabeledPicView(exhibits[i].components[j], '15dp');	// Later type will be 'component' and that wil be linked to the TSS class
+			component = createLabeledPicView(exhibits[i].components[j], '15dip');	// Later type will be 'component' and that wil be linked to the TSS class
 			component.left = 5;
 			component.right = 5;
-			component.width = '225dp';
+			component.width = '225dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[i].add(component);
