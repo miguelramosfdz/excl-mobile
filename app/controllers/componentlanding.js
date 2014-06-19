@@ -36,8 +36,8 @@ function addToExistingSection(post) {
 function createRow() {
 	var row = Ti.UI.createTableViewRow({
 		height : '190dp',
-		top : '10dp',
-		backgroundColor : 'white',
+		top: '10dp',
+		backgroundColor : 'cyan',
 	});
 	return row;
 }
@@ -66,25 +66,6 @@ function createSectionHeading(headingTitle) {
 	tableData.push(headingRow);
 }
 
-function createPostCarousel(posts) {
-	var row = createRow();
-
-	for ( i = 0; i >= posts.length; i++) {
-		postViews[i] = createLabeledPostView(posts[i], '22');
-		// will later say 'exhibit', and will create the pic item of that class
-		postSwipeableView.add(postViews[i]);
-		postViews[i].hide();
-	}
-	// postViews[0].show();
-	row.add(postSwipeableView);
-	tableData.push(row);
-}
-
-function createSection(posts) {
-	createSectionHeading(posts);
-	createPostCarousel(posts);
-}
-
 function goToPostLandingPage(e){
 	var post = fetchPostById(e.source.itemId);
 	var componentWindow = Alloy.createController('postlanding', post).getView();
@@ -106,8 +87,6 @@ function init() {
 		changeTitleOfThePage(returnedData.data.component.name);
 		allPosts = returnedData.data.component.posts;
 
-		tableData.push($.navBar);
-
 		for (var i = 0; i < allPosts.length; i++) {
 			if (allPosts[i].section) {
 				if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
@@ -121,17 +100,8 @@ function init() {
 			}
 		}
 		Ti.API.info(sectionsThatAlreadyExist);
-/*
-		var tableView = Ti.UI.createTableView({//has to be under everything to work
-			backgroundColor : 'white',
-			data : tableData,
-			width : '100%',
-			height : '100%'
-		});*/
+
 		$.tableView.data = tableData;
-		//for(i=0;i<tableData.length; i++)
-		//	$.tableView.add(tableData[i]);
-		//$.componentlanding.add(tableView);
 
 	});
 }

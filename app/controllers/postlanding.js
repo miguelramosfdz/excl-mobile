@@ -27,9 +27,9 @@ function createPlainRow(rowHeight) {
 
 function changeTitleOfThePage(name) {
 	if (name = "") {
-		$.postlanding.title = name;
-	} else {
 		$.postlanding.title = "[Title]";
+	} else {
+		$.postlanding.title = name;
 	}
 }
 
@@ -82,7 +82,7 @@ function displayVideo(videoUrl) {
 function displayText(textContent) {
 	var row = createPlainRow('auto');
 	var textBody = Ti.UI.createLabel({
-		width : '100%',
+		width : '94%',
 		right : '3%',
 		left : '3%',
 		color : '#000000',
@@ -99,12 +99,7 @@ function displayText(textContent) {
 }
 
 function addTableDataToTheView() {
-	var tableView = Ti.UI.createTableView({
-		backgroundColor : '#e6e6e6',
-		data : tableData
-	});
-
-	$.postlanding.add(tableView);
+	$.tableView.data = tableData;
 }
 
 function initializePage() {

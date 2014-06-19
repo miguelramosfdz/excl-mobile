@@ -2,7 +2,6 @@
  * This page handles functionality with Sharing that does not involve Ti calls
  */
 
-
 /*
  * Defines path to sharingNetwork file
  */
@@ -22,16 +21,21 @@ function setPathForLibDirectory(retrieveNetworkSharingLib) {
 function toggleTextShareButtonStatusActive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to active/clicked mode
 	shareTextButtonId.enabled = false;
-	if (OS_IOS){
-		shareTextButtonId.backgroundImage = "/iphone/iosShare.png";
+	if (OS_IOS) {
+		shareTextButtonId.backgroundImage = "images/icons_ios/iosShareGray.png";
+	} else if (OS_ANDROID) {
+		shareTextButtonId.backgroundImage = "/images/icons_android/ic_action_share_active.png";
 	}
 }
 
 function toggleTextShareButtonStatusInactive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to inactive/ready mode
 	shareTextButtonId.enabled = true;
-	if (OS_IOS){
-		shareTextButtonId.backgroundImage = "/iphone/iosShare.png";
+	if (OS_IOS) {
+		shareTextButtonId.backgroundImage = "images/icons_ios/iosShare.png";
+	} else if (OS_ANDROID) {
+		shareTextButtonId.backgroundImage = "/images/icons_android/ic_action_share.png";
+
 	}
 }
 
@@ -39,8 +43,10 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to active/clicked mode
 	//Note: inactive version of this function lives in sharingNetwork.js
 	shareImageButtonId.enabled = false;
-	if (OS_IOS){
-		shareImageButtonId.backgroundImage = "/iphone/iOScamera.png";
+	if (OS_IOS) {
+		shareImageButtonId.backgroundImage = "images/icons_ios/iOScameraGray.png";
+	} else if (OS_ANDROID) {
+		shareImageButtonId.backgroundImage = "/images/icons_android/ic_action_camera_active.png";
 	}
 }
 
@@ -50,7 +56,7 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
  */
 function initiateTextShareButton(json) {
 	//button to open text sharing
-	var shareTextButton = retrieveNetworkSharing.createTextShareButton();	
+	var shareTextButton = retrieveNetworkSharing.createTextShareButton();
 	toggleTextShareButtonStatusInactive(shareTextButton);
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
@@ -68,12 +74,11 @@ function initiateTextShareButton(json) {
 /*
  * Initializes camera operation
  */
-function initiateCamera (json, shareImageButtonId, rightNavButton) {
+function initiateCamera(json, shareImageButtonId, rightNavButton) {
 	//retrieve tags from json
 	var postTags = getPostTags(json);
 	retrieveNetworkSharing.openCamera(postTags, shareImageButtonId, rightNavButton);
 }
-
 
 /*
  * Sets properties of the image sharing button as created by sharingNetwork and returns the button

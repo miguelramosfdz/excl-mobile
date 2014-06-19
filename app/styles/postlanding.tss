@@ -1,2 +1,10 @@
 
-".container": {}
+".container" : {
+  navBarHidden:true,
+  fullscreen: true
+}
+
+"#scroller": {
+	height: '100%',
+	contentHeight: 'auto'
+}

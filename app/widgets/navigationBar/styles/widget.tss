@@ -1,7 +1,7 @@
 "#navBar": {
 	width: Ti.UI.FILL,
 	height: "40dp",
-	backgroundColor: '#FFFFFF'
+	backgroundColor: '#FFFFFF',
 },
 
 ".backButtonStyle":{

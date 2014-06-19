@@ -1,23 +1,25 @@
 <Alloy>
-	<Window class="container" backgroundColor='white'>
-		<TableView id="tableView">
-			<TableViewRow>
-				<Widget src="navigationBar"/>
-			</TableViewRow>
-			<TableViewRow class="largePictureRow" id="exhibitsSwipeableRow" >
-				<!--<View id="exhibitsSwipeableView" onClick="openPostLanding"></View>-->
-				<Widget src="itemCarousel" id="exhibitsSwipeableCarousel"/>
-			</TableViewRow>
-			<TableViewRow class="headingRow">
-				<Label id="componentHeading" class="headingText"></Label>
-			</TableViewRow>
-			<TableViewRow>
-				<ScrollView id="componentScrollView"></ScrollView>
-			</TableViewRow>
-			<TableViewRow class="infoRow">
-				<Label id="exhibitInfoLabel"></Label>
-			</TableViewRow>
-		</TableView>
+	<Window class="container" backgroundColor='cyan'>
+		<View layout="vertical">
+			<Widget src="navigationBar" id="navBar"/>
+			<ScrollView id="scroller">
+				<TableView id="tableView" >
+					<TableViewRow class="largePictureRow" id="exhibitsSwipeableRow" >
+						<!--<View id="exhibitsSwipeableView" onClick="openPostLanding"></View>-->
+						<Widget src="itemCarousel" id="exhibitsSwipeableCarousel"/>
+					</TableViewRow>
+					<TableViewRow class="headingRow">
+						<Label id="componentHeading" class="headingText"></Label>
+					</TableViewRow>
+					<TableViewRow>
+						<ScrollView id="componentScrollView"></ScrollView>
+					</TableViewRow>
+					<TableViewRow class="infoRow">
+						<Label id="exhibitInfoLabel"></Label>
+					</TableViewRow>
+				</TableView>
+			</ScrollView>
+		</View>
 	</Window>
 </Alloy>
 

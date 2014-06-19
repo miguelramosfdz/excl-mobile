@@ -1,5 +1,11 @@
 <Alloy>
-	<Window class="container" backgroundColor="white">
-		<Label id="someLabel"></Label>
+	<Window class="container" backgroundColor='cyan'>
+		<View layout="vertical">
+			<Widget src="navigationBar" id="navBar"/>
+			<ScrollView id="scroller">
+				<TableView id="tableView" >
+				</TableView>
+			</ScrollView>
+		</View>
 	</Window>
 </Alloy>
