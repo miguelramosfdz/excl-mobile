@@ -78,7 +78,7 @@ function createImageShareButton(json, rightNavButton) {
 		text : "Camera",
 		height : "40dip",
 		width : "40dip",
-		left : "70dip",
+		left : "50dip",
 		top : "0"
 	});
 	toggleImageShareButtonStatusInactive(shareImageButton);
@@ -314,11 +314,11 @@ function openInstagram(imageFileInstagram, rightNavButton) {
 		win.open();
 		*/
 		
-		var docViewer = Ti.UI.iPad.createDocumentViewer({
-			url : imageFilePathInstagram
+		var docViewer = Ti.UI.iOS.createDocumentViewer({
+			url : '/images/alexbutton.png'
 		});
 		alert("Created docViewer"); //Doesn't get to this point
-		docViewer.UTI = "com.instagram.exclusivegram";
+		//docViewer.UTI = "com.instagram.exclusivegram";
 		docViewer.show({
 			view : rightNavButton,
 			animated : true
@@ -336,7 +336,7 @@ function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	}
 }
 
-setPathForLibDirectory('dataRetriever');
+setPathForLibDirectory('dataRetriever/dataRetriever');
 //These functions can be called by outside files:
 module.exports.createTextShareButton = createTextShareButton;
 module.exports.createImageShareButton = createImageShareButton;

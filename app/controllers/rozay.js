@@ -20,7 +20,7 @@ var playSoundBtn = Ti.UI.createButton({
 	height : 50, //define height
 	title : 'Play Sound',
 	id : 'soundBtn',
-	left : '25%',
+	left : '0',
 	top : '400dip'
 });
 
@@ -48,7 +48,7 @@ var sound = Ti.Media.createSound({
 	url : '/schemin.mp3',
 });
 
-
+//Create hard-coded json file for use in debugging sharing objects
 var json = {
 	id : 41,
 	name : "Spin the Disc",
@@ -82,18 +82,50 @@ var json = {
 	}]
 }; 
 
-//Sharing library
+/*
+ * Create sharing items that refer to sharing.js
+ */
+//Define objects
 var sharingService = require("sharing/sharing");
-
 var rightNavButton = Ti.UI.createButton({
-	id : 'rightNavButton',
-	title : 'rightNavButton',
-	top: "100dip"
+	id : 'rNav',
+	title : 'rNav',
+	left: "80dip"
 });
-$.scrollViewRozay.add(rightNavButton);
-
+var labelSingle = Ti.UI.createLabel({
+	text: "sharing.js",
+	left: "100dip"
+});
 var createdTextShareButton = sharingService.createTextShareButton(json);
-$.scrollViewRozay.add(createdTextShareButton);
-
 var createdImageShareButton = sharingService.createImageShareButton(json, rightNavButton);
-$.scrollViewRozay.add(createdImageShareButton);
+
+//Add objects
+$.sharingView.add(createdTextShareButton);
+$.sharingView.add(createdImageShareButton);
+$.sharingView.add(rightNavButton);
+$.sharingView.add(labelSingle);
+
+
+/*
+ * Create sharing items that refer to sharingNonNetwork.js
+ */
+//Define objects
+var sharingNonNetworkService = require("sharing/sharingNonNetwork");
+var rightNavButtonDual = Ti.UI.createButton({
+	id : 'rNavD',
+	title : 'rNavD',
+	left: "80dip"
+});
+var labelDual = Ti.UI.createLabel({
+	text: "sharingNonNetwork.js",
+	left: "100dip"
+});
+var passedTextShareButton = sharingNonNetworkService.initiateTextShareButton(json);
+var passedImageShareButton = sharingNonNetworkService.initiateImageShareButton(json, rightNavButton);
+
+//Add objects
+$.sharingNetworkView.add(passedTextShareButton);
+$.sharingNetworkView.add(passedImageShareButton);
+$.sharingNetworkView.add(rightNavButtonDual);
+$.sharingNetworkView.add(labelDual);
+
