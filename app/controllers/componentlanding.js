@@ -87,7 +87,6 @@ function createSection(posts) {
 
 function goToPostLandingPage(e){
 	var post = fetchPostById(e.source.itemId);
-	Ti.API.info(post.social_media_message);
 	var componentWindow = Alloy.createController('postlanding', post).getView();
 	Alloy.Globals.navController.open(componentWindow, post);
 }
