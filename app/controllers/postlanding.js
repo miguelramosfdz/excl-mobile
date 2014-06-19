@@ -99,12 +99,7 @@ function displayText(textContent) {
 }
 
 function addTableDataToTheView() {
-	var tableView = Ti.UI.createTableView({
-		backgroundColor : '#e6e6e6',
-		data : tableData
-	});
-
-	$.postlanding.add(tableView);
+	$.tableView.data = tableData;
 }
 
 function initializePage() {

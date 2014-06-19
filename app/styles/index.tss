@@ -9,8 +9,13 @@
 	height: '200dp'
 }
 
+"#scroller": {
+	height: '100%'
+}
+
 "#tableView": {
 	backgroundColor : 'white',
+	height: '100%'
 }
 
 ".headingRow": {
@@ -41,7 +46,7 @@
 
 ".infoRow": {
 	top: '10dp',
-	height: '145dp',
+	height: 'auto',
 	backgroundColor: 'cyan'
 }
 
@@ -52,7 +57,12 @@
 		fontSize : '15dp',
 		fontWeight : 'bold'
 	},
-	width: 'auto',
-	left: '20dp',
+	width: '90%',
+	height: '300dp',
+	left: '5%',
 	horizontalWrap: true,
+}
+
+"#navBar": {
+	top: 0
 }
