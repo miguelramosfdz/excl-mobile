@@ -2,7 +2,7 @@
 	<Window class="container" backgroundColor='white'>
 		<TableView id="tableView">
 			<TableViewRow>
-				<Widget src="navigationBar"/>
+				<Widget src="navigationBar" id="navBar"/>
 			</TableViewRow>
 		</TableView>
 	</Window>
