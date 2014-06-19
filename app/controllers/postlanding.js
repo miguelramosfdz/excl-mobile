@@ -129,5 +129,8 @@ function initializePage() {
 /*
  * Run startup commands
  */
-
+//establish connection to sharing functions
+setPathForLibDirectory("sharing/sharingNonNetwork");
+//Place objects
 initializePage();
+
