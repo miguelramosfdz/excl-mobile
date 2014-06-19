@@ -336,7 +336,7 @@ function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	}
 }
 
-setPathForLibDirectory('dataRetriever');
+setPathForLibDirectory('dataRetriever/dataRetriever');
 //These functions can be called by outside files:
 module.exports.createTextShareButton = createTextShareButton;
 module.exports.createImageShareButton = createImageShareButton;
