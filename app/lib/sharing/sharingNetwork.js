@@ -8,7 +8,11 @@
 function toggleImageShareButtonStatusInactive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to inactive/ready mode
 	shareImageButtonId.enabled = true;
-	shareImageButtonId.backgroundImage = "/images/iconCameraInactive.png";
+	if (OS_IOS){
+		shareImageButtonId.backgroundImage = "";
+	} else if (OS_ANDROID) {
+		shareImageButtonId.backgroundImage = "/android/icons/Action_Bar_Icons/holo_light/08_camera_camera/drawable-xhdpi/ic_action_camera.png";
+	}
 }
 
 /*
@@ -22,7 +26,8 @@ function createTextShareButton() {
 		height : "40dip",
 		width : "40dip",
 		left : "0",
-		top : "0"
+		top : "0",
+		backgroundColor: "#FFFFFF"
 	});
 	return shareTextButton;
 }
@@ -38,7 +43,8 @@ function createImageShareButton() {
 		height : "40dip",
 		width : "40dip",
 		left : "40dip",
-		top : "0"
+		top : "0",
+		backgroundColor: "#FFFFFF"
 	});
 	return shareImageButton;
 }
