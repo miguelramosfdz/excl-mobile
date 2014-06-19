@@ -23,7 +23,7 @@ function toggleTextShareButtonStatusActive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to active/clicked mode
 	shareTextButtonId.enabled = false;
 	if (OS_IOS){
-		shareTextButtonId.backgroundImage = "/iphone/iosShare.png";
+		shareTextButtonId.backgroundImage = "/iphone/icons/iosShare.png";
 	}
 }
 
@@ -31,7 +31,7 @@ function toggleTextShareButtonStatusInactive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to inactive/ready mode
 	shareTextButtonId.enabled = true;
 	if (OS_IOS){
-		shareTextButtonId.backgroundImage = "/iphone/iosShare.png";
+		shareTextButtonId.backgroundImage = "/iphone/icons/iosShare.png";
 	}
 }
 
@@ -40,7 +40,7 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	//Note: inactive version of this function lives in sharingNetwork.js
 	shareImageButtonId.enabled = false;
 	if (OS_IOS){
-		shareImageButtonId.backgroundImage = "/iphone/iOScamera.png";
+		shareImageButtonId.backgroundImage = "/iphone/icons/iOScamera.png";
 	}
 }
 
