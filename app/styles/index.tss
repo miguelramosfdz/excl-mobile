@@ -48,6 +48,7 @@
 ".infoRow": {
 	top: '10dp',
 	height: 'auto',
+	width: "100%",
 	backgroundColor: 'cyan'
 }
 
@@ -58,8 +59,11 @@
 		fontSize : '15dp',
 		fontWeight : 'bold'
 	},
-	width: '90%',
-	height: '300dp',
+	top: 0,
+	width: Ti.UI.SIZE, 
+	height: '250',
+	verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
+	editable: false,
 	left: '5%',
 	horizontalWrap: true,
 }
