@@ -127,7 +127,7 @@ function init() {
 			height : '100%'
 		});*/
 		for(i=0;i<tableData.length; i++)
-			$.tableView.add(tableData);
+			$.tableView.add(tableData[i]);
 		//$.componentlanding.add(tableView);
 
 	});

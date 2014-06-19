@@ -199,13 +199,11 @@ function populateWindow(json){
 	setExhibitText(exhibitText[0]);
 }
 
-//$.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
-//$.exhibits.title = "Exhibits";
-
 function openPostLanding(e){
 	var componentWindow = Alloy.createController('postlanding').getView();
 	Alloy.Globals.navController.open(componentWindow);
 }
+
 
 
 //var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
