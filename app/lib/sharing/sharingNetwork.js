@@ -165,13 +165,13 @@ function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
 			image : imageFilePath,
 			text : postTags
 		}, [{
-			// title : "Instagram",
-			// type : "open.instagram",
-			// image : "/images/instagram-256.png",
-			// callback : function(e) {
-			// openInstagram(imageFilePathInstagram, rightNavButton);
-			//Note: openInstagram lives in sharingNonNetwork
-		}]);
+			title : "Instagram",
+			type : "open.instagram",
+			image : "/images/instagram-256.png",
+			callback : function(e) {
+				openInstagram(imageFilePathInstagram, rightNavButton);
+				//Note: openInstagram lives in sharingNonNetwork
+			}}]);
 	} else {
 		alert("Photo sharing is not available on this device");
 	}
