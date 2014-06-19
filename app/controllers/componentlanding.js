@@ -37,7 +37,7 @@ function createRow() {
 	var row = Ti.UI.createTableViewRow({
 		height : '190dp',
 		top: '10dp',
-		backgroundColor : 'white',
+		backgroundColor : 'cyan',
 	});
 	return row;
 }
