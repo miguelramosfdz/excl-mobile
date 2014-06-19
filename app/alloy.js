@@ -16,4 +16,4 @@ Alloy.Globals.navController = new NavigationController();
 var dreamhostersAPI = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";
 var backupAPI = "http://tvt.redhale.com/wordpress/wp-json/v01/excl/museum/81";
 
-Alloy.Globals.rootWebServiceUrl = dreamhostersAPI;
+Alloy.Globals.rootWebServiceUrl = backupAPI;
