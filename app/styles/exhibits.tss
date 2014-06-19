@@ -13,10 +13,6 @@
 	backgroundColor : 'white',
 }
 
-"#exhibitsSwipeableView": {	
-	backgroundColor: 'cyan'
-}	// XML
-
 ".headingRow": {
 	height : '50dp',
 	backgroundColor : 'cyan',
