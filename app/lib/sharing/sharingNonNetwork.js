@@ -21,30 +21,20 @@ function setPathForLibDirectory(retrieveNetworkSharingLib) {
 function toggleTextShareButtonStatusActive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to active/clicked mode
 	shareTextButtonId.enabled = false;
-<<<<<<< HEAD
-	if (OS_IOS){
-		shareTextButtonId.backgroundImage = "/iphone/icons/iosShare.png";
-=======
 	if (OS_IOS) {
 		shareTextButtonId.backgroundImage = "/iphone/icons/iosShare.png";
 	} else if (OS_ANDROID) {
 		shareTextButtonId.backgroundImage = "/android/icons/Action_Bar_Icons/holo_light/01_core_share/drawable-xhdpi/ic_action_share_active.png";
->>>>>>> 6d716c295a69f2fbcf59381426f45267c92fa338
 	}
 }
 
 function toggleTextShareButtonStatusInactive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to inactive/ready mode
 	shareTextButtonId.enabled = true;
-<<<<<<< HEAD
-	if (OS_IOS){
-		shareTextButtonId.backgroundImage = "/iphone/icons/iosShare.png";
-=======
 	if (OS_IOS) {
 		shareTextButtonId.backgroundImage = "/iphone/icons/iosShare.png";
 	} else if (OS_ANDROID) {
 		shareTextButtonId.backgroundImage = "/android/icons/Action_Bar_Icons/holo_light/01_core_share/drawable-xhdpi/ic_action_share.png";
->>>>>>> 6d716c295a69f2fbcf59381426f45267c92fa338
 	}
 }
 
@@ -52,15 +42,10 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to active/clicked mode
 	//Note: inactive version of this function lives in sharingNetwork.js
 	shareImageButtonId.enabled = false;
-<<<<<<< HEAD
-	if (OS_IOS){
-		shareImageButtonId.backgroundImage = "/iphone/icons/iOScamera.png";
-=======
 	if (OS_IOS) {
 		shareImageButtonId.backgroundImage = "/iphone/icons/iOScamera.png";
 	} else if (OS_ANDROID) {
 		shareTextButtonId.backgroundImage = "/android/icons/Action_Bar_Icons/holo_light/08_camera_camera/drawable-xhdpi/ic_action_camera_active.png";
->>>>>>> 6d716c295a69f2fbcf59381426f45267c92fa338
 	}
 }
 
