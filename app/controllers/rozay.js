@@ -1,19 +1,5 @@
 var args = arguments[0] || {};
 
-// var URL = "https://www.youtube.com/watch?v=59jMFCMgRBQ";
-//
-// var video = Titanium.Media.createVideoPlayer({
-//     url : URL,
-//     fullscreen : false,
-//     autoplay : false,
-//   });
-// sound = Ti.Media.createAudioPlayer({
-// url: 'http://picosong.com/PY8h/'
-// });
-
-// $.post.add(video);
-// sound.play();
-
 //Define a button
 var playSoundBtn = Ti.UI.createButton({
 	width : 150, //define width

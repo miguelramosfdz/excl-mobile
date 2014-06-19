@@ -7,7 +7,7 @@
 		</View>
 		<ScrollView id="scrollViewRozay" class="scroll">
 			<Label class="title">Rick Ross says</Label>
-			<ImageView id="logo" class="logo" image="/RickRoss.jpg" />
+			<ImageView id="logo" class="logo" image="/images/dolphin.jpg" />
 			<Label class="description">"Welcome, Big Dawgs!"</Label>
 		</ScrollView>
 	</Window>
