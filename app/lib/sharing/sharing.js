@@ -170,15 +170,17 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 
+			/*
 			if (OS_IOS) {
 				//Instagram-specific code
-				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
+				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.igo';
 				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
 
 				if (!imageFileInstagram.exists()) {
 					imageFileInstagram.write(event.media);
 				}
 			}
+			*/
 
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
@@ -190,7 +192,7 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 				*/
 
 				//send file path to intent creation
-				sendIntentImage(json, imageFilePath, imageFileInstagram, shareImageButtonId, rightNavButton);
+				sendIntentImage(json, imageFilePath, event.media, shareImageButtonId, rightNavButton);
 			}
 		},
 		cancel : function() {
@@ -206,14 +208,14 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 /*
  * Calls the platform-specific sendIntent function for an image
  */
-function sendIntentImage(json, imageFilePath, imageFileInstagram, shareImageButtonId, rightNavButton) {
+function sendIntentImage(json, imageFilePath, imageInstagram, shareImageButtonId, rightNavButton) {
 	postTags = getPostTags(json);
 	//reenable share button
 	toggleImageShareButtonStatusInactive(shareImageButtonId);
 	if (OS_ANDROID) {
 		sendIntentImageAndroid(postTags, imageFilePath);
 	} else if (OS_IOS) {
-		sendIntentImageiOS(postTags, imageFilePath, imageFileInstagram, rightNavButton);
+		sendIntentImageiOS(postTags, imageFilePath, imageInstagram, rightNavButton);
 	} else {
 		alert("Unsupported platform (image sharing)");
 	}
@@ -237,7 +239,7 @@ function sendIntentImageAndroid(postTags, imageFilePath) {
 /*
  * Opens iOS share menu and sends prepopulated text content and image that was just taken
  */
-function sendIntentImageiOS(postTags, imageFilePath, imageFileInstagram, rightNavButton) {
+function sendIntentImageiOS(postTags, imageFilePath, imageInstagram, rightNavButton) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
@@ -250,7 +252,7 @@ function sendIntentImageiOS(postTags, imageFilePath, imageFileInstagram, rightNa
 			image : "/images/instagram-256.png",
 			//callback : openInstagram(imageFilePath)
 			callback : function(e) {
-				openInstagram(imageFileInstagram, rightNavButton);
+				openInstagram(imageInstagram, rightNavButton);
 			}
 		}]);
 	} else {
@@ -261,7 +263,7 @@ function sendIntentImageiOS(postTags, imageFilePath, imageFileInstagram, rightNa
 /*
  * iOS doesn't automatically deal with Instagram, so this function is called when the custom Instagram button is pressed in the iOS sharing menu
  */
-function openInstagram(imageFileInstagram, rightNavButton) {
+function openInstagram(imageInstagram, rightNavButton) {
 
 	/*
 	 alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
@@ -299,8 +301,19 @@ function openInstagram(imageFileInstagram, rightNavButton) {
 	 modal : true
 	 });
 	*/
-
+			
 	if (OS_IOS){
+		
+		alert("Made it into the insta function");
+		var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.igo';
+		var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
+		alert("imageFileInstagram created: imageFileInstagram.getNativePath");
+
+		if (!imageFileInstagram.exists()) {
+			imageFileInstagram.write(imageInstagram);
+		}
+		
+		alert("imageFileInstagram has content!");
 		imageFilePathInstagram = imageFileInstagram.getNativePath();
 		alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
 		
@@ -314,11 +327,9 @@ function openInstagram(imageFileInstagram, rightNavButton) {
 		win.open();
 		*/
 		
-		var docViewer = Ti.UI.iOS.createDocumentViewer({
-			url : '/images/alexbutton.png'
-		});
-		alert("Created docViewer"); //Doesn't get to this point
-		//docViewer.UTI = "com.instagram.exclusivegram";
+		var docViewer = Ti.UI.iOS.createDocumentViewer({ "url" : imageFilePathInstagram });
+		//alert("Created docViewer"); //Doesn't get to this point
+		docViewer.UTI = "com.instagram.exclusivegram";
 		docViewer.show({
 			view : rightNavButton,
 			animated : true
