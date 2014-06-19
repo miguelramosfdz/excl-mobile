@@ -85,7 +85,7 @@ var json = {
   }
 }; // Extract to required file*/
 
-var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";
+var url = Alloy.Globals.rootWebServiceUrl;
 
 
 var json;
