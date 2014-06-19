@@ -1,6 +1,7 @@
 
 ".container" : {
-  navBarHidden:true
+  navBarHidden:true,
+  fullscreen:true
 }
 
 "#scroller": {
