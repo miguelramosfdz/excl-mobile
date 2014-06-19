@@ -12,3 +12,5 @@
 
 var NavigationController = require('navigationService/NavigationController');
 Alloy.Globals.navController = new NavigationController();
+
+Alloy.Globals.rootWebServiceUrl = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";

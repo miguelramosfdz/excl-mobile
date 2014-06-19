@@ -4,13 +4,24 @@ var index;
 var numOfItems;
 var carouselView;
 var itemViews;
+var extraRotateFunc = false;
 
 function init(){
 	numOfItems = 0;
 	index = 0;
 	itemViews = [];
+	initArrows();
 	if(args)
 		Ti.API.info(args);
+};
+
+function initArrows(){
+	$.leftArrow.addEventListener('click', rotateLeft);
+	$.rightArrow.addEventListener('click', rotateRight);
+}
+
+$.addToRotateFunc = function(newHandler){
+	extraRotateFunc = newHandler;
 };
 
 $.addItem = function(item, onClick){
@@ -18,8 +29,13 @@ $.addItem = function(item, onClick){
 	itemViews[numOfItems].itemId = item.id;
 	itemViews[numOfItems].addEventListener("click", onClick);		
 	$.carouselView.add(itemViews[numOfItems]);
-	if(numOfItems!=0)
-		itemViews[numOfItems].opacity = 0;
+	if(numOfItems!=0){
+		itemViews[numOfItems].zIndex = 0;
+		$.leftArrow.zIndex = 2;
+		$.rightArrow.zIndex = 2;
+	}else{
+		itemViews[numOfItems].zIndex = 1;
+	}
 	numOfItems++;
 };
 
@@ -29,9 +45,13 @@ function createLabeledPicView(item){
 	var image = Ti.UI.createImageView({
 		height: '100%',
 		width: '100%',
-		itemId: item.id
+		itemId: item.id,
+		
 	});
-	image.image = item.image;
+	if( item.image)
+		image.image = item.image;
+	else
+		image.image = 'http://placehold.it/700x300/556270';
 	
 	itemContainer.add(image);
 	itemContainer.add(createTitleLabel(item.name));
@@ -66,23 +86,34 @@ function createTitleLabel(name, type){
 
 function swipeHandler(e){
 	if(numOfItems>0){
-		if(e.direction = 'right'){
-			itemViews[index].opacity = 0;
-			// Incrememnt Index
-			index= (index+1)%numOfItems;
-			// Show new exhibit and it's 
-			itemViews[index].opacity = 1;
-		}
-		else if(e.direction = 'left'){
-			itemViews[index].opacity = 0;
-			index--;
-			// Decrement index 
-			if(index=-1)
-				index=numOfItems -1;
-			// Show new Exhibit and it's contents
-			itemViews[index].opacity = 1;
-		}
+		if(e.direction = 'right')
+			rotateRight();
+		else if(e.direction = 'left')
+			rotateLeft();
 	}
+}
+
+function rotateLeft(){
+	
+	if(extraRotateFunc)
+		extraRotateFunc("left", index, numOfItems);
+	
+	itemViews[index].zIndex = 0;
+	index--;			// Decrement index 
+	
+	if(index== -1)
+		index=numOfItems -1;
+	itemViews[index].zIndex = 1;
+}
+
+function rotateRight(){
+	
+	if(extraRotateFunc)
+		extraRotateFunc("right", index, numOfItems);
+	
+	itemViews[index].zIndex = 0;
+	index= (index+1)%numOfItems;
+	itemViews[index].zIndex = 1;
 }
 
 init();

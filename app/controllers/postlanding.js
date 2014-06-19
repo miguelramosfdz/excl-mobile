@@ -5,8 +5,8 @@ var tableData = [];
 function createPlainRow(rowHeight) {
 	var row = Ti.UI.createTableViewRow({
 		height : rowHeight,
-		width: '100%',
-		top : '10dp',
+		width : '100%',
+		top : '15dp',
 	});
 	return row;
 }
@@ -16,13 +16,13 @@ function changeTitleOfThePage(name) {
 }
 
 function displaySocialMediaButtons(json) {
-	
+
 	var row = createPlainRow('auto');
 	if (json.text_sharing) {
 		var shareTextButton = sharingService.createTextShareButton(json);
 		row.add(shareTextButton);
 	}
-	if (json.image_sharing){
+	if (json.image_sharing) {
 		var shareImageButton = sharingService.createImageShareButton(json);
 		row.add(shareImageButton);
 	}
@@ -30,7 +30,7 @@ function displaySocialMediaButtons(json) {
 	tableData.push(row);
 }
 
-function displayImages(imageURL){
+function displayImages(imageURL) {
 	var row = createPlainRow('200dp');
 
 	imageView = Ti.UI.createImageView({
@@ -38,19 +38,30 @@ function displayImages(imageURL){
 		width : '100%',
 		height : '100%'
 
-	}); 
-	
+	});
+
 	row.add(imageView);
 	tableData.push(row);
 
 }
 
-function displayText(textContent){
+function displayVideo(videoUrl) {
+	var row = createPlainRow('200dp');
+	var video = Titanium.Media.createVideoPlayer({
+		url : videoUrl,
+		fullscreen : false,
+		autoplay : false,
+	});
+	row.add(video);
+	tableData.push(row);
+}
+
+function displayText(textContent) {
 	var row = createPlainRow('auto');
 	var textBody = Ti.UI.createLabel({
-		width: '100%',
-		left: '3%',
-		right: '3%',
+		width : '100%',
+		right : '3%',
+		left : '3%',
 		color : '#000000',
 		font : {
 			fontFamily : 'Arial',
@@ -73,24 +84,27 @@ function addTableDataToTheView() {
 	$.postlanding.add(tableView);
 }
 
-
-function jackOfAllTrades(){
+function jackOfAllTrades() {
 	changeTitleOfThePage(post_content.name);
-	for(var i=0; i<post_content.parts.length; i++){
+	for (var i = 0; i < post_content.parts.length; i++) {
 		Ti.API.info(post_content.parts[i].type);
-		
-		if(post_content.parts[i].type == "image"){
+
+		if (post_content.parts[i].type == "image") {
 			displayImages(post_content.parts[i].image);
 		}
-		
-		if(post_content.parts[i].type == "text"){
+
+		if (post_content.parts[i].type == "text") {
 			displayText(post_content.parts[i].body);
 		}
 		
-		if(i == 0){
+		if(post_content.parts[i].type == "video"){
+			displayVideo(post_content.parts[i].video);
+		}
+
+		if (i == 0) {
 			displaySocialMediaButtons(post_content);
 		}
-		
+
 	}
 	addTableDataToTheView();
 }

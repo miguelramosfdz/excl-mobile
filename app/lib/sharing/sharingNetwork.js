@@ -1,21 +1,18 @@
 /*
-* This file contains all of the Titanium network calls related to Sharing functionality
-*/
-
-// //associates retrieveSharing to sharing.js
-// var retrieveSharing;
-// function setPathForLibDirectory(retrieveSharingLib) {
-// if ( typeof Titanium == 'undefined') {
-// // this is required for jasmine-node to run via terminal
-// retrieveSharing = require("../../lib/" + retrieveSharingLib);
-// } else {
-// retrieveSharing = require(retrieveSharingLib);
-// }
-// }
+ * This page handles functionality with Sharing that involves Ti calls
+ */
 
 /*
- * Returns the button for text sharing
- * File that calls the function is responsible for placing it in the correct view
+ * Function to toggle activated buttons, changing the share button's enabled and backgroundimage status
+ */
+function toggleImageShareButtonStatusInactive(shareImageButtonId) {
+	//Changes background and enabled status of shareimagebutton to inactive/ready mode
+	shareImageButtonId.enabled = true;
+	shareImageButtonId.backgroundImage = "/images/iconCameraInactive.png";
+}
+
+/*
+ * Creates and returns the text sharing button to be used in initializeTextShareButton in sharingNonNetwork
  */
 function createTextShareButton() {
 	//button to open text sharing
@@ -30,22 +27,8 @@ function createTextShareButton() {
 	return shareTextButton;
 }
 
-//sends intent text based on os
-function sendIntentText(json, shareTextButtonId) {
-	postTags = getPostTags(json);
-	if (OS_ANDROID) {
-		sendIntentTextAndroid(postTags, shareTextButtonId);
-	} else if (OS_IOS) {
-		sendIntentTextiOS(postTags, shareTextButtonId);
-	} else {
-		alert("Unsupported platform");
-	}
-}
-
 /*
- * Returns the button for image sharing
- * When clicked, the openCamera function is called, which then calls sendIntentImage
- * File that calls the function is responsible for placing it in the correct view
+ * Creates and returns the image sharing button to be used in initializeImageShareButton in sharingNonNetwork
  */
 function createImageShareButton() {
 	//button to open photo sharing
@@ -63,26 +46,23 @@ function createImageShareButton() {
 /*
  * Opens the camera, saves the picture the user takes; calls sendIntent function
  */
-function openCamera(json, shareImageButtonId, rightNavButton) {
+function openCamera(postTagsString, shareImageButtonId, rightNavButton) {
 	//Holds all functionality related to sharing image through camera
 
 	//declare variable to store image file path
-	var imageFilePath;
+	var imageFilePath, imageFilePathInstagram;
 	//Save process for camera and updates view to display new picture
 	Titanium.Media.showCamera({
 		saveToPhotoGallery : true,
 		mediaTypes : Titanium.Media.MEDIA_TYPE_PHOTO,
 		success : function(event) {
-
 			//create image file and save name for future use
 			var fileName = 'excl' + new Date().getTime() + '.jpg';
-
 			//save file
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
-
+			//Instagram-specific code
 			if (OS_IOS) {
-				//Instagram-specific code
 				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
 				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
 
@@ -90,27 +70,27 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 					imageFileInstagram.write(event.media);
 				}
 			}
-
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
 				if (OS_IOS) {
 					imageFilePathInstagram = imageFileInstagram.nativePath;
 				}
-
 				//send file path to intent creation
 				if (OS_ANDROID) {
-					sendIntentImageAndroid(postTags, imageFilePath);
+					sendIntentImageAndroid(postTagsString, imageFilePath);
 				} else if (OS_IOS) {
-					sendIntentImageiOS(postTags, imageFilePath, rightNavButton);
+					sendIntentImageiOS(postTagsString, imageFilePath, rightNavButton);
 				} else {
 					alert("Unsupported platform (image sharing)");
 				}
+				//reenable sharing button to account for premature exiting of camera
+				toggleImageShareButtonStatusInactive(shareImageButtonId);
 			}
 		},
 		cancel : function() {
 			//reenable sharing button to account for premature exiting of camera
-			retrieveSharing.toggleImageShareButtonStatusInactive(shareImageButtonId);
+			toggleImageShareButtonStatusInactive(shareImageButtonId);
 		},
 		error : function(Error) {
 			alert("Camera not working");
@@ -185,20 +165,24 @@ function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
 			image : imageFilePath,
 			text : postTags
 		}, [{
-			title : "Instagram",
-			type : "open.instagram",
-			image : "/images/instagram-256.png",
-			//callback : openInstagram(imageFilePath)
-			callback : function(e) {
-				openInstagram(imageFilePathInstagram, rightNavButton);
-			}
+			// title : "Instagram",
+			// type : "open.instagram",
+			// image : "/images/instagram-256.png",
+			// callback : function(e) {
+			// openInstagram(imageFilePathInstagram, rightNavButton);
+			//Note: openInstagram lives in sharingNonNetwork
 		}]);
 	} else {
 		alert("Photo sharing is not available on this device");
 	}
 }
 
-///////////////////////////////////
-//set associating with sharing.js
-// setPathForLibDirectory('sharing/sharing');
-
+//Export functions for use by other files
+module.exports.createTextShareButton = createTextShareButton;
+module.exports.sendIntentText = sendIntentText;
+module.exports.createImageShareButton = createImageShareButton;
+module.exports.openCamera = openCamera;
+module.exports.sendIntentImageAndroid = sendIntentImageAndroid;
+module.exports.sendIntentImageiOS = sendIntentImageiOS;
+module.exports.openInstagramView = openInstagramView;
+module.exports.toggleImageShareButtonStatusInactive = toggleImageShareButtonStatusInactive; 
