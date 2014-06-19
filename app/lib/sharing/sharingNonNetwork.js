@@ -22,7 +22,7 @@ function toggleTextShareButtonStatusActive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to active/clicked mode
 	shareTextButtonId.enabled = false;
 	if (OS_IOS) {
-		shareTextButtonId.backgroundImage = "images/icons_ios/iosShare.png";
+		shareTextButtonId.backgroundImage = "images/icons_ios/iosShareGray.png";
 	} else if (OS_ANDROID) {
 		shareTextButtonId.backgroundImage = "/images/icons_android/ic_action_share_active.png";
 	}
@@ -44,7 +44,7 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	//Note: inactive version of this function lives in sharingNetwork.js
 	shareImageButtonId.enabled = false;
 	if (OS_IOS) {
-		shareImageButtonId.backgroundImage = "images/icons_ios/iOScamera.png";
+		shareImageButtonId.backgroundImage = "images/icons_ios/iOScameraGray.png";
 	} else if (OS_ANDROID) {
 		shareImageButtonId.backgroundImage = "/images/icons_android/ic_action_camera_active.png";
 	}
