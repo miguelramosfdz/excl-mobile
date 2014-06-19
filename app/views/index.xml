@@ -15,11 +15,6 @@
 				<Require type="view" src="component" id="componentTab"/>
 			</Window>
 		</Tab>
-		<Tab title="Rozay" icon="KS_nav_views.png">
-			<Window id="win" title="win">
-				<Require type="view" src="rozay" id="postTab"/>
-			</Window>
-		</Tab>
 		<Tab title="Navigation Demo" icon="KS_nav_views.png">
 			<Window id="navWindow" title="Navigation Demo">
 				<Require type="view" src="navdemo" id="navDemoTab"/>
