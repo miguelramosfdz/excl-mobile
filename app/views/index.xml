@@ -1,24 +1,20 @@
 <Alloy>
-	<TabGroup>
-		<Tab title="Visual Demo" icon="KS_nav_views.png">
-			<Window id="exhibitsWindow" title="Visual Demo">
-				<Require type="view" src="demoIndex" id="demoTab"/>
-			</Window>
-		</Tab>
-		<Tab title="Exhibit" icon="KS_nav_ui.png">
-			<Window id="exhibitWindow" title="Exhibit">
-				<Require type="view" src="exhibit" id="exhibitTab"/>
-			</Window>
-		</Tab>
-		<Tab title="Component" icon="KS_nav_views.png">
-			<Window id="componentWindow" title="Component">
-				<Require type="view" src="component" id="componentTab"/>
-			</Window>
-		</Tab>
-		<Tab title="Navigation Demo" icon="KS_nav_views.png">
-			<Window id="navWindow" title="Navigation Demo">
-				<Require type="view" src="navdemo" id="navDemoTab"/>
-			</Window>
-		</Tab>
-	</TabGroup>
+	<Window class="container" backgroundColor='white'>
+		<TableView id="tableView">
+			<TableViewRow class="largePictureRow" id="exhibitsSwipeableRow" >
+				<!--<View id="exhibitsSwipeableView" onClick="openPostLanding"></View>-->
+				<Widget src="itemCarousel" id="exhibitsSwipeableCarousel"/>
+			</TableViewRow>
+			<TableViewRow class="headingRow">
+				<Label id="componentHeading" class="headingText"></Label>
+			</TableViewRow>
+			<TableViewRow>
+				<ScrollView id="componentScrollView"></ScrollView>
+			</TableViewRow>
+			<TableViewRow class="infoRow">
+				<Label id="exhibitInfoLabel"></Label>
+			</TableViewRow>
+		</TableView>
+	</Window>
 </Alloy>
+
