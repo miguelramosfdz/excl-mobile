@@ -1,12 +1,26 @@
-var sharingService = require("sharing/sharing");
 var post_content = arguments[0] || {};
 var tableData = [];
+
+
+/*
+ * Defines path to sharingNetwork file
+ */
+var sharingService;
+function setPathForLibDirectory(retrieveNetworkSharingLib) {
+	if ( typeof Titanium == 'undefined') {
+		// this is required for jasmine-node to run via terminal
+		sharingService = require("../../lib/" + retrieveNetworkSharingLib);
+	} else {
+		sharingService = require(retrieveNetworkSharingLib);
+	}
+}
+
 
 function createPlainRow(rowHeight) {
 	var row = Ti.UI.createTableViewRow({
 		height : rowHeight,
 		width : '100%',
-		top : '15dp',
+		top : '15dip',
 	});
 	return row;
 }
@@ -15,15 +29,18 @@ function changeTitleOfThePage(name) {
 	$.postlanding.title = name;
 }
 
+/*
+ * Adds sharing buttons
+ */
 function displaySocialMediaButtons(json) {
 
 	var row = createPlainRow('auto');
 	if (json.text_sharing) {
-		var shareTextButton = sharingService.createTextShareButton(json);
+		var shareTextButton = sharingService.initiateTextShareButton(json);
 		row.add(shareTextButton);
 	}
 	if (json.image_sharing) {
-		var shareImageButton = sharingService.createImageShareButton(json);
+		var shareImageButton = sharingService.initiateImageShareButton(json);
 		row.add(shareImageButton);
 	}
 
@@ -31,7 +48,7 @@ function displaySocialMediaButtons(json) {
 }
 
 function displayImages(imageURL) {
-	var row = createPlainRow('200dp');
+	var row = createPlainRow('200dip');
 
 	imageView = Ti.UI.createImageView({
 		image : imageURL,
@@ -46,7 +63,7 @@ function displayImages(imageURL) {
 }
 
 function displayVideo(videoUrl) {
-	var row = createPlainRow('200dp');
+	var row = createPlainRow('200dip');
 	var video = Titanium.Media.createVideoPlayer({
 		url : videoUrl,
 		fullscreen : false,
@@ -84,7 +101,7 @@ function addTableDataToTheView() {
 	$.postlanding.add(tableView);
 }
 
-function jackOfAllTrades() {
+function initializePage() {
 	changeTitleOfThePage(post_content.name);
 	for (var i = 0; i < post_content.parts.length; i++) {
 		Ti.API.info(post_content.parts[i].type);
@@ -109,4 +126,8 @@ function jackOfAllTrades() {
 	addTableDataToTheView();
 }
 
-jackOfAllTrades();
+/*
+ * Run startup commands
+ */
+
+initializePage();

@@ -1,5 +1,5 @@
 var args = arguments[0] || {};
-var dataRetriever = require('dataRetriever');
+var dataRetriever = require('dataRetriever/dataRetriever');
 var url = Alloy.Globals.rootWebServiceUrl;
 
 var exhibitIndex = 0;

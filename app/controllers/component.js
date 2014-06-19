@@ -1,4 +1,4 @@
-var dataRetriever = require('dataRetriever');
+var dataRetriever = require('dataRetriever/dataRetriever');
 
 function init() {
 	$.containerView.layout = "vertical";
