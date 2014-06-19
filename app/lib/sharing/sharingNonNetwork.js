@@ -24,7 +24,7 @@ function toggleTextShareButtonStatusActive(shareTextButtonId) {
 	if (OS_IOS) {
 		shareTextButtonId.backgroundImage = "/iphone/icons/iosShare.png";
 	} else if (OS_ANDROID) {
-		shareTextButtonId.backgroundImage = "/android/icons/Action_Bar_Icons/holo_light/01_core_share/drawable-xhdpi/ic_action_share_active.png";
+		shareTextButtonId.backgroundImage = "images/icons_android/ic_action_share_active.png";
 	}
 }
 
@@ -34,7 +34,7 @@ function toggleTextShareButtonStatusInactive(shareTextButtonId) {
 	if (OS_IOS) {
 		shareTextButtonId.backgroundImage = "/iphone/icons/iosShare.png";
 	} else if (OS_ANDROID) {
-		shareTextButtonId.backgroundImage = "/android/icons/Action_Bar_Icons/holo_light/01_core_share/drawable-xhdpi/ic_action_share.png";
+		shareTextButtonId.backgroundImage = "images/icons_android/ic_action_share.png";
 
 	}
 }
@@ -46,7 +46,7 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	if (OS_IOS) {
 		shareImageButtonId.backgroundImage = "/iphone/icons/iOScamera.png";
 	} else if (OS_ANDROID) {
-		shareTextButtonId.backgroundImage = "/android/icons/Action_Bar_Icons/holo_light/08_camera_camera/drawable-xhdpi/ic_action_camera_active.png";
+		shareTextButtonId.backgroundImage = "images/icons_android/ic_action_camera_active.png";
 	}
 }
 
