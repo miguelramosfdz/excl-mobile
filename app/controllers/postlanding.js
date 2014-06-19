@@ -39,12 +39,12 @@ function changeTitleOfThePage(name) {
 function displaySocialMediaButtons(json) {
 
 	var row = createPlainRow('auto');
-	if (json.text_sharing) {
+	if (json.text_sharing && Alloy.Globals.navController.kioskMode == false) {
 		var shareTextButton = sharingService.initiateTextShareButton(json);
 		shareTextButton.left = "80%";
 		row.add(shareTextButton);
 	}
-	if (json.image_sharing) {
+	if (json.image_sharing && Alloy.Globals.navController.kioskMode == false) {
 		var shareImageButton = sharingService.initiateImageShareButton(json);
 		shareTextButton.left = "70%";
 		row.add(shareImageButton);
