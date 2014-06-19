@@ -170,7 +170,6 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
 
-			/*
 			if (OS_IOS) {
 				//Instagram-specific code
 				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.igo';
@@ -180,7 +179,6 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 					imageFileInstagram.write(event.media);
 				}
 			}
-			*/
 
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
@@ -301,19 +299,20 @@ function openInstagram(imageInstagram, rightNavButton) {
 	 modal : true
 	 });
 	*/
+
+			if (OS_IOS) {
+				//Instagram-specific code
+				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.igo';
+				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
+
+				if (!imageFileInstagram.exists()) {
+					imageFileInstagram.write(event.media);
+				}
+			}
 			
 	if (OS_IOS){
 		
-		alert("Made it into the insta function");
-		var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.igo';
-		var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
-		alert("imageFileInstagram created: imageFileInstagram.getNativePath");
-
-		if (!imageFileInstagram.exists()) {
-			imageFileInstagram.write(imageInstagram);
-		}
 		
-		alert("imageFileInstagram has content!");
 		imageFilePathInstagram = imageFileInstagram.getNativePath();
 		alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
 		
