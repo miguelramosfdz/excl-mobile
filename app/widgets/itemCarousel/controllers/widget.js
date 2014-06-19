@@ -4,7 +4,7 @@ var index;
 var numOfItems;
 var carouselView;
 var itemViews;
-var extraSwipeFunc = false;
+var extraRotateFunc = false;
 
 function init(){
 	numOfItems = 0;
@@ -20,8 +20,8 @@ function initArrows(){
 	$.rightArrow.addEventListener('click', rotateRight);
 }
 
-$.addToSwipeHandler = function(newHandler){
-	extraSwipeFunc = newHandler;
+$.addToRotateFunc = function(newHandler){
+	extraRotateFunc = newHandler;
 };
 
 $.addItem = function(item, onClick){
@@ -33,7 +33,8 @@ $.addItem = function(item, onClick){
 		itemViews[numOfItems].zIndex = 0;
 		$.leftArrow.zIndex = 2;
 		$.rightArrow.zIndex = 2;
-		
+	}else{
+		itemViews[numOfItems].zIndex = 1;
 	}
 	numOfItems++;
 };
@@ -45,11 +46,12 @@ function createLabeledPicView(item){
 		height: '100%',
 		width: '100%',
 		itemId: item.id,
-		image: item.image,
-		defatutImage: 'http://placehold.it/700x300/556270'
 		
 	});
-	//image.image = item.image;
+	if( item.image)
+		image.image = item.image;
+	else
+		image.image = 'http://placehold.it/700x300/556270';
 	
 	itemContainer.add(image);
 	itemContainer.add(createTitleLabel(item.name));
@@ -83,9 +85,6 @@ function createTitleLabel(name, type){
 }
 
 function swipeHandler(e){
-	//if(extraSwipeFunc)
-	//	extraSwipeFunc(e);
-		
 	if(numOfItems>0){
 		if(e.direction = 'right')
 			rotateRight();
@@ -95,6 +94,10 @@ function swipeHandler(e){
 }
 
 function rotateLeft(){
+	
+	if(extraRotateFunc)
+		extraRotateFunc("left", index, numOfItems);
+	
 	itemViews[index].zIndex = 0;
 	index--;			// Decrement index 
 	
@@ -104,6 +107,10 @@ function rotateLeft(){
 }
 
 function rotateRight(){
+	
+	if(extraRotateFunc)
+		extraRotateFunc("right", index, numOfItems);
+	
 	itemViews[index].zIndex = 0;
 	index= (index+1)%numOfItems;
 	itemViews[index].zIndex = 1;

@@ -5,6 +5,18 @@
 "Label" : {
 	
 },
+".sharingView":{
+	width: Ti.UI.SIZE,
+	height: "25%",
+	top: "0",
+	layout: "horizontal"
+}
+".sharingNetworkView":{
+	width: Ti.UI.SIZE,
+	height: "25%",
+	top: "25%",
+	layout: "horizontal"
+}
 ".title": {
 	width: Ti.UI.SIZE,
     height: Ti.UI.SIZE,
@@ -32,6 +44,7 @@
 	contentHeight : 'auto',
 	showVerticalScrollIndicator : true,
 	showHorizontalScrollIndicator : true,
-	height : '100%',
-	width : '100%'
+	height : '50%',
+	width : '100%',
+	top: "50%"
 }

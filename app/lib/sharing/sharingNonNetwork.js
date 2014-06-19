@@ -1,7 +1,11 @@
 /*
- * This page contains everything that is left with sharing
+ * This page handles functionality with Sharing that does not involve Ti calls
  */
 
+
+/*
+ * Defines path to sharingNetwork file
+ */
 var retrieveNetworkSharing;
 function setPathForLibDirectory(retrieveNetworkSharingLib) {
 	if ( typeof Titanium == 'undefined') {
@@ -11,8 +15,6 @@ function setPathForLibDirectory(retrieveNetworkSharingLib) {
 		retrieveNetworkSharing = require(retrieveNetworkSharingLib);
 	}
 }
-
-var imageFilePathInstagram = "";
 
 /*
  * Functions to toggle activated buttons, changing the share buttons' enabled and backgroundimage status
@@ -31,50 +33,61 @@ function toggleTextShareButtonStatusInactive(shareTextButtonId) {
 
 function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to active/clicked mode
+	//Note: inactive version of this function lives in sharingNetwork.js
 	shareImageButtonId.enabled = false;
 	shareImageButtonId.backgroundImage = "/images/iconCameraActive.png";
 }
 
-function toggleImageShareButtonStatusInactive(shareImageButtonId) {
-	//Changes background and enabled status of shareimagebutton to inactive/ready mode
-	shareImageButtonId.enabled = true;
-	shareImageButtonId.backgroundImage = "/images/iconCameraInactive.png";
-}
-
 /*
- * Returns the button for text sharing
+ * Sets properties of the text sharing button as created by sharingNetwork and returns the button
  * File that calls the function is responsible for placing it in the correct view
  */
-function createTextShareButton(json) {
+function initiateTextShareButton(json) {
 	//button to open text sharing
 	var shareTextButton = retrieveNetworkSharing.createTextShareButton();	
 	toggleTextShareButtonStatusInactive(shareTextButton);
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
-		//toggleTextShareButtonStatusActive(shareTextButton);
+		//Disable share button
 		toggleTextShareButtonStatusActive(shareTextButton);
-		sendIntentText(json, shareTextButton);
+		//retrieve json tags
+		postTags = getPostTags(json);
+		//initialize intent creation
+		initiateIntentText(postTags, shareTextButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareTextButton);
 	return shareTextButton;
 }
 
 /*
- * Returns the button for image sharing
- * When clicked, the openCamera function is called, which then calls sendIntentImage
+ * Initializes camera operation
+ */
+function initiateCamera (json, shareImageButtonId, rightNavButton) {
+	//retrieve tags from json
+	var postTags = getPostTags(json);
+	retrieveNetworkSharing.openCamera(postTags, shareImageButtonId, rightNavButton);
+}
+
+
+/*
+ * Sets properties of the image sharing button as created by sharingNetwork and returns the button
+ * The button points towards the openCamera function, which initializes the image intent. Both live in sharingNetwork
  * File that calls the function is responsible for placing it in the correct view
  */
-function createImageShareButton(json, rightNavButton) {
+function initiateImageShareButton(json, rightNavButton) {
 	//button to open photo sharing
 	var shareImageButton = retrieveNetworkSharing.createImageShareButton();
-	toggleImageShareButtonStatusInactive(shareImageButton);
+	retrieveNetworkSharing.toggleImageShareButtonStatusInactive(shareImageButton);
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
+		//disable camera button
 		toggleImageShareButtonStatusActive(shareImageButton);
-		retrieveNetworkSharing.openCamera(json, shareImageButton, rightNavButton);
+		//retrieve json tags
+		var postTags = getPostTags(json);
+		//open camera and send intents
+		retrieveNetworkSharing.openCamera(postTags, shareImageButton, rightNavButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
-
 	return shareImageButton;
 }
 
@@ -84,80 +97,30 @@ function createImageShareButton(json, rightNavButton) {
 function getPostTags(json) {
 	//Retrieve social media message, which contains social media tags. This is used for text and image intents/iOS equivalents.
 	postTags = json.social_media_message;
-
 	return postTags;
 }
 
 /*
- * Calls the platform-appropriate sendIntentText function
+ * Points towards the platform specific text intent creator in sharingNetwork then toggles the text sharing button's active status
+ * Note: equivalent platform chooser is embedded in openCamera, which lives in sharingNetwork
  */
-function sendIntentText(json, shareTextButtonId) {
-	retrieveNetworkSharing.sendIntentText(json, shareTextButtonId);
+function initiateIntentText(postTagsString, shareTextButtonId) {
+	//Choose appropriate intent creator
+	if (OS_ANDROID) {
+		retrieveNetworkSharing.sendIntentTextAndroid(postTags, shareTextButtonId);
+	} else if (OS_IOS) {
+		retrieveNetworkSharing.sendIntentTextiOS(postTags, shareTextButtonId);
+	} else {
+		alert("Unsupported platform");
+	}
 	//Reenable share text button
 	toggleTextShareButtonStatusInactive(shareTextButtonId);
 }
-
-
-
-// /*
- // * Calls the platform-specific sendIntent function for an image
- // */
-// function sendIntentImage(json, imageFilePath, shareImageButtonId, rightNavButton) {
-	// postTags = getPostTags(json);
-	// //reenable share button
-	// toggleImageShareButtonStatusInactive(shareImageButtonId);
-	// if (OS_ANDROID) {
-		// sendIntentImageAndroid(postTags, imageFilePath);
-	// } else if (OS_IOS) {
-		// sendIntentImageiOS(postTags, imageFilePath, rightNavButton);
-	// } else {
-		// alert("Unsupported platform (image sharing)");
-	// }
-// }
-
-
 
 /*
  * iOS doesn't automatically deal with Instagram, so this function is called when the custom Instagram button is pressed in the iOS sharing menu
  */
 function openInstagram(imageFilePathInstagram, rightNavButton) {
-
-	/*
-	 alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
-	 var docviewer = Ti.UI.iOS.createDocumentViewer({
-	 url : "/images/alexbutton.png"
-	 });
-	 //Testing a sample image
-	 alert("Created docviewer");
-	 var annotationObj = new Object();
-	 annotationObj.InstagramCaption = "Caption sample";
-
-	 docviewer.UTI = "com.instagram.exclusivegram";
-	 // docviewer.annotation = annotationObj.InstagramCaption;
-
-	 docviewer.show();
-	 alert("Showed docviewer");
-	 */
-
-	/*//Use iPhone URL schemes to open app- doesn't reliably open to a specific page, haven't gotten the caption to work
-	 //Doesn't seem like there's an easy way to upload a recently taken photo
-	 var instagramURL = "instagram://camera&caption=hello%20world";
-	 if (Titanium.Platform.canOpenURL(instagramURL)){
-	 Titanium.Platform.openURL(instagramURL);
-	 }
-	 */
-
-	/*
-	 //WebView attempt
-	 instaWebView = Titanium.UI.createWebView({
-	 url : 'www.instagram.com'
-	 });
-	 var instaWindow = Titanium.UI.createWindow();
-	 instaWindow.add(instaWebView);
-	 instaWindow.open({
-	 modal : true
-	 });
-	 */
 
 	alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
 
@@ -170,7 +133,7 @@ function openInstagram(imageFilePathInstagram, rightNavButton) {
 }
 
 /*
- * If the background image is present, the title is unnecessary
+ * If the background image is present, the title is unnecessary and removed
  */
 function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	//removes the title field of a button if a background image is detected
@@ -179,7 +142,8 @@ function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	}
 }
 
+//Set path to sharingNetwork
 setPathForLibDirectory('sharing/sharingNetwork');
-//These functions can be called by outside files:
-module.exports.createTextShareButton = createTextShareButton;
-module.exports.createImageShareButton = createImageShareButton;
+//Export local functions
+module.exports.initiateTextShareButton = initiateTextShareButton;
+module.exports.initiateImageShareButton = initiateImageShareButton;

@@ -3,7 +3,7 @@ function back(e){
 }
 
 function menu(e){
-	alert("menue");	
+	Alloy.Globals.navController.home();	
 }
 
 

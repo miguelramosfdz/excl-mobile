@@ -78,7 +78,7 @@ function createImageShareButton(json, rightNavButton) {
 		text : "Camera",
 		height : "40dip",
 		width : "40dip",
-		left : "70dip",
+		left : "50dip",
 		top : "0"
 	});
 	toggleImageShareButtonStatusInactive(shareImageButton);
