@@ -1,7 +1,7 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
 var componentID = args;
-var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13/component/" + componentID;
+var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
 //var url = "http://www.mocky.io/v2/53a1e425b4ac142006024b75";
 var allSections = [];
@@ -87,7 +87,6 @@ function createSection(posts) {
 
 function goToPostLandingPage(e){
 	var post = fetchPostById(e.source.itemId);
-	Ti.API.info(post.social_media_message);
 	var componentWindow = Alloy.createController('postlanding', post).getView();
 	Alloy.Globals.navController.open(componentWindow, post);
 }
