@@ -22,20 +22,26 @@ function setPathForLibDirectory(retrieveNetworkSharingLib) {
 function toggleTextShareButtonStatusActive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to active/clicked mode
 	shareTextButtonId.enabled = false;
-	shareTextButtonId.backgroundImage = "/images/iconShareActive.png";
+	if (OS_IOS){
+		shareTextButtonId.backgroundImage = "/iphone/iosShare.png";
+	}
 }
 
 function toggleTextShareButtonStatusInactive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to inactive/ready mode
 	shareTextButtonId.enabled = true;
-	shareTextButtonId.backgroundImage = "/images/iconShareInactive.png";
+	if (OS_IOS){
+		shareTextButtonId.backgroundImage = "/iphone/iosShare.png";
+	}
 }
 
 function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to active/clicked mode
 	//Note: inactive version of this function lives in sharingNetwork.js
 	shareImageButtonId.enabled = false;
-	shareImageButtonId.backgroundImage = "/images/iconCameraActive.png";
+	if (OS_IOS){
+		shareImageButtonId.backgroundImage = "/iphone/iOScamera.png";
+	}
 }
 
 /*

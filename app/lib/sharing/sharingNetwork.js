@@ -8,7 +8,9 @@
 function toggleImageShareButtonStatusInactive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to inactive/ready mode
 	shareImageButtonId.enabled = true;
-	shareImageButtonId.backgroundImage = "/images/iconCameraInactive.png";
+	if (OS_IOS){
+		shareImageButtonId.backgroundImage = "/iphone/iOScamera.png";
+	}
 }
 
 /*
