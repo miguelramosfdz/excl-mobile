@@ -1,5 +1,0 @@
-<Alloy>
-	<View class="container">
-		<Button onClick="onClick">Begin Demo!</Button>
-	</View>
-</Alloy>
