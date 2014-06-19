@@ -8,6 +8,7 @@ var allSections = [];
 var sectionCarousels = [];
 var tableData = [];
 var sectionsThatAlreadyExist = [];
+var allPosts;
 
 function changeTitleOfThePage(name) {
 	$.componentlanding.title = name;
@@ -85,14 +86,26 @@ function createSection(posts) {
 }
 
 function goToPostLandingPage(e){
-	var componentWindow = Alloy.createController('postlanding').getView();
-	Alloy.Globals.navController.open(componentWindow, e.source.itemId);
+	var post = fetchPostById(e.source.itemId);
+	Ti.API.info(post.social_media_message);
+	var componentWindow = Alloy.createController('postlanding', post).getView();
+	Alloy.Globals.navController.open(componentWindow, post);
+}
+
+function fetchPostById(postID){
+	var toReturn;
+	for(var i=0; i<allPosts.length; i++){
+		if(allPosts[i].id == postID){
+			toReturn = allPosts[i];
+		}
+	}
+	return toReturn;
 }
 
 function init() {
 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 		changeTitleOfThePage(returnedData.data.component.name);
-		var allPosts = returnedData.data.component.posts;
+		allPosts = returnedData.data.component.posts;
 
 		for (var i = 0; i < allPosts.length; i++) {
 			if (allPosts[i].section) {
