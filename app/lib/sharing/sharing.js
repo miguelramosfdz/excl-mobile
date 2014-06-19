@@ -172,7 +172,7 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 
 			if (OS_IOS) {
 				//Instagram-specific code
-				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.jpg';
+				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.ig';
 				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
 
 				if (!imageFileInstagram.exists()) {
@@ -184,7 +184,7 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				imageFilePath = imageFile.nativePath;
 				/*
-				if (OS_IOS) {
+				if (OS_IOS) { //Moved this code to openInstagram function
 					imageFilePathInstagram = imageFileInstagram.nativePath;
 				}
 				*/
@@ -266,7 +266,7 @@ function openInstagram(imageFileInstagram, rightNavButton) {
 	/*
 	 alert("imageFilePathInstagram in openInstagram: " + imageFilePathInstagram);
 	 var docviewer = Ti.UI.iOS.createDocumentViewer({
-	 url : "/images/alexbutton.png"
+	 url : "/images/alexbutton.png" //Test file path
 	 });
 	 //Testing a sample image
 	 alert("Created docviewer");
@@ -304,21 +304,21 @@ function openInstagram(imageFileInstagram, rightNavButton) {
 		imageFilePathInstagram = imageFileInstagram.getNativePath();
 		alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
 		
+		/* //Attempted to open the same image in an image view to see if the file path was the issue; 
 		var imageView = Ti.UI.createImageView({
 			image: imageFilePathInstagram
 		});
-		
 		alert("Image view created");
-		
 		var win = Ti.UI.createWindow({ modal : true });
 		win.add(imageView);
 		win.open();
+		*/
 		
 		var docViewer = Ti.UI.iPad.createDocumentViewer({
 			url : imageFilePathInstagram
 		});
-		alert("Created docViewer");
-		//docViewer.UTI = "com.instagram.exclusivegram";
+		alert("Created docViewer"); //Doesn't get to this point
+		docViewer.UTI = "com.instagram.exclusivegram";
 		docViewer.show({
 			view : rightNavButton,
 			animated : true
