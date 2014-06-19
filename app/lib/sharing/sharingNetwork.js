@@ -11,7 +11,7 @@ function toggleImageShareButtonStatusInactive(shareImageButtonId) {
 	if (OS_IOS){
 		shareImageButtonId.backgroundImage = "/iphone/icons/iOScamera.png";
 	} else if (OS_ANDROID) {
-		shareImageButtonId.backgroundImage = "/android/icons/Action_Bar_Icons/holo_light/08_camera_camera/drawable-xhdpi/ic_action_camera.png";
+		shareImageButtonId.backgroundImage = "icons/icons_android/ic_action_camera.png";
 	}
 }
 
