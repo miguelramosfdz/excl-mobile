@@ -314,11 +314,11 @@ function openInstagram(imageFileInstagram, rightNavButton) {
 		win.open();
 		*/
 		
-		var docViewer = Ti.UI.iPad.createDocumentViewer({
-			url : imageFilePathInstagram
+		var docViewer = Ti.UI.iOS.createDocumentViewer({
+			url : '/images/alexbutton.png'
 		});
 		alert("Created docViewer"); //Doesn't get to this point
-		docViewer.UTI = "com.instagram.exclusivegram";
+		//docViewer.UTI = "com.instagram.exclusivegram";
 		docViewer.show({
 			view : rightNavButton,
 			animated : true
