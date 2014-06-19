@@ -49,8 +49,6 @@ var sound = Ti.Media.createSound({
 });
 
 
-
-
 var json = {
 	id : 41,
 	name : "Spin the Disc",

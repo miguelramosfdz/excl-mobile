@@ -172,7 +172,7 @@ function openCamera(json, shareImageButtonId, rightNavButton) {
 
 			if (OS_IOS) {
 				//Instagram-specific code
-				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.igo';
+				var fileNameInstagram = 'excl' + new Date().getTime() + '_temp.jpg';
 				var imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
 
 				if (!imageFileInstagram.exists()) {
@@ -300,16 +300,30 @@ function openInstagram(imageFileInstagram, rightNavButton) {
 	 });
 	*/
 
-	alert("About to try opening docViewer. imageFileInstagram: " + imageFileInstagram.getNativePath());
-
-	var docViewer = Ti.UI.iOS.createDocumentViewer({
-		url : imageFileInstagram.getNativePath()
-	});
-	docViewer.UTI = "com.instagram.exclusivegram";
-	docViewer.show({
-		view : rightNavButton,
-		animated : true
-	});
+	if (OS_IOS){
+		imageFilePathInstagram = imageFileInstagram.getNativePath();
+		alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
+		
+		var imageView = Ti.UI.createImageView({
+			image: imageFilePathInstagram
+		});
+		
+		alert("Image view created");
+		
+		var win = Ti.UI.createWindow({ modal : true });
+		win.add(imageView);
+		win.open();
+		
+		var docViewer = Ti.UI.iPad.createDocumentViewer({
+			url : imageFilePathInstagram
+		});
+		alert("Created docViewer");
+		//docViewer.UTI = "com.instagram.exclusivegram";
+		docViewer.show({
+			view : rightNavButton,
+			animated : true
+		});
+	}
 }
 
 /*
