@@ -72,6 +72,7 @@ function createTitleLabel(name, type){
 		top: 0,
 		left: 10,
 		color: 'white',
+		horizontalWrap: false,
 		font: {
 			fontFamily : 'Arial',
 			fontSize : '25dp',
