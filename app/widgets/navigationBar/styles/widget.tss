@@ -1,6 +1,7 @@
 "#navBar": {
-	backgroundColor: 'blue',
-	height: '40dp',
+	width: Ti.UI.FILL,
+	height: "40dp",
+	backgroundColor: '#FF6600'
 },
 
 "#back": {
@@ -11,7 +12,7 @@
 		fontSize: 18,
 		fontWeight: 'bold'
 	},
-}
+},
 
 "#flyout": {
 	backgroundColor: 'yellow',
