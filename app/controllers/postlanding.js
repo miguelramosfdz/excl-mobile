@@ -27,9 +27,9 @@ function createPlainRow(rowHeight) {
 
 function changeTitleOfThePage(name) {
 	if (name = "") {
-		$.postlanding.title = name;
-	} else {
 		$.postlanding.title = "[Title]";
+	} else {
+		$.postlanding.title = name;
 	}
 }
 
