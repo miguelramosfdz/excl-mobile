@@ -26,7 +26,11 @@ function createPlainRow(rowHeight) {
 }
 
 function changeTitleOfThePage(name) {
-	$.postlanding.title = name;
+	if (name = "") {
+		$.postlanding.title = name;
+	} else {
+		$.postlanding.title = "[Title]";
+	}
 }
 
 /*
@@ -37,10 +41,12 @@ function displaySocialMediaButtons(json) {
 	var row = createPlainRow('auto');
 	if (json.text_sharing) {
 		var shareTextButton = sharingService.initiateTextShareButton(json);
+		shareTextButton.left = "80%";
 		row.add(shareTextButton);
 	}
 	if (json.image_sharing) {
 		var shareImageButton = sharingService.initiateImageShareButton(json);
+		shareTextButton.left = "70%";
 		row.add(shareImageButton);
 	}
 
