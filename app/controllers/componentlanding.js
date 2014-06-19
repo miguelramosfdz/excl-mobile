@@ -119,14 +119,16 @@ function init() {
 			}
 		}
 		Ti.API.info(sectionsThatAlreadyExist);
-
+/*
 		var tableView = Ti.UI.createTableView({//has to be under everything to work
 			backgroundColor : 'white',
 			data : tableData,
 			width : '100%',
 			height : '100%'
-		});
-		$.componentlanding.add(tableView);
+		});*/
+		for(i=0;i<tableData.length; i++)
+			$.tableView.add(tableData);
+		//$.componentlanding.add(tableView);
 
 	});
 }
