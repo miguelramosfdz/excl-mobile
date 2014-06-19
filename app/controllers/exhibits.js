@@ -93,6 +93,7 @@ var exhibitIndex = 0;
 var numOfExhibits;
 var exhibitViews = [];
 var componentsInExhibit = [];
+var exhibitText = [];
 
 /*
 var museum = Alloy.createModel("museum");
@@ -120,15 +121,12 @@ function openExhibitInfo(e){
 }
 
 function createExhibitsCarousel(exhibits){
-	$.exhibitsSwipeableCarousel.addToSwipeHandler(swipeHandler);
-	for(i = exhibits.length -1 ; i >= 0; i--){
-		//exhibitViews[i] = createLabeledPicView(exhibits[i], '25dp');		// will later say 'exhibit', and will create the pic item of that class
+	$.exhibitsSwipeableCarousel.addToRotateFunc(rotateHandler);
+	for(i = 0 ; i < exhibits.length; i++){
+		exhibitText[i] = exhibits[i].description;
 		$.exhibitsSwipeableCarousel.addItem(exhibits[i], openExhibitInfo);
-		//exhibitViews[i].hide();
+		numOfExhibits++;
 	}
-	//exhibitViews[0].show();
-	
-	//$.exhibitsSwipeable
 }
 
 // Extract into a service in the Lib folder -> make into a widget when we write this in XML
@@ -208,21 +206,22 @@ function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
 } 
 
-function swipeHandler(e){
+function rotateHandler(direction, index, numOfItems){
 	if(numOfExhibits>0){
 		exhibitIndex = index;
-		if(e.direction = "right"){
+		numOfExhibits = numOfItems;
+		if(direction = "right"){
 			removeComponents(exhibitIndex);		// Incrememnt Index
 			exhibitIndex= (exhibitIndex+1)%numOfExhibits;
 			showComponents(exhibitIndex);
-			setExhibitText(json.data.museum.exhibits[exhibitIndex].description);
-		}else if(e.direction = "left"){
+			setExhibitText(exhibitText[exhibitIndex]);
+		}else if(direction = "left"){
 			removeComponents(exhibitIndex);
 			exhibitIndex--;						// Decrement index 
 			if(exhibitIndex=-1)
 				exhibitIndex=numOfExhibits -1;
 			showcomponents(exhibitIndex);
-			setExhibitText(json.data.museum.exhibits[exhibitIndex].description);
+			setExhibitText(exhibitText[exhibitIndex]);
 		}
 	}
 }
@@ -281,8 +280,7 @@ function populateWindow(json){
 	createExhibitsCarousel(json.data.museum.exhibits);
 	createComponentHeading("Check out our Stations");
 	createComponentsScrollView(json.data.museum.exhibits);
-	
-	setExhibitText(json.data.museum.exhibits[0].description);
+	setExhibitText(exhibitText[0]);
 }
 
 //$.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
