@@ -1,4 +1,9 @@
 <Alloy>
 	<Window class="container" backgroundColor='white'>
+		<TableView id="tableView">
+			<TableViewRow>
+				<Widget src="navigationBar"/>
+			</TableViewRow>
+		</TableView>
 	</Window>
 </Alloy>
