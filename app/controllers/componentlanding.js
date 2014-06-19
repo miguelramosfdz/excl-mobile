@@ -1,5 +1,5 @@
 var args = arguments[0] || {};
-var dataRetriever = require('dataRetriever');
+var dataRetriever = require('dataRetriever/dataRetriever');
 var componentID = args;
 var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 

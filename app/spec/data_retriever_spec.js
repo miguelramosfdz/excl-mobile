@@ -1,4 +1,4 @@
-var dataRetriever = require('../lib/dataRetriever');
+var dataRetriever = require('../lib/dataRetriever/dataRetriever');
 var apiCalls = require('../lib/customCalls/apiCalls');
 var networkCalls = require('../lib/customCalls/networkCalls');
 var parseCalls = require('../lib/customCalls/parseCalls');
