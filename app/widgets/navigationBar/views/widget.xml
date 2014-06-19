@@ -1,7 +1,21 @@
 <Alloy>
 	<View id="navBar">
-		<Button id="back" class="nav" onClick="back">back</Button>
-		<Label id="pageTitle" class="nav"/>
-		<Button id="flyout" class="nav" onClick="menu">menu</Button>
+		<View id="back" onClick="back" class="coloredGrey">
+			<!-- <ImageView image="/images/dark/appbar.arrow.left.png" class="backButtonStyle"></ImageView> -->
+			<ImageView image="/images/light/appbar.arrow.left.png" class="backButtonStyle"></ImageView>
+			<!-- <Label class="backLabelStyle">Back</Label> -->
+		</View>
+		
+		
+		<View class="coloredWhite">
+			<Label id="pageTitle" class="pageTitleStyle">Children's Museum Of Houston</Label>
+		</View>
+		
+		<View id="flyout" onClick="menu" class="coloredGrey">
+			<!-- <ImageView image="/images/dark/appbar.home.empty.png" class="menuButtonStyle"></ImageView> -->
+			<ImageView image="/images/light/appbar.home.empty.png" class="menuButtonStyle"></ImageView>
+			<!-- <Label class="menuLabelStyle">Home</Label> -->
+		</View>
+
 	</View>
 </Alloy>
