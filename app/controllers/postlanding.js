@@ -31,13 +31,11 @@ function displaySocialMediaButtons(json) {
 	}
 	if (json.text_sharing) {
 		// display shareText button
-		alert("shareTextButton will display");
 		var shareTextButton = sharingService.createTextShareButton(json);
 		row.add(shareTextButton);
 	}
 	if (json.image_sharing){
 		//display shareImage button
-		alert("shareImageButton will display");
 		var shareImageButton = sharingService.createImageShareButton(json);
 		row.add(shareImageButton);
 	}
@@ -94,5 +92,4 @@ function jackOfAllTrades() {
 	});
 }
 
-Ti.API.info(args);
 jackOfAllTrades();

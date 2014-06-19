@@ -18,7 +18,8 @@ $.addItem = function(item, onClick){
 	itemViews[numOfItems].itemId = item.id;
 	itemViews[numOfItems].addEventListener("click", onClick);		
 	$.carouselView.add(itemViews[numOfItems]);
-	itemViews[numOfItems].hide();
+	if(numOfItems!=0)
+		itemViews[numOfItems].opacity = 0;
 	numOfItems++;
 };
 
@@ -28,7 +29,7 @@ function createLabeledPicView(item){
 	var image = Ti.UI.createImageView({
 		height: '100%',
 		width: '100%',
-		itemId: 'blank'
+		itemId: item.id
 	});
 	image.image = item.image;
 	
@@ -66,20 +67,20 @@ function createTitleLabel(name, type){
 function swipeHandler(e){
 	if(numOfItems>0){
 		if(e.direction = 'right'){
-			itemViews[index].hide();
+			itemViews[index].opacity = 0;
 			// Incrememnt Index
 			index= (index+1)%numOfItems;
 			// Show new exhibit and it's 
-			itemViews[index].show();
+			itemViews[index].opacity = 1;
 		}
 		else if(e.direction = 'left'){
-			itemViews[index].hide();
+			itemViews[index].opacity = 0;
 			index--;
 			// Decrement index 
 			if(index=-1)
 				index=numOfItems -1;
 			// Show new Exhibit and it's contents
-			itemViews[index].show();
+			itemViews[index].opacity = 1;
 		}
 	}
 }

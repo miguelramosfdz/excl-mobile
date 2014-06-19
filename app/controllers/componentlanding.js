@@ -1,12 +1,14 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever');
 var componentID = args;
-// var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/component/" + componentID;
-var url = "http://www.mocky.io/v2/53a1e425b4ac142006024b75";
+var url = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13/component/" + componentID;
+
+//var url = "http://www.mocky.io/v2/53a1e425b4ac142006024b75";
 var allSections = [];
 var sectionCarousels = [];
 var tableData = [];
 var sectionsThatAlreadyExist = [];
+var allPosts;
 
 function changeTitleOfThePage(name) {
 	$.componentlanding.title = name;
@@ -83,15 +85,27 @@ function createSection(posts) {
 	createPostCarousel(posts);
 }
 
-function goToPostLandingPage(post){
+function goToPostLandingPage(e){
+	var post = fetchPostById(e.source.itemId);
+	Ti.API.info(post.social_media_message);
 	var componentWindow = Alloy.createController('postlanding', post).getView();
 	Alloy.Globals.navController.open(componentWindow, post);
+}
+
+function fetchPostById(postID){
+	var toReturn;
+	for(var i=0; i<allPosts.length; i++){
+		if(allPosts[i].id == postID){
+			toReturn = allPosts[i];
+		}
+	}
+	return toReturn;
 }
 
 function init() {
 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 		changeTitleOfThePage(returnedData.data.component.name);
-		var allPosts = returnedData.data.component.posts;
+		allPosts = returnedData.data.component.posts;
 
 		for (var i = 0; i < allPosts.length; i++) {
 			if (allPosts[i].section) {
