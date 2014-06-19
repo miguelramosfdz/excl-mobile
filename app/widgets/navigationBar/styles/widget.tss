@@ -1,7 +1,8 @@
 "#navBar": {
 	width: Ti.UI.FILL,
 	height: "40dp",
-	backgroundColor: '#FF6600'
+	backgroundColor: '#FF6600',
+	fullscreen: true
 },
 
 "#back": {
