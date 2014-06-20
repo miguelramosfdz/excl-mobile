@@ -1,6 +1,6 @@
 "#navBar": {
 	width: Ti.UI.FILL,
-	height: "50dp",
+	height: "50dip",
 	// backgroundColor: '#FFFFFF',
 	// backgroundColor: '#6E6E6E',
 	backgroundColor: '#232226',
@@ -9,7 +9,7 @@
 ".backButtonStyle":{
 	left: '0%',
 	font: {
-		fontSize: 14,
+		fontSize: "14",
 		fontWeight: 'normal',
 		fontFamily: 'Helvetica Neue'
 	}
@@ -19,7 +19,7 @@
 	// backgroundColor: "#FFFFFF",
 	color: "#FFFFFF",
 	font: {
-		fontSize: '18dp',
+		fontSize: '18dip',
 		fontWeight: 'bold',
 		fontFamily: 'Helvetica Neue'
 	},
@@ -29,7 +29,7 @@
 ".menuButtonStyle":{
 	right: '0%',
 	font: {
-		fontSize: 14,
+		fontSize: "14",
 		fontWeight: 'normal',
 		fontFamily: 'Helvetica Neue'
 	}

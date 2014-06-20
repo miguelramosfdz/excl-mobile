@@ -16,8 +16,8 @@ exports.getMenuButton=function(args){
 	});
 	
 	var b=Ti.UI.createView({
-		height: "30dp",
-		width: "30dp",
+		height: "30dip",
+		width: "30dip",
 		backgroundImage: "/whiteMenu.png"
 	});
 	
