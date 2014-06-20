@@ -45,7 +45,7 @@ function createRow() {
 function createHeadingRow() {
 	var row = Ti.UI.createTableViewRow({
 		height : '50dp',
-		backgroundColor : 'white',
+		backgroundColor : '#253342',
 	});
 	return row;
 }
@@ -53,11 +53,11 @@ function createHeadingRow() {
 function createSectionHeading(headingTitle) {
 	var headingRow = createHeadingRow();
 	var sectionHeading = Ti.UI.createLabel({
-		color : 'black',
+		color : '#FFFFFF',
 		font : {
-			fontFamily : 'Arial',
-			fontSize : 22,
-			fontWeight : 'white'
+			fontFamily : 'Helvetica Neue',
+			fontSize : '22dp',
+			fontWeight : 'bold'
 		},
 		text : headingTitle,
 		textAlign : 'center',

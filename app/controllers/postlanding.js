@@ -21,6 +21,7 @@ function createPlainRow(rowHeight) {
 		height : rowHeight,
 		width : '100%',
 		top : '15dip',
+		backgroundColor:'#FFFFFF'
 	});
 	return row;
 }
@@ -85,10 +86,10 @@ function displayText(textContent) {
 		width : '94%',
 		right : '3%',
 		left : '3%',
-		color : '#000000',
+		color : '#232226',
 		font : {
-			fontFamily : 'Arial',
-			fontSize : 18,
+			fontFamily : 'Helvetica Neue',
+			fontSize : '13dp',
 			fontWeight : 'normal',
 		},
 		text : textContent,
