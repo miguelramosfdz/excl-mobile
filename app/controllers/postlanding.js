@@ -1,7 +1,6 @@
 var post_content = arguments[0] || {};
 var tableData = [];
 
-
 /*
  * Defines path to sharingNetwork file
  */
@@ -15,19 +14,18 @@ function setPathForLibDirectory(retrieveNetworkSharingLib) {
 	}
 }
 
-
 function createPlainRow(rowHeight) {
 	var row = Ti.UI.createTableViewRow({
 		height : rowHeight,
 		width : '100%',
 		top : '15dip',
-		backgroundColor:'#FFFFFF'
+		backgroundColor : '#FFFFFF'
 	});
 	return row;
 }
 
 function changeTitleOfThePage(name) {
-	if (name = "") {
+	if ( name = "") {
 		$.postlanding.title = "[Title]";
 	} else {
 		$.postlanding.title = name;
@@ -105,32 +103,34 @@ function addTableDataToTheView() {
 
 function initializePage() {
 	changeTitleOfThePage(post_content.name);
-	for (var i = 0; i < post_content.parts.length; i++) {
-		Ti.API.info(post_content.parts[i].type);
+	if (post_content.parts) {
+		for (var i = 0; i < post_content.parts.length; i++) {
+			Ti.API.info(post_content.parts[i].type);
 
-		if (post_content.parts[i].type == "image") {
-			displayImages(post_content.parts[i].image);
-		}
+			if (post_content.parts[i].type == "image") {
+				displayImages(post_content.parts[i].image);
+			}
 
-		if (post_content.parts[i].type == "text") {
-			displayText(post_content.parts[i].body);
-		}
-		
-		if(post_content.parts[i].type == "video"){
-			displayVideo(post_content.parts[i].video);
-		}
+			if (post_content.parts[i].type == "text") {
+				displayText(post_content.parts[i].body);
+			}
 
-		if (i == 0) {
-			displaySocialMediaButtons(post_content);
-		}
+			if (post_content.parts[i].type == "video") {
+				displayVideo(post_content.parts[i].video);
+			}
 
+			if (i == 0) {
+				displaySocialMediaButtons(post_content);
+			}
+
+		}
+		addTableDataToTheView();
 	}
-	addTableDataToTheView();
 }
 
 /*
- * Run startup commands
- */
+* Run startup commands
+*/
 //establish connection to sharing functions
 setPathForLibDirectory("sharing/sharingNonNetwork");
 //Place objects
