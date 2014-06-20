@@ -1,12 +1,12 @@
 
-".container" : {
-  navBarHidden:true,
-  fullscreen: true
+".container": {
+	navBarHidden: true,
+	fullscreen: true
 }
 
 ".largePictureRow": {
 	top: '5%',
-	backgroundColor : 'cyan',
+	backgroundColor: '#FFFFFF',
 	height: '200dp'
 }
 
@@ -16,23 +16,25 @@
 }
 
 "#tableView": {
-	backgroundColor : 'cyan',
+	backgroundColor: '#FFFFFF',
 	height: '100%'
 }
 
 ".headingRow": {
-	height : '50dp',
-	backgroundColor : 'cyan',
+	height: '50dp',
+	backgroundColor: "#253342",
+	borderRadius: 15,
+	width: Ti.UI.FILL,
 }
 
 ".headingText": {
-	color : 'black',
-	font : {
-		fontFamily : 'Arial',
-		fontSize : '22dp',
-		fontWeight : 'bold'
+	color: 'black',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '22dp',
+		fontWeight: 'bold'
 	},
-	textAlign : 'center',
+	textAlign: 'center'
 }
 
 "#componentScrollView": {
@@ -43,32 +45,38 @@
 	height: '120dp',
 	contentWidth: 'auto',
 	scrollType: 'horizontal',
-	horizontalWrap: false
+	horizontalWrap: false,
+	top: 15,
+	bottom: 15,
 }
 
 ".infoRow": {
 	top: '10dp',
 	height: 'auto',
 	width: "100%",
-	backgroundColor: 'cyan'
+	backgroundColor: '#FFFFFF'
 }
 
 "#exhibitInfoLabel": {
-	color : 'black',
-	font : {
-		fontFamily : 'Arial',
-		fontSize : '15dp',
-		fontWeight : 'bold'
+	color: '#232226',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '13dp',
+		fontWeight: 'normal'
 	},
 	top: 0,
-	width: Ti.UI.SIZE, 
+	width: Ti.UI.SIZE,
 	height: '250',
 	verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
 	editable: false,
 	left: '5%',
-	horizontalWrap: true,
+	horizontalWrap: true
 }
 
 "#navBar": {
 	top: 0
+}
+
+"#componentHeading":{
+	color: "#FFFFFF"
 }

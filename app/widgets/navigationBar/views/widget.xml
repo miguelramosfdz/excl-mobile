@@ -2,7 +2,7 @@
 	<View id="navBar">
 		<View id="back" onClick="back" class="coloredGrey">
 			<!-- <ImageView image="/images/dark/appbar.arrow.left.png" class="backButtonStyle"></ImageView> -->
-			<ImageView image="/images/light/appbar.arrow.left.png" class="backButtonStyle"></ImageView>
+			<ImageView image="/images/dark/appbar.arrow.left.png" class="backButtonStyle"></ImageView>
 			<!-- <Label class="backLabelStyle">Back</Label> -->
 		</View>
 		
@@ -13,7 +13,7 @@
 		
 		<View id="flyout" onClick="menu" class="coloredGrey">
 			<!-- <ImageView image="/images/dark/appbar.home.empty.png" class="menuButtonStyle"></ImageView> -->
-			<ImageView image="/images/light/appbar.home.empty.png" class="menuButtonStyle"></ImageView>
+			<ImageView image="/images/dark/appbar.home.empty.png" class="menuButtonStyle"></ImageView>
 			<!-- <Label class="menuLabelStyle">Home</Label> -->
 		</View>
 

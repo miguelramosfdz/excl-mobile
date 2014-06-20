@@ -1,34 +1,25 @@
 "#navBar": {
 	width: Ti.UI.FILL,
-	height: "40dp",
-	backgroundColor: '#FFFFFF',
+	height: "50dp",
+	// backgroundColor: '#FFFFFF',
+	// backgroundColor: '#6E6E6E',
+	backgroundColor: '#232226',
 },
 
 ".backButtonStyle":{
 	left: '0%',
-	// color: "#FFFFFF",
-	// backgroundColor: '#6E6E6E',
 	font: {
 		fontSize: 14,
 		fontWeight: 'normal',
 		fontFamily: 'Helvetica Neue'
 	}
 }
-".backLabelStyle":{
-	left: '10%',
-	color: "#FFFFFF",
-	backgroundColor: '#6E6E6E',
-	font: {
-		fontSize: 14,
-		fontWeight: 'normal',
-		fontFamily: 'Helvetica Neue'
-	}
-}
+
 ".pageTitleStyle":{
-	backgroundColor: "#FFFFFF",
-	color: "#6E6E6E",
+	// backgroundColor: "#FFFFFF",
+	color: "#FFFFFF",
 	font: {
-		fontSize: 16,
+		fontSize: '18dp',
 		fontWeight: 'bold',
 		fontFamily: 'Helvetica Neue'
 	},
@@ -37,8 +28,6 @@
 
 ".menuButtonStyle":{
 	right: '0%',
-	// color: "#FFFFFF",
-	// backgroundColor: '#6E6E6E',
 	font: {
 		fontSize: 14,
 		fontWeight: 'normal',
@@ -46,23 +35,3 @@
 	}
 }
 
-".menuLabelStyle":{
-	left: '80%',
-	color: "#FFFFFF",
-	backgroundColor: '#6E6E6E',
-	font: {
-		fontSize: 14,
-		fontWeight: 'normal',
-		fontFamily: 'Helvetica Neue'
-	}
-}
-
-".coloredGrey":{
-	// backgroundColor: '#6E6E6E',
-	// zIndex:0
-}
-
-".coloredWhite":{
-	// backgroundColor: '#FFFFFF',
-	// zIndex:1
-}
