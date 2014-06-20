@@ -1,5 +1,5 @@
 <Alloy>
-	<Window class="container" backgroundColor='#232226'>
+	<Window class="container" backgroundColor='#FFFFFF'>
 		<View layout="vertical">
 			<Widget src="navigationBar" id="navBar"/>
 			<ScrollView id="scroller">
