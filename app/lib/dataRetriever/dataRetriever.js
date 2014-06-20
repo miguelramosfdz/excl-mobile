@@ -4,9 +4,9 @@ var apiCalls, networkCalls, parseCalls;
 function setPathForLibDirectory(apiCallsLib, networkCallsLib, parseCallsLib) {
 	if ( typeof Titanium == 'undefined') {
 		// this is required for jasmine-node to run via terminal
-		apiCalls = require('../lib/customCalls/' + apiCallsLib);
-		networkCalls = require('../lib/customCalls/' + networkCallsLib);
-		parseCalls = require('../lib/customCalls/' + parseCallsLib);
+		apiCalls = require('../../lib/customCalls/' + apiCallsLib);
+		networkCalls = require('../../lib/customCalls/' + networkCallsLib);
+		parseCalls = require('../../lib/customCalls/' + parseCallsLib);
 	} else {
 		apiCalls = require('customCalls/' + apiCallsLib);
 		networkCalls = require('customCalls/' + networkCallsLib);
