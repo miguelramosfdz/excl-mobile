@@ -1,0 +1,8 @@
+<Alloy>
+	<Window class="container" backgroundColor='#FFFFFF'>
+		<View layout="vertical">
+			<Widget src="navigationBar" id="navBar"/>
+			<ImageView id="imageview" image="/finterns.png"/>
+		</View>
+	</Window>
+</Alloy>

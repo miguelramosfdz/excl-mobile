@@ -105,6 +105,7 @@ function addTableDataToTheView() {
 
 function initializePage() {
 	changeTitleOfThePage(post_content.name);
+	if(post_content.parts){
 	for (var i = 0; i < post_content.parts.length; i++) {
 		Ti.API.info(post_content.parts[i].type);
 
@@ -126,6 +127,7 @@ function initializePage() {
 
 	}
 	addTableDataToTheView();
+	}
 }
 
 /*

@@ -203,13 +203,21 @@ function handleKioskModeDialog(self) {
 		Ti.API.log(JSON.stringify(e));
 	    if (e.text == "friend" || e.source.androidView.value == "friend") {
 			updateKioskMode(self);
-	    } else {
+	    } else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
+
+	    	function openFinterns(e){
+				var finternWindow = Alloy.createController('finterns').getView();
+				Alloy.Globals.navController.open(finternWindow);
+			}
+			openFinterns();
+    	}
+	    else {
 	    	var errorMsg = Ti.UI.createAlertDialog({
 			    title: 'incorrect code',
 			    buttonNames: ['OK']
 			});
 			errorMsg.show();
-			setTimeout(function(){errorMsg.hide();}, 2000);
+			setTimeout(function(){errorMsg.hide();}, 5000);
 	    }
 	});
 	dialog.show();
