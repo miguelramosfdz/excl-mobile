@@ -181,7 +181,13 @@ function removeComponents(index){
 
 function showComponents(index){
 	if(index<componentsInExhibit.length){
-		componentsInExhibit[index].width = 'auto';
+		if (OS_ANDROID){
+			componentsInExhibit[index].width = 'auto';
+		}
+		else if (OS_IOS){
+			totalComponentWidth = 225*componentsInExhibit.length; //225 is hard-coded above as the width of each component
+			componentsInExhibit[index].width = totalComponentWidth + 'dip';
+		}
 		$.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
 	}
 }

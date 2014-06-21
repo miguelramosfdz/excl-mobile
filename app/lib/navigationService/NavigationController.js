@@ -183,10 +183,10 @@ function updateKioskMode(self) {
 function handleKioskModeDialog(self) {	
 	var textfield = Ti.UI.createTextField({
 		passwordMask:true,
-	    height:35,
-	    top:100,
-	    left:30,
-	    width:250,
+	    height:"35dip",
+	    top:"100dip",
+	    left:"30dip",
+	    width:"250dip",
 	    borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
 	});
 	var dialog = Ti.UI.createAlertDialog({
