@@ -7,16 +7,19 @@
 },
 
 ".backButtonStyle":{
+	// backgroundColor: "#00FF00",
 	left: '0%',
 	font: {
 		fontSize: "14",
 		fontWeight: 'normal',
 		fontFamily: 'Helvetica Neue'
-	}
+	},
+	width: '10%' 
 }
 
 ".pageTitleStyle":{
-	// backgroundColor: "#FFFFFF",
+	// backgroundColor: "#0000FF",
+	// left: "50%",
 	color: "#FFFFFF",
 	font: {
 		fontSize: '18dip',
@@ -24,14 +27,17 @@
 		fontFamily: 'Helvetica Neue'
 	},
 	textAlign: 'center',
+	width: '80%'
 }
 
 ".menuButtonStyle":{
+	// backgroundColor: "#FF0000",
 	right: '0%',
 	font: {
 		fontSize: "14",
 		fontWeight: 'normal',
 		fontFamily: 'Helvetica Neue'
-	}
+	},
+	width: '10%'
 }
 

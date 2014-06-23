@@ -231,6 +231,7 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 	var self = this;
 	var handleKioskModeEntry = function(e){
 		count += 100;
+		Ti.API.log("longclick");
 		if (count === 100) {
 			setTimeout(function(){count = 0;}, 3000);
 		} else if (count === 300) {
