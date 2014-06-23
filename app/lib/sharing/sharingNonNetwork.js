@@ -125,11 +125,9 @@ function openInstagram(imageFilePathInstagram, rightNavButton) {
 	alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
 
 	var docViewer = retrieveNetworkSharing.openInstagramView(imageFilePathInstagram);
+	alert("Finished openInstagramView");
 	docViewer.UTI = "com.instagram.exclusivegram";
-	docViewer.show({
-		view : rightNavButton,
-		animated : true
-	});
+	docViewer.show({ view : rightNavButton, animated : true });
 }
 
 /*

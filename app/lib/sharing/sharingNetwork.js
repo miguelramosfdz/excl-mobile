@@ -96,7 +96,7 @@ function openCamera(postTagsString, shareImageButtonId, rightNavButton) {
 				if (OS_ANDROID) {
 					sendIntentImageAndroid(postTagsString, imageFilePath);
 				} else if (OS_IOS) {
-					sendIntentImageiOS(postTagsString, imageFilePath, rightNavButton);
+					sendIntentImageiOS(postTagsString, imageFilePath, imageFilePathInstagram, rightNavButton);
 				} else {
 					alert("Unsupported platform (image sharing)");
 				}
@@ -118,6 +118,7 @@ function openCamera(postTagsString, shareImageButtonId, rightNavButton) {
  * iOS doesn't automatically deal with Instagram, so this function is called when the custom Instagram button is pressed in the iOS sharing menu
  */
 function openInstagramView(imageFilePathInstagram) {
+	alert("In openInstagramView");
 	var docViewer = Ti.UI.iOS.createDocumentViewer({
 		url : imageFilePathInstagram
 	});
@@ -180,7 +181,7 @@ function sendIntentTextiOS(postTags, shareTextButtonId) {
 /*
  * Opens iOS share menu and sends prepopulated text content and image that was just taken
  */
-function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
+function sendIntentImageiOS(postTags, imageFilePath, imageFilePathInstagram, rightNavButton) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
@@ -192,6 +193,7 @@ function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
 			type : "open.instagram",
 			image : "/images/instagram-256.png",
 			callback : function(e) {
+				alert("Calling the openInstagram function. imageFilePathInstagram: " + imageFilePathInstagram);
 				openInstagram(imageFilePathInstagram, rightNavButton);
 				//Note: openInstagram lives in sharingNonNetwork
 			}}]);
