@@ -1,10 +1,11 @@
 
 ".container" : {
   navBarHidden:true,
-  fullscreen:true
+  fullscreen:true, 
+  height: 'auto'
 }
 
 "#scroller": {
 	height: '100%',
-	contentHeight: 'auto'
+	contentHeight: 'auto',
 }

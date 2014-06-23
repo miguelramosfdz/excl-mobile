@@ -2,6 +2,18 @@
  * This page handles functionality with Sharing that involves Ti calls
  */
 
+
+function toggleTextShareButtonStatusInactive(shareTextButtonId) {
+	//Changes background and enabled status of sharetextbutton to inactive/ready mode
+	shareTextButtonId.enabled = true;
+	if (OS_IOS) {
+		shareTextButtonId.backgroundImage = "images/icons_ios/iosShare.png";
+	} else if (OS_ANDROID) {
+		shareTextButtonId.backgroundImage = "/images/icons_android/ic_action_share.png";
+
+	}
+}
+
 /*
  * Function to toggle activated buttons, changing the share button's enabled and backgroundimage status
  */
@@ -151,8 +163,15 @@ function sendIntentTextiOS(postTags, shareTextButtonId) {
 		Social.activityView({
 			text : postTags
 		});
+		
+		Social.addEventListener("cancelled", function(e){
+			toggleTextShareButtonStatusInactive(shareTextButtonId);
+		});
+		
 		//Reenable share text button
-		toggleTextShareButtonStatusInactive(shareTextButtonId);
+		//toggleTextShareButtonStatusInactive(shareTextButtonId);
+		
+
 	} else {
 		alert("Text sharing is not available on this device");
 	}
@@ -176,6 +195,7 @@ function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
 				openInstagram(imageFilePathInstagram, rightNavButton);
 				//Note: openInstagram lives in sharingNonNetwork
 			}}]);
+
 	} else {
 		alert("Photo sharing is not available on this device");
 	}
@@ -191,3 +211,4 @@ module.exports.sendIntentImageAndroid = sendIntentImageAndroid;
 module.exports.sendIntentImageiOS = sendIntentImageiOS;
 module.exports.openInstagramView = openInstagramView;
 module.exports.toggleImageShareButtonStatusInactive = toggleImageShareButtonStatusInactive; 
+module.exports.toggleTextShareButtonStatusInactive = toggleTextShareButtonStatusInactive;
