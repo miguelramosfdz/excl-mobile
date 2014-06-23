@@ -17,7 +17,37 @@
 	width: '10%' 
 }
 
-".pageTitleStyle":{
+
+//iPhone
+".pageTitleStyle[platform=ios formFactor=handheld]":{
+	// backgroundColor: "#0000FF",
+	// left: "50%",
+	color: "#FFFFFF",
+	font: {
+		fontSize: '13.8dip',
+		fontWeight: 'bold',
+		fontFamily: 'Helvetica Neue'
+	},
+	textAlign: 'center',
+	width: '80%'
+}
+
+//iPad
+".pageTitleStyle[platform=ios formFactor=tablet]":{
+	// backgroundColor: "#0000FF",
+	// left: "50%",
+	color: "#FFFFFF",
+	font: {
+		fontSize: '18dip',
+		fontWeight: 'bold',
+		fontFamily: 'Helvetica Neue'
+	},
+	textAlign: 'center',
+	width: '80%'
+}
+
+//Android
+".pageTitleStyle[platform=android]":{
 	// backgroundColor: "#0000FF",
 	// left: "50%",
 	color: "#FFFFFF",
