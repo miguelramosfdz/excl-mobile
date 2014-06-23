@@ -43,6 +43,7 @@
 	showHorizontalScrollIndicator: true,
 	width: '100%',
 	height: '120dip',
+	contentHeight: 'auto',
 	contentWidth: 'auto',
 	scrollType: 'horizontal',
 	horizontalWrap: false,

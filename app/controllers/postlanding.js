@@ -98,6 +98,11 @@ function displayText(textContent) {
 }
 
 function addTableDataToTheView() {
+	$.tableView.height = 'auto';
+	if (OS_IOS){
+		//Accounts for bounce buffer
+		$.tableView.bottom = "48dip";
+	}
 	$.tableView.data = tableData;
 }
 

@@ -101,6 +101,11 @@ function init() {
 		}
 		Ti.API.info(sectionsThatAlreadyExist);
 
+		if (OS_IOS){
+			//Accounts for bounce buffer
+			$.tableView.bottom = "48dip";
+		}
+
 		$.tableView.data = tableData;
 
 	});
