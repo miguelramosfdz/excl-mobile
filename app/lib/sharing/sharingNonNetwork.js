@@ -28,17 +28,6 @@ function toggleTextShareButtonStatusActive(shareTextButtonId) {
 	}
 }
 
-function toggleTextShareButtonStatusInactive(shareTextButtonId) {
-	//Changes background and enabled status of sharetextbutton to inactive/ready mode
-	shareTextButtonId.enabled = true;
-	if (OS_IOS) {
-		shareTextButtonId.backgroundImage = "images/icons_ios/iosShare.png";
-	} else if (OS_ANDROID) {
-		shareTextButtonId.backgroundImage = "/images/icons_android/ic_action_share.png";
-
-	}
-}
-
 function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to active/clicked mode
 	//Note: inactive version of this function lives in sharingNetwork.js
@@ -57,7 +46,7 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
 function initiateTextShareButton(json) {
 	//button to open text sharing
 	var shareTextButton = retrieveNetworkSharing.createTextShareButton();
-	toggleTextShareButtonStatusInactive(shareTextButton);
+	retrieveNetworkSharing.toggleTextShareButtonStatusInactive(shareTextButton);
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
 		//Disable share button
@@ -125,7 +114,7 @@ function initiateIntentText(postTagsString, shareTextButtonId) {
 		alert("Unsupported platform");
 	}
 	//Reenable share text button
-	toggleTextShareButtonStatusInactive(shareTextButtonId);
+	retrieveNetworkSharing.toggleTextShareButtonStatusInactive(shareTextButtonId);
 }
 
 /*
