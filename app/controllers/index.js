@@ -2,6 +2,9 @@ var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever/dataRetriever');
 var url = Alloy.Globals.rootWebServiceUrl;
 
+var LoadingSpinner = require('loadingSpinner/loadingSpinner');
+var spinner = new LoadingSpinner();
+
 var exhibitIndex = 0;
 var numOfExhibits;
 var exhibitViews = [];
@@ -15,41 +18,20 @@ museum.fetch();
 */
 //Ti.API.info("\n\n\n\n\n\n"+JSON.stringify(data)+"\n\n\n\n\n\n\n");
 
-var style;
-if (Ti.Platform.name === 'iPhone OS'){
-  style = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
-}
-else {
-  style = Ti.UI.ActivityIndicatorStyle.DARK;
-}
-var activityIndicator = Ti.UI.createActivityIndicator({
-  style: style,
-  top: '50%',
-  left: '50%',
-  height: Ti.UI.SIZE,
-  width: Ti.UI.SIZE
-});
-
 function retrieveJson(jsonURL) {
-	
-	// start loading spinner
-	$.exhibitsSwipeableRow.add(activityIndicator);
-	activityIndicator.show();
-	
+	spinner.addTo($.exhibitsSwipeableRow);
+	spinner.show();
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
 			populateWindow(returnedData);
-			
-			// Stop loading spinner
-			activityIndicator.hide();
-			// var spinner = activityIndicator;
+			spinner.hide();
+			// var spin = spinner;
 			// setTimeout(function(){
-				// spinner.hide();
+				// spin.hide();
 			// }, 3000);
 		}
 	});
 }
-
 
 function openComponent(e){
 	var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
