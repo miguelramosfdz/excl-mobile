@@ -15,11 +15,37 @@ museum.fetch();
 */
 //Ti.API.info("\n\n\n\n\n\n"+JSON.stringify(data)+"\n\n\n\n\n\n\n");
 
+var style;
+if (Ti.Platform.name === 'iPhone OS'){
+  style = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
+}
+else {
+  style = Ti.UI.ActivityIndicatorStyle.DARK;
+}
+var activityIndicator = Ti.UI.createActivityIndicator({
+  style: style,
+  top: '50%',
+  left: '50%',
+  height: Ti.UI.SIZE,
+  width: Ti.UI.SIZE
+});
 
 function retrieveJson(jsonURL) {
+	
+	// start loading spinner
+	$.exhibitsSwipeableRow.add(activityIndicator);
+	activityIndicator.show();
+	
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
 			populateWindow(returnedData);
+			
+			// Stop loading spinner
+			activityIndicator.hide();
+			// var spinner = activityIndicator;
+			// setTimeout(function(){
+				// spinner.hide();
+			// }, 3000);
 		}
 	});
 }
