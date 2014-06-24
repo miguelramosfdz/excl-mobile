@@ -2,4 +2,4 @@
 set -e
 
 echo '--- building app'
-tishadow spec -c
+tishadow spec
