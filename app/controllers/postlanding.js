@@ -37,11 +37,13 @@ function changeTitleOfThePage(name) {
  */
 function displaySocialMediaButtons(json) {
 
+	/*
 	//Create anchor for instagram viewer
 	var rightNavButton = Ti.UI.createButton({
 		title:''
 	});
 	$.postlanding.add(rightNavButton);
+	*/
 
 	var row = createPlainRow('auto');
 	if (json.text_sharing && Alloy.Globals.navController.kioskMode == false) {
