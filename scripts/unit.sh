@@ -1,1 +1,1 @@
-jasmin-node app/spec
+jasmine-node ../app/spec
