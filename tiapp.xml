@@ -11,7 +11,7 @@
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>true</analytics>
-    <guid>363a0d4f-97e6-42e9-b09c-d2ccc4ac0538</guid>
+    <guid>b7ecc89e-dcbc-41dc-9f5a-801689b537fe</guid>
     <property name="ti.ui.defaultunit" type="string">dp</property>
     <ios>
         <plist>
@@ -36,15 +36,12 @@
         </plist>
     </ios>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-    	 <manifest>
-			<application>
-			    <activity
-			    android:name="org.appcelerator.titanium.TiActivity"
-			    android:configChanges="keyboardHidden"
-			    android:screenOrientation="portrait"
-			    />
-			</application>
-  		</manifest>
+        <manifest>
+            <application>
+                <activity android:configChanges="keyboardHidden"
+                    android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="portrait"/>
+            </application>
+        </manifest>
     </android>
     <mobileweb>
         <precache/>
@@ -54,7 +51,11 @@
         </splash>
         <theme>default</theme>
     </mobileweb>
-    <modules/>
+    <modules>
+        <module platform="iphone">dk.napp.social</module>
+        <module platform="android">analytics.google</module>
+        <module platform="iphone">analytics.google</module>
+    </modules>
     <deployment-targets>
         <target device="iphone">true</target>
         <target device="ipad">true</target>
@@ -67,7 +68,4 @@
     <plugins>
         <plugin version="1.0">ti.alloy</plugin>
     </plugins>
-    <modules>
-        <module platform="iphone">dk.napp.social</module>
-    </modules>
 </ti:app>
