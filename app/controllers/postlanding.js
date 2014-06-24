@@ -86,18 +86,14 @@ function displayVideoAndroid(thumbnail, videoUrl){
 	var row = createPlainRow('200dip');
 	
 	//Thumbnail for image
-	thumbnailImageView = Ti.UI.createImageView({
-		image : thumbnail,
-		width : '100%',
-		height : '100%'
-	});
-	
-	addPlayTriangle(thumbnailImageView);
-	row.add(thumbnailImageView);
+	thumbnailView = Ti.UI.createView({	});
+	addThumbnailImage(thumbnail, thumbnailView);
+	addPlayTriangle(thumbnailView);
+	row.add(thumbnailView);
 	tableData.push(row);
 	
 	//Add event listener- when thumbnail is clicked, open fullscreen video
-	thumbnailImageView.addEventListener('click', function(e){
+	thumbnailView.addEventListener('click', function(e){
 		var video = Titanium.Media.createVideoPlayer({
 			url : videoUrl,
 			fullscreen : true,
@@ -121,13 +117,20 @@ function displayVideoAndroid(thumbnail, videoUrl){
 	});
 }
 
-function addPlayTriangle(thumbnailImageView){
-	var playTriangle = Ti.UI.createImageView({
-		image : "/images/icons_android/Video-Player-icon.png",
-		height : '30%',
-		width : '30%'
+function addThumbnailImage(thumbnail, thumbnailView){
+	var thumbnailImageView = Ti.UI.createImageView({
+		image : thumbnail,
+		width : '100%',
+		height : '100%'
 	});
-	thumbnailImageView.add(playTriangle);
+	thumbnailView.add(thumbnailImageView);
+}
+
+function addPlayTriangle(thumbnailView){
+	var playTriangle = Ti.UI.createImageView({
+		image : "/images/icons_android/Video-Player-icon-small.png",
+	});
+	thumbnailView.add(playTriangle);
 }
 
 function displayVideoiOS(videoUrl){
