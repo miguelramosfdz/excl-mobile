@@ -15,6 +15,7 @@ museum.fetch();
 */
 //Ti.API.info("\n\n\n\n\n\n"+JSON.stringify(data)+"\n\n\n\n\n\n\n");
 
+//Google Analytics 
 function trackHomescreen(){
 	Alloy.Globals.analyticsController.trackScreen("Exhibit Landing");
 }
@@ -210,12 +211,6 @@ function populateWindow(json){
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
 	loaded = true;
-}
-
-function openPostLanding(e){
-	var componentWindow = Alloy.createController('postlanding').getView();
-	Alloy.Globals.navController.open(componentWindow);
-	Alloy.Globals.analyticsController.trackScreen("The Landing");
 }
 
 while(exhibitViews.length = 0);

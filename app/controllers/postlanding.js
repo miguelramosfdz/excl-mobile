@@ -14,6 +14,13 @@ function setPathForLibDirectory(retrieveNetworkSharingLib) {
 	}
 }
 
+//Google Analytics 
+function trackPostscreen(){
+	Alloy.Globals.analyticsController.trackScreen("Post Landing");
+}
+
+trackPostscreen();
+
 function createPlainRow(rowHeight) {
 	var row = Ti.UI.createTableViewRow({
 		height : rowHeight,

@@ -14,6 +14,13 @@ function changeTitleOfThePage(name) {
 	$.componentlanding.title = name;
 }
 
+//Google Analytics 
+function trackComponentscreen(){
+	Alloy.Globals.analyticsController.trackScreen("Component Landing");
+}
+
+trackComponentscreen();
+
 function createNewSection(titleOfSection) {
 	createSectionHeading(titleOfSection);
 	createSectionCarousel(titleOfSection);
