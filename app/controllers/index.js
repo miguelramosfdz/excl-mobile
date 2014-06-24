@@ -15,6 +15,11 @@ museum.fetch();
 */
 //Ti.API.info("\n\n\n\n\n\n"+JSON.stringify(data)+"\n\n\n\n\n\n\n");
 
+function trackHomescreen(){
+	Alloy.Globals.analyticsController.trackScreen("Exhibit Landing");
+}
+
+trackHomescreen();
 
 function retrieveJson(jsonURL) {
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
@@ -28,6 +33,7 @@ function retrieveJson(jsonURL) {
 function openComponent(e){
 	var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
 	Alloy.Globals.navController.open(componentWindow);
+	Alloy.Globals.analyticsController.trackScreen("Component Landing");
 }
 
 function openExhibitInfo(e){
@@ -194,6 +200,8 @@ function showComponents(index){
 
 
 retrieveJson(url);
+
+
 //populateWindow(json);
 function populateWindow(json){
 	numOfExhibits = json.data.museum.exhibits.length;
@@ -207,6 +215,7 @@ function populateWindow(json){
 function openPostLanding(e){
 	var componentWindow = Alloy.createController('postlanding').getView();
 	Alloy.Globals.navController.open(componentWindow);
+	Alloy.Globals.analyticsController.trackScreen("The Landing");
 }
 
 while(exhibitViews.length = 0);

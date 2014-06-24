@@ -70,6 +70,7 @@ function goToPostLandingPage(e){
 	var post = fetchPostById(e.source.itemId);
 	var componentWindow = Alloy.createController('postlanding', post).getView();
 	Alloy.Globals.navController.open(componentWindow, post);
+	Alloy.Globals.analyticsController.trackScreen("Post Landing");
 }
 
 function fetchPostById(postID){
