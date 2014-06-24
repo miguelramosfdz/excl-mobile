@@ -17,3 +17,28 @@ var dreamhostersAPI = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/
 var backupAPI = "http://tvt.redhale.com/wordpress/wp-json/v01/excl/museum/81";
 
 Alloy.Globals.rootWebServiceUrl = backupAPI;
+
+/* Google Analytics */
+var GA = require('analytics.google');
+//GA.debug = true;
+GA.trackUncaughtExceptions = true;
+
+var tracker = GA.getTracker("UA-52199402-1");
+tracker.trackEvent({
+	category: "category",
+	action: "test",
+	label: "label",
+	value: 1
+});
+tracker.trackSocial({
+	network: "facebook",
+	action: "action",
+	target: "target"
+});
+tracker.trackTiming({
+	category: "",
+	time: 10,
+	name: "",
+	label: ""
+});
+tracker.trackScreen("Home");
