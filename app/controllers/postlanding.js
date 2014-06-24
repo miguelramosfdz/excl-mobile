@@ -39,7 +39,7 @@ function displaySocialMediaButtons(json) {
 
 	//Create anchor for instagram viewer
 	var rightNavButton = Ti.UI.createButton({
-		title:'rightNavButton'
+		title:''
 	});
 	$.postlanding.add(rightNavButton);
 
@@ -73,7 +73,53 @@ function displayImages(imageURL) {
 
 }
 
-function displayVideo(videoUrl) {
+function displayVideo(thumbnail, videoUrl) {
+	if (OS_ANDROID){
+		displayVideoAndroid(thumbnail, videoUrl);
+	}
+	if (OS_IOS){
+		displayVideoiOS(videoUrl);
+	}
+}
+
+function displayVideoAndroid(thumbnail, videoUrl){
+	var row = createPlainRow('200dip');
+	
+	//Thumbnail for image
+	thumbnailImageView = Ti.UI.createImageView({
+		image : thumbnail,
+		width : '100%',
+		height : '100%'
+	});
+	row.add(thumbnailImageView);
+	tableData.push(row);
+	
+	//Add event listener- when thumbnail is clicked, open fullscreen video
+	thumbnailImageView.addEventListener('click', function(e){
+		var video = Titanium.Media.createVideoPlayer({
+			url : videoUrl,
+			fullscreen : true,
+			autoplay : true
+		});	
+		
+		doneButton = Ti.UI.createButton({
+			title : "Done",
+			top : "0dip",
+			height : "40dip",
+			left : "10dip",
+		});
+		
+		doneButton.addEventListener('click', function(e){
+			video.hide();
+	        video.release();
+	        video = null;
+		});
+		video.add(doneButton);
+		
+	});
+}
+
+function displayVideoiOS(videoUrl){
 	var row = createPlainRow('200dip');
 	var video = Titanium.Media.createVideoPlayer({
 		url : videoUrl,
@@ -114,6 +160,9 @@ function addTableDataToTheView() {
 
 function initializePage() {
 	changeTitleOfThePage(post_content.name);
+	
+	thumbnail = post_content.image; //Will probably choose a different image
+	
 	if (post_content.parts) {
 		for (var i = 0; i < post_content.parts.length; i++) {
 			Ti.API.info(post_content.parts[i].type);
@@ -127,7 +176,7 @@ function initializePage() {
 			}
 
 			if (post_content.parts[i].type == "video") {
-				displayVideo(post_content.parts[i].video);
+				displayVideo(thumbnail, post_content.parts[i].video);
 			}
 
 			if (i == 0) {
