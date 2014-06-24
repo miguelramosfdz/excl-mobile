@@ -91,6 +91,8 @@ function displayVideoAndroid(thumbnail, videoUrl){
 		width : '100%',
 		height : '100%'
 	});
+	
+	addPlayTriangle(thumbnailImageView);
 	row.add(thumbnailImageView);
 	tableData.push(row);
 	
@@ -117,6 +119,15 @@ function displayVideoAndroid(thumbnail, videoUrl){
 		video.add(doneButton);
 		
 	});
+}
+
+function addPlayTriangle(thumbnailImageView){
+	var playTriangle = Ti.UI.createImageView({
+		image : "/images/icons_android/Video-Player-icon.png",
+		height : '30%',
+		width : '30%'
+	});
+	thumbnailImageView.add(playTriangle);
 }
 
 function displayVideoiOS(videoUrl){
@@ -174,7 +185,7 @@ function initializePage() {
 			}
 
 			if (post_content.parts[i].type == "video") {
-				displayVideo(post_content.parts[i].image /*thumbnail*/, post_content.parts[i].video/*video*/);
+				displayVideo(/*post_content.parts[i].image*/ post_content.image /*thumbnail*/, post_content.parts[i].video/*video*/);
 			}
 
 			if (i == 0) {
