@@ -161,8 +161,6 @@ function addTableDataToTheView() {
 function initializePage() {
 	changeTitleOfThePage(post_content.name);
 	
-	thumbnail = post_content.image; //Will probably choose a different image
-	
 	if (post_content.parts) {
 		for (var i = 0; i < post_content.parts.length; i++) {
 			Ti.API.info(post_content.parts[i].type);
@@ -176,7 +174,7 @@ function initializePage() {
 			}
 
 			if (post_content.parts[i].type == "video") {
-				displayVideo(thumbnail, post_content.parts[i].video);
+				displayVideo(post_content.parts[i].image /*thumbnail*/, post_content.parts[i].video/*video*/);
 			}
 
 			if (i == 0) {
