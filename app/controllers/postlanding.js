@@ -37,11 +37,13 @@ function changeTitleOfThePage(name) {
  */
 function displaySocialMediaButtons(json) {
 
+	/*
 	//Create anchor for instagram viewer
 	var rightNavButton = Ti.UI.createButton({
 		title:''
 	});
 	$.postlanding.add(rightNavButton);
+	*/
 
 	var row = createPlainRow('auto');
 	if (json.text_sharing && Alloy.Globals.navController.kioskMode == false) {
@@ -86,16 +88,14 @@ function displayVideoAndroid(thumbnail, videoUrl){
 	var row = createPlainRow('200dip');
 	
 	//Thumbnail for image
-	thumbnailImageView = Ti.UI.createImageView({
-		image : thumbnail,
-		width : '100%',
-		height : '100%'
-	});
-	row.add(thumbnailImageView);
+	thumbnailView = Ti.UI.createView({	});
+	addThumbnailImage(thumbnail, thumbnailView);
+	addPlayTriangle(thumbnailView);
+	row.add(thumbnailView);
 	tableData.push(row);
 	
 	//Add event listener- when thumbnail is clicked, open fullscreen video
-	thumbnailImageView.addEventListener('click', function(e){
+	thumbnailView.addEventListener('click', function(e){
 		var video = Titanium.Media.createVideoPlayer({
 			url : videoUrl,
 			fullscreen : true,
@@ -117,6 +117,22 @@ function displayVideoAndroid(thumbnail, videoUrl){
 		video.add(doneButton);
 		
 	});
+}
+
+function addThumbnailImage(thumbnail, thumbnailView){
+	var thumbnailImageView = Ti.UI.createImageView({
+		image : thumbnail,
+		width : '100%',
+		height : '100%'
+	});
+	thumbnailView.add(thumbnailImageView);
+}
+
+function addPlayTriangle(thumbnailView){
+	var playTriangle = Ti.UI.createImageView({
+		image : "/images/icons_android/Video-Player-icon-small.png",
+	});
+	thumbnailView.add(playTriangle);
 }
 
 function displayVideoiOS(videoUrl){
@@ -174,7 +190,7 @@ function initializePage() {
 			}
 
 			if (post_content.parts[i].type == "video") {
-				displayVideo(post_content.parts[i].image /*thumbnail*/, post_content.parts[i].video/*video*/);
+				displayVideo(/*post_content.parts[i].image*/ post_content.image /*thumbnail*/, post_content.parts[i].video/*video*/);
 			}
 
 			if (i == 0) {
