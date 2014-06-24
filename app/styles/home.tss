@@ -1,6 +1,7 @@
 
 ".container" : {
-  backgroundColor:"white"
+  backgroundColor:"white",
+  fullscreen: true
 },
 "Label" : {
 	
@@ -11,17 +12,17 @@
     color: "#000",
     font: {
         //fontFamily:'Helvetica',
-        fontSize: '32dp',
+        fontSize: '32dip',
         //fontStyle: 'normal',
         fontWeight: 'bold'
     },
-    top: "20"
+    top: "20dip"
 }
 ".logo": {
-	height: "50dp"
+	height: "50dip"
 	
 }
 ".description": {
-	bottom:"20",
+	bottom:"20dip",
     color: "#000"
 }

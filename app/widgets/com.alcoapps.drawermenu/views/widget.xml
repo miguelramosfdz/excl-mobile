@@ -1,9 +1,9 @@
 <Alloy>
-	<View id="drawermenuview">
+	<View id="flyoutMenuView">
 		
 	</View>
 	
-	<View id="drawermainview">
+	<View id="flyoutMainView">
 		
 	</View>
 </Alloy>

@@ -3,5 +3,6 @@
 ".full-view": {
 	width: "auto",
 	height: "auto",
-	backgroundColor: "#FFF"
+	backgroundColor: "#FFF",
+	fullscreen: true
 }

@@ -1,25 +1,73 @@
 "#navBar": {
 	width: Ti.UI.FILL,
-	height: "40dp",
-	backgroundColor: '#FF6600'
+	height: "50dip",
+	// backgroundColor: '#FFFFFF',
+	// backgroundColor: '#6E6E6E',
+	backgroundColor: '#232226',
 },
 
-"#back": {
-	backgroundColor: 'green',
-	color: 'black',
+".backButtonStyle":{
+	// backgroundColor: "#00FF00",
 	left: '0%',
 	font: {
-		fontSize: 18,
-		fontWeight: 'bold'
+		fontSize: "14",
+		fontWeight: 'normal',
+		fontFamily: 'Helvetica Neue'
 	},
-},
+	width: '10%' 
+}
 
-"#flyout": {
-	backgroundColor: 'yellow',
-	color: 'black',
+
+//iPhone
+".pageTitleStyle[platform=ios formFactor=handheld]":{
+	// backgroundColor: "#0000FF",
+	// left: "50%",
+	color: "#FFFFFF",
+	font: {
+		fontSize: '13.8dip',
+		fontWeight: 'bold',
+		fontFamily: 'Helvetica Neue'
+	},
+	textAlign: 'center',
+	width: '80%'
+}
+
+//iPad
+".pageTitleStyle[platform=ios formFactor=tablet]":{
+	// backgroundColor: "#0000FF",
+	// left: "50%",
+	color: "#FFFFFF",
+	font: {
+		fontSize: '18dip',
+		fontWeight: 'bold',
+		fontFamily: 'Helvetica Neue'
+	},
+	textAlign: 'center',
+	width: '80%'
+}
+
+//Android
+".pageTitleStyle[platform=android]":{
+	// backgroundColor: "#0000FF",
+	// left: "50%",
+	color: "#FFFFFF",
+	font: {
+		fontSize: '18dip',
+		fontWeight: 'bold',
+		fontFamily: 'Helvetica Neue'
+	},
+	textAlign: 'center',
+	width: '80%'
+}
+
+".menuButtonStyle":{
+	// backgroundColor: "#FF0000",
 	right: '0%',
 	font: {
-		fontSize: 18,
-		fontWeight: 'bold'
+		fontSize: "14",
+		fontWeight: 'normal',
+		fontFamily: 'Helvetica Neue'
 	},
+	width: '10%'
 }
+

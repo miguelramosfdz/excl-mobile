@@ -1,6 +1,8 @@
 // NavigationController
 // This version works for Android and iOS for Titanium 3.2.0. 
 
+
+
 function NavigationController() {
 	this.windowStack = [];
 	this.kioskMode = false;
@@ -183,10 +185,10 @@ function updateKioskMode(self) {
 function handleKioskModeDialog(self) {	
 	var textfield = Ti.UI.createTextField({
 		passwordMask:true,
-	    height:35,
-	    top:100,
-	    left:30,
-	    width:250,
+	    height:"35dip",
+	    top:"100dip",
+	    left:"30dip",
+	    width:"250dip",
 	    borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
 	});
 	var dialog = Ti.UI.createAlertDialog({
@@ -203,13 +205,21 @@ function handleKioskModeDialog(self) {
 		Ti.API.log(JSON.stringify(e));
 	    if (e.text == "friend" || e.source.androidView.value == "friend") {
 			updateKioskMode(self);
-	    } else {
+	    } else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
+
+	    	function openFinterns(e){
+				var finternWindow = Alloy.createController('finterns').getView();
+				Alloy.Globals.navController.open(finternWindow);
+			}
+			openFinterns();
+    	}
+	    else {
 	    	var errorMsg = Ti.UI.createAlertDialog({
 			    title: 'incorrect code',
 			    buttonNames: ['OK']
 			});
 			errorMsg.show();
-			setTimeout(function(){errorMsg.hide();}, 2000);
+			setTimeout(function(){errorMsg.hide();}, 5000);
 	    }
 	});
 	dialog.show();
@@ -223,6 +233,7 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 	var self = this;
 	var handleKioskModeEntry = function(e){
 		count += 100;
+		Ti.API.log("longclick");
 		if (count === 100) {
 			setTimeout(function(){count = 0;}, 3000);
 		} else if (count === 300) {

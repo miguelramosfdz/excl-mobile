@@ -2,11 +2,15 @@ var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever/dataRetriever');
 var url = Alloy.Globals.rootWebServiceUrl;
 
+var LoadingSpinner = require('loadingSpinner/loadingSpinner');
+var spinner = new LoadingSpinner();
+
 var exhibitIndex = 0;
 var numOfExhibits;
 var exhibitViews = [];
 var componentsInExhibit = [];
 var exhibitText = [];
+var loaded = false;
 
 /*
 var museum = Alloy.createModel("museum");
@@ -14,26 +18,35 @@ museum.fetch();
 */
 //Ti.API.info("\n\n\n\n\n\n"+JSON.stringify(data)+"\n\n\n\n\n\n\n");
 
+function trackHomescreen(){
+	Alloy.Globals.analyticsController.trackScreen("Exhibit Landing");
+}
+
+trackHomescreen();
 
 function retrieveJson(jsonURL) {
+	spinner.addTo($.exhibitsSwipeableRow);
+	spinner.show();
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
 			populateWindow(returnedData);
+			spinner.hide();
+			// var spin = spinner;
+			// setTimeout(function(){
+				// spin.hide();
+			// }, 3000);
 		}
 	});
 }
 
-
 function openComponent(e){
 	var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
 	Alloy.Globals.navController.open(componentWindow);
+	Alloy.Globals.analyticsController.trackScreen("Component Landing");
 }
 
 function openExhibitInfo(e){
-	//alert("will open additional Exhibit info");
-	
-	var rozayWindow = Alloy.createController('rozay').getView();
-	Alloy.Globals.navController.open(rozayWindow);  
+	//alert("will open additional Exhibit info"); 
 }
 
 function createExhibitsCarousel(exhibits){
@@ -104,10 +117,10 @@ function createComponentsScrollView(exhibits){
 		});// TSS CLASS
 
 		for(var j = 0; j< exhibits[i].components.length; j++){
-			component = createLabeledPicView(exhibits[i].components[j], '15dp');	// Later type will be 'component' and that wil be linked to the TSS class
+			component = createLabeledPicView(exhibits[i].components[j], '15dip');	// Later type will be 'component' and that wil be linked to the TSS class
 			component.left = 5;
 			component.right = 5;
-			component.width = '225dp';
+			component.width = '225dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[i].add(component);
@@ -183,13 +196,21 @@ function removeComponents(index){
 
 function showComponents(index){
 	if(index<componentsInExhibit.length){
-		componentsInExhibit[index].width = 'auto';
+		if (OS_ANDROID){
+			componentsInExhibit[index].width = 'auto';
+		}
+		else if (OS_IOS){
+			totalComponentWidth = 225*componentsInExhibit.length; //225 is hard-coded above as the width of each component
+			componentsInExhibit[index].width = totalComponentWidth + 'dip';
+		}
 		$.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
 	}
 }
 
 
 retrieveJson(url);
+
+
 //populateWindow(json);
 function populateWindow(json){
 	numOfExhibits = json.data.museum.exhibits.length;
@@ -197,16 +218,15 @@ function populateWindow(json){
 	createComponentHeading("Check out our Stations");
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
+	loaded = true;
 }
-
-//$.exhibitsSwipeableView.addEventListener('swipe', swipeHandler);
-//$.exhibits.title = "Exhibits";
 
 function openPostLanding(e){
 	var componentWindow = Alloy.createController('postlanding').getView();
 	Alloy.Globals.navController.open(componentWindow);
+	Alloy.Globals.analyticsController.trackScreen("The Landing");
 }
 
-
+while(exhibitViews.length = 0);
 //var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
 Alloy.Globals.navController.open($.index);

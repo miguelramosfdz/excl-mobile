@@ -70,12 +70,12 @@ function createTitleLabel(name, type){
 	var label = Ti.UI.createLabel({
 		text: name,
 		top: 0,
-		left: 10,
+		left: "10dip",
 		color: 'white',
 		horizontalWrap: false,
 		font: {
 			fontFamily : 'Arial',
-			fontSize : '25dp',
+			fontSize : '25dip',
 			fontWeight : 'bold'
 		}
 	});

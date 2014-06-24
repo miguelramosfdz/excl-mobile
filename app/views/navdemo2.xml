@@ -1,8 +1,0 @@
-<Alloy>
-	<Window id="NavDemo2" layout='vertical' class="container">
-		<Require type="widget" src="navigationBar" id="nav_widget"/>
-		<Button id="add" onClick="addClick" title="Add A New Window" />
-		<Button id="home" onClick="homeClick" title="Return Home" />
-		<Button id="openMenuShare" myClass="noKiosk" title="Share" backgroundImage="http://i.stack.imgur.com/P1ELC.png">
-	</Window>
-</Alloy>

@@ -1,7 +1,6 @@
 var post_content = arguments[0] || {};
 var tableData = [];
 
-
 /*
  * Defines path to sharingNetwork file
  */
@@ -15,21 +14,21 @@ function setPathForLibDirectory(retrieveNetworkSharingLib) {
 	}
 }
 
-
 function createPlainRow(rowHeight) {
 	var row = Ti.UI.createTableViewRow({
 		height : rowHeight,
 		width : '100%',
 		top : '15dip',
+		backgroundColor : '#FFFFFF'
 	});
 	return row;
 }
 
 function changeTitleOfThePage(name) {
-	if (name = "") {
-		$.postlanding.title = name;
-	} else {
+	if ( name = "") {
 		$.postlanding.title = "[Title]";
+	} else {
+		$.postlanding.title = name;
 	}
 }
 
@@ -38,14 +37,22 @@ function changeTitleOfThePage(name) {
  */
 function displaySocialMediaButtons(json) {
 
+	/*
+	//Create anchor for instagram viewer
+	var rightNavButton = Ti.UI.createButton({
+		title:''
+	});
+	$.postlanding.add(rightNavButton);
+	*/
+
 	var row = createPlainRow('auto');
-	if (json.text_sharing) {
+	if (json.text_sharing && Alloy.Globals.navController.kioskMode == false) {
 		var shareTextButton = sharingService.initiateTextShareButton(json);
 		shareTextButton.left = "80%";
 		row.add(shareTextButton);
 	}
-	if (json.image_sharing) {
-		var shareImageButton = sharingService.initiateImageShareButton(json);
+	if (json.image_sharing && Alloy.Globals.navController.kioskMode == false) {
+		var shareImageButton = sharingService.initiateImageShareButton(json, rightNavButton);
 		shareTextButton.left = "70%";
 		row.add(shareImageButton);
 	}
@@ -68,7 +75,67 @@ function displayImages(imageURL) {
 
 }
 
-function displayVideo(videoUrl) {
+function displayVideo(thumbnail, videoUrl) {
+	if (OS_ANDROID){
+		displayVideoAndroid(thumbnail, videoUrl);
+	}
+	if (OS_IOS){
+		displayVideoiOS(videoUrl);
+	}
+}
+
+function displayVideoAndroid(thumbnail, videoUrl){
+	var row = createPlainRow('200dip');
+	
+	//Thumbnail for image
+	thumbnailView = Ti.UI.createView({	});
+	addThumbnailImage(thumbnail, thumbnailView);
+	addPlayTriangle(thumbnailView);
+	row.add(thumbnailView);
+	tableData.push(row);
+	
+	//Add event listener- when thumbnail is clicked, open fullscreen video
+	thumbnailView.addEventListener('click', function(e){
+		var video = Titanium.Media.createVideoPlayer({
+			url : videoUrl,
+			fullscreen : true,
+			autoplay : true
+		});	
+		
+		doneButton = Ti.UI.createButton({
+			title : "Done",
+			top : "0dip",
+			height : "40dip",
+			left : "10dip",
+		});
+		
+		doneButton.addEventListener('click', function(e){
+			video.hide();
+	        video.release();
+	        video = null;
+		});
+		video.add(doneButton);
+		
+	});
+}
+
+function addThumbnailImage(thumbnail, thumbnailView){
+	var thumbnailImageView = Ti.UI.createImageView({
+		image : thumbnail,
+		width : '100%',
+		height : '100%'
+	});
+	thumbnailView.add(thumbnailImageView);
+}
+
+function addPlayTriangle(thumbnailView){
+	var playTriangle = Ti.UI.createImageView({
+		image : "/images/icons_android/Video-Player-icon-small.png",
+	});
+	thumbnailView.add(playTriangle);
+}
+
+function displayVideoiOS(videoUrl){
 	var row = createPlainRow('200dip');
 	var video = Titanium.Media.createVideoPlayer({
 		url : videoUrl,
@@ -82,13 +149,13 @@ function displayVideo(videoUrl) {
 function displayText(textContent) {
 	var row = createPlainRow('auto');
 	var textBody = Ti.UI.createLabel({
-		width : '100%',
+		width : '94%',
 		right : '3%',
 		left : '3%',
-		color : '#000000',
+		color : '#232226',
 		font : {
-			fontFamily : 'Arial',
-			fontSize : 18,
+			fontFamily : 'Helvetica Neue',
+			fontSize : '13dp',
 			fontWeight : 'normal',
 		},
 		text : textContent,
@@ -99,42 +166,45 @@ function displayText(textContent) {
 }
 
 function addTableDataToTheView() {
-	var tableView = Ti.UI.createTableView({
-		backgroundColor : '#e6e6e6',
-		data : tableData
-	});
-
-	$.postlanding.add(tableView);
+	$.tableView.height = 'auto';
+	if (OS_IOS){
+		//Accounts for bounce buffer
+		$.tableView.bottom = "48dip";
+	}
+	$.tableView.data = tableData;
 }
 
 function initializePage() {
 	changeTitleOfThePage(post_content.name);
-	for (var i = 0; i < post_content.parts.length; i++) {
-		Ti.API.info(post_content.parts[i].type);
+	
+	if (post_content.parts) {
+		for (var i = 0; i < post_content.parts.length; i++) {
+			Ti.API.info(post_content.parts[i].type);
 
-		if (post_content.parts[i].type == "image") {
-			displayImages(post_content.parts[i].image);
-		}
+			if (post_content.parts[i].type == "image") {
+				displayImages(post_content.parts[i].image);
+			}
 
-		if (post_content.parts[i].type == "text") {
-			displayText(post_content.parts[i].body);
-		}
-		
-		if(post_content.parts[i].type == "video"){
-			displayVideo(post_content.parts[i].video);
-		}
+			if (post_content.parts[i].type == "text") {
+				displayText(post_content.parts[i].body);
+			}
 
-		if (i == 0) {
-			displaySocialMediaButtons(post_content);
-		}
+			if (post_content.parts[i].type == "video") {
+				displayVideo(/*post_content.parts[i].image*/ post_content.image /*thumbnail*/, post_content.parts[i].video/*video*/);
+			}
 
+			if (i == 0) {
+				displaySocialMediaButtons(post_content);
+			}
+
+		}
+		addTableDataToTheView();
 	}
-	addTableDataToTheView();
 }
 
 /*
- * Run startup commands
- */
+* Run startup commands
+*/
 //establish connection to sharing functions
 setPathForLibDirectory("sharing/sharingNonNetwork");
 //Place objects

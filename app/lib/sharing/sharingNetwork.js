@@ -2,13 +2,29 @@
  * This page handles functionality with Sharing that involves Ti calls
  */
 
+
+function toggleTextShareButtonStatusInactive(shareTextButtonId) {
+	//Changes background and enabled status of sharetextbutton to inactive/ready mode
+	shareTextButtonId.enabled = true;
+	if (OS_IOS) {
+		shareTextButtonId.backgroundImage = "images/icons_ios/iosShare.png";
+	} else if (OS_ANDROID) {
+		shareTextButtonId.backgroundImage = "/images/icons_android/ic_action_share.png";
+
+	}
+}
+
 /*
  * Function to toggle activated buttons, changing the share button's enabled and backgroundimage status
  */
 function toggleImageShareButtonStatusInactive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to inactive/ready mode
 	shareImageButtonId.enabled = true;
-	shareImageButtonId.backgroundImage = "/images/iconCameraInactive.png";
+	if (OS_IOS){
+		shareImageButtonId.backgroundImage = "images/icons_ios/iOScamera.png";
+	} else if (OS_ANDROID) {
+		shareImageButtonId.backgroundImage = "/images/icons_android/ic_action_camera.png";
+	}
 }
 
 /*
@@ -80,7 +96,7 @@ function openCamera(postTagsString, shareImageButtonId, rightNavButton) {
 				if (OS_ANDROID) {
 					sendIntentImageAndroid(postTagsString, imageFilePath);
 				} else if (OS_IOS) {
-					sendIntentImageiOS(postTagsString, imageFilePath, rightNavButton);
+					sendIntentImageiOS(postTagsString, imageFilePath, imageFilePathInstagram, rightNavButton);
 				} else {
 					alert("Unsupported platform (image sharing)");
 				}
@@ -102,6 +118,7 @@ function openCamera(postTagsString, shareImageButtonId, rightNavButton) {
  * iOS doesn't automatically deal with Instagram, so this function is called when the custom Instagram button is pressed in the iOS sharing menu
  */
 function openInstagramView(imageFilePathInstagram) {
+	alert("In openInstagramView");
 	var docViewer = Ti.UI.iOS.createDocumentViewer({
 		url : imageFilePathInstagram
 	});
@@ -147,8 +164,15 @@ function sendIntentTextiOS(postTags, shareTextButtonId) {
 		Social.activityView({
 			text : postTags
 		});
+		
+		Social.addEventListener("cancelled", function(e){
+			toggleTextShareButtonStatusInactive(shareTextButtonId);
+		});
+		
 		//Reenable share text button
-		toggleTextShareButtonStatusInactive(shareTextButtonId);
+		//toggleTextShareButtonStatusInactive(shareTextButtonId);
+		
+
 	} else {
 		alert("Text sharing is not available on this device");
 	}
@@ -157,7 +181,7 @@ function sendIntentTextiOS(postTags, shareTextButtonId) {
 /*
  * Opens iOS share menu and sends prepopulated text content and image that was just taken
  */
-function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
+function sendIntentImageiOS(postTags, imageFilePath, imageFilePathInstagram, rightNavButton) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
@@ -165,13 +189,15 @@ function sendIntentImageiOS(postTags, imageFilePath, rightNavButton) {
 			image : imageFilePath,
 			text : postTags
 		}, [{
-			// title : "Instagram",
-			// type : "open.instagram",
-			// image : "/images/instagram-256.png",
-			// callback : function(e) {
-			// openInstagram(imageFilePathInstagram, rightNavButton);
-			//Note: openInstagram lives in sharingNonNetwork
-		}]);
+			title : "Instagram",
+			type : "open.instagram",
+			image : "/images/instagram-256.png",
+			callback : function(e) {
+				alert("Calling the openInstagram function. imageFilePathInstagram: " + imageFilePathInstagram);
+				openInstagram(imageFilePathInstagram, rightNavButton);
+				//Note: openInstagram lives in sharingNonNetwork
+			}}]);
+
 	} else {
 		alert("Photo sharing is not available on this device");
 	}
@@ -187,3 +213,4 @@ module.exports.sendIntentImageAndroid = sendIntentImageAndroid;
 module.exports.sendIntentImageiOS = sendIntentImageiOS;
 module.exports.openInstagramView = openInstagramView;
 module.exports.toggleImageShareButtonStatusInactive = toggleImageShareButtonStatusInactive; 
+module.exports.toggleTextShareButtonStatusInactive = toggleTextShareButtonStatusInactive;

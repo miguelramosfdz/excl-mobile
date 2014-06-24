@@ -36,7 +36,7 @@ function addToExistingSection(post) {
 function createRow() {
 	var row = Ti.UI.createTableViewRow({
 		height : '190dp',
-		top : '10dp',
+		top: '10dp',
 		backgroundColor : 'white',
 	});
 	return row;
@@ -45,7 +45,7 @@ function createRow() {
 function createHeadingRow() {
 	var row = Ti.UI.createTableViewRow({
 		height : '50dp',
-		backgroundColor : 'cyan',
+		backgroundColor : '#253342',
 	});
 	return row;
 }
@@ -53,10 +53,10 @@ function createHeadingRow() {
 function createSectionHeading(headingTitle) {
 	var headingRow = createHeadingRow();
 	var sectionHeading = Ti.UI.createLabel({
-		color : 'black',
+		color : '#FFFFFF',
 		font : {
-			fontFamily : 'Arial',
-			fontSize : 22,
+			fontFamily : 'Helvetica Neue',
+			fontSize : '22dp',
 			fontWeight : 'bold'
 		},
 		text : headingTitle,
@@ -66,29 +66,11 @@ function createSectionHeading(headingTitle) {
 	tableData.push(headingRow);
 }
 
-function createPostCarousel(posts) {
-	var row = createRow();
-
-	for ( i = 0; i >= posts.length; i++) {
-		postViews[i] = createLabeledPostView(posts[i], '22');
-		// will later say 'exhibit', and will create the pic item of that class
-		postSwipeableView.add(postViews[i]);
-		postViews[i].hide();
-	}
-	// postViews[0].show();
-	row.add(postSwipeableView);
-	tableData.push(row);
-}
-
-function createSection(posts) {
-	createSectionHeading(posts);
-	createPostCarousel(posts);
-}
-
 function goToPostLandingPage(e){
 	var post = fetchPostById(e.source.itemId);
 	var componentWindow = Alloy.createController('postlanding', post).getView();
 	Alloy.Globals.navController.open(componentWindow, post);
+	Alloy.Globals.analyticsController.trackScreen("Post Landing");
 }
 
 function fetchPostById(postID){
@@ -119,16 +101,13 @@ function init() {
 			}
 		}
 		Ti.API.info(sectionsThatAlreadyExist);
-/*
-		var tableView = Ti.UI.createTableView({//has to be under everything to work
-			backgroundColor : 'white',
-			data : tableData,
-			width : '100%',
-			height : '100%'
-		});*/
-		for(i=0;i<tableData.length; i++)
-			$.tableView.add(tableData);
-		//$.componentlanding.add(tableView);
+
+		if (OS_IOS){
+			//Accounts for bounce buffer
+			$.tableView.bottom = "48dip";
+		}
+
+		$.tableView.data = tableData;
 
 	});
 }
