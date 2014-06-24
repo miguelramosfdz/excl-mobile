@@ -2,6 +2,9 @@ var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever/dataRetriever');
 var url = Alloy.Globals.rootWebServiceUrl;
 
+var LoadingSpinner = require('loadingSpinner/loadingSpinner');
+var spinner = new LoadingSpinner();
+
 var exhibitIndex = 0;
 var numOfExhibits;
 var exhibitViews = [];
@@ -23,13 +26,19 @@ function trackHomescreen(){
 trackHomescreen();
 
 function retrieveJson(jsonURL) {
+	spinner.addTo($.exhibitsSwipeableRow);
+	spinner.show();
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
 			populateWindow(returnedData);
+			spinner.hide();
+			// var spin = spinner;
+			// setTimeout(function(){
+				// spin.hide();
+			// }, 3000);
 		}
 	});
 }
-
 
 function openComponent(e){
 	var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
