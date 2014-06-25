@@ -6,9 +6,9 @@
 function NavigationController() {
 	this.windowStack = [];
 	this.kioskMode = false;
-	this.homePage;
-	this.lockedHomePage;
-};
+	this.homePage = null;
+	this.lockedHomePage = null;
+}
 
 
 // Open new window and add it to window stack
@@ -165,7 +165,7 @@ function updateKioskMode(self) {
 	var window = self.windowStack[self.windowStack.length - 1];
 	
 	// Deactivate kiosk mode if active or vice versa
-	if (self.kioskMode == false) {
+	if (self.kioskMode === false) {
     	self.kioskMode = true;
     	self.setLockedHome();
     	confirm.title = 'Activated Kiosk Mode';
@@ -178,7 +178,7 @@ function updateKioskMode(self) {
 	}
 	confirm.show();
 	setTimeout(function(){confirm.hide();}, 2000);
-};
+}
 
 // Handles kiosk mode dialog
 // Used in addKioskModeListener()
@@ -202,18 +202,12 @@ function handleKioskModeDialog(self) {
 	}
 	
 	dialog.addEventListener('click', function(e) {
-		Ti.API.log(JSON.stringify(e));
 	    if (e.text == "friend" || e.source.androidView.value == "friend") {
 			updateKioskMode(self);
 	    } else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
-
-	    	function openFinterns(e){
-				var finternWindow = Alloy.createController('finterns').getView();
-				Alloy.Globals.navController.open(finternWindow);
-			}
-			openFinterns();
-    	}
-	    else {
+			var finternWindow = Alloy.createController('finterns').getView();
+			Alloy.Globals.navController.open(finternWindow);
+    	} else {
 	    	var errorMsg = Ti.UI.createAlertDialog({
 			    title: 'incorrect code',
 			    buttonNames: ['OK']
@@ -224,7 +218,7 @@ function handleKioskModeDialog(self) {
 	});
 	dialog.show();
 	setTimeout(function(){dialog.hide();}, 9000);
-};
+}
 
 // Add kiosk mode listener to passed in element. Will activate on three 
 // long clicks if done withing three seconds. 
@@ -233,7 +227,6 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 	var self = this;
 	var handleKioskModeEntry = function(e){
 		count += 100;
-		Ti.API.log("longclick");
 		if (count === 100) {
 			setTimeout(function(){count = 0;}, 3000);
 		} else if (count === 300) {
