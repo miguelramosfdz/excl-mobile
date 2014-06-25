@@ -32,10 +32,6 @@ function retrieveJson(jsonURL) {
 		if (returnedData) {
 			populateWindow(returnedData);
 			spinner.hide();
-			// var spin = spinner;
-			// setTimeout(function(){
-				// spin.hide();
-			// }, 3000);
 		}
 	});
 }
@@ -89,9 +85,9 @@ function createTitleLabel(name, type){
 		left: 10,
 		color: 'white',
 		font: {
-			fontFamily : 'Arial',
-			fontSize : type,
-			fontWeight : 'bold'
+			fontFamily: 'Arial',
+			fontSize: type,
+			fontWeight: 'bold'
 		}
 	});
 	//$.addClass(label, "myLabel"); 
@@ -137,19 +133,20 @@ function setExhibitText(text){
 } 
 
 function rotateHandler(direction, index, numOfItems){
-	if(numOfExhibits>0){
+	if(numOfExhibits > 0){
 		exhibitIndex = index;
 		numOfExhibits = numOfItems;
-		if(direction = "right"){
+		if(direction == "right"){
 			removeComponents(exhibitIndex);		// Incrememnt Index
-			exhibitIndex= (exhibitIndex+1)%numOfExhibits;
+			exhibitIndex = (exhibitIndex + 1) % numOfExhibits;
 			showComponents(exhibitIndex);
 			setExhibitText(exhibitText[exhibitIndex]);
-		}else if(direction = "left"){
+		}else if(direction == "left"){
 			removeComponents(exhibitIndex);
-			exhibitIndex--;						// Decrement index 
-			if(exhibitIndex=-1)
-				exhibitIndex=numOfExhibits -1;
+			exhibitIndex--;
+			if(exhibitIndex == -1) {
+				exhibitIndex = numOfExhibits - 1;
+			}
 			showcomponents(exhibitIndex);
 			setExhibitText(exhibitText[exhibitIndex]);
 		}
@@ -208,11 +205,8 @@ function showComponents(index){
 	}
 }
 
-
 retrieveJson(url);
 
-
-//populateWindow(json);
 function populateWindow(json){
 	numOfExhibits = json.data.museum.exhibits.length;
 	createExhibitsCarousel(json.data.museum.exhibits);
@@ -222,6 +216,7 @@ function populateWindow(json){
 	loaded = true;
 }
 
-while(exhibitViews.length = 0);
+// while(exhibitViews.length == 0); // WHAT IS THIS SUPOSED TO DO?
+
 //var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
 Alloy.Globals.navController.open($.index);
