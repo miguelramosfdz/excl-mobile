@@ -1,18 +1,13 @@
+var fileSystem = require('deviceStorage');
+var fileName = "uniqueID.txt";
 
-function idService(){
-	this.fileSystem = require('deviceStorage');
-}
-
-idService.prototype.getID = function(){
-		return this.fileSystem.read("uniqueID.txt");
+idService = {	
+	init: function(){
+		if(!fileSystem.exists(fileName))	
+			fileSystem.save(fileName, Titanium.Platform.createUUID());
+	},
+	getID: function(){
+		return fileSystem.read(fileName);
+	}
 };
-
-idService.prototype.createID = function(){
-		this.fileSystem.save("uniqueID.txt", Titanium.Platform.createUUID());
-};
-
-idService.prototype.hasID = function(){
-		return this.fileSystem.exists("uniqueID.txt");
-};
-
 module.exports = idService;
