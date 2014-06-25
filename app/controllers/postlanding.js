@@ -14,6 +14,13 @@ function setPathForLibDirectory(retrieveNetworkSharingLib) {
 	}
 }
 
+//Google Analytics 
+function trackPostscreen(){
+	Alloy.Globals.analyticsController.trackScreen("Post Landing");
+}
+
+trackPostscreen();
+
 function createPlainRow(rowHeight) {
 	var row = Ti.UI.createTableViewRow({
 		height : rowHeight,
@@ -46,12 +53,13 @@ function displaySocialMediaButtons(json) {
 	*/
 
 	var row = createPlainRow('auto');
-	if (json.text_sharing && Alloy.Globals.navController.kioskMode == false) {
+	var isInKioskMode = Alloy.Globals.navController.kioskMode == true;
+	if (json.text_sharing && !isInKioskMode) {
 		var shareTextButton = sharingService.initiateTextShareButton(json);
 		shareTextButton.left = "80%";
 		row.add(shareTextButton);
 	}
-	if (json.image_sharing && Alloy.Globals.navController.kioskMode == false) {
+	if (json.image_sharing && !isInKioskMode) {
 		var shareImageButton = sharingService.initiateImageShareButton(json, rightNavButton);
 		shareTextButton.left = "70%";
 		row.add(shareImageButton);

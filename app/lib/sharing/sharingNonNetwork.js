@@ -1,17 +1,26 @@
 /*
  * This page handles functionality with Sharing that does not involve Ti calls
+ * 
+ * TODO
+ * sharing-service > {text share, image share, other Ti services > {iOS, Android} }
+ * icon selection service lives in ios/android files
+ * put Ti services into the network folder, not in the sharing folder
  */
+
+
+
+
 
 /*
  * Defines path to sharingNetwork file
  */
-var retrieveNetworkSharing;
-function setPathForLibDirectory(retrieveNetworkSharingLib) {
+var networkSharingService;
+function setPathForLibDirectory(networkSharingServiceLib) {
 	if ( typeof Titanium == 'undefined') {
 		// this is required for jasmine-node to run via terminal
-		retrieveNetworkSharing = require("../../lib/" + retrieveNetworkSharingLib);
+		networkSharingService = require("../../lib/" + networkSharingServiceLib);
 	} else {
-		retrieveNetworkSharing = require(retrieveNetworkSharingLib);
+		networkSharingService = require(networkSharingServiceLib);
 	}
 }
 
@@ -45,8 +54,8 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
  */
 function initiateTextShareButton(json) {
 	//button to open text sharing
-	var shareTextButton = retrieveNetworkSharing.createTextShareButton();
-	retrieveNetworkSharing.toggleTextShareButtonStatusInactive(shareTextButton);
+	var shareTextButton = networkSharingService.createTextShareButton();
+	networkSharingService.toggleTextShareButtonStatusInactive(shareTextButton);
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
 		//Disable share button
@@ -66,7 +75,7 @@ function initiateTextShareButton(json) {
 function initiateCamera(json, shareImageButtonId, rightNavButton) {
 	//retrieve tags from json
 	var postTags = getPostTags(json);
-	retrieveNetworkSharing.openCamera(postTags, shareImageButtonId, rightNavButton);
+	networkSharingService.openCamera(postTags, shareImageButtonId, rightNavButton);
 }
 
 /*
@@ -76,8 +85,8 @@ function initiateCamera(json, shareImageButtonId, rightNavButton) {
  */
 function initiateImageShareButton(json, rightNavButton) {
 	//button to open photo sharing
-	var shareImageButton = retrieveNetworkSharing.createImageShareButton();
-	retrieveNetworkSharing.toggleImageShareButtonStatusInactive(shareImageButton);
+	var shareImageButton = networkSharingService.createImageShareButton();
+	networkSharingService.toggleImageShareButtonStatusInactive(shareImageButton);
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
 		//disable camera button
@@ -85,7 +94,7 @@ function initiateImageShareButton(json, rightNavButton) {
 		//retrieve json tags
 		var postTags = getPostTags(json);
 		//open camera and send intents
-		retrieveNetworkSharing.openCamera(postTags, shareImageButton, rightNavButton);
+		networkSharingService.openCamera(postTags, shareImageButton, rightNavButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
 	return shareImageButton;
@@ -107,14 +116,14 @@ function getPostTags(json) {
 function initiateIntentText(postTagsString, shareTextButtonId) {
 	//Choose appropriate intent creator
 	if (OS_ANDROID) {
-		retrieveNetworkSharing.sendIntentTextAndroid(postTags, shareTextButtonId);
+		networkSharingService.sendIntentTextAndroid(postTags, shareTextButtonId);
 	} else if (OS_IOS) {
-		retrieveNetworkSharing.sendIntentTextiOS(postTags, shareTextButtonId);
+		networkSharingService.sendIntentTextiOS(postTags, shareTextButtonId);
 	} else {
 		alert("Unsupported platform");
 	}
 	//Reenable share text button
-	retrieveNetworkSharing.toggleTextShareButtonStatusInactive(shareTextButtonId);
+	networkSharingService.toggleTextShareButtonStatusInactive(shareTextButtonId);
 }
 
 /*
@@ -124,7 +133,7 @@ function openInstagram(imageFilePathInstagram, rightNavButton) {
 
 	alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
 
-	var docViewer = retrieveNetworkSharing.openInstagramView(imageFilePathInstagram);
+	var docViewer = networkSharingService.openInstagramView(imageFilePathInstagram);
 	alert("Finished openInstagramView");
 	docViewer.UTI = "com.instagram.exclusivegram";
 	docViewer.show({ view : rightNavButton, animated : true });
