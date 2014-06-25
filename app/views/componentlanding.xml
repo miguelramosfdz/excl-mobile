@@ -2,10 +2,10 @@
 	<Window class="container" backgroundColor='#FFFFFF'>
 		<View layout="vertical">
 			<Widget src="navigationBar" id="navBar"/>
-			<View layout="horizontal">
+			<!-- <View layout="horizontal">
 				<Label id="bfaIndicator"/>
-				<Switch id="bfaSwitch" titleOn="BFA Enabled" titleOff="BFA Disabled" value=false />
-			</View>
+				<Switch id="bfaSwitch" />
+			</View> -->
 			<ScrollView id="scroller">
 				<TableView id="tableView" class = "tableView">
 				</TableView>

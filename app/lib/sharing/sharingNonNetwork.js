@@ -8,21 +8,21 @@
  */
 
 
-
-
-
 /*
  * Defines path to sharingNetwork file
  */
-var networkSharingService;
-function setPathForLibDirectory(networkSharingServiceLib) {
+function setPathForLibDirectory(libfile) {
 	if ( typeof Titanium == 'undefined') {
 		// this is required for jasmine-node to run via terminal
-		networkSharingService = require("../../lib/" + networkSharingServiceLib);
+		networkSharingService = require("../../lib/" + libfile);
 	} else {
-		networkSharingService = require(networkSharingServiceLib);
+		networkSharingService = require(libfile);
 	}
 }
+var networkSharingService = setPathForLibDirectory('sharing/sharingNetwork');
+var sharingServiceImage = setPathForLibDirectory('sharing/sharing-service-image');
+var sharingServiceText = setPathForLibDirectory('sharing/sharing-service-text');
+
 
 /*
  * Functions to toggle activated buttons, changing the share buttons' enabled and backgroundimage status
@@ -149,8 +149,6 @@ function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	}
 }
 
-//Set path to sharingNetwork
-setPathForLibDirectory('sharing/sharingNetwork');
 //Export local functions
 module.exports.initiateTextShareButton = initiateTextShareButton;
 module.exports.initiateImageShareButton = initiateImageShareButton;

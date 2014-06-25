@@ -99,23 +99,41 @@ function addToBfaSection(post) {
 
 function createAgeRange(post) {
 	var ageRange;
+	if (checkAgeRangeForMinAndMax(post)) {
+		ageRange = compileAgeRange(post.min_age, post.max_age);
+		if (checkAgeRangeForMinOnly(post)) {
+			ageRange = compileAgeRange(post.min_age, "");
+		}
+		return ageRange;
+	}
+}
+
+function compileAgeRange(min_age, max_age) {
+	if (max_age == "" && min_age == "") {
+		return "All";
+	} else if (max_age == "") {
+		return min_age;
+	} else if (min_age >= max_age) {
+		return "Invalid Age Range";
+	} else {
+		return min_age + "-" + max_age;
+	}
+}
+
+function checkAgeRangeForMinAndMax(post) {
+	if (post.min_age && post.max_age) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function checkAgeRangeForMinOnly(post) {
 	if (post.min_age) {
-		ageRange = post.min_age;
+		return true;
+	} else {
+		return false;
 	}
-	Ti.API.info("temp_age1: " + ageRange);
-	if (post.max_age) {
-		ageRange = ageRange + "-" + post.max_age;
-	}
-	Ti.API.info("temp_age2: " + ageRange);
-	if (post.min_age && post.max_age && post.min_age >= post.max_age) {
-		ageRange = "Invalid Age Range";
-	}
-	Ti.API.info("temp_age3: " + ageRange);
-	if (ageRange == "" || (post.min_age == "" && post.max_age == "")) {
-		ageRange = "All";
-	}
-	Ti.API.info("temp_age4: " + ageRange);
-	return ageRange;
 }
 
 function organizeBySection(allPosts) {
@@ -140,8 +158,6 @@ function organizeByBfa(allPosts) {
 		Ti.API.info("age: " + ageRange + " for " + allPosts[i].name);
 
 		if (sectionsForBfa.indexOf(ageRange) == -1) {
-			// create a new section
-			//order of components are determined here
 			sectionsForBfa.push(ageRange);
 			createNewSection(ageRange);
 		}
@@ -151,28 +167,89 @@ function organizeByBfa(allPosts) {
 
 function checkStateOfSwitch(switchId, allPosts) {
 	if (switchId.value == true) {
+		$.bfaIndicator.text = "BFA Enabled";
+		switchId.titleOn == " ";
 		organizeByBfa(allPosts);
 	} else {
 		organizeBySection(allPosts);
+		$.bfaIndicator.text = "BFA Disabled";
+		switchId.titleOff == " ";
 	}
 }
 
-function init() {
-	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-		changeTitleOfThePage(returnedData.data.component.name);
-		allPosts = returnedData.data.component.posts;
+// function init() {
+	// dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+		// changeTitleOfThePage(returnedData.data.component.name);
+		// allPosts = returnedData.data.component.posts;
+// 
+		// $.bfaSwitch.value = false;
+		// $.bfaSwitch.left = "80%";
+		// $.bfaIndicator.text = "BFA Disabled";
+		// $.bfaIndicator.left = "60%";
+		// checkStateOfSwitch($.bfaSwitch, allPosts);
+		// $.bfaSwitch.addEventListener("change", function(e) {
+			// checkStateOfSwitch($.bfaSwitch, allPosts);
+		// });
+// 
+		// for (var i = 0; i < allPosts.length; i++) {
+			// if (allPosts[i].section) {
+				// if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
+					// sectionsThatAlreadyExist.push(allPosts[i].section);
+					// createNewSection(allPosts[i].section);
+				// }
+				// addToExistingSection(allPosts[i]);
+			// }
+		// }
+		// Ti.API.info(sectionsThatAlreadyExist);
+		// Ti.API.info("data: " + tableData);
+// 
+		// if (OS_IOS) {
+			// //Accounts for bounce buffer
+			// $.tableView.bottom = "48dip";
+		// }
+		// $.tableView.data = tableData;
+	// });
+// 	
+// }
 
-		$.bfaSwitch.value = false;
-		checkStateOfSwitch($.bfaSwitch, allPosts);
-		$.bfaSwitch.addEventListener("clicked", checkStateOfSwitch($.bfaSwitch, allPosts));
-
-		if (OS_IOS) {
-			//Accounts for bounce buffer
-			$.tableView.bottom = "48dip";
-		}
-
-		$.tableView.data = tableData;
+function createBfaNavRow(){
+	var toggle = Ti.UI.createSwitch({
+		titleOn: "",
+		titleOff: "",
+		left: "100%",
+		value: "false"
 	});
+	var label = Ti.UI.createLabel({
+		text: "BFA Disabled"
+	});
+	var row = createRow();
+	row.add(label);
+	row.add(toggle);
 }
+
+ function init() {
+ 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+ 		tableData.push(createBfaNavRow());
+ 		changeTitleOfThePage(returnedData.data.component.name);
+ 		allPosts = returnedData.data.component.posts;
+ 		for (var i = 0; i < allPosts.length; i++) {
+ 			if (allPosts[i].section) {
+ 				if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
+ 					sectionsThatAlreadyExist.push(allPosts[i].section);
+ 					createNewSection(allPosts[i].section);
+				} else {
+					// section already exists
+ 				}
+ 				addToExistingSection(allPosts[i]);
+ 			}
+ 		}
+ 		Ti.API.info(sectionsThatAlreadyExist);
+		if (OS_IOS) {
+ 			//Accounts for bounce buffer
+ 			$.tableView.bottom = "48dip";
+ 		}
+ 		$.tableView.data = tableData;
+ 	});
+ }
 
 init();

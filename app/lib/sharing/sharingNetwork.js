@@ -88,6 +88,7 @@ function openCamera(postTagsString, shareImageButtonId, rightNavButton) {
 			}
 			//save file path to be shared
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
+				
 				imageFilePath = imageFile.nativePath;
 				if (OS_IOS) {
 					imageFilePathInstagram = imageFileInstagram.nativePath;
@@ -204,13 +205,4 @@ function sendIntentImageiOS(postTags, imageFilePath, imageFilePathInstagram, rig
 }
 
 //Export functions for use by other files
-module.exports.createTextShareButton = createTextShareButton;
-module.exports.sendIntentTextAndroid = sendIntentTextAndroid;
-module.exports.sendIntentTextiOS = sendIntentTextiOS;
-module.exports.createImageShareButton = createImageShareButton;
-module.exports.openCamera = openCamera;
-module.exports.sendIntentImageAndroid = sendIntentImageAndroid;
-module.exports.sendIntentImageiOS = sendIntentImageiOS;
-module.exports.openInstagramView = openInstagramView;
-module.exports.toggleImageShareButtonStatusInactive = toggleImageShareButtonStatusInactive; 
-module.exports.toggleTextShareButtonStatusInactive = toggleTextShareButtonStatusInactive;
+module.exports = networkSharingService;

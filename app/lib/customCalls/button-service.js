@@ -9,4 +9,8 @@ function createButton() {
 	return button;
 }
 
+function toggleEnabled(buttonId, bol){
+	buttonId.enabled = bol;
+}
+
 module.exports = buttonService;
