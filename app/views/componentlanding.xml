@@ -3,7 +3,7 @@
 		<View layout="vertical">
 			<Widget src="navigationBar" id="navBar"/>
 			<ScrollView id="scroller">
-				<TableView id="tableView" >
+				<TableView id="tableView" class = "tableView">
 				</TableView>
 			</ScrollView>
 		</View>

@@ -13,10 +13,10 @@
 var NavigationController = require('navigationService/NavigationController');
 Alloy.Globals.navController = new NavigationController();
 
-var dreamhostersAPI = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/13";
+var dreamhostersAPI = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81";
 var backupAPI = "http://tvt.redhale.com/wordpress/wp-json/v01/excl/museum/81";
 
-Alloy.Globals.rootWebServiceUrl = backupAPI;
+Alloy.Globals.rootWebServiceUrl = dreamhostersAPI;
 
 /* Google Analytics */
 var GA = require('analytics.google');
