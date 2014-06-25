@@ -119,20 +119,19 @@ function createAgeRange(post) {
 }
 
 function organizeBySection(allPosts) {
-}
-
-for (var i = 0; i < allPosts.length; i++) {
-	if (allPosts[i].section) {
-		if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
-			// create a new section
-			//order of components are determined here
-			sectionsThatAlreadyExist.push(allPosts[i].section);
-			createNewSection(allPosts[i].section);
+	for (var i = 0; i < allPosts.length; i++) {
+		if (allPosts[i].section) {
+			if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
+				// create a new section
+				//order of components are determined here
+				sectionsThatAlreadyExist.push(allPosts[i].section);
+				createNewSection(allPosts[i].section);
+			}
+			addToExistingSection(allPosts[i]);
 		}
-		addToExistingSection(allPosts[i]);
 	}
+	Ti.API.info(sectionsThatAlreadyExist);
 }
-Ti.API.info(sectionsThatAlreadyExist);
 
 function organizeByBfa(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
