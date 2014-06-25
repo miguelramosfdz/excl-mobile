@@ -13,6 +13,8 @@ function init(){
 	initArrows();
 	if(args)
 		Ti.API.info(args);
+		
+
 };
 
 function initArrows(){
@@ -84,14 +86,91 @@ function createTitleLabel(name, type){
 
 	return titleLabel;
 }
-
+		
 function swipeHandler(e){
-	if(numOfItems>0){
-		if(e.direction = 'right')
+	if (numOfItems > 0){
+		if(e.direction == 'right')
 			rotateRight();
-		else if(e.direction = 'left')
+		else if(e.direction == 'left')
 			rotateLeft();
 	}
+	/*
+	tolerance = 2;
+	var start;
+	start = e;
+	if (numOfItems > 0){
+		$.carouselView.addEventListener('touchend', function (end) {
+			var dx = end.x - start.x, dy = end.y - start.y;
+			var dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+			// only trigger if dragged further than 50 pixels
+			if (dist < 50) {
+				return;
+			}
+		
+			var isHorizontal = Math.abs(dy / dx) < 1 / tolerance;
+			// only trigger if dragged in a particular direction
+			if (!isHorizontal) {
+				return;
+			}
+	
+			// now fire the event off so regular 'swipe' handlers can use this!
+			end.direction = (dx < 0) ? 'left' : 'right';
+			if (end.direction == 'left'){
+				rotateLeft();
+			}
+			else if (end.direction == 'right'){
+				rotateRight();
+			}
+		});
+	}
+	*/
+	
+	/*
+	var endDetected = false;
+	var moveBigEnough = false;
+	var tolerance = 2;
+	var dx, dy;
+	if(numOfItems>0){
+		start = e;		
+			
+		$.carouselView.addEventListener('touchmove', function(move){
+			dx = move.x - start.x;
+			dy = move.y - start.y;
+			var dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+			// only trigger if dragged further than 50 pixels
+			if (dist > 50) {
+				moveBigEnough = true;
+			}
+		});
+		
+		$.carouselView.addEventListener('touchend', function(end){
+			endDetected = true;
+		});
+		
+		while(1){
+			if (endDetected) break;
+			if (moveBigEnough) break;
+		}//end while
+		
+		if (moveBigEnough){
+			var isHorizontal = Math.abs(dy / dx) < 1 / tolerance;
+			if (!isHorizontal) {
+				return;
+			}
+			
+			move.direction = (dx < 0) ? 'left' : 'right';
+			if (move.direction == 'left'){
+				Ti.API.info("Left");
+				rotateLeft();
+			}
+			else if (move.direction == 'right'){
+				Ti.API.info("Right");
+				rotateRight();
+			}
+		}//end if moveBigEnough	
+	}	
+	*/
+
 }
 
 function rotateLeft(){
