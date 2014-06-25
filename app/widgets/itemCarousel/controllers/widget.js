@@ -87,10 +87,39 @@ function createTitleLabel(name, type){
 
 function swipeHandler(e){
 	if(numOfItems>0){
+		start = e;
+		$.carouselView.addEventListener('touchend', function(end){
+			var dx = end.x - start.x, dy = end.y - start.y;
+			var dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+			// only trigger if dragged further than 50 pixels
+			if (dist < 50) {
+				return;
+			}
+
+			var isHorizontal = Math.abs(dy / dx) < 1 / tolerance;
+			
+			if (!isHorizontal) {
+				return;
+			}
+			
+			end.direction = (dx < 0) ? 'left' : 'right';
+
+			if (end.direction == 'left'){
+				rotateLeft();
+			}
+			else if (end.direction == 'right'){
+				rotateRight();
+			}
+			
+		
+		});
+		
+		/*
 		if(e.direction = 'right')
 			rotateRight();
 		else if(e.direction = 'left')
 			rotateLeft();
+		*/
 	}
 }
 
