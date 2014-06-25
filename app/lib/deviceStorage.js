@@ -13,4 +13,14 @@ var storageSystem = {
 	}
 };
 
+// NEEDS UNIT TEST
+function readFromFile(fileName){
+	var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
+	if(!file.exists())
+		return false;
+	var text = file.read().text;
+	file = null;
+	return text;
+}
+
 module.exports = storageSystem;
