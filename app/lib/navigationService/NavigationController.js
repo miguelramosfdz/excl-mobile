@@ -1,6 +1,8 @@
 // NavigationController
 // This version works for Android and iOS for Titanium 3.2.0. 
 
+
+
 function NavigationController() {
 	this.windowStack = [];
 	this.kioskMode = false;

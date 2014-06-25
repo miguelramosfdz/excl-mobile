@@ -2,6 +2,9 @@ var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever/dataRetriever');
 var url = Alloy.Globals.rootWebServiceUrl;
 
+var LoadingSpinner = require('loadingSpinner/loadingSpinner');
+var spinner = new LoadingSpinner();
+
 var exhibitIndex = 0;
 var numOfExhibits;
 var exhibitViews = [];
@@ -15,19 +18,32 @@ museum.fetch();
 */
 //Ti.API.info("\n\n\n\n\n\n"+JSON.stringify(data)+"\n\n\n\n\n\n\n");
 
+//Google Analytics 
+function trackHomescreen(){
+	Alloy.Globals.analyticsController.trackScreen("Exhibit Landing");
+}
+
+trackHomescreen();
 
 function retrieveJson(jsonURL) {
+	spinner.addTo($.exhibitsSwipeableRow);
+	spinner.show();
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
 			populateWindow(returnedData);
+			spinner.hide();
+			// var spin = spinner;
+			// setTimeout(function(){
+				// spin.hide();
+			// }, 3000);
 		}
 	});
 }
 
-
 function openComponent(e){
 	var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
 	Alloy.Globals.navController.open(componentWindow);
+	Alloy.Globals.analyticsController.trackScreen("Component Landing");
 }
 
 function openExhibitInfo(e){
@@ -194,6 +210,8 @@ function showComponents(index){
 
 
 retrieveJson(url);
+
+
 //populateWindow(json);
 function populateWindow(json){
 	numOfExhibits = json.data.museum.exhibits.length;
@@ -202,11 +220,6 @@ function populateWindow(json){
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
 	loaded = true;
-}
-
-function openPostLanding(e){
-	var componentWindow = Alloy.createController('postlanding').getView();
-	Alloy.Globals.navController.open(componentWindow);
 }
 
 while(exhibitViews.length = 0);

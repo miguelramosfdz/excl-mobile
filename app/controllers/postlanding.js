@@ -14,6 +14,13 @@ function setPathForLibDirectory(retrieveNetworkSharingLib) {
 	}
 }
 
+//Google Analytics 
+function trackPostscreen(){
+	Alloy.Globals.analyticsController.trackScreen("Post Landing");
+}
+
+trackPostscreen();
+
 function createPlainRow(rowHeight) {
 	var row = Ti.UI.createTableViewRow({
 		height : rowHeight,
@@ -37,19 +44,22 @@ function changeTitleOfThePage(name) {
  */
 function displaySocialMediaButtons(json) {
 
+	/*
 	//Create anchor for instagram viewer
 	var rightNavButton = Ti.UI.createButton({
-		title:'rightNavButton'
+		title:''
 	});
 	$.postlanding.add(rightNavButton);
+	*/
 
 	var row = createPlainRow('auto');
-	if (json.text_sharing && Alloy.Globals.navController.kioskMode == false) {
+	var isInKioskMode = Alloy.Globals.navController.kioskMode == true;
+	if (json.text_sharing && !isInKioskMode) {
 		var shareTextButton = sharingService.initiateTextShareButton(json);
 		shareTextButton.left = "80%";
 		row.add(shareTextButton);
 	}
-	if (json.image_sharing && Alloy.Globals.navController.kioskMode == false) {
+	if (json.image_sharing && !isInKioskMode) {
 		var shareImageButton = sharingService.initiateImageShareButton(json, rightNavButton);
 		shareTextButton.left = "70%";
 		row.add(shareImageButton);
@@ -73,7 +83,67 @@ function displayImages(imageURL) {
 
 }
 
-function displayVideo(videoUrl) {
+function displayVideo(thumbnail, videoUrl) {
+	if (OS_ANDROID){
+		displayVideoAndroid(thumbnail, videoUrl);
+	}
+	if (OS_IOS){
+		displayVideoiOS(videoUrl);
+	}
+}
+
+function displayVideoAndroid(thumbnail, videoUrl){
+	var row = createPlainRow('200dip');
+	
+	//Thumbnail for image
+	thumbnailView = Ti.UI.createView({	});
+	addThumbnailImage(thumbnail, thumbnailView);
+	addPlayTriangle(thumbnailView);
+	row.add(thumbnailView);
+	tableData.push(row);
+	
+	//Add event listener- when thumbnail is clicked, open fullscreen video
+	thumbnailView.addEventListener('click', function(e){
+		var video = Titanium.Media.createVideoPlayer({
+			url : videoUrl,
+			fullscreen : true,
+			autoplay : true
+		});	
+		
+		doneButton = Ti.UI.createButton({
+			title : "Done",
+			top : "0dip",
+			height : "40dip",
+			left : "10dip",
+		});
+		
+		doneButton.addEventListener('click', function(e){
+			video.hide();
+	        video.release();
+	        video = null;
+		});
+		video.add(doneButton);
+		
+	});
+}
+
+function addThumbnailImage(thumbnail, thumbnailView){
+	var thumbnailImageView = Ti.UI.createImageView({
+		image : thumbnail,
+		width : '100%',
+		height : '100%'
+	});
+	thumbnailView.add(thumbnailImageView);
+}
+
+function addPlayTriangle(thumbnailView){
+	var playTriangle = Ti.UI.createImageView({
+		image : "/images/icons_android/Video-Player-icon-small.png",
+	});
+	thumbnailView.add(playTriangle);
+}
+
+function displayVideoiOS(videoUrl){
 	var row = createPlainRow('200dip');
 	var video = Titanium.Media.createVideoPlayer({
 		url : videoUrl,
@@ -114,6 +184,7 @@ function addTableDataToTheView() {
 
 function initializePage() {
 	changeTitleOfThePage(post_content.name);
+	
 	if (post_content.parts) {
 		for (var i = 0; i < post_content.parts.length; i++) {
 			Ti.API.info(post_content.parts[i].type);
@@ -127,7 +198,7 @@ function initializePage() {
 			}
 
 			if (post_content.parts[i].type == "video") {
-				displayVideo(post_content.parts[i].video);
+				displayVideo(/*post_content.parts[i].image*/ post_content.image /*thumbnail*/, post_content.parts[i].video/*video*/);
 			}
 
 			if (i == 0) {
