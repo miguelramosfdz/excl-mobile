@@ -3,7 +3,8 @@
  * 
  * TODO
  * sharing-service > {text share, image share, other Ti services > {iOS, Android} }
- * 
+ * icon selection service lives in ios/android files
+ * put Ti services into the network folder, not in the sharing folder
  */
 
 
@@ -33,7 +34,6 @@ function toggleTextShareButtonStatusActive(shareTextButtonId) {
 		shareTextButtonId.backgroundImage = "images/icons_ios/iosShareGray.png";
 	} else if (OS_ANDROID) {
 		shareTextButtonId.backgroundImage = "/images/icons_android/ic_action_share_active.png";
-		//"simplify" file paths in function
 	}
 }
 
