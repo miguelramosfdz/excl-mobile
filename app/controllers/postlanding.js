@@ -4,14 +4,14 @@ var tableData = [];
 /*
  * Defines path to sharingNetwork file
  */
-var sharingService;
-function setPathForLibDirectory(retrieveNetworkSharingLib) {
+
+function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
-		// this is required for jasmine-node to run via terminal
-		sharingService = require("../../lib/" + retrieveNetworkSharingLib);
+		lib = require("../../lib/" + libFile);
 	} else {
-		sharingService = require(retrieveNetworkSharingLib);
+		lib = require(libFile);
 	}
+	return lib;
 }
 
 //Google Analytics
@@ -21,7 +21,7 @@ function trackPostScreen() {
 
 trackPostScreen();
 
-function createPlainRow(rowHeight) {
+function createPlainRowWithHeight(rowHeight) {
 	var row = Ti.UI.createTableViewRow({
 		height : rowHeight,
 		width : '100%',
@@ -31,7 +31,7 @@ function createPlainRow(rowHeight) {
 	return row;
 }
 
-function changeTitleOfThePage(name) {
+function setPageTitle(name) {
 	if (name === "") {
 		$.postlanding.title = "[Title]";
 	} else {
@@ -43,30 +43,30 @@ function changeTitleOfThePage(name) {
  * Adds sharing buttons
  */
 function displaySocialMediaButtons(json) {
-
 	// //Create anchor for instagram viewer
 	// var rightNavButton = Ti.UI.createButton({
 	// title:''
 	// });
 	// $.postlanding.add(rightNavButton);
-
-	var row = createPlainRow('auto');
+	var row = createPlainRowWithHeight('auto');
 	if (json.text_sharing && !Alloy.Globals.navController.kioskMode) {
-		var shareTextButton = sharingService.initiateTextShareButton(json);
+		var shareTextButton = sharingTextService.initiateTextShareButton(json);
 		shareTextButton.left = "80%";
 		row.add(shareTextButton);
 	}
-	if (json.image_sharing && !Alloy.Globals.navController.kioskMode) {
-		var shareImageButton = sharingService.initiateImageShareButton(json);
-		shareImageButton.left = "70%";
-		row.add(shareImageButton);
-	}
+	/* Reenable once sharingImageService is up and running
+	 if (json.image_sharing && !Alloy.Globals.navController.kioskMode) {
+	 var shareImageButton = sharingNonNetworkService.initiateImageShareButton(json);
+	 shareImageButton.left = "70%";
+	 row.add(shareImageButton);
+	 }
+	 */
 
-	tableData.push(row);
+	return row;
 }
 
-function displayImages(imageURL) {
-	var row = createPlainRow('200dip');
+function getImageRowFromPart(imageURL) {
+	var row = createPlainRowWithHeight('200dip');
 
 	imageView = Ti.UI.createImageView({
 		image : imageURL,
@@ -76,35 +76,46 @@ function displayImages(imageURL) {
 	});
 
 	row.add(imageView);
-	tableData.push(row);
+	return row;
 
 }
 
-function displayVideo(thumbnail, videoUrl) {
+function getVideoRowFromPart(part) {
 	if (OS_ANDROID) {
-		displayVideoAndroid(thumbnail, videoUrl);
+		return getVideoRowFromPartAndroid(part);
 	}
 	if (OS_IOS) {
-		displayVideoiOS(videoUrl);
+		return getVideoRowFromPartiOS(part);
 	}
 }
 
-function displayVideoAndroid(thumbnail, videoUrl) {
-	var row = createPlainRow('200dip');
+function getVideoRowFromPartAndroid(part) {
+	var row = createPlainRowWithHeight('200dip');
+	row.add(getVideoThumbnailViewFromPartAndroid(part));
+	return row;
+}
 
-	//Thumbnail for image
-	thumbnailView = Ti.UI.createView({	});
-	addThumbnailImage(thumbnail, thumbnailView);
-	addPlayTriangle(thumbnailView);
-	row.add(thumbnailView);
-	tableData.push(row);
-
+function getVideoThumbnailViewFromPartAndroid(part) {
+	var thumbnailView = Ti.UI.createView({	});
+	var thumbnailImageView = Ti.UI.createImageView({
+		image : part.get('thumbnail'),
+		width : '100%',
+		height : '100%'
+	});
+	var playTriangle = Ti.UI.createImageView({
+		image : "/images/icons_android/Video-Player-icon-small.png",
+	});
+	thumbnailView.add(thumbnailImageView);
+	thumbnailView.add(playTriangle);
 	//Add event listener- when thumbnail is clicked, open fullscreen video
 	thumbnailView.addEventListener('click', function(e) {
 		var video = Titanium.Media.createVideoPlayer({
-			url : videoUrl,
+			url : part.get('video'),
 			fullscreen : true,
 			autoplay : true
+		});
+		video.addEventListener('load', function(e) {
+			Alloy.Globals.analyticsController.trackEvent("Videos", "Play", part.get('name'), 1);
 		});
 
 		doneButton = Ti.UI.createButton({
@@ -122,37 +133,25 @@ function displayVideoAndroid(thumbnail, videoUrl) {
 		video.add(doneButton);
 
 	});
+	return thumbnailView;
 }
 
-function addThumbnailImage(thumbnail, thumbnailView) {
-	var thumbnailImageView = Ti.UI.createImageView({
-		image : thumbnail,
-		width : '100%',
-		height : '100%'
-	});
-	thumbnailView.add(thumbnailImageView);
-}
-
-function addPlayTriangle(thumbnailView) {
-	var playTriangle = Ti.UI.createImageView({
-		image : "/images/icons_android/Video-Player-icon-small.png",
-	});
-	thumbnailView.add(playTriangle);
-}
-
-function displayVideoiOS(videoUrl) {
-	var row = createPlainRow('200dip');
+function getVideoRowFromPartiOS(part) {
+	var row = createPlainRowWithHeight('200dip');
 	var video = Titanium.Media.createVideoPlayer({
-		url : videoUrl,
+		url : part.get('video'),
 		fullscreen : false,
 		autoplay : false,
 	});
+	video.addEventListener('load', function(e) {
+		Alloy.Globals.analyticsController.trackEvent("Videos", "Play", part.get('name'), 1);
+	});
 	row.add(video);
-	tableData.push(row);
+	return row;
 }
 
-function displayText(textContent) {
-	var row = createPlainRow('auto');
+function getTextRowFromPart(part) {
+	var row = createPlainRowWithHeight('auto');
 	var textBody = Ti.UI.createLabel({
 		width : '94%',
 		right : '3%',
@@ -163,14 +162,14 @@ function displayText(textContent) {
 			fontSize : '13dp',
 			fontWeight : 'normal',
 		},
-		text : textContent,
+		text : part.get('body'),
 		// textAlign : 'left',
 	});
 	row.add(textBody);
-	tableData.push(row);
+	return row;
 }
 
-function addTableDataToTheView() {
+function addTableDataToTheView(tableData) {
 	$.tableView.height = 'auto';
 	if (OS_IOS) {
 		//Accounts for bounce buffer
@@ -180,7 +179,7 @@ function addTableDataToTheView() {
 }
 
 function creatingCommentTextHeading() {
-	var row = createPlainRow('auto');
+	var row = createPlainRowWithHeight('auto');
 	var commentHeading = Ti.UI.createLabel({
 		top : 20,
 		width : '94%',
@@ -202,7 +201,7 @@ function creatingCommentTextHeading() {
 }
 
 function addCommentToView(commentText, commentDate) {
-	var row = createPlainRow('auto');
+	var row = createPlainRowWithHeight('auto');
 	var text = Ti.UI.createLabel({
 		top : 10,
 		width : '94%',
@@ -220,7 +219,7 @@ function addCommentToView(commentText, commentDate) {
 	row.add(text);
 	tableData.push(row);
 
-	var row = createPlainRow('auto');
+	var row = createPlainRowWithHeight('auto');
 	var date = Ti.UI.createLabel({
 		width : '94%',
 		right : '3%',
@@ -269,7 +268,7 @@ function displayComments() {
 	}
 
 	if (comments.length > commentsLengthLimit) {
-		var row = createPlainRow('auto');
+		var row = createPlainRowWithHeight('auto');
 		var text = Ti.UI.createLabel({
 			top : 10,
 			width : '94%',
@@ -295,7 +294,7 @@ function displayComments() {
 			for (var i = 2; i < comments.length; i++) {
 				addCommentToView(comments[i].body, comments[i].date);
 			}
-			addTableDataToTheView();
+			addTableDataToTheView(tableData);
 		});
 
 		tableData.push(row);
@@ -305,45 +304,52 @@ function displayComments() {
 }
 
 function initializePage() {
-	changeTitleOfThePage(post_content.name);
-
+	setPageTitle(post_content.name);
 	if (post_content.parts) {
+		// var tableData = [];
+
 		for (var i = 0; i < post_content.parts.length; i++) {
-			Ti.API.info(post_content.parts[i].type);
-
-			if (post_content.parts[i].type == "image") {
-				displayImages(post_content.parts[i].image);
-			}
-
-			if (post_content.parts[i].type == "text") {
-				displayText(post_content.parts[i].body);
-			}
-
-			if (post_content.parts[i].type == "video") {
-				displayVideo(/*post_content.parts[i].image*/
-				post_content.image/*thumbnail*/, post_content.parts[i].video/*video*/);
-			}
-
+			var part = Alloy.createModel('part', post_content.parts[i]);
+			part.set({
+				'thumbnail' : post_content.image
+			});
+			tableData.push(getRowFromPart(part));
 			if (i === 0) {
-				displaySocialMediaButtons(post_content);
+				tableData.push(displaySocialMediaButtons(post_content));
 			}
-
 		}
 	}
-
-	// if(post_content.comments){
-	displayComments();
+	// if(!post_content.comments){
+		displayComments();
 	// }
-
-	addTableDataToTheView();
-
+	addTableDataToTheView(tableData);
 }
 
 /*
 * Run startup commands
 */
 //establish connection to sharing functions
-setPathForLibDirectory("sharing/sharingNonNetwork");
-//Place objects
-initializePage();
+sharingTextService = setPathForLibDirectory('sharing/sharingTextService');
+var sharingTextService = new sharingTextService();
 
+sharingImageService = setPathForLibDirectory('sharing/sharingImageService');
+var sharingImageService = new sharingImageService();
+
+function getRowFromPart(part) {
+	switch (part.get('type')) {
+		case 'image':
+			return getImageRowFromPart(part);
+			break;
+		case 'text':
+			return getTextRowFromPart(part);
+			break;
+		case 'video':
+			return getVideoRowFromPart(part);
+			break;
+		default:
+			return null;
+			break;
+	}
+}
+
+initializePage();

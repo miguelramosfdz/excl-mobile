@@ -3,7 +3,7 @@
 		<View layout="vertical">
 			<Widget src="navigationBar" id="navBar"/>
 			<ScrollView id="scroller">
-				<TableView class="sortBar">
+				<TableView id="sortBar" class="sortBar">
 					<TableViewRow>
 						<Label id="sortIndicator" class="indicator"/>
 						<Switch id="sortSwitch" class= "switch" />
