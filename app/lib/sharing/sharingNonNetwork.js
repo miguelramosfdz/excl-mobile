@@ -30,9 +30,9 @@ function toggleTextShareButtonStatusActive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to active/clicked mode
 	shareTextButtonId.enabled = false;
 	if (OS_IOS) {
-		shareTextButtonId.backgroundImage = "images/icons_ios/iosShareGray.png";
+		shareTextButtonId.backgroundImage = "images/icons_ios/share_busy.png";
 	} else if (OS_ANDROID) {
-		shareTextButtonId.backgroundImage = "/images/icons_android/ic_action_share_active.png";
+		shareTextButtonId.backgroundImage = "/images/icons_android/share_busy.png";
 	}
 }
 
@@ -41,9 +41,9 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	//Note: inactive version of this function lives in sharingNetwork.js
 	shareImageButtonId.enabled = false;
 	if (OS_IOS) {
-		shareImageButtonId.backgroundImage = "images/icons_ios/iOScameraGray.png";
+		shareImageButtonId.backgroundImage = "images/icons_ios/camera_busy.png";
 	} else if (OS_ANDROID) {
-		shareImageButtonId.backgroundImage = "/images/icons_android/ic_action_camera_active.png";
+		shareImageButtonId.backgroundImage = "/images/icons_android/camera_busy.png";
 	}
 }
 
@@ -94,7 +94,9 @@ function initiateImageShareButton(json) {
 		var postTags = getPostTags(json);
 		//open camera and send intents
 		
-		var rightNavButton = Ti.UI.createButton({});
+		var rightNavButton = Ti.UI.createButton({
+			visible: false
+		});
 		
 		networkSharingService.openCamera(postTags, shareImageButton, rightNavButton);
 	});
