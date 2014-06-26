@@ -1,17 +1,21 @@
 "#menuView":{
 	layout: 'vertical',
 	opacity:".9",
-	width:"50%",
-	left:"100%",
-	top:"8%"
+	width:"100%",
+	left:"0%",
+	top:"50dip"
 },
 "#menuTable":{
-	separatorStyle:'NONE',
-	separatorColor: 'transparent',
-	backgroundColor:'#F2F2F2'
+	//separatorStyle:'NONE',
+	separatorColor: '#CCCCCC',
+	//height:"100%",
+	width:"50%",
+	left:"50%",
+	bottom:"100%"
 },
 ".tableRow":{
-	height: '50dp'
+	height: '50dp',
+	backgroundColor:'#FFFFFF'
 },
 "#rowContainer":{
 	height: '30dp',
