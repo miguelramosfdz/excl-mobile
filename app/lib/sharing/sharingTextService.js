@@ -17,7 +17,7 @@ function setPathForLibDirectory(libFile) {
 };
 
 sharingTextService.prototype.initiateTextShareButton = function(json) {
-	var shareTextButton = buttonService.createTextShareButton();
+	var shareTextButton = buttonService.createButton('shareTextButton', 'Text');
 	sharingTextService.prototype.setIconReady(shareTextButton);
 
 	shareTextButton.addEventListener('click', function(e) {
@@ -43,7 +43,7 @@ sharingTextService.prototype.getPostTags = function(json) {
 	return postTags;
 };
 
-sharingTextService.prototype.initiateIntentText = function(postTagsString, shareTextButton) {
+sharingTextService.prototype.initiateIntentText = function(postTags, shareTextButton) {
 	//Choose appropriate intent creator
 	if (OS_ANDROID) {
 		intentService.sendIntentTextAndroid(postTags);

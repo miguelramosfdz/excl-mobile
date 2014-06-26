@@ -268,18 +268,18 @@ NavigationController.prototype.toggleMenu = function(showMenu){
 };
 function closeMenu(menu){
 	menu.animate({
-		left: "100%",
+		bottom:"100%",
 		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration: 100
+		duration: 400
 	});
 	return false;
 }
 
 function openMenu(menu){
 	menu.animate({
-		left: "50%",
+		top: "100%",
 		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration: 100
+		duration: 400
 	});
 	return true;
 }*/

@@ -1,12 +1,17 @@
 function buttonService(){};
 
-buttonService.prototype.createButton = function() {
-	//button to open text sharing
+//Parameters id and title are optional
+buttonService.prototype.createButton = function(id, title) {
+	id = id || "";
+	title = title || "";
+
 	var button = Ti.UI.createButton({
 		height : "40dip",
 		width : "40dip",
 		left : "0",
-		top : "0"
+		top : "0",
+		id : id,
+		title : title
 	});
 	return button;
 };
@@ -20,14 +25,6 @@ buttonService.prototype.eraseButtonTitleIfBackgroundPresent = function(button) {
 	if (button.backgroundImage != "") {
 		button.title = "";
 	}
-};
-
-buttonService.prototype.createTextShareButton = function() {
-	//button to open text sharing
-	var shareTextButton = buttonService.prototype.createButton();
-	shareTextButton.id = 'shareTextButton';
-	shareTextButton.title = 'Text';
-	return shareTextButton;
 };
 
 module.exports = buttonService;
