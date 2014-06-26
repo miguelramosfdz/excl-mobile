@@ -49,13 +49,11 @@ function displaySocialMediaButtons(json) {
 		shareTextButton.left = "80%";
 		row.add(shareTextButton);
 	}
-	/* Reenable once sharingImageService is up and running
 	if (json.image_sharing && !Alloy.Globals.navController.kioskMode) {
-		var shareImageButton = sharingNonNetworkService.initiateImageShareButton(json);
+		var shareImageButton = sharingImageService.initiateImageShareButton(json);
 		shareImageButton.left = "70%";
 		row.add(shareImageButton);
 	}
-	*/
 
 	tableData.push(row);
 }
