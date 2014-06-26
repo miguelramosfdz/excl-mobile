@@ -235,28 +235,28 @@ function addCommentToView(commentText, commentDate) {
 	tableData.push(row);
 }
 
-function displayComments() {
+function displayComments(comments) {
 	// display the top 2 comments first and rest of them,
 	// should be hidden with the 'see more comments' text
 	// once that text is clicked it should load all the comments
 
-	var comments = [{
-		"id" : "1",
-		"body" : "Testing 1",
-		"date" : "2014-06-26 15:47:17"
-	}, {
-		"id" : "2",
-		"body" : "Testing 2",
-		"date" : "2014-06-26 15:47:18"
-	}, {
-		"id" : "3",
-		"body" : "Testing 3",
-		"date" : "2014-06-26 15:47:19"
-	}, {
-		"id" : "4",
-		"body" : "Testing 4",
-		"date" : "2014-06-26 15:47:20"
-	}];
+	// var comments = [{
+		// "id" : "1",
+		// "body" : "Testing 1",
+		// "date" : "2014-06-26 15:47:17"
+	// }, {
+		// "id" : "2",
+		// "body" : "Testing 2",
+		// "date" : "2014-06-26 15:47:18"
+	// }, {
+		// "id" : "3",
+		// "body" : "Testing 3",
+		// "date" : "2014-06-26 15:47:19"
+	// }, {
+		// "id" : "4",
+		// "body" : "Testing 4",
+		// "date" : "2014-06-26 15:47:20"
+	// }];
 
 	creatingCommentTextHeading();
 	var commentsLengthLimit = 2;
@@ -289,7 +289,7 @@ function displayComments() {
 			// text.visible = false;
 			tableData.pop();
 			// remove the last element, which is the "show more comments" row in this case
-			for (var i = 2; i < comments.length; i++) {
+			for (var i = commentsLengthLimit; i < comments.length; i++) {
 				addCommentToView(comments[i].body, comments[i].date);
 			}
 			addTableDataToTheView(tableData);
@@ -317,9 +317,9 @@ function initializePage() {
 			}
 		}
 	}
-	// if(!post_content.comments){
-		displayComments();
-	// }
+	if(post_content.comments != false){
+		displayComments(post_content.comments);
+	}
 	addTableDataToTheView(tableData);
 }
 
