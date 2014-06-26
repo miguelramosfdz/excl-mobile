@@ -158,8 +158,7 @@ function retrieveComponentData() {
 }
 
 function addSpinner() {
-	spinner.top = "20%";
-	spinner.addTo($.scroller);
+	spinner.addTo($.sortBar);
 	spinner.show();
 }
 
@@ -172,10 +171,12 @@ function checkStateOfSwitch(allPosts) {
 
 	if ($.sortSwitch.value == true) {
 		$.sortIndicator.text = "Filter By Age On";
+		$.sortIndicator.color = "#00CC00";
 		organizeBysort(allPosts);
 		Ti.API.info(existingSortByAge);
 	} else if ($.sortSwitch.value == false) {
 		$.sortIndicator.text = "Filter By Age Off";
+		$.sortIndicator.color = "#FFFFFF";
 		organizeBySection(allPosts);
 		Ti.API.info(existingSortBySections);
 	}

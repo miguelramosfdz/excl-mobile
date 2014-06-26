@@ -4,14 +4,14 @@ var tableData = [];
 /*
  * Defines path to sharingNetwork file
  */
-var sharingService;
-function setPathForLibDirectory(retrieveNetworkSharingLib) {
+
+function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
-		// this is required for jasmine-node to run via terminal
-		sharingService = require("../../lib/" + retrieveNetworkSharingLib);
+		lib = require("../../lib/" + libFile);
 	} else {
-		sharingService = require(retrieveNetworkSharingLib);
+		lib = require(libFile);
 	}
+	return lib;
 }
 
 //Google Analytics 
@@ -43,26 +43,19 @@ function changeTitleOfThePage(name) {
  * Adds sharing buttons
  */
 function displaySocialMediaButtons(json) {
-
-	
-	// //Create anchor for instagram viewer
-	// var rightNavButton = Ti.UI.createButton({
-		// title:''
-	// });
-	// $.postlanding.add(rightNavButton);
-	
-
 	var row = createPlainRow('auto');
 	if (json.text_sharing && !Alloy.Globals.navController.kioskMode) {
-		var shareTextButton = sharingService.initiateTextShareButton(json);
+		var shareTextButton = sharingTextService.initiateTextShareButton(json);
 		shareTextButton.left = "80%";
 		row.add(shareTextButton);
 	}
+	/* Reenable once sharingImageService is up and running
 	if (json.image_sharing && !Alloy.Globals.navController.kioskMode) {
-		var shareImageButton = sharingService.initiateImageShareButton(json);
+		var shareImageButton = sharingNonNetworkService.initiateImageShareButton(json);
 		shareImageButton.left = "70%";
 		row.add(shareImageButton);
 	}
+	*/
 
 	tableData.push(row);
 }
@@ -213,7 +206,12 @@ function initializePage() {
 * Run startup commands
 */
 //establish connection to sharing functions
-setPathForLibDirectory("sharing/sharingNonNetwork");
+sharingTextService = setPathForLibDirectory('sharing/sharingTextService');
+var sharingTextService = new sharingTextService();
+
+sharingImageService = setPathForLibDirectory('sharing/sharingImageService');
+var sharingImageService = new sharingImageService();
+
 //Place objects
 initializePage();
 

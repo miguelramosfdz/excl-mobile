@@ -20,7 +20,8 @@ function setPathForLibDirectory(libfile) {
 	}
 	return networkPath;
 }
-var networkSharingService = setPathForLibDirectory('sharing/sharingNetwork');
+setPathForLibDirectory('sharing/sharingNetwork');
+var sharingNetworkService = new sharingNetworkService();
 
 
 /*
@@ -53,8 +54,8 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
  */
 function initiateTextShareButton(json) {
 	//button to open text sharing
-	var shareTextButton = networkSharingService.createTextShareButton();
-	networkSharingService.toggleTextShareButtonStatusInactive(shareTextButton);
+	var shareTextButton = sharingNetworkService.createTextShareButton();
+	sharingNetworkService.toggleTextShareButtonStatusInactive(shareTextButton);
 	//Add a listener so that when clicked, retrieveTextPostTags is called (this function calls sendIntentText)
 	shareTextButton.addEventListener('click', function(e) {
 		//Disable share button
@@ -74,7 +75,7 @@ function initiateTextShareButton(json) {
 function initiateCamera(json, shareImageButtonId, rightNavButton) {
 	//retrieve tags from json
 	var postTags = getPostTags(json);
-	networkSharingService.openCamera(postTags, shareImageButtonId, rightNavButton);
+	sharingNetworkService.openCamera(postTags, shareImageButtonId, rightNavButton);
 }
 
 /*
@@ -84,8 +85,8 @@ function initiateCamera(json, shareImageButtonId, rightNavButton) {
  */
 function initiateImageShareButton(json) {
 	//button to open photo sharing
-	var shareImageButton = networkSharingService.createImageShareButton();
-	networkSharingService.toggleImageShareButtonStatusInactive(shareImageButton);
+	var shareImageButton = sharingNetworkService.createImageShareButton();
+	sharingNetworkService.toggleImageShareButtonStatusInactive(shareImageButton);
 	//Add a listener so that when clicked, openCamera is called
 	shareImageButton.addEventListener('click', function(e) {
 		//disable camera button
@@ -98,7 +99,7 @@ function initiateImageShareButton(json) {
 			visible: false
 		});
 		
-		networkSharingService.openCamera(postTags, shareImageButton, rightNavButton);
+		sharingNetworkService.openCamera(postTags, shareImageButton, rightNavButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
 	return shareImageButton;
@@ -120,14 +121,14 @@ function getPostTags(json) {
 function initiateIntentText(postTagsString, shareTextButtonId) {
 	//Choose appropriate intent creator
 	if (OS_ANDROID) {
-		networkSharingService.sendIntentTextAndroid(postTags, shareTextButtonId);
+		sharingNetworkService.sendIntentTextAndroid(postTags, shareTextButtonId);
 	} else if (OS_IOS) {
-		networkSharingService.sendIntentTextiOS(postTags, shareTextButtonId);
+		sharingNetworkService.sendIntentTextiOS(postTags, shareTextButtonId);
 	} else {
 		alert("Unsupported platform");
 	}
 	//Reenable share text button
-	networkSharingService.toggleTextShareButtonStatusInactive(shareTextButtonId);
+	sharingNetworkService.toggleTextShareButtonStatusInactive(shareTextButtonId);
 }
 
 /*
@@ -137,7 +138,7 @@ function openInstagram(imageFilePathInstagram, rightNavButton) {
 
 	alert("About to try opening docViewer. imageFilePathInstagram: " + imageFilePathInstagram);
 
-	var docViewer = networkSharingService.openInstagramView(imageFilePathInstagram);
+	var docViewer = sharingNetworkService.openInstagramView(imageFilePathInstagram);
 	alert("Finished openInstagramView");
 	docViewer.UTI = "com.instagram.exclusivegram";
 	docViewer.show({ view : rightNavButton, animated : true });
