@@ -6,3 +6,9 @@
 	backgroundColor: "#FFF",
 	fullscreen: true
 }
+
+".windowHeader": {
+	width: Ti.UI.FILL,
+	height: "50dip",
+	backgroundColor: '#232226',
+}
