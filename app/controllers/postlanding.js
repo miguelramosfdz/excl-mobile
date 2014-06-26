@@ -44,13 +44,13 @@ function changeTitleOfThePage(name) {
  */
 function displaySocialMediaButtons(json) {
 
-	/*
-	//Create anchor for instagram viewer
-	var rightNavButton = Ti.UI.createButton({
-		title:''
-	});
-	$.postlanding.add(rightNavButton);
-	*/
+	
+	// //Create anchor for instagram viewer
+	// var rightNavButton = Ti.UI.createButton({
+		// title:''
+	// });
+	// $.postlanding.add(rightNavButton);
+	
 
 	var row = createPlainRow('auto');
 	var isInKioskMode = Alloy.Globals.navController.kioskMode == true;
@@ -60,7 +60,7 @@ function displaySocialMediaButtons(json) {
 		row.add(shareTextButton);
 	}
 	if (json.image_sharing && !isInKioskMode) {
-		var shareImageButton = sharingService.initiateImageShareButton(json, rightNavButton);
+		var shareImageButton = sharingService.initiateImageShareButton(json);
 		shareTextButton.left = "70%";
 		row.add(shareImageButton);
 	}
