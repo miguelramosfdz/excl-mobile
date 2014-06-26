@@ -63,11 +63,11 @@ function displaySocialMediaButtons(json) {
 	return row;
 }
 
-function getImageRowFromPart(imageURL) {
+function getImageRowFromPart(part) {
 	var row = createPlainRowWithHeight('200dip');
 
 	imageView = Ti.UI.createImageView({
-		image : imageURL,
+		image : part.get('image'),
 		width : '100%',
 		height : '100%'
 
