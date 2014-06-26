@@ -8,38 +8,35 @@ var spinner = new LoadingSpinner();
 var exhibitIndex = 0;
 var numOfExhibits;
 var exhibitViews = [];
-var componentsInExhibit = [];
 var exhibitText = [];
 var loaded = false;
+var componentsInExhibit = [];
 
-/*
-var museum = Alloy.createModel("museum");
-museum.fetch();
-*/
-//Ti.API.info("\n\n\n\n\n\n"+JSON.stringify(data)+"\n\n\n\n\n\n\n");
-
-//Google Analytics 
+//Google Analytics
 function trackHomescreen(){
 	Alloy.Globals.analyticsController.trackScreen("Exhibit Landing");
 }
 
 trackHomescreen();
 
-function retrieveJson(jsonURL) {
+function retrieveJson(jsonURL, callback) {
 	spinner.addTo($.exhibitsSwipeableRow);
 	spinner.show();
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
-			populateWindow(returnedData);
+			callback(returnedData);
 			spinner.hide();
 		}
 	});
 }
 
 function openComponent(e){
+	var components = Alloy.Collections.instance('component');
+	Ti.API.info("components right now: " + JSON.stringify(components));
+	var component = components.where({"id": e.source.itemId})[0];
 	var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
 	Alloy.Globals.navController.open(componentWindow);
-	Alloy.Globals.analyticsController.trackScreen("Component Landing");
+	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
 }
 
 function openExhibitInfo(e){
@@ -105,7 +102,7 @@ function createComponentsScrollView(exhibits){
 
 	var image;
 	var component;
-	
+
 	for (var i = 0; i < exhibits.length; i++){
 		componentsInExhibit[i] = Ti.UI.createView({
 			layout: 'horizontal',
@@ -152,39 +149,7 @@ function rotateHandler(direction, index, numOfItems){
 		}
 	}
 }
-/*
-// Break into two more functions
-function swipeHandler2(e){
-	if(numOfExhibits>0){
-		if(e.direction = 'right'){
-			exhibitViews[exhibitIndex].hide();
-			removeComponents(exhibitIndex);
-			
-			// Incrememnt Index
-			exhibitIndex= (exhibitIndex+1)%numOfExhibits;
-			
-			// Show new exhibit and it's 
-			exhibitViews[exhibitIndex].show();
-			showComponents(exhibitIndex);
-			setExhibitText(json.data.museum.exhibits[exhibitIndex].description);
-		}
-		else if(e.direction = 'left'){
-			exhibitViews[exhibitIndex].hide();
-			removeComponents(exhibitIndex);
-			exhibitIndex--;
-			
-			// Decrement index 
-			if(exhibitIndex=-1)
-				exhibitIndex=numOfExhibits -1;
-			
-			// Show new Exhibit and it's contents
-			exhibitViews[exhibitIndex].show();
-			showComponents(exhibitIndex);
-			setExhibitText(json.data.museum.exhibits[exhibitIndex].description);
-		}
-	}
-}
-*/
+
 function removeComponents(index){
 	if(componentsInExhibit.length>0){
 		componentsInExhibit[index].width = 0;
@@ -205,9 +170,20 @@ function showComponents(index){
 	}
 }
 
-retrieveJson(url);
+retrieveJson(url, populateWindow);
 
 function populateWindow(json){
+	var components = Alloy.Collections.instance('component');
+	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
+		var exhibit = json.data.museum.exhibits[i];
+		for (var j = 0; j < exhibit.components.length; j++) {
+			component = exhibit.components[j];
+			var componentModel = Alloy.createModel('component');
+			componentModel.set({ 'id' : component.id, 'name': component.name, 'exhibit': exhibit.name });
+			components.add(componentModel);
+		}
+	}
+
 	numOfExhibits = json.data.museum.exhibits.length;
 	createExhibitsCarousel(json.data.museum.exhibits);
 	createComponentHeading("Check out our Stations");
