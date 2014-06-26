@@ -1,5 +1,5 @@
 var menuOpen = false;
-var duration = 400;
+var duration = 800;
 var parent;
 
 var init=function(opts){
