@@ -3,7 +3,7 @@ function back(e){
 }
 
 function menu(e){
-	Alloy.Globals.navController.home();	
+	Alloy.Globals.navController.toggleMenu(true);	
 }
 
 Alloy.Globals.navController.addKioskModeListener($.flyout);

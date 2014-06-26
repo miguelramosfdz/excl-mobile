@@ -1,6 +1,6 @@
 <Alloy>
 	<Window class="container" backgroundColor='#FFFFFF'>
-		<View layout="vertical">
+		<View layout="vertical" id="mainView">
 			<Widget src="navigationBar" id="navBar"/>
 			<ScrollView id="scroller">
 				<TableView id="tableView" >
