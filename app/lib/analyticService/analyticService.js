@@ -14,6 +14,16 @@ AnalyticsController.prototype.trackScreen = function(screenName){
 	this.tracker.trackScreen(screenName);
 };
 
+AnalyticsController.prototype.trackEvent = function(category, action, label, value) {
+	Ti.API.info("Now tracking event with category: " + category + ", action: " + action + ", label: " + label + ", value: " + value);
+	this.tracker.trackEvent({
+		category: category,
+		action: action,
+		label: label,
+		value: value
+	});
+};
+
 module.exports = AnalyticsController;
 
 /*tracker.trackEvent({
