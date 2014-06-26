@@ -9,15 +9,23 @@
 	contentHeight: 'auto'
 }
 
-".bfaBar":{
-	height: "10%",
+".sortBar":{
+	height: "20dip",
 	backgroundColor: "#F8F8F8",
 	top: "0"
 }
 ".tableView":{
-	height: "90%",
-	top: "10%"
+	height: "96%",
+	top: "4%"
 }
 ".switch":{
-	left: "80%"
+	left: "80%",
+	titleOn: " ",
+	titleOff: " ",
+	height: "20dip"
+}
+".indicator":{
+	font:{
+		size: "10dip"
+	}
 }
