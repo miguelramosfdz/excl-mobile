@@ -10,6 +10,7 @@ function AnalyticsController() {
 }
 
 AnalyticsController.prototype.trackScreen = function(screenName){
+	Ti.API.info("Now tracking screen " + screenName);
 	this.tracker.trackScreen(screenName);
 };
 

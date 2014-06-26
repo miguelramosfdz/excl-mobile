@@ -11,6 +11,27 @@ function setPathForLibDirectory(apiCallsLib, parseCallsLib) {
 	}
 }
 
+function createNetworkErrorDialog(e){
+	var dialog = Ti.UI.createAlertDialog({
+	    cancel: 1,
+	    buttonNames: ['Try Again'],
+	    message: 'Poor network connection',
+	    title: 'Error',
+	    persistent: true
+	});
+	dialog.show();
+	
+	dialog.addEventListener('click', function(e){
+		if (e.index == 0){		
+			Alloy.Globals.navController.windowStack = []; //Reset windowStack
+			Alloy.Globals.navController.open(Alloy.createController('index'));
+		}
+		else if (e.index == e.source.cancel){
+			createNetworkErrorDialog(e);
+		}
+	});
+}
+
 var networkCalls = {
 
 	network : function(url, onSuccess) {
@@ -19,9 +40,8 @@ var networkCalls = {
 				var json = parseCalls.parse(this.responseText);
 				onSuccess(json);
 			},
-			onerror : function() {
-				// apiCalls.debug(e.error);
-				alert("Error retrieving json");
+			onerror : function(e) {
+				createNetworkErrorDialog(e);
 			}
 		});
 

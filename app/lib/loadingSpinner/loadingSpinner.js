@@ -15,7 +15,7 @@ function LoadingSpinner() {
 	  height: Ti.UI.SIZE,
 	  width: Ti.UI.SIZE
 	});
-};
+}
 
 LoadingSpinner.prototype.addTo = function(element){
 	element.add(this.spinner);

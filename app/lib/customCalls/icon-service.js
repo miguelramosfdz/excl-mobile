@@ -1,49 +1,15 @@
-var iconRootAndroid = "/images";
-var iconRootIos = "images";
-
-var iconCameraReadyAndroid = "/icons_android/camera_ready.png";
-var iconCameraBusyAndroid = "/icons_android/camera_busy.png";
-var iconTextShareReadyAndroid = "/icons_android/share_ready.png";
-var iconTextShareBusyAndroid = "/icons_android/share_busy.png";
-
-var iconCameraReadyIos = "/icons_ios/camera_ready.png";
-var iconCameraBusyIos = "/icons_ios/camera_busy.png";
-var iconTextShareReadyIos = "/icons_ios/share_ready.png";
-var iconTextShareBusyIos = "/icons_ios/share_busy.png";
-
-
-
-function setButtonIconForTextReady (buttonId){
-	if (OS_IOS) {
-		buttonId.backgroundImage = iconTextShareReadyIos;
-	} else if (OS_ANDROID) {
-		buttonId.backgroundImage = iconTextShareReadyAndroid;
-	}
+function iconService(){
+	var iconRootAndroid = "/images/icons_android/";
+	var iconRootIos = "images/icons_ios/";
 }
 
-function setButtonIconForTextBusy (buttonId){
-	if (OS_IOS) {
-		buttonId.backgroundImage = iconTextShareBusyIos;
-	} else if (OS_ANDROID) {
-		buttonId.backgroundImage = iconTextShareBusyAndroid;
+iconService.prototype.getIcon = function(buttonId, filename){	
+	if (OS_ANDROID){
+		buttonId.backgroundImage = iconRootAndroid + filename;
 	}
-}
-
-function setButtonIconForImageReady (buttonId){
-	if (OS_IOS) {
-		buttonId.backgroundImage = iconCameraReadyIos;
-	} else if (OS_ANDROID) {
-		buttonId.backgroundImage = iconCameraReadyAndroid;
+	else if (OS_IOS){
+		buttonId.backgroundImage = iconRootIos + filename;
 	}
-}
-
-function setButtonIconForImageBusy (buttonId){
-	if (OS_IOS) {
-		buttonId.backgroundImage = iconCameraBusyIos;
-	} else if (OS_ANDROID) {
-		buttonId.backgroundImage = iconCameraBusyAndroid;
-	}
-}
-
+};
 
 module.exports = iconService;
