@@ -1,4 +1,36 @@
-
-".container" : {
-  
+"#menuView":{
+	layout: 'vertical',
+	opacity:".9",
+	width:"100%",
+	left:"0%",
+	top:"50dp"
+},
+"#menuTable":{
+	separatorStyle:'NONE',
+	separatorColor: 'transparent',
+	width: "50%",
+	left: "50%"
+},
+".tableRow":{
+	height: '50dp',
+	backgroundColor:'#F2F2F2'
+},
+"#rowContainer":{
+	height: '30dp',
+	layout:'horizontal'
+},
+".rowIcon":{
+	left: '10%',
+	top: 7,
+	width: "20dp",
+	height: "20dp"
+},
+".rowLabel":{
+	top: 7,
+	left: '15dp',
+	height: "20dp",
+	font:{
+		fontSize: "15dp"
+	},
+	color: "#000"	
 }

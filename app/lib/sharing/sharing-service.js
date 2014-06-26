@@ -1,6 +1,6 @@
 function setPathForLibDirectory(libfile) {
 	if ( typeof Titanium == 'undefined') {
-		// this is required for jasmine-node to run via terminal
+		// this is required for unit testing-node to run via terminal
 		networkSharingService = require("../../lib/" + libfile);
 	} else {
 		networkSharingService = require(libfile);

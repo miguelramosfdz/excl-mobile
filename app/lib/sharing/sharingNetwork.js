@@ -2,8 +2,9 @@
  * This page handles functionality with Sharing that involves Ti calls
  */
 
+function sharingNetworkService(){};
 
-function toggleTextShareButtonStatusInactive(shareTextButtonId) {
+sharingNetworkService.prototype.toggleTextShareButtonStatusInactive = function(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to inactive/ready mode
 	shareTextButtonId.enabled = true;
 	if (OS_IOS) {
@@ -12,12 +13,12 @@ function toggleTextShareButtonStatusInactive(shareTextButtonId) {
 		shareTextButtonId.backgroundImage = "/images/icons_android/share_ready.png";
 
 	}
-}
+};
 
 /*
  * Function to toggle activated buttons, changing the share button's enabled and backgroundimage status
  */
-function toggleImageShareButtonStatusInactive(shareImageButtonId) {
+sharingNetworkService.prototype.toggleImageShareButtonStatusInactive = function(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to inactive/ready mode
 	shareImageButtonId.enabled = true;
 	if (OS_IOS){
@@ -25,12 +26,12 @@ function toggleImageShareButtonStatusInactive(shareImageButtonId) {
 	} else if (OS_ANDROID) {
 		shareImageButtonId.backgroundImage = "/images/icons_android/camera_ready.png";
 	}
-}
+};
 
 /*
  * Creates and returns the text sharing button to be used in initializeTextShareButton in sharingNonNetwork
  */
-function createTextShareButton() {
+sharingNetworkService.prototype.createTextShareButton = function() {
 	//button to open text sharing
 	var shareTextButton = Ti.UI.createButton({
 		id : 'shareTextButton',
@@ -41,12 +42,12 @@ function createTextShareButton() {
 		top : "0"
 	});
 	return shareTextButton;
-}
+};
 
 /*
  * Creates and returns the image sharing button to be used in initializeImageShareButton in sharingNonNetwork
  */
-function createImageShareButton() {
+sharingNetworkService.prototype.createImageShareButton = function() {
 	//button to open photo sharing
 	var shareImageButton = Ti.UI.createButton({
 		id : 'shareImageButton',
@@ -57,12 +58,12 @@ function createImageShareButton() {
 		top : "0"
 	});
 	return shareImageButton;
-}
+};
 
 /*
  * Opens the camera, saves the picture the user takes; calls sendIntent function
  */
-function openCamera(postTagsString, shareImageButtonId, rightNavButton) {
+sharingNetworkService.prototype.openCamera = function(postTagsString, shareImageButtonId, rightNavButton) {
 	//Holds all functionality related to sharing image through camera
 
 	//declare variable to store image file path
@@ -113,23 +114,23 @@ function openCamera(postTagsString, shareImageButtonId, rightNavButton) {
 			alert("Camera not working");
 		}
 	});
-}
+};
 
 /*
  * iOS doesn't automatically deal with Instagram, so this function is called when the custom Instagram button is pressed in the iOS sharing menu
  */
-function openInstagramView(imageFilePathInstagram) {
+sharingNetworkService.prototype.openInstagramView = function(imageFilePathInstagram) {
 	alert("In openInstagramView");
 	var docViewer = Ti.UI.iOS.createDocumentViewer({
 		url : imageFilePathInstagram
 	});
 	return docViewer;
-}
+};
 
 /*
  * Sends an Android intent with prepopulated text content
  */
-function sendIntentTextAndroid(postTags, shareTextButtonId) {
+sharingNetworkService.prototype.sendIntentTextAndroid = function(postTags, shareTextButtonId) {
 	//Create and send text intent for android. Includes area for main text and url text to be appended
 	var intentText = Ti.Android.createIntent({
 		action : Ti.Android.ACTION_SEND,
@@ -138,12 +139,12 @@ function sendIntentTextAndroid(postTags, shareTextButtonId) {
 	intentText.putExtra(Ti.Android.EXTRA_TEXT, postTags);
 	intentText.addCategory(Ti.Android.CATEGORY_DEFAULT);
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentText, "Send message via"));
-}
+};
 
 /*
  * Sends an Android intent with prepopulated text content and the image that was just taken
  */
-function sendIntentImageAndroid(postTags, imageFilePath) {
+sharingNetworkService.prototype.sendIntentImageAndroid = function(postTags, imageFilePath) {
 	//Create and send image intent for android.
 	var intentImage = Ti.Android.createIntent({
 		type : "image/*",
@@ -153,12 +154,12 @@ function sendIntentImageAndroid(postTags, imageFilePath) {
 	intentImage.putExtra(Ti.Android.EXTRA_TEXT, postTags);
 	intentImage.putExtraUri(Ti.Android.EXTRA_STREAM, imageFilePath);
 	Ti.Android.currentActivity.startActivity(Ti.Android.createIntentChooser(intentImage, "Share photo via"));
-}
+};
 
 /*
  * Opens iOS share menu and sends prepopulated text content
  */
-function sendIntentTextiOS(postTags, shareTextButtonId) {
+sharingNetworkService.prototype.sendIntentTextiOS = function(postTags, shareTextButtonId) {
 	//Use TiSocial.Framework module to share text
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
@@ -177,12 +178,12 @@ function sendIntentTextiOS(postTags, shareTextButtonId) {
 	} else {
 		alert("Text sharing is not available on this device");
 	}
-}
+};
 
 /*
  * Opens iOS share menu and sends prepopulated text content and image that was just taken
  */
-function sendIntentImageiOS(postTags, imageFilePath, imageFilePathInstagram, rightNavButton) {
+sharingNetworkService.prototype.sendIntentImageiOS = function(postTags, imageFilePath, imageFilePathInstagram, rightNavButton) {
 	//Use TiSocial.Framework module to send image to other apps
 	var Social = require('dk.napp.social');
 	if (Social.isActivityViewSupported()) {
@@ -202,16 +203,7 @@ function sendIntentImageiOS(postTags, imageFilePath, imageFilePathInstagram, rig
 	} else {
 		alert("Photo sharing is not available on this device");
 	}
-}
+};
 
 //Export functions for use by other files
-module.exports.sendIntentImageiOS = sendIntentImageiOS;
-module.exports.sendIntentTextiOS = sendIntentTextiOS;
-module.exports.sendIntentImageAndroid = sendIntentImageAndroid;
-module.exports.sendIntentTextAndroid = sendIntentTextAndroid;
-module.exports.openInstagramView = openInstagramView;
-module.exports.openCamera = openCamera;
-module.exports.createImageShareButton = createImageShareButton;
-module.exports.createTextShareButton = createTextShareButton;
-module.exports.toggleTextShareButtonStatusInactive = toggleTextShareButtonStatusInactive;
-module.exports.toggleImageShareButtonStatusInactive = toggleImageShareButtonStatusInactive;
+module.exports = sharingNetworkService;

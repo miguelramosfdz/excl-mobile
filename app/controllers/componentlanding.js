@@ -95,6 +95,7 @@ function createSectionHeading(headingTitle) {
 
 function goToPostLandingPage(e) {
 	var post = fetchPostById(e.source.itemId);
+	Alloy.Globals.analyticsController.trackScreen(component.getScreenName() + '/' + post.name);
 	Alloy.Globals.navController.open(Alloy.createController('postlanding', post));
 }
 

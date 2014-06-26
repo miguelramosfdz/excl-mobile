@@ -8,14 +8,29 @@ function NavigationController() {
 	this.lockedHomePage = null;
 	this.analyticsController = Alloy.Globals.analyticsController;
 	
+	
+	this.menu = require("navigationService/flyoutService");
+	/*
 	this.flyoutMenu = Alloy.createController('flyout').getView();
-	this.flyoutMenu.zIndex = 1;
+	this.flyoutMenu.zIndex = 1;//*/
 }
 
 // Open new window and add it to window stack
 NavigationController.prototype.open = function(controller) {
+	
 	windowToOpen = controller.getView();   //|kyle-clark@uiowa.edu|hey this component was awesome|
-	windowToOpen.add(this.flyoutMenu);
+	
+	//windowToOpen.add(this.flyoutMenu);
+	
+	self = this;
+	windowToOpen.addEventListener("focus", function(e){	
+		e.source.add(self.menu.flyoutMenu);
+	});
+	
+	windowToOpen.addEventListener("blur", function(e){
+		self.menu.closeMenu();
+		e.source.remove(self.menu.flyoutMenu);
+	});	
 	
 	windowToOpen.onEnterKioskMode = function(window){};
 	windowToOpen.onExitKioskMode = function(window){};
@@ -243,30 +258,31 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 };
 
 NavigationController.prototype.toggleMenu = function(showMenu){
-	if(showMenu){
+	this.menu.toggleMenu();
+};
+	/*if(showMenu){
 		openMenu(this.flyoutMenu);
 	}else{
 		closeMenu(this.flyoutMenu);
 	}
 };
-
 function closeMenu(menu){
 	menu.animate({
-		left: "100%",
+		bottom:"100%",
 		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration: 100
+		duration: 400
 	});
 	return false;
 }
 
 function openMenu(menu){
 	menu.animate({
-		left: "50%",
+		top: "100%",
 		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration: 100
+		duration: 400
 	});
 	return true;
-}
+}*/
 
 module.exports = NavigationController;
 

@@ -1,5 +1,5 @@
 <Alloy>
-	<View id="navBar">
+	<View id="navBar" class="windowHeader">
 		
 		<View id="back" onClick="back" class="backButtonStyle coloredGrey">
 			<ImageView image="/images/dark/appbar.arrow.left.png"></ImageView>

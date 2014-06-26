@@ -16,7 +16,6 @@ var componentsInExhibit = [];
 function trackHomescreen(){
 	Alloy.Globals.analyticsController.trackScreen("Exhibit Landing");
 }
-
 trackHomescreen();
 
 function retrieveJson(jsonURL, callback) {
