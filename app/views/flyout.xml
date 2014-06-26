@@ -3,7 +3,7 @@
 		<!-- <View id="menuTopBar"/> -->
 		<TableView class="menuTable" id="menuTable">
 			
-			<TableViewRow class="tableRow" id="row1">
+			<TableViewRow class="tableRow" id="row1" onClick="openExhibitPage">
 				<View id="rowContainer">
 					<ImageView id="rowExhibit" backgroundImage= "/flyoutMenuIcons/exhibit.png" class="rowIcon" />
 					<Label id="exhibitLabel" class="rowLabel">Exhibits</Label>
