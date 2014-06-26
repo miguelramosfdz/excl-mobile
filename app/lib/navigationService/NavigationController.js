@@ -10,8 +10,8 @@ function NavigationController() {
 }
 
 // Open new window and add it to window stack
-NavigationController.prototype.open = function(windowToOpen, controller) {
-
+NavigationController.prototype.open = function(controller) {
+	windowToOpen = controller.getView();
 	windowToOpen.onEnterKioskMode = function(window){};
 	windowToOpen.onExitKioskMode = function(window){};
 	
@@ -203,8 +203,7 @@ function handleKioskModeDialog(self) {
 	    if (e.text == "friend" || e.source.androidView.value == "friend") {
 			updateKioskMode(self);
 	    } else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
-			var finternWindow = Alloy.createController('finterns').getView();
-			Alloy.Globals.navController.open(finternWindow);
+			Alloy.Globals.navController.open(Alloy.createController('finterns'));
     	} else {
 	    	var errorMsg = Ti.UI.createAlertDialog({
 			    title: 'incorrect code',

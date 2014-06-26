@@ -24,8 +24,7 @@ function createNetworkErrorDialog(e){
 	dialog.addEventListener('click', function(e){
 		if (e.index == 0){		
 			Alloy.Globals.navController.windowStack = []; //Reset windowStack
-			var homeWindow = Alloy.createController('index').getView();
-			Alloy.Globals.navController.open(homeWindow);
+			Alloy.Globals.navController.open(Alloy.createController('index'));
 		}
 		else if (e.index == e.source.cancel){
 			createNetworkErrorDialog(e);

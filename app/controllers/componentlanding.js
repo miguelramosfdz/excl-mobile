@@ -4,8 +4,6 @@ var component = args;
 var componentID = component.get('id');
 var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
-//var url = "http://www.mocky.io/v2/53a1e425b4ac142006024b75";
-//var allSections = [];
 var sectionCarousels = [];
 var tableData = [];
 var sectionsThatAlreadyExist = [];
@@ -17,11 +15,10 @@ function changeTitleOfThePage(name) {
 }
 
 //Google Analytics
-function trackComponentscreen() {
+function trackComponentScreen() {
 	Alloy.Globals.analyticsController.trackScreen("Component Landing");
 }
-
-trackComponentscreen();
+trackComponentScreen();
 
 function createNewSection(titleOfSection) {
 	Ti.API.info("title: " + titleOfSection);
@@ -83,9 +80,7 @@ function createSectionHeading(headingTitle) {
 
 function goToPostLandingPage(e) {
 	var post = fetchPostById(e.source.itemId);
-	var componentWindow = Alloy.createController('postlanding', post).getView();
-	Alloy.Globals.navController.open(componentWindow, post);
-	Alloy.Globals.analyticsController.trackScreen("Post Landing");
+	Alloy.Globals.navController.open(Alloy.createController('postlanding', post));
 }
 
 function fetchPostById(postID) {
