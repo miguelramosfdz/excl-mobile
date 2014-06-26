@@ -42,6 +42,11 @@ function addToExistingSection(post) {
 	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
 }
 
+function addToBfaSection(post) {
+	var sectionIndex = sectionsForBfa.indexOf(post.section);
+	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
+}
+
 function createRow() {
 	var row = Ti.UI.createTableViewRow({
 		height : '190dp',
@@ -92,11 +97,6 @@ function fetchPostById(postID) {
 	return toReturn;
 }
 
-function addToBfaSection(post) {
-	var sectionIndex = sectionsForBfa.indexOf(post.section);
-	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
-}
-
 function createAgeRange(post) {
 	var ageRange;
 	ageRange = compileAgeRange(post.min_age, post.max_age);
@@ -125,10 +125,13 @@ function setTableDataAndSpacing() {
 function clearTableAndData() {
 	tableData = [];
 	$.tableView.data = tableData;
+	sectionsThatAlreadyExist = [];
+	sectionsForBfa = [];
 }
 
 function setSwitchEvent() {
 	$.bfaSwitch.addEventListener("click", function(e) {
+		clearTableAndData();
 		retrieveComponentData();
 	});
 }
@@ -138,16 +141,11 @@ function retrieveComponentData() {
 		changeTitleOfThePage(returnedData.data.component.name);
 		allPosts = returnedData.data.component.posts;
 		checkStateOfSwitch(allPosts);
-
-		Ti.API.info(sectionsThatAlreadyExist);
-
 		setTableDataAndSpacing();
 	});
 }
 
 function checkStateOfSwitch(allPosts) {
-	clearTableAndData();
-
 	Ti.API.info("toggle: " + $.bfaSwitch.value);
 
 	if ($.bfaSwitch.value == true) {
@@ -157,6 +155,7 @@ function checkStateOfSwitch(allPosts) {
 		$.bfaIndicator.text = "Sorted By Age";
 		$.bfaSwitch.titleOn == " ";
 		organizeByBfa(allPosts);
+		Ti.API.info(sectionsForBfa);
 	} else if ($.bfaSwitch.value == false) {
 		
 		Ti.API.info("Entered sections");
@@ -164,8 +163,8 @@ function checkStateOfSwitch(allPosts) {
 		$.bfaIndicator.text = "Sorted By Section";
 		$.bfaSwitch.titleOff == " ";
 		organizeBySection(allPosts);	
+		Ti.API.info(sectionsThatAlreadyExist);
 	}
-	setTableDataAndSpacing();
 }
 
 function organizeBySection(allPosts) {
@@ -178,6 +177,7 @@ function organizeBySection(allPosts) {
 			addToExistingSection(allPosts[i]);
 		}
 	}
+	setTableDataAndSpacing();
 }
 
 function organizeByBfa(allPosts) {
@@ -189,6 +189,7 @@ function organizeByBfa(allPosts) {
 		}
 		addToBfaSection(allPosts[i]);
 	}
+	setTableDataAndSpacing();
 }
 
 function init() {
