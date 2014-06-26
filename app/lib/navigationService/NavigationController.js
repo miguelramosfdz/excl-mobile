@@ -257,32 +257,9 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 	}
 };
 
-NavigationController.prototype.toggleMenu = function(showMenu){
+NavigationController.prototype.toggleMenu = function(){
 	this.menu.toggleMenu();
 };
-	/*if(showMenu){
-		openMenu(this.flyoutMenu);
-	}else{
-		closeMenu(this.flyoutMenu);
-	}
-};
-function closeMenu(menu){
-	menu.animate({
-		bottom:"100%",
-		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration: 400
-	});
-	return false;
-}
-
-function openMenu(menu){
-	menu.animate({
-		top: "100%",
-		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration: 400
-	});
-	return true;
-}*/
 
 module.exports = NavigationController;
 

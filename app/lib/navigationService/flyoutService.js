@@ -4,7 +4,7 @@ var flyoutService = {
 	flyoutMenu: Alloy.createController('flyout').getView(),
 	openMenu: function(){
 		this.flyoutMenu.animate({
-			height: "100%",
+			left:"0%",
 			curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
 			duration: 100
 		});
@@ -12,7 +12,7 @@ var flyoutService = {
 	},
 	closeMenu: function(){
 		this.flyoutMenu.animate({
-			height: 0,
+			left: "100%",
 			curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
 			duration: 100
 		});
