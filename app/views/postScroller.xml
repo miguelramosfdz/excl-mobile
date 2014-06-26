@@ -1,8 +1,8 @@
 <Alloy>
-	<Collection src="post" instance="true" id="posts">
+	<Collection src="post" instance="true" id="posts" />
 	<View class="container">
 		<ScrollableView dataCollection="$.posts">
 			
-		<ScrollableView/>
+		</ScrollableView>
 	</View>
 </Alloy>
