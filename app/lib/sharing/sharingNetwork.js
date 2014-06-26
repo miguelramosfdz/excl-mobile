@@ -205,4 +205,13 @@ function sendIntentImageiOS(postTags, imageFilePath, imageFilePathInstagram, rig
 }
 
 //Export functions for use by other files
-module.exports = networkSharingService;
+module.exports.sendIntentImageiOS = sendIntentImageiOS;
+module.exports.sendIntentTextiOS = sendIntentTextiOS;
+module.exports.sendIntentImageAndroid = sendIntentImageAndroid;
+module.exports.sendIntentTextAndroid = sendIntentTextAndroid;
+module.exports.openInstagramView = openInstagramView;
+module.exports.openCamera = openCamera;
+module.exports.createImageShareButton = createImageShareButton;
+module.exports.createTextShareButton = createTextShareButton;
+module.exports.toggleTextShareButtonStatusInactive = toggleTextShareButtonStatusInactive;
+module.exports.toggleImageShareButtonStatusInactive = toggleImageShareButtonStatusInactive;

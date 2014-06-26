@@ -14,14 +14,13 @@
 function setPathForLibDirectory(libfile) {
 	if ( typeof Titanium == 'undefined') {
 		// this is required for jasmine-node to run via terminal
-		networkSharingService = require("../../lib/" + libfile);
+		networkPath = require("../../lib/" + libfile);
 	} else {
-		networkSharingService = require(libfile);
+		networkPath = require(libfile);
 	}
+	return networkPath;
 }
 var networkSharingService = setPathForLibDirectory('sharing/sharingNetwork');
-var sharingServiceImage = setPathForLibDirectory('sharing/sharing-service-image');
-var sharingServiceText = setPathForLibDirectory('sharing/sharing-service-text');
 
 
 /*
@@ -83,7 +82,7 @@ function initiateCamera(json, shareImageButtonId, rightNavButton) {
  * The button points towards the openCamera function, which initializes the image intent. Both live in sharingNetwork
  * File that calls the function is responsible for placing it in the correct view
  */
-function initiateImageShareButton(json, rightNavButton) {
+function initiateImageShareButton(json) {
 	//button to open photo sharing
 	var shareImageButton = networkSharingService.createImageShareButton();
 	networkSharingService.toggleImageShareButtonStatusInactive(shareImageButton);
@@ -94,6 +93,9 @@ function initiateImageShareButton(json, rightNavButton) {
 		//retrieve json tags
 		var postTags = getPostTags(json);
 		//open camera and send intents
+		
+		var rightNavButton = Ti.UI.createButton({});
+		
 		networkSharingService.openCamera(postTags, shareImageButton, rightNavButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
@@ -152,3 +154,4 @@ function eraseButtonTitleIfBackgroundPresent(buttonName) {
 //Export local functions
 module.exports.initiateTextShareButton = initiateTextShareButton;
 module.exports.initiateImageShareButton = initiateImageShareButton;
+
