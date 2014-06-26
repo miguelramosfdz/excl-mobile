@@ -1,19 +1,17 @@
 // NavigationController
 // This version works for Android and iOS for Titanium 3.2.0. 
 
-
-
 function NavigationController() {
 	this.windowStack = [];
 	this.kioskMode = false;
 	this.homePage = null;
 	this.lockedHomePage = null;
+	this.analyticsController = Alloy.Globals.analyticsController;
 }
-
 
 // Open new window and add it to window stack
 NavigationController.prototype.open = function(windowToOpen, controller) {
-	
+
 	windowToOpen.onEnterKioskMode = function(window){};
 	windowToOpen.onExitKioskMode = function(window){};
 	

@@ -14,7 +14,7 @@ var playLabel = Ti.UI.createLabel({
    
 function playMusic(){
 	
-	if(musicStatus == false){
+	if(musicStatus === false){
 		musicStatus = true;
 		sound.play();
 		playLabel.text = "Pause";
