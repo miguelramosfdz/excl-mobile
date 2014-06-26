@@ -1,46 +1,46 @@
 <Alloy>
-	<View onClick="toggleMenu" backgroundColor="black" opacity=".75" left="100%">
+	<View onClick="toggleMenu" id="menuView">
 		<!-- <View id="menuTopBar"/> -->
 		<TableView class="menuTable" id="menuTable">
 			
 			<TableViewRow class="tableRow" id="row1">
 				<View id="rowContainer">
-					<ImageView id="rowExhibit" backgroundImage= "/exhibit.png" class="rowIcon" />
+					<ImageView id="rowExhibit" backgroundImage= "/flyoutMenuIcons/exhibit.png" class="rowIcon" />
 					<Label id="exhibitLabel" class="rowLabel">Exhibits</Label>
 				</View>
 			</TableViewRow>
 			
 			<TableViewRow class="tableRow" id="row2">
 				<View id="rowContainer">
-					<View backgroundImage="/ages2.png" class="rowIcon"/>
+					<View backgroundImage="/flyoutMenuIcons/ages2.png" class="rowIcon"/>
 					<Label id="agesLabel" class="rowLabel">Browse By Age</Label>
 				</View>
 			</TableViewRow>
 			
 			<TableViewRow class="tableRow" id="row3">
 				<View id="rowContainer">
-					<View backgroundImage="/favorites.png" class="rowIcon"/>
+					<View backgroundImage="/flyoutMenuIcons/favorites.png" class="rowIcon"/>
 					<Label id="favoritesLabel" class="rowLabel">My Favorites</Label>
 				</View>
 			</TableViewRow>
 			
 			<TableViewRow class="tableRow" id="row4">
 				<View id="rowContainer">
-					<View backgroundImage= "/map.png" class="rowIcon"/>
+					<View backgroundImage= "/flyoutMenuIcons/map.png" class="rowIcon"/>
 					<Label id="mapLabel" class="rowLabel">Map</Label>
 				</View>
 			</TableViewRow>						
 			
 			<TableViewRow class="tableRow" id="row5">
 				<View id="rowContainer">
-					<View backgroundImage="/info.png" class="rowIcon"/>
+					<View backgroundImage="/flyoutMenuIcons/info.png" class="rowIcon"/>
 					<Label id="museumInfoLabel" class="rowLabel">Museum Info</Label>
 				</View>
 			</TableViewRow>
 			
 			<TableViewRow class="tableRow" id="row6">
 				<View id="rowContainer">
-					<View backgroundImage="/tutorial7.png" class="rowIcon"/>
+					<View backgroundImage="/flyoutMenuIcons/tutorial7.png" class="rowIcon"/>
 					<Label id="tutorialLabel" class="rowLabel">Tutorial</Label>
 				</View>
 			</TableViewRow>
@@ -48,7 +48,7 @@
 			
 			<TableViewRow class="tableRow" id="row7">
 				<View id="rowContainer">
-					<View backgroundImage="/19-gear.png" class="rowIcon"/>
+					<View backgroundImage="/flyoutMenuIcons/19-gear.png" class="rowIcon"/>
 					<Label id="settingsLabel" class="rowLabel">Settings</Label>
 				</View>
 			</TableViewRow>
