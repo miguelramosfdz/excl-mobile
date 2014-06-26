@@ -33,6 +33,7 @@ var spinner = new loadingSpinner;
 function trackComponentScreen() {
 	Alloy.Globals.analyticsController.trackScreen("Component Landing");
 }
+
 trackComponentScreen();
 
 function createNewSection(titleOfSection) {
@@ -111,23 +112,38 @@ function fetchPostById(postID) {
 
 function createAgeRange(post) {
 	var ageRange;
-	ageRange = compileAgeRange(post.min_age, post.max_age);
+	ageRange = detectAges(post);
 	return ageRange;
 }
 
 function compileAgeRange(min_age, max_age) {
-	
-	Ti.API.info("max: " + max_age + " min: "+ min_age);
-	
+
+	Ti.API.info("max: " + max_age + " min: " + min_age);
+
 	if (max_age == "" && min_age == "") {
 		return "For All Selected Ages";
 	} else if (max_age == "") {
 		return "For My " + min_age + " Yr Old";
 	} else if (min_age >= max_age) {
 		return "Invalid Age Range";
+	} else if (min_age == "") {
+		return "For My 1 - " + max_age + " Yr Old";
 	} else {
 		return "For My " + min_age + "-" + max_age + " Yr Old";
 	}
+}
+
+function detectAges(post) {
+	if (post.min_age && post.max_age) {
+		compileAgeRange(post.min_age, post.max_age);
+	} else if (!post.max_age && !post.min_age) {
+		compileAgeRange("", "");
+	} else if (!post.max_age) {
+		compileAgeRange(post.min_age, "");
+	} else if (!post.min_age) {
+		compileAgeRange("", post.max_age);
+	}
+
 }
 
 function setTableDataAndSpacing() {
