@@ -28,7 +28,7 @@ NavigationController.prototype.open = function(controller) {
 	});
 	
 	windowToOpen.addEventListener("blur", function(e){
-		closeMenu(self.flyoutMenu);
+		self.menu.closeMenu();
 		e.source.remove(self.menu.flyoutMenu);
 	});	
 	
