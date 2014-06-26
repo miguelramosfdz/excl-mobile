@@ -6,3 +6,5 @@ Follow these steps to fix that.
 3. Change line 1344 to `} else if (!emu.sdcard && (emu.type !== 'genymotion')) {`
 
 Enjoy!
+
+* Adapted from http://stackoverflow.com/questions/21449970/titanium-studio-3-2-0-cannot-debug-using-genymotion-2-0-3

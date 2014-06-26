@@ -14,8 +14,20 @@ function NavigationController() {
 
 // Open new window and add it to window stack
 NavigationController.prototype.open = function(controller) {
+	
 	windowToOpen = controller.getView();   //|kyle-clark@uiowa.edu|hey this component was awesome|
-	windowToOpen.add(this.flyoutMenu);
+	
+	//windowToOpen.add(this.flyoutMenu);
+	
+	self = this;
+	windowToOpen.addEventListener("focus", function(e){	
+		e.source.add(self.flyoutMenu);
+	});
+	
+	windowToOpen.addEventListener("blur", function(e){
+		closeMenu(self.flyoutMenu);
+		e.source.remove(self.flyoutMenu);
+	});	
 	
 	windowToOpen.onEnterKioskMode = function(window){};
 	windowToOpen.onExitKioskMode = function(window){};
@@ -252,18 +264,18 @@ NavigationController.prototype.toggleMenu = function(showMenu){
 
 function closeMenu(menu){
 	menu.animate({
-		left: "100%",
+		bottom:"100%",
 		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration: 100
+		duration: 400
 	});
 	return false;
 }
 
 function openMenu(menu){
 	menu.animate({
-		left: "50%",
+		top: "100%",
 		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration: 100
+		duration: 400
 	});
 	return true;
 }
