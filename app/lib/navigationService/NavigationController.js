@@ -7,11 +7,16 @@ function NavigationController() {
 	this.homePage = null;
 	this.lockedHomePage = null;
 	this.analyticsController = Alloy.Globals.analyticsController;
+	
+	this.flyoutMenu = Alloy.createController('flyout').getView();
+	this.flyoutMenu.zIndex = 1;
 }
 
 // Open new window and add it to window stack
-NavigationController.prototype.open = function(windowToOpen, controller) {
-
+NavigationController.prototype.open = function(controller) {
+	windowToOpen = controller.getView();   //|kyle-clark@uiowa.edu|hey this component was awesome|
+	windowToOpen.add(this.flyoutMenu);
+	
 	windowToOpen.onEnterKioskMode = function(window){};
 	windowToOpen.onExitKioskMode = function(window){};
 	
@@ -203,8 +208,7 @@ function handleKioskModeDialog(self) {
 	    if (e.text == "friend" || e.source.androidView.value == "friend") {
 			updateKioskMode(self);
 	    } else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
-			var finternWindow = Alloy.createController('finterns').getView();
-			Alloy.Globals.navController.open(finternWindow);
+			Alloy.Globals.navController.open(Alloy.createController('finterns'));
     	} else {
 	    	var errorMsg = Ti.UI.createAlertDialog({
 			    title: 'incorrect code',
@@ -238,4 +242,31 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 	}
 };
 
+NavigationController.prototype.toggleMenu = function(showMenu){
+	if(showMenu){
+		openMenu(this.flyoutMenu);
+	}else{
+		closeMenu(this.flyoutMenu);
+	}
+};
+
+function closeMenu(menu){
+	menu.animate({
+		left: "100%",
+		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
+		duration: 100
+	});
+	return false;
+}
+
+function openMenu(menu){
+	menu.animate({
+		left: "50%",
+		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
+		duration: 100
+	});
+	return true;
+}
+
 module.exports = NavigationController;
+

@@ -32,10 +32,8 @@ function retrieveJson(jsonURL, callback) {
 
 function openComponent(e){
 	var components = Alloy.Collections.instance('component');
-	Ti.API.info("components right now: " + JSON.stringify(components));
 	var component = components.where({"id": e.source.itemId})[0];
-	var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
-	Alloy.Globals.navController.open(componentWindow);
+	Alloy.Globals.navController.open(Alloy.createController('componentlanding', component));
 	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
 }
 
@@ -195,4 +193,4 @@ function populateWindow(json){
 // while(exhibitViews.length == 0); // WHAT IS THIS SUPOSED TO DO?
 
 //var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
-Alloy.Globals.navController.open($.index);
+Alloy.Globals.navController.open(this);

@@ -3,10 +3,10 @@
 		<View layout="vertical">
 			<Widget src="navigationBar" id="navBar"/>
 			<ScrollView id="scroller">
-				<TableView class="bfaBar">
+				<TableView id="sortBar" class="sortBar">
 					<TableViewRow>
-						<Label id="bfaIndicator"/>
-						<Switch id="bfaSwitch" class= "switch" onChange="checkStateOfSwitch"/>
+						<Label id="sortIndicator" class="indicator"/>
+						<Switch id="sortSwitch" class= "switch" />
 					</TableViewRow>
 				</TableView>
 				<TableView id="tableView" class="tableView"/>

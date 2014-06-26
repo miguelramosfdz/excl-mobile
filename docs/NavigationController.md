@@ -10,7 +10,7 @@ Using the NavigationController
 * Open new windows with:
 
 	`var controller = Alloy.createController('yourControllerNameHere');`
-	`Alloy.Globals.navController.open(controller.getView());`
+	`Alloy.Globals.navController.open(controller);`
 	 
 	 
 * If you want to add the kiosk mode listener to an element on your page, use:
@@ -28,9 +28,9 @@ Using the NavigationController
 	`$.onEnterKioskMode = function(view){/*your code here*/};`
 	`$.onExitKioskMode = function(view){/*your code here*/};`
 
-	Then be sure to pass in the controller when ever opening the window so that the view will have access to the functions: 
+	These functions will automatically be picked up when you call:
 
-	`Alloy.Globals.navController.open(controller.getView(), controller);`
+	`Alloy.Globals.navController.open(controller);`
 	
 * Finally, to navigate home, you can call:
 
