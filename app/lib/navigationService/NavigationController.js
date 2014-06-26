@@ -8,8 +8,11 @@ function NavigationController() {
 	this.lockedHomePage = null;
 	this.analyticsController = Alloy.Globals.analyticsController;
 	
+	
+	this.menu = require("navigationService/flyoutService");
+	/*
 	this.flyoutMenu = Alloy.createController('flyout').getView();
-	this.flyoutMenu.zIndex = 1;
+	this.flyoutMenu.zIndex = 1;//*/
 }
 
 // Open new window and add it to window stack
@@ -21,12 +24,12 @@ NavigationController.prototype.open = function(controller) {
 	
 	self = this;
 	windowToOpen.addEventListener("focus", function(e){	
-		e.source.add(self.flyoutMenu);
+		e.source.add(self.menu.flyoutMenu);
 	});
 	
 	windowToOpen.addEventListener("blur", function(e){
 		closeMenu(self.flyoutMenu);
-		e.source.remove(self.flyoutMenu);
+		e.source.remove(self.menu.flyoutMenu);
 	});	
 	
 	windowToOpen.onEnterKioskMode = function(window){};
@@ -255,13 +258,14 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 };
 
 NavigationController.prototype.toggleMenu = function(showMenu){
-	if(showMenu){
+	this.menu.toggleMenu();
+};
+	/*if(showMenu){
 		openMenu(this.flyoutMenu);
 	}else{
 		closeMenu(this.flyoutMenu);
 	}
 };
-
 function closeMenu(menu){
 	menu.animate({
 		left: "100%",
@@ -278,7 +282,7 @@ function openMenu(menu){
 		duration: 100
 	});
 	return true;
-}
+}*/
 
 module.exports = NavigationController;
 

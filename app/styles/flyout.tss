@@ -2,8 +2,8 @@
 	layout: 'vertical',
 	opacity:".9",
 	width:"50%",
-	left:"100%",
-	top:"8%"
+	left:"0%",
+	top:"50dp"
 },
 "#menuTable":{
 	separatorStyle:'NONE',
