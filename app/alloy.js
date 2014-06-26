@@ -13,9 +13,6 @@
 var NavigationController = require('navigationService/NavigationController');
 Alloy.Globals.navController = new NavigationController();
 
-var idService = require('idService');
-Alloy.Globals.deviceID = new idService();
-
 var AnalyticsController = require('analyticService/analyticService');
 Alloy.Globals.analyticsController = new AnalyticsController();
 

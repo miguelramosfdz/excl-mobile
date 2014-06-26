@@ -8,21 +8,20 @@
  */
 
 
-
-
-
 /*
  * Defines path to sharingNetwork file
  */
-var networkSharingService;
-function setPathForLibDirectory(networkSharingServiceLib) {
+function setPathForLibDirectory(libfile) {
 	if ( typeof Titanium == 'undefined') {
 		// this is required for jasmine-node to run via terminal
-		networkSharingService = require("../../lib/" + networkSharingServiceLib);
+		networkPath = require("../../lib/" + libfile);
 	} else {
-		networkSharingService = require(networkSharingServiceLib);
+		networkPath = require(libfile);
 	}
+	return networkPath;
 }
+var networkSharingService = setPathForLibDirectory('sharing/sharingNetwork');
+
 
 /*
  * Functions to toggle activated buttons, changing the share buttons' enabled and backgroundimage status
@@ -31,9 +30,9 @@ function toggleTextShareButtonStatusActive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to active/clicked mode
 	shareTextButtonId.enabled = false;
 	if (OS_IOS) {
-		shareTextButtonId.backgroundImage = "images/icons_ios/iosShareGray.png";
+		shareTextButtonId.backgroundImage = "images/icons_ios/share_busy.png";
 	} else if (OS_ANDROID) {
-		shareTextButtonId.backgroundImage = "/images/icons_android/ic_action_share_active.png";
+		shareTextButtonId.backgroundImage = "/images/icons_android/share_busy.png";
 	}
 }
 
@@ -42,9 +41,9 @@ function toggleImageShareButtonStatusActive(shareImageButtonId) {
 	//Note: inactive version of this function lives in sharingNetwork.js
 	shareImageButtonId.enabled = false;
 	if (OS_IOS) {
-		shareImageButtonId.backgroundImage = "images/icons_ios/iOScameraGray.png";
+		shareImageButtonId.backgroundImage = "images/icons_ios/camera_busy.png";
 	} else if (OS_ANDROID) {
-		shareImageButtonId.backgroundImage = "/images/icons_android/ic_action_camera_active.png";
+		shareImageButtonId.backgroundImage = "/images/icons_android/camera_busy.png";
 	}
 }
 
@@ -83,7 +82,7 @@ function initiateCamera(json, shareImageButtonId, rightNavButton) {
  * The button points towards the openCamera function, which initializes the image intent. Both live in sharingNetwork
  * File that calls the function is responsible for placing it in the correct view
  */
-function initiateImageShareButton(json, rightNavButton) {
+function initiateImageShareButton(json) {
 	//button to open photo sharing
 	var shareImageButton = networkSharingService.createImageShareButton();
 	networkSharingService.toggleImageShareButtonStatusInactive(shareImageButton);
@@ -94,6 +93,11 @@ function initiateImageShareButton(json, rightNavButton) {
 		//retrieve json tags
 		var postTags = getPostTags(json);
 		//open camera and send intents
+		
+		var rightNavButton = Ti.UI.createButton({
+			visible: false
+		});
+		
 		networkSharingService.openCamera(postTags, shareImageButton, rightNavButton);
 	});
 	eraseButtonTitleIfBackgroundPresent(shareImageButton);
@@ -149,8 +153,7 @@ function eraseButtonTitleIfBackgroundPresent(buttonName) {
 	}
 }
 
-//Set path to sharingNetwork
-setPathForLibDirectory('sharing/sharingNetwork');
 //Export local functions
 module.exports.initiateTextShareButton = initiateTextShareButton;
 module.exports.initiateImageShareButton = initiateImageShareButton;
+

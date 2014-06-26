@@ -2,12 +2,11 @@
 function AnalyticsController() {
 	//Google analytics stuff
 	var GA = require('analytics.google');
-	//GA.debug = true;
-	// this.GA.trackUncaughtExceptions = true;
 		
 	this.tracker = GA.getTracker("UA-52199402-1");
 	
-	
+	//GA.debug = true;
+	//this.GA.trackUncaughtExceptions = true;
 }
 
 AnalyticsController.prototype.trackScreen = function(screenName){

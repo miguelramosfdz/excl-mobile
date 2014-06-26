@@ -42,6 +42,11 @@ function addToExistingSection(post) {
 	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
 }
 
+function addToBfaSection(post) {
+	var sectionIndex = sectionsForBfa.indexOf(post.section);
+	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
+}
+
 function createRow() {
 	var row = Ti.UI.createTableViewRow({
 		height : '190dp',
@@ -92,87 +97,105 @@ function fetchPostById(postID) {
 	return toReturn;
 }
 
-function addToBfaSection(post) {
-	var sectionIndex = sectionsForBfa.indexOf(post.section);
-	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
-}
-
 function createAgeRange(post) {
 	var ageRange;
-	if (post.min_age) {
-		ageRange = post.min_age;
-	}
-	Ti.API.info("temp_age1: " + ageRange);
-	if (post.max_age) {
-		ageRange = ageRange + "-" + post.max_age;
-	}
-	Ti.API.info("temp_age2: " + ageRange);
-	if (post.min_age && post.max_age && post.min_age >= post.max_age) {
-		ageRange = "Invalid Age Range";
-	}
-	Ti.API.info("temp_age3: " + ageRange);
-	if (ageRange == "" || (post.min_age == "" && post.max_age == "")) {
-		ageRange = "All";
-	}
-	Ti.API.info("temp_age4: " + ageRange);
+	ageRange = compileAgeRange(post.min_age, post.max_age);
 	return ageRange;
+}
+
+function compileAgeRange(min_age, max_age) {
+	if (max_age == "" && min_age == "") {
+		return "For All Selected Ages";
+	} else if (max_age == "") {
+		return "For age " + min_age;
+	} else if (min_age >= max_age) {
+		return "Invalid Age Range";
+	} else {
+		return "For ages " + min_age + "-" + max_age;
+	}
+}
+
+function setTableDataAndSpacing() {
+	$.tableView.data = tableData;
+	if (OS_IOS) {
+		$.tableView.bottom = "48dip";
+	}
+}
+
+function clearTableAndData() {
+	tableData = [];
+	$.tableView.data = tableData;
+	sectionsThatAlreadyExist = [];
+	sectionsForBfa = [];
+}
+
+function setSwitchEvent() {
+	$.bfaSwitch.addEventListener("click", function(e) {
+		clearTableAndData();
+		retrieveComponentData();
+	});
+}
+
+function retrieveComponentData() {
+	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+		changeTitleOfThePage(returnedData.data.component.name);
+		allPosts = returnedData.data.component.posts;
+		checkStateOfSwitch(allPosts);
+		setTableDataAndSpacing();
+	});
+}
+
+function checkStateOfSwitch(allPosts) {
+	Ti.API.info("toggle: " + $.bfaSwitch.value);
+
+	if ($.bfaSwitch.value == true) {
+		
+		Ti.API.info("Entered ages");
+		
+		$.bfaIndicator.text = "Sorted By Age";
+		$.bfaSwitch.titleOn == " ";
+		organizeByBfa(allPosts);
+		Ti.API.info(sectionsForBfa);
+	} else if ($.bfaSwitch.value == false) {
+		
+		Ti.API.info("Entered sections");
+		
+		$.bfaIndicator.text = "Sorted By Section";
+		$.bfaSwitch.titleOff == " ";
+		organizeBySection(allPosts);	
+		Ti.API.info(sectionsThatAlreadyExist);
+	}
 }
 
 function organizeBySection(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
 		if (allPosts[i].section) {
 			if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
-				// create a new section
-				//order of components are determined here
 				sectionsThatAlreadyExist.push(allPosts[i].section);
 				createNewSection(allPosts[i].section);
 			}
 			addToExistingSection(allPosts[i]);
 		}
 	}
-	Ti.API.info(sectionsThatAlreadyExist);
+	setTableDataAndSpacing();
 }
 
 function organizeByBfa(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
 		var ageRange = createAgeRange(allPosts[i]);
-
-		Ti.API.info("age: " + ageRange + " for " + allPosts[i].name);
-
 		if (sectionsForBfa.indexOf(ageRange) == -1) {
-			// create a new section
-			//order of components are determined here
 			sectionsForBfa.push(ageRange);
 			createNewSection(ageRange);
 		}
 		addToBfaSection(allPosts[i]);
 	}
-}
-
-function checkStateOfSwitch(switchId, allPosts) {
-	if (switchId.value == true) {
-		organizeByBfa(allPosts);
-	} else {
-		organizeBySection(allPosts);
-	}
+	setTableDataAndSpacing();
 }
 
 function init() {
-	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-		changeTitleOfThePage(returnedData.data.component.name);
-		allPosts = returnedData.data.component.posts;
-
-		$.bfaSwitch.value = false;
-		checkStateOfSwitch($.bfaSwitch, allPosts);
-		$.bfaSwitch.addEventListener("clicked", checkStateOfSwitch($.bfaSwitch, allPosts));
-
-		if (OS_IOS) {
-			//Accounts for bounce buffer
-			$.tableView.bottom = "48dip";
-		}
-
-		$.tableView.data = tableData;
-	});
+	$.bfaSwitch.value = false;
+	setSwitchEvent();
+	retrieveComponentData();
 }
 
 init();
