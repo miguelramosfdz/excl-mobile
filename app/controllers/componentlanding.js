@@ -1,26 +1,39 @@
 var args = arguments[0] || {};
-var dataRetriever = require('dataRetriever/dataRetriever');
-var componentID = args;
+var component = args;
+var componentID = component.get('id');
 var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
-//var url = "http://www.mocky.io/v2/53a1e425b4ac142006024b75";
-//var allSections = [];
 var sectionCarousels = [];
 var tableData = [];
-var sectionsThatAlreadyExist = [];
-var sectionsForBfa = [];
+var existingSortBySections = [];
+var existingSortByAge = [];
 var allPosts;
 
 function changeTitleOfThePage(name) {
 	$.componentlanding.title = name;
 }
 
-//Google Analytics
-function trackComponentscreen() {
-	Alloy.Globals.analyticsController.trackScreen("Component Landing");
+//Create require paths
+function setPathForLibDirectory(libfile) {
+	var libPath;
+	if ( typeof Titanium == 'undefined') {
+		// this is required for jasmine-node to run via terminal
+		libPath = require("../../lib/" + libfile);
+	} else {
+		libPath = require(libfile);
+	}
+	return libPath;
 }
 
-trackComponentscreen();
+var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
+var spinner = new loadingSpinner;
+
+//Google Analytics
+function trackComponentScreen() {
+	Alloy.Globals.analyticsController.trackScreen("Component Landing");
+}
+trackComponentScreen();
 
 function createNewSection(titleOfSection) {
 	Ti.API.info("title: " + titleOfSection);
@@ -31,14 +44,19 @@ function createNewSection(titleOfSection) {
 
 function createSectionCarousel(titleOfSection) {
 	var row = createRow();
-	var sectionIndex = sectionsThatAlreadyExist.indexOf(titleOfSection);
+	var sectionIndex = existingSortBySections.indexOf(titleOfSection);
 	sectionCarousels[sectionIndex] = Alloy.createWidget("itemCarousel");
 	row.add(sectionCarousels[sectionIndex].getView());
 	tableData.push(row);
 }
 
 function addToExistingSection(post) {
-	var sectionIndex = sectionsThatAlreadyExist.indexOf(post.section);
+	var sectionIndex = existingSortBySections.indexOf(post.section);
+	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
+}
+
+function addTosortSection(post) {
+	var sectionIndex = existingSortByAge.indexOf(post.section);
 	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
 }
 
@@ -77,9 +95,7 @@ function createSectionHeading(headingTitle) {
 
 function goToPostLandingPage(e) {
 	var post = fetchPostById(e.source.itemId);
-	var componentWindow = Alloy.createController('postlanding', post).getView();
-	Alloy.Globals.navController.open(componentWindow, post);
-	Alloy.Globals.analyticsController.trackScreen("Post Landing");
+	Alloy.Globals.navController.open(Alloy.createController('postlanding', post));
 }
 
 function fetchPostById(postID) {
@@ -92,164 +108,109 @@ function fetchPostById(postID) {
 	return toReturn;
 }
 
-function addToBfaSection(post) {
-	var sectionIndex = sectionsForBfa.indexOf(post.section);
-	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
-}
-
 function createAgeRange(post) {
 	var ageRange;
-	if (checkAgeRangeForMinAndMax(post)) {
-		ageRange = compileAgeRange(post.min_age, post.max_age);
-		if (checkAgeRangeForMinOnly(post)) {
-			ageRange = compileAgeRange(post.min_age, "");
-		}
-		return ageRange;
-	}
+	ageRange = compileAgeRange(post.min_age, post.max_age);
+	return ageRange;
 }
 
 function compileAgeRange(min_age, max_age) {
 	if (max_age == "" && min_age == "") {
-		return "All";
+		return "For All Selected Ages";
 	} else if (max_age == "") {
-		return min_age;
+		return "For My " + min_age + " Yr Old";
 	} else if (min_age >= max_age) {
 		return "Invalid Age Range";
 	} else {
-		return min_age + "-" + max_age;
+		return "For My " + min_age + "-" + max_age + " Yr Old";
 	}
 }
 
-function checkAgeRangeForMinAndMax(post) {
-	if (post.min_age && post.max_age) {
-		return true;
-	} else {
-		return false;
+function setTableDataAndSpacing() {
+	$.tableView.data = tableData;
+	if (OS_IOS) {
+		$.tableView.bottom = "48dip";
 	}
 }
 
-function checkAgeRangeForMinOnly(post) {
-	if (post.min_age) {
-		return true;
-	} else {
-		return false;
+function clearTableAndData() {
+	tableData = [];
+	$.tableView.data = tableData;
+	existingSortBySections = [];
+	existingSortByAge = [];
+}
+
+function setSwitchEvent() {
+	$.sortSwitch.addEventListener("click", function(e) {
+		clearTableAndData();
+		addSpinner();
+		retrieveComponentData();
+	});
+}
+
+function retrieveComponentData() {
+	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+		changeTitleOfThePage(returnedData.data.component.name);
+		allPosts = returnedData.data.component.posts;
+		checkStateOfSwitch(allPosts);
+		setTableDataAndSpacing();
+	});
+}
+
+function addSpinner() {
+	spinner.top = "20%";
+	spinner.addTo($.scroller);
+	spinner.show();
+}
+
+function removeSpinner() {
+	spinner.hide();
+}
+
+function checkStateOfSwitch(allPosts) {
+	Ti.API.info("toggle: " + $.sortSwitch.value);
+
+	if ($.sortSwitch.value == true) {
+		$.sortIndicator.text = "Filter By Age On";
+		organizeBysort(allPosts);
+		Ti.API.info(existingSortByAge);
+	} else if ($.sortSwitch.value == false) {
+		$.sortIndicator.text = "Filter By Age Off";
+		organizeBySection(allPosts);
+		Ti.API.info(existingSortBySections);
 	}
+	removeSpinner();
 }
 
 function organizeBySection(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
 		if (allPosts[i].section) {
-			if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
-				// create a new section
-				//order of components are determined here
-				sectionsThatAlreadyExist.push(allPosts[i].section);
+			if (existingSortBySections.indexOf(allPosts[i].section) == -1) {
+				existingSortBySections.push(allPosts[i].section);
 				createNewSection(allPosts[i].section);
 			}
 			addToExistingSection(allPosts[i]);
 		}
 	}
-	Ti.API.info(sectionsThatAlreadyExist);
+	setTableDataAndSpacing();
 }
 
-function organizeByBfa(allPosts) {
+function organizeBysort(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
 		var ageRange = createAgeRange(allPosts[i]);
-
-		Ti.API.info("age: " + ageRange + " for " + allPosts[i].name);
-
-		if (sectionsForBfa.indexOf(ageRange) == -1) {
-			sectionsForBfa.push(ageRange);
+		if (existingSortByAge.indexOf(ageRange) == -1) {
+			existingSortByAge.push(ageRange);
 			createNewSection(ageRange);
 		}
-		addToBfaSection(allPosts[i]);
+		addTosortSection(allPosts[i]);
 	}
+	setTableDataAndSpacing();
 }
 
-function checkStateOfSwitch(switchId, allPosts) {
-	if (switchId.value == true) {
-		$.bfaIndicator.text = "BFA Enabled";
-		switchId.titleOn == " ";
-		organizeByBfa(allPosts);
-	} else {
-		organizeBySection(allPosts);
-		$.bfaIndicator.text = "BFA Disabled";
-		switchId.titleOff == " ";
-	}
+function init() {
+	$.sortSwitch.value = false;
+	setSwitchEvent();
+	retrieveComponentData();
 }
-
-// function init() {
-	// dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-		// changeTitleOfThePage(returnedData.data.component.name);
-		// allPosts = returnedData.data.component.posts;
-// 
-		// $.bfaSwitch.value = false;
-		// $.bfaSwitch.left = "80%";
-		// $.bfaIndicator.text = "BFA Disabled";
-		// $.bfaIndicator.left = "60%";
-		// checkStateOfSwitch($.bfaSwitch, allPosts);
-		// $.bfaSwitch.addEventListener("change", function(e) {
-			// checkStateOfSwitch($.bfaSwitch, allPosts);
-		// });
-// 
-		// for (var i = 0; i < allPosts.length; i++) {
-			// if (allPosts[i].section) {
-				// if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
-					// sectionsThatAlreadyExist.push(allPosts[i].section);
-					// createNewSection(allPosts[i].section);
-				// }
-				// addToExistingSection(allPosts[i]);
-			// }
-		// }
-		// Ti.API.info(sectionsThatAlreadyExist);
-		// Ti.API.info("data: " + tableData);
-// 
-		// if (OS_IOS) {
-			// //Accounts for bounce buffer
-			// $.tableView.bottom = "48dip";
-		// }
-		// $.tableView.data = tableData;
-	// });
-// 	
-// }
-
-function createBfaNavRow(){
-	var toggle = Ti.UI.createSwitch({
-		titleOn: "",
-		titleOff: "",
-		left: "100%",
-		value: "false"
-	});
-	var label = Ti.UI.createLabel({
-		text: "BFA Disabled"
-	});
-	var row = createRow();
-	row.add(label);
-	row.add(toggle);
-}
-
- function init() {
- 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
- 		tableData.push(createBfaNavRow());
- 		changeTitleOfThePage(returnedData.data.component.name);
- 		allPosts = returnedData.data.component.posts;
- 		for (var i = 0; i < allPosts.length; i++) {
- 			if (allPosts[i].section) {
- 				if (sectionsThatAlreadyExist.indexOf(allPosts[i].section) == -1) {
- 					sectionsThatAlreadyExist.push(allPosts[i].section);
- 					createNewSection(allPosts[i].section);
-				} else {
-					// section already exists
- 				}
- 				addToExistingSection(allPosts[i]);
- 			}
- 		}
- 		Ti.API.info(sectionsThatAlreadyExist);
-		if (OS_IOS) {
- 			//Accounts for bounce buffer
- 			$.tableView.bottom = "48dip";
- 		}
- 		$.tableView.data = tableData;
- 	});
- }
 
 init();

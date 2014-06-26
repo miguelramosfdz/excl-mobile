@@ -8,17 +8,13 @@ function setPathForLibDirectory(libfile) {
 }
 
 function init() {
-	//depreciated===
+	//depreciated, file will not exist===
 	var networkSharingService = setPathForLibDirectory('sharing/sharingNetwork');
 	//===
 	
 	var sharingServiceImage = setPathForLibDirectory('sharing/sharing-service-image');
 	var sharingServiceText = setPathForLibDirectory('sharing/sharing-service-text');
-	var androidService = setPathForLibDirectory('customCalls/platforms/android-service');
-	var iosService = setPathForLibDirectory('customCalls/platforms/ios-service');
 }
-
-
 
 
 

@@ -7,9 +7,9 @@ function toggleTextShareButtonStatusInactive(shareTextButtonId) {
 	//Changes background and enabled status of sharetextbutton to inactive/ready mode
 	shareTextButtonId.enabled = true;
 	if (OS_IOS) {
-		shareTextButtonId.backgroundImage = "images/icons_ios/iosShare.png";
+		shareTextButtonId.backgroundImage = "images/icons_ios/share_ready.png";
 	} else if (OS_ANDROID) {
-		shareTextButtonId.backgroundImage = "/images/icons_android/ic_action_share.png";
+		shareTextButtonId.backgroundImage = "/images/icons_android/share_ready.png";
 
 	}
 }
@@ -21,9 +21,9 @@ function toggleImageShareButtonStatusInactive(shareImageButtonId) {
 	//Changes background and enabled status of shareimagebutton to inactive/ready mode
 	shareImageButtonId.enabled = true;
 	if (OS_IOS){
-		shareImageButtonId.backgroundImage = "images/icons_ios/iOScamera.png";
+		shareImageButtonId.backgroundImage = "images/icons_ios/camera_ready.png";
 	} else if (OS_ANDROID) {
-		shareImageButtonId.backgroundImage = "/images/icons_android/ic_action_camera.png";
+		shareImageButtonId.backgroundImage = "/images/icons_android/camera_ready.png";
 	}
 }
 
@@ -205,4 +205,13 @@ function sendIntentImageiOS(postTags, imageFilePath, imageFilePathInstagram, rig
 }
 
 //Export functions for use by other files
-module.exports = networkSharingService;
+module.exports.sendIntentImageiOS = sendIntentImageiOS;
+module.exports.sendIntentTextiOS = sendIntentTextiOS;
+module.exports.sendIntentImageAndroid = sendIntentImageAndroid;
+module.exports.sendIntentTextAndroid = sendIntentTextAndroid;
+module.exports.openInstagramView = openInstagramView;
+module.exports.openCamera = openCamera;
+module.exports.createImageShareButton = createImageShareButton;
+module.exports.createTextShareButton = createTextShareButton;
+module.exports.toggleTextShareButtonStatusInactive = toggleTextShareButtonStatusInactive;
+module.exports.toggleImageShareButtonStatusInactive = toggleImageShareButtonStatusInactive;

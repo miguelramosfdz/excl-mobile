@@ -2,13 +2,14 @@
 	<Window class="container" backgroundColor='#FFFFFF'>
 		<View layout="vertical">
 			<Widget src="navigationBar" id="navBar"/>
-			<!-- <View layout="horizontal">
-				<Label id="bfaIndicator"/>
-				<Switch id="bfaSwitch" />
-			</View> -->
 			<ScrollView id="scroller">
-				<TableView id="tableView" class = "tableView">
+				<TableView class="sortBar">
+					<TableViewRow>
+						<Label id="sortIndicator" class="indicator"/>
+						<Switch id="sortSwitch" class= "switch" />
+					</TableViewRow>
 				</TableView>
+				<TableView id="tableView" class="tableView"/>
 			</ScrollView>
 		</View>
 	</Window>

@@ -1,24 +1,17 @@
 // NavigationController
 // This version works for Android and iOS for Titanium 3.2.0. 
 
-
-
 function NavigationController() {
 	this.windowStack = [];
 	this.kioskMode = false;
 	this.homePage = null;
 	this.lockedHomePage = null;
-	this.flyoutMenu = Alloy.createController('flyout').getView();
-	this.flyoutMenu.zIndex = 1;
-	this.flyoutVisible = false;
+	this.analyticsController = Alloy.Globals.analyticsController;
 }
 
-
 // Open new window and add it to window stack
-NavigationController.prototype.open = function(windowToOpen, controller) {
-	
-	windowToOpen.add(this.flyoutMenu);
-	
+NavigationController.prototype.open = function(controller) {
+	windowToOpen = controller.getView();
 	windowToOpen.onEnterKioskMode = function(window){};
 	windowToOpen.onExitKioskMode = function(window){};
 	
@@ -210,8 +203,7 @@ function handleKioskModeDialog(self) {
 	    if (e.text == "friend" || e.source.androidView.value == "friend") {
 			updateKioskMode(self);
 	    } else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
-			var finternWindow = Alloy.createController('finterns').getView();
-			Alloy.Globals.navController.open(finternWindow);
+			Alloy.Globals.navController.open(Alloy.createController('finterns'));
     	} else {
 	    	var errorMsg = Ti.UI.createAlertDialog({
 			    title: 'incorrect code',
@@ -244,31 +236,5 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 		element.addEventListener('longclick', handleKioskModeEntry);	
 	}
 };
-
-NavigationController.prototype.toggleMenu = function(showMenu){
-	if(showMenu){
-		openMenu(this.flyoutMenu);
-	}else{
-		closeMenu(this.flyoutMenu);
-	}
-};
-
-function closeMenu(menu){
-	menu.animate({
-		left: "100%",
-		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration: 100
-	});
-	return false;
-}
-
-function openMenu(menu){
-	menu.animate({
-		left: "50%",
-		curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-		duration: 100
-	});
-	return true;
-}
 
 module.exports = NavigationController;
