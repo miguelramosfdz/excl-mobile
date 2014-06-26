@@ -55,7 +55,7 @@ function addToExistingSection(post) {
 	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
 }
 
-function addTosortSection(post) {
+function addToAgeSection(post) {
 	var sectionIndex = existingSortByAge.indexOf(post.section);
 	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
 }
@@ -115,6 +115,9 @@ function createAgeRange(post) {
 }
 
 function compileAgeRange(min_age, max_age) {
+	
+	Ti.API.info("max: " + max_age + " min: "+ min_age);
+	
 	if (max_age == "" && min_age == "") {
 		return "For All Selected Ages";
 	} else if (max_age == "") {
@@ -172,7 +175,7 @@ function checkStateOfSwitch(allPosts) {
 	if ($.sortSwitch.value == true) {
 		$.sortIndicator.text = "Filter By Age On";
 		$.sortIndicator.color = "#00CC00";
-		organizeBysort(allPosts);
+		organizeByAge(allPosts);
 		Ti.API.info(existingSortByAge);
 	} else if ($.sortSwitch.value == false) {
 		$.sortIndicator.text = "Filter By Age Off";
@@ -196,14 +199,14 @@ function organizeBySection(allPosts) {
 	setTableDataAndSpacing();
 }
 
-function organizeBysort(allPosts) {
+function organizeByAge(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
 		var ageRange = createAgeRange(allPosts[i]);
 		if (existingSortByAge.indexOf(ageRange) == -1) {
 			existingSortByAge.push(ageRange);
 			createNewSection(ageRange);
 		}
-		addTosortSection(allPosts[i]);
+		addToAgeSection(allPosts[i]);
 	}
 	setTableDataAndSpacing();
 }
