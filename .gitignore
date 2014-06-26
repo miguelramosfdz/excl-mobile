@@ -9,4 +9,3 @@ build
 Resources
 .settings
 coverage
-plugins/ti.alloy/hooks/alloy.js
