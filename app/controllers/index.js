@@ -147,7 +147,7 @@ function rotateHandler(direction, index, numOfItems){
 			if(exhibitIndex == -1) {
 				exhibitIndex = numOfExhibits - 1;
 			}
-			showcomponents(exhibitIndex);
+			showComponents(exhibitIndex);
 			setExhibitText(exhibitText[exhibitIndex]);
 		}
 	}
@@ -179,7 +179,7 @@ function swipeHandler2(e){
 			
 			// Show new Exhibit and it's contents
 			exhibitViews[exhibitIndex].show();
-			showcomponents(exhibitIndex);
+			showComponents(exhibitIndex);
 			setExhibitText(json.data.museum.exhibits[exhibitIndex].description);
 		}
 	}
