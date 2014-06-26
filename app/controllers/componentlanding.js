@@ -1,6 +1,7 @@
 var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever/dataRetriever');
-var componentID = args;
+var component = args;
+var componentID = component.get('id');
 var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
 //var url = "http://www.mocky.io/v2/53a1e425b4ac142006024b75";

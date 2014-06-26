@@ -32,9 +32,8 @@ function retrieveJson(jsonURL, callback) {
 
 function openComponent(e){
 	var components = Alloy.Collections.instance('component');
-	Ti.API.info("components right now: " + JSON.stringify(components));
 	var component = components.where({"id": e.source.itemId})[0];
-	var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
+	var componentWindow = Alloy.createController('componentlanding', component).getView();
 	Alloy.Globals.navController.open(componentWindow);
 	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
 }
