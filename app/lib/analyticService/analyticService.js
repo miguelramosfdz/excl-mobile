@@ -5,7 +5,7 @@ function AnalyticsController() {
 		
 	this.tracker = GA.getTracker("UA-52199402-1");
 	
-	//GA.debug = true;
+	//GA.debug = true; // Outputs more explicit messages to the console
 	//this.GA.trackUncaughtExceptions = true;
 }
 
