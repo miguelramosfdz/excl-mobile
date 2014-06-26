@@ -1,7 +1,7 @@
-var dataRetriever = require('../lib/dataRetriever/dataRetriever');
-var apiCalls = require('../lib/customCalls/apiCalls');
-var networkCalls = require('../lib/customCalls/networkCalls');
-var parseCalls = require('../lib/customCalls/parseCalls');
+var dataRetriever = require('../../lib/dataRetriever/dataRetriever');
+var apiCalls = require('../../lib/customCalls/apiCalls');
+var networkCalls = require('../../lib/customCalls/networkCalls');
+var parseCalls = require('../../lib/customCalls/parseCalls');
 var assert = require("assert")
 var sinon = require("sinon")
 
