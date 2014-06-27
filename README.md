@@ -15,4 +15,4 @@
 
 * [Installing Unit Testing & Code Coverage Tools](https://bitbucket.org/parivedasolutions/cmh-excl-mobile/src/d36a5dd6d3d98d2b54d8d5a883c2b421a6f2e1a0/docs/installingUnitTestingAndCodeCoverageTools.md?at=master)
 
-* [How to Debug on Genymotion](docs/debuggingOnGenymotion.md)
+* [How to Debug on Genymotion](https://bitbucket.org/parivedasolutions/cmh-excl-mobile/src/d80af39373cf77def5b1a12173c77ac64fc60d01/docs/debuggingOnGenymotion.md?at=master)
