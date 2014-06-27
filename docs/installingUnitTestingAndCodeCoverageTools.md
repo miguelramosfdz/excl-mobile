@@ -12,3 +12,8 @@ and run the unit tests as well.
 * Istanbul also provides metrics on command line when you run `npm test`
 
 By default the coverage and node_modules won't be committed to the git repo when ever you commit something.
+
+
+[Mocha Docs](http://visionmedia.github.io/mocha/#assertions)
+
+[Sinon Docs (For Mocking)](http://sinonjs.org/docs/)
