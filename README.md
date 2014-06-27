@@ -14,3 +14,5 @@
 * [Custom Calls API](https://bitbucket.org/parivedasolutions/cmh-excl-mobile/src/56e53edbd86fb66f45bfb36fac6b58a018ee669b/docs/CustomCalls.md?at=masterr)
 
 * [Installing Unit Testing & Code Coverage Tools](https://bitbucket.org/parivedasolutions/cmh-excl-mobile/src/d36a5dd6d3d98d2b54d8d5a883c2b421a6f2e1a0/docs/installingUnitTestingAndCodeCoverageTools.md?at=master)
+
+* [How to Debug on Genymotion](docs/debuggingOnGenymotion.md)
