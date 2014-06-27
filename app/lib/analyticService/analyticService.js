@@ -2,6 +2,9 @@
 function AnalyticsController() {}
 
 AnalyticsController.prototype.getTracker = function() {
+	if (this.trackerID == null) {
+		return false;
+	}
 	if (this.tracker == null && this.trackerID != null) {
 		this.GA = require('analytics.google');
 		this.tracker = this.GA.getTracker(this.trackerID);
