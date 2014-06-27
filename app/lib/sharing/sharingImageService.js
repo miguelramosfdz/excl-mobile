@@ -9,7 +9,7 @@ function sharingImageService(){
 	cameraService = new cameraService();
 }
 
-sharingImageService.prototype.initiateImageShareButton = function(json) {
+sharingImageService.prototype.initiateImageShareButton = function(json, instagramAnchor) {
 	var shareImageButton = buttonService.createButton('shareImageButton', 'Image');
 	sharingImageService.prototype.setIconReady(shareImageButton);
 
@@ -17,7 +17,7 @@ sharingImageService.prototype.initiateImageShareButton = function(json) {
 		sharingImageService.prototype.setIconBusy(shareImageButton);
 		postTags = sharingImageService.prototype.getPostTags(json);
 		//var intentFunction = function() { sharingImageService.prototype.initiateIntentImage(postTags, imageFilePath, shareImageButton); };
-		cameraService.takePicture(postTags, shareImageButton);
+		cameraService.takePicture(postTags, shareImageButton, instagramAnchor);
 		sharingImageService.prototype.setIconReady(shareImageButton);
 	});
 	
