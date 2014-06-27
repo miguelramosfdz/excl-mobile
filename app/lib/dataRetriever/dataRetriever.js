@@ -1,17 +1,10 @@
 var apiCalls, networkCalls, parseCalls;
 
-// there is probably cleaner way of doing writing this function...
-function setPathForLibDirectory(apiCallsLib, networkCallsLib, parseCallsLib) {
-	if ( typeof Titanium == 'undefined') {
-		// this is required for jasmine-node to run via terminal
-		apiCalls = require('../../lib/customCalls/' + apiCallsLib);
-		networkCalls = require('../../lib/customCalls/' + networkCallsLib);
-		parseCalls = require('../../lib/customCalls/' + parseCallsLib);
-	} else {
-		apiCalls = require('customCalls/' + apiCallsLib);
-		networkCalls = require('customCalls/' + networkCallsLib);
-		parseCalls = require('customCalls/' + parseCallsLib);
-	}
+function setPathForLibDirectory(rootPath) {
+	apiCalls = require(rootPath + 'apiCalls');
+	networkCalls = require(rootPath + 'networkCalls');
+	parseCalls = require(rootPath + 'parseCalls');
+
 }
 
 function parseJson(responseText) {
@@ -29,6 +22,7 @@ function fetchDataFromUrl(url, onSuccess) {
 
 }
 
-setPathForLibDirectory('apiCalls', 'networkCalls', 'parseCalls');
+var rootPath = (typeof Titanium == 'undefined')? '../../lib/customCalls/' : ''
+setPathForLibDirectory(rootPath);
 module.exports.parseJson = parseJson;
 module.exports.fetchDataFromUrl = fetchDataFromUrl;
