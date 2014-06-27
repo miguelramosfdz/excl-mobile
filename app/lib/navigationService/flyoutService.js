@@ -3,7 +3,7 @@ var visible = false;
 var flyoutService = {
 	flyoutMenu: Alloy.createController('flyout').getView(),
 	openMenu: function(){
-		if(!NavigationController.prototype.isInKioskMode()){
+		if(!Alloy.Globals.navController.isInKioskMode()){
 			//alert("in Kiosk Mode: "+NavigationController.prototype.isInKioskMode());
 			this.flyoutMenu.animate({
 				left:"0%",
