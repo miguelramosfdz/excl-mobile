@@ -1,1 +1,1 @@
-jasmine-node app/spec
+npm test

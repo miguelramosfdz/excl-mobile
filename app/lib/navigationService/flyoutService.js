@@ -1,34 +1,40 @@
 var visible = false;
-
-var sound = Titanium.Media.createSound({                
-    url:"/images/Fancy.mp3"
-});
+var flyoutMenu;
+var time = 0;
 
 var flyoutService = {
-	flyoutMenu: Alloy.createController('flyout').getView(),
-	
+	getMenu: function(){
+		if(!flyoutMenu){
+			flyoutMenu = Alloy.createController('flyout').getView();
+			flyoutMenu.zindex = 1;
+			this.closeMenu();
+			time = 100;
+		}
+		return flyoutMenu;
+	},
+	getOpenAnimation: function(){
+		return {
+			left: "0%",
+			curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
+			duration: time
+		};	
+	},
+	getCloseAnimation: function(){
+		return {
+			left: "100%",
+			curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
+			duration: time
+		};
+	},
 	openMenu: function(){
-		if(!Alloy.Globals.navController.isInKioskMode()){
-			//alert("in Kiosk Mode: "+NavigationController.prototype.isInKioskMode());
-			this.flyoutMenu.animate({
-				left:"0%",
-				curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-				duration: 100
-			});
+		if(this.isEnabled()){
+			this.getMenu().animate(this.getOpenAnimation());
 			visible = true;
-        sound.play();
 		}
 		return visible;
 	},
-	
 	closeMenu: function(){
-	
-		this.flyoutMenu.animate({
-			left: "100%",
-			curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
-			duration: 100
-		});
-        sound.stop();
+		this.getMenu().animate(this.getCloseAnimation());
 		visible = false;
 		return visible;
 	},
@@ -38,10 +44,10 @@ var flyoutService = {
 			return this.closeMenu();
 		else
 			return this.openMenu();
+	},
+	isEnabled: function(){
+		return !Alloy.Globals.navController.isInKioskMode();
 	}
 };
-
-flyoutService.flyoutMenu.zindex = 1;
-flyoutService.closeMenu();
 
 module.exports = flyoutService;
