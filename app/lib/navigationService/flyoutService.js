@@ -1,7 +1,7 @@
 var visible = false;
 
 var sound = Titanium.Media.createSound({                
-    url:"/images/Fancy.mp3"
+    url:"/images/ehoh.mp3"
 });
 
 var flyoutService = {

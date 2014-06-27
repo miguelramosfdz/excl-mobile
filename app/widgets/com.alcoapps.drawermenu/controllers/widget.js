@@ -11,6 +11,7 @@ var init=function(opts){
 	setSwipe();
 };
 
+//swipes the flyout 
 var setSwipe=function(){
 	parent.addEventListener('swipe',function(e){ 
 	    if(menuOpen == false && e.direction == 'left'){
