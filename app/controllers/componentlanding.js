@@ -110,40 +110,30 @@ function fetchPostById(postID) {
 	return toReturn;
 }
 
-function createAgeRange(post) {
-	var ageRange;
-	ageRange = detectAges(post);
-	return ageRange;
-}
-
-function compileAgeRange(min_age, max_age) {
-
-	Ti.API.info("max: " + max_age + " min: " + min_age);
-
-	if (max_age == "" && min_age == "") {
+function compileAgeRange(post) {
+	if (!post.min_age && !post.max_age) {
 		return "For All Selected Ages";
-	} else if (max_age == "") {
-		return "For My " + min_age + " Yr Old";
-	} else if (min_age >= max_age) {
-		return "Invalid Age Range";
-	} else if (min_age == "") {
-		return "For My 1 - " + max_age + " Yr Old";
-	} else {
-		return "For My " + min_age + "-" + max_age + " Yr Old";
+	} else if (!post.min_age && post.max_age) {
+		return "For My 1-" + replaceBoleanWithNumeric(post.max_age) + " Yr Old";
+	} else if (post.min_age && !post.max_age) {
+		return "For My " + replaceBoleanWithNumeric(post.min_age) + " Yr Old";
+	} else if (post.min_age && post.max_age) {
+		if (parseInt(post.min_age) >= parseInt(post.max_age)) {
+			return "Invalid Age Range";
+		} else {
+			return "For My " + replaceBoleanWithNumeric(post.min_age) + "-" + replaceBoleanWithNumeric(post.max_age) + " Yr Old";
+		}
 	}
 }
 
-function detectAges(post) {
-	if (post.min_age && post.max_age) {
-		compileAgeRange(post.min_age, post.max_age);
-	} else if (!post.max_age && !post.min_age) {
-		compileAgeRange("", "");
-	} else if (!post.max_age) {
-		compileAgeRange(post.min_age, "");
-	} else if (!post.min_age) {
-		compileAgeRange("", post.max_age);
+function replaceBoleanWithNumeric(bol) {
+	if (bol == true) {
+		return "1";
+	} else if (bol == false) {
+		return "0";
+	} else {
+		return parseInt(bol);
 	}
-
 }
 
 function setTableDataAndSpacing() {
@@ -193,12 +183,12 @@ function checkStateOfSwitch(allPosts) {
 		$.sortIndicator.text = "Filter By Age On";
 		$.sortIndicator.color = "#00CC00";
 		organizeByAge(allPosts);
-		Ti.API.info(existingSortByAge);
+		Ti.API.info("All sections: " + existingSortByAge);
 	} else if ($.sortSwitch.value == false) {
 		$.sortIndicator.text = "Filter By Age Off";
 		$.sortIndicator.color = "#FFFFFF";
 		organizeBySection(allPosts);
-		Ti.API.info(existingSortBySections);
+		Ti.API.info("All sections: " + existingSortBySections);
 	}
 	removeSpinner();
 }
@@ -218,7 +208,8 @@ function organizeBySection(allPosts) {
 
 function organizeByAge(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
-		var ageRange = createAgeRange(allPosts[i]);
+		Ti.API.info("Should be: " + allPosts[i].min_age + ", " + allPosts[i].max_age);
+		var ageRange = compileAgeRange(allPosts[i]);
 		if (existingSortByAge.indexOf(ageRange) == -1) {
 			existingSortByAge.push(ageRange);
 			createNewSection(ageRange);
