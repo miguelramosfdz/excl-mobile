@@ -21,7 +21,7 @@ if (filterAges){
 }
 
 function createEditAgesOption(){
-	var 
+//	var 
 	
-	$.rowEditAges.add()
+	//$.rowEditAges.add()
 }
