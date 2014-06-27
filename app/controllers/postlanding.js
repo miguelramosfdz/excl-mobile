@@ -1,19 +1,6 @@
 var post_content = arguments[0] || {};
 var tableData = [];
 
-/*
- * Defines path to sharingNetwork file
- */
-
-function setPathForLibDirectory(libFile) {
-	if ( typeof Titanium == 'undefined') {
-		lib = require("../../lib/" + libFile);
-	} else {
-		lib = require(libFile);
-	}
-	return lib;
-}
-
 //Google Analytics
 function trackPostScreen() {
 	Alloy.Globals.analyticsController.trackScreen("Post Landing");
@@ -308,10 +295,10 @@ function initializePage() {
 * Run startup commands
 */
 //establish connection to sharing functions
-sharingTextService = setPathForLibDirectory('sharing/sharingTextService');
+sharingTextService = Alloy.Globals.setPathForLibDirectory('sharing/sharingTextService');
 var sharingTextService = new sharingTextService();
 
-sharingImageService = setPathForLibDirectory('sharing/sharingImageService');
+sharingImageService = Alloy.Globals.setPathForLibDirectory('sharing/sharingImageService');
 var sharingImageService = new sharingImageService();
 
 function getRowFromPart(part) {
