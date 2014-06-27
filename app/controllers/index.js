@@ -167,7 +167,12 @@ function showComponents(index){
 	}
 }
 
-retrieveJson(url, populateWindow);
+retrieveJson(url, initializeWithJSON);
+
+function initializeWithJSON(json) {
+	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracker_id);
+	populateWindow(json);
+}
 
 function populateWindow(json){
 	var components = Alloy.Collections.instance('component');
