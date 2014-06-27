@@ -2,54 +2,71 @@
 	<View onClick="toggleMenu" id="menuView">
 		<!-- <View id="menuTopBar"/> -->
 		<TableView class="menuTable" id="menuTable">
-			
 			<TableViewRow class="tableRow" id="row1" onClick="openExhibitPage">
 				<View id="rowContainer">
 					<ImageView id="rowExhibit" backgroundImage= "/flyoutMenuIcons/exhibit.png" class="rowIcon" />
-					<Label id="exhibitLabel" class="rowLabel">Exhibits</Label>
+					<Label id="exhibitLabel" class="rowLabel">
+						Exhibits
+					</Label>
 				</View>
 			</TableViewRow>
-			
 			<TableViewRow class="tableRow" id="row2">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/ages2.png" class="rowIcon"/>
-					<Label id="agesLabel" class="rowLabel">Browse By Age</Label>
+					<Label id="agesLabel" class="rowLabel">
+						Filter By Age
+					</Label>
+					<Label id="enabledLabel" class="rowLabelEnabled">
+						Enabled
+					</Label>
 				</View>
 			</TableViewRow>
-			
-			<TableViewRow class="tableRow" id="row3">
+			<TableViewRow class="tableRowCollapsible" id="row3">
 				<View id="rowContainer">
-					<View backgroundImage="/flyoutMenuIcons/favorites.png" class="rowIcon"/>
-					<Label id="favoritesLabel" class="rowLabel">My Favorites</Label>
+					<View backgroundImage="/flyoutMenuIcons/ages2.png" class="rowIcon"/>
+					<Label id="agesLabel" class="rowLabel">
+						Edit My Ages
+					</Label>
 				</View>
 			</TableViewRow>
-			
 			<TableViewRow class="tableRow" id="row4">
 				<View id="rowContainer">
-					<View backgroundImage= "/flyoutMenuIcons/map.png" class="rowIcon"/>
-					<Label id="mapLabel" class="rowLabel">Map</Label>
+					<View backgroundImage="/flyoutMenuIcons/favorites.png" class="rowIcon"/>
+					<Label id="favoritesLabel" class="rowLabel">
+						My Favorites
+					</Label>
 				</View>
-			</TableViewRow>						
-			
+			</TableViewRow>
 			<TableViewRow class="tableRow" id="row5">
 				<View id="rowContainer">
-					<View backgroundImage="/flyoutMenuIcons/info.png" class="rowIcon"/>
-					<Label id="museumInfoLabel" class="rowLabel">Museum Info</Label>
+					<View backgroundImage= "/flyoutMenuIcons/map.png" class="rowIcon"/>
+					<Label id="mapLabel" class="rowLabel">
+						Map
+					</Label>
 				</View>
 			</TableViewRow>
-			
 			<TableViewRow class="tableRow" id="row6">
 				<View id="rowContainer">
-					<View backgroundImage="/flyoutMenuIcons/tutorial7.png" class="rowIcon"/>
-					<Label id="tutorialLabel" class="rowLabel">Tutorial</Label>
+					<View backgroundImage="/flyoutMenuIcons/info.png" class="rowIcon"/>
+					<Label id="museumInfoLabel" class="rowLabel">
+						Museum Info
+					</Label>
 				</View>
 			</TableViewRow>
-			
-			
 			<TableViewRow class="tableRow" id="row7">
 				<View id="rowContainer">
+					<View backgroundImage="/flyoutMenuIcons/tutorial7.png" class="rowIcon"/>
+					<Label id="tutorialLabel" class="rowLabel">
+						Tutorial
+					</Label>
+				</View>
+			</TableViewRow>
+			<TableViewRow class="tableRow" id="row8">
+				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/19-gear.png" class="rowIcon"/>
-					<Label id="settingsLabel" class="rowLabel">Settings</Label>
+					<Label id="settingsLabel" class="rowLabel">
+						Settings
+					</Label>
 				</View>
 			</TableViewRow>
 		</TableView>
