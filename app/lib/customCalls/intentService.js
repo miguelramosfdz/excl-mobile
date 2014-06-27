@@ -1,4 +1,5 @@
 function intentService(){};
+//Handles all interaction between the app and other apps on the device
 
 intentService.prototype.sendIntentTextAndroid = function(postTags){
 	var intentText = Ti.Android.createIntent({
@@ -16,9 +17,6 @@ intentService.prototype.sendIntentTextiOS = function(postTags){
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
 			text : postTags
-		});
-		Social.addEventListener("cancelled", function(e){
-			//toggleTextShareButtonStatusInactive(shareTextButtonId); //HMMMMMMMMM
 		});
 	} else {
 		alert("Text sharing is not available on this device"); //For some very old versions of iOS

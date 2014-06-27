@@ -1,15 +1,6 @@
 function cameraService(){
-	intentService = setPathForLibDirectory('customCalls/intentService');
+	intentService = Alloy.Globals.setPathForLibDirectory('customCalls/intentService');
 	intentService = new intentService();
-};
-
-function setPathForLibDirectory(libFile) {
-	if ( typeof Titanium == 'undefined') {
-		lib = require("../../lib/" + libFile);
-	} else {
-		lib = require(libFile);
-	}
-	return lib;
 };
 
 cameraService.prototype.takePicture = function(postTags, shareImageButton) {
@@ -38,8 +29,6 @@ cameraService.prototype.takePicture = function(postTags, shareImageButton) {
 			alert("Camera not working");
 		}
 	});
-	
-
 };
 
 module.exports = cameraService;

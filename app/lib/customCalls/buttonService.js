@@ -1,4 +1,5 @@
 function buttonService(){};
+//Provides functions to deal with buttons
 
 //Parameters id and title are optional
 buttonService.prototype.createButton = function(id, title) {
@@ -21,7 +22,6 @@ buttonService.prototype.setButtonEnabled = function(button, bol) {
 };
 
 buttonService.prototype.eraseButtonTitleIfBackgroundPresent = function(button) {
-	//removes the title field of a button if a background image is detected
 	if (button.backgroundImage != "") {
 		button.title = "";
 	}
