@@ -10,21 +10,16 @@
 					</Label>
 				</View>
 			</TableViewRow>
-			<TableViewRow class="tableRow" id="row2">
+			<TableViewRow class="tableRow" id="row2" onClick="openAgeInput">
 				<View id="rowContainer">
-					<View backgroundImage="/flyoutMenuIcons/ages2.png" class="rowIcon"/>
-					<Label id="agesLabel" class="rowLabel">
-						Filter By Age
-					</Label>
-					<Label id="enabledLabel" class="rowLabelEnabled">
-						Enabled
-					</Label>
+					<View backgroundImage="/flyoutMenuIcons/ages.png" class="rowIcon"/>
+					<Label id="agesLabel" class="rowLabel"/>
 				</View>
 			</TableViewRow>
-			<TableViewRow class="tableRowCollapsible" id="row3">
+			<TableViewRow class="tableRowCollapsible" id="tableRowCollapsible">
 				<View id="rowContainer">
-					<View backgroundImage="/flyoutMenuIcons/ages2.png" class="rowIcon"/>
-					<Label id="agesLabel" class="rowLabel">
+					<View backgroundImage="/flyoutMenuIcons/settingsGear.png" class="rowIconIndented"/>
+					<Label class="rowLabelIndented">
 						Edit My Ages
 					</Label>
 				</View>
@@ -55,7 +50,7 @@
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row7">
 				<View id="rowContainer">
-					<View backgroundImage="/flyoutMenuIcons/tutorial7.png" class="rowIcon"/>
+					<View backgroundImage="/flyoutMenuIcons/tutorial.png" class="rowIcon"/>
 					<Label id="tutorialLabel" class="rowLabel">
 						Tutorial
 					</Label>
@@ -63,7 +58,7 @@
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row8">
 				<View id="rowContainer">
-					<View backgroundImage="/flyoutMenuIcons/19-gear.png" class="rowIcon"/>
+					<View backgroundImage="/flyoutMenuIcons/settingsGear.png" class="rowIcon"/>
 					<Label id="settingsLabel" class="rowLabel">
 						Settings
 					</Label>
