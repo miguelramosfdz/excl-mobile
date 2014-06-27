@@ -3,7 +3,7 @@ function cameraService(){
 	intentService = new intentService();
 };
 
-cameraService.prototype.takePicture = function(postTags, shareImageButton) {
+cameraService.prototype.takePicture = function(postTags, shareImageButton, instagramAnchor) {
 	var imageFilePath;
 	Titanium.Media.showCamera({
 		saveToPhotoGallery : true,
@@ -18,7 +18,11 @@ cameraService.prototype.takePicture = function(postTags, shareImageButton) {
 					intentService.sendIntentImageAndroid(postTags, imageFilePath);
 				}
 				else if (OS_IOS){
-					intentService.sendIntentImageiOS(postTags, imageFilePath);
+					fileNameInstagram = "excl" + new Date().getTime() + "_temp.ig";
+					imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
+					imageFileInstagram.write(event.media);
+					alert("Instagram file saved: " + imageFileInstagram.nativePath);
+					intentService.sendIntentImageiOS(postTags, imageFilePath, imageFileInstagram.nativePath, instagramAnchor);
 				}
 			}	
 		},

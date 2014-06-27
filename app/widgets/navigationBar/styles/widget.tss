@@ -10,6 +10,8 @@
 }
 
 
+
+
 //iPhone
 ".pageTitleStyle[platform=ios formFactor=handheld]":{
 	// backgroundColor: "#0000FF",
@@ -52,14 +54,9 @@
 	width: '80%'
 }
 
-".menuButtonStyle":{
-	// backgroundColor: "#FF0000",
-	right: '0%',
-	font: {
-		fontSize: "14",
-		fontWeight: 'normal',
-		fontFamily: 'Helvetica Neue'
-	},
-	width: '10%'
+".flyoutIcon":{
+	width: "25dip",
+	height: "20dip",
+	right: "2%"
 }
 

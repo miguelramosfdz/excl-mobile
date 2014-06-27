@@ -5,35 +5,39 @@ var parseCalls = require('../../lib/customCalls/parseCalls');
 var assert = require("assert");
 var sinon = require("sinon");
 
-describe('Array', function(){
-	describe('#indexOf()', function(){
-		it('should return -1 when the value is not present', function(){
-			assert.equal(-1, [1,2,3].indexOf(5));
-			assert.equal(-1, [1,2,3].indexOf(0));
-		});
-	});
-});
-
-
 describe('parsedJson', function(){
 	describe("parse", function() {
 		it("should return 'parsed' json data", function() {
 
 			var dataToSend = "\"social-media-settings\": {\"liking\": true,\"sharing\": false,\"commenting\": true},";
 			var expectedData = "\"social-media-settings\": {\"liking\":expectedData true,\"sharing\": false,\"commenting\": true},";
-			// spyOn(parseCalls, 'parse').andReturn(expectedData);
-			// var returnedData = dataRetriever.parseJson(dataToSend);
-			// expect(returnedData).toBe(expectedData);
-
-			// var spy = sinon.spy(parseCalls, "parse");
-			// dataRetriever.parseJson(dataToSend);
-			// parseCalls.parse(dataToSend);
-			// assertTrue(spy.called);
-
-			// var mock = sinon.mock(parseCalls);
-			// mock.expects('parse').once().returns(expectedData);
-			// mock.verify();
-
+			
+			var stub = sinon.stub(parseCalls, "parse");
+			stub.returns(expectedData);
+			var returnedData = dataRetriever.parseJson(dataToSend);
+			assert.equal(returnedData, expectedData);
 		});
 	});
 });
+
+describe("fetchDataFromUrl", function(){
+	describe("network", function(){
+		it("should call open and send methods", function(){
+			var stub = sinon.stub(networkCalls, "network");
+			var openFunctionCalled, sendFunctionCalled = false;
+			var url = "http://api.openweathermap.org/data/2.5/weather?q=Houston,us&mode=json&units=imperial";
+			stub.returns({
+				open : function() {
+					openFunctionCalled = true;
+				},
+				send : function() {
+					sendFunctionCalled = true;
+				},
+			});
+			dataRetriever.fetchDataFromUrl(url);
+			assert.equal(openFunctionCalled, true);
+			assert.equal(sendFunctionCalled, true);
+		});
+	});
+});
+
