@@ -10,7 +10,7 @@
 }
 
 ".sortBar":{
-	height: "20dip",
+	height: "30dip",
 	backgroundColor: "#232226",
 	top: "0"
 }
