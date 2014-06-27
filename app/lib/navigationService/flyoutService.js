@@ -1,7 +1,12 @@
 var visible = false;
 
+var sound = Titanium.Media.createSound({                
+    url:"/images/Fancy.mp3"
+});
+
 var flyoutService = {
 	flyoutMenu: Alloy.createController('flyout').getView(),
+	
 	openMenu: function(){
 		if(!Alloy.Globals.navController.isInKioskMode()){
 			//alert("in Kiosk Mode: "+NavigationController.prototype.isInKioskMode());
@@ -11,6 +16,7 @@ var flyoutService = {
 				duration: 100
 			});
 			visible = true;
+        sound.play();
 		}
 		return visible;
 	},
@@ -22,6 +28,7 @@ var flyoutService = {
 			curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
 			duration: 100
 		});
+        sound.stop();
 		visible = false;
 		return visible;
 	},
