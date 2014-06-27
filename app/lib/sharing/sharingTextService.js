@@ -1,20 +1,11 @@
 function sharingTextService(){
-	buttonService = setPathForLibDirectory('customCalls/buttonService');
+	buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
 	buttonService = new buttonService();
-	iconService = setPathForLibDirectory('customCalls/iconService');
+	iconService = Alloy.Globals.setPathForLibDirectory('customCalls/iconService');
 	iconService = new iconService();
-	intentService = setPathForLibDirectory('customCalls/intentService');
+	intentService = Alloy.Globals.setPathForLibDirectory('customCalls/intentService');
 	intentService = new intentService();
 }
-
-function setPathForLibDirectory(libFile) {
-	if ( typeof Titanium == 'undefined') {
-		lib = require("../../lib/" + libFile);
-	} else {
-		lib = require(libFile);
-	}
-	return lib;
-};
 
 sharingTextService.prototype.initiateTextShareButton = function(json) {
 	var shareTextButton = buttonService.createButton('shareTextButton', 'Text');
@@ -32,10 +23,12 @@ sharingTextService.prototype.initiateTextShareButton = function(json) {
 
 sharingTextService.prototype.setIconReady = function(shareTextButton){
 	iconService.setIcon(shareTextButton, 'share_ready.png');
+	buttonService.setButtonEnabled(shareTextButton, true);
 };
 
 sharingTextService.prototype.setIconBusy = function(shareTextButton){
 	iconService.setIcon(shareTextButton, 'share_busy.png');
+	buttonService.setButtonEnabled(shareTextButton, false);
 };
 
 sharingTextService.prototype.getPostTags = function(json) {

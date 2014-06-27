@@ -2,7 +2,7 @@ var args = arguments[0] || {};
 
 function toggleMenu(e){
 	//alert("well you clicked it...");
-	Alloy.Globals.navController.toggleMenu();
+	return Alloy.Globals.navController.toggleMenu();
 }
 
 function openExhibitPage(e){

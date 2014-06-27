@@ -1,18 +1,9 @@
 function cameraService(){
-	intentService = setPathForLibDirectory('customCalls/intentService');
+	intentService = Alloy.Globals.setPathForLibDirectory('customCalls/intentService');
 	intentService = new intentService();
 };
 
-function setPathForLibDirectory(libFile) {
-	if ( typeof Titanium == 'undefined') {
-		lib = require("../../lib/" + libFile);
-	} else {
-		lib = require(libFile);
-	}
-	return lib;
-};
-
-cameraService.prototype.takePicture = function(postTags, shareImageButton) {
+cameraService.prototype.takePicture = function(postTags, shareImageButton, instagramAnchor) {
 	var imageFilePath;
 	Titanium.Media.showCamera({
 		saveToPhotoGallery : true,
@@ -27,7 +18,10 @@ cameraService.prototype.takePicture = function(postTags, shareImageButton) {
 					intentService.sendIntentImageAndroid(postTags, imageFilePath);
 				}
 				else if (OS_IOS){
-					intentService.sendIntentImageiOS(postTags, imageFilePath);
+					fileNameInstagram = "excl" + new Date().getTime() + "_temp.ig";
+					imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
+					imageFileInstagram.write(event.media);
+					intentService.sendIntentImageiOS(postTags, imageFilePath, imageFileInstagram.nativePath, instagramAnchor);
 				}
 			}	
 		},
@@ -38,8 +32,6 @@ cameraService.prototype.takePicture = function(postTags, shareImageButton) {
 			alert("Camera not working");
 		}
 	});
-	
-
 };
 
 module.exports = cameraService;

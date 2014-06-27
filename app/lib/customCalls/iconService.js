@@ -1,5 +1,5 @@
 function iconService(){}
-
+//Finds the platform-specific icon from the images/icons_[platform] directory
 var iconRootAndroid = "/images/icons_android/";
 var iconRootIos = "images/icons_ios/";
 

@@ -187,6 +187,7 @@ function updateKioskMode(self) {
     	self.kioskMode = true;
     	self.setLockedHome();
     	confirm.title = 'Activated Kiosk Mode';
+    	self.menu.closeMenu();
 		window.onEnterKioskMode(window);	
 	} else {
 		self.kioskMode = false;
