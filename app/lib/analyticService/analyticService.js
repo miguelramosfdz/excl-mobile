@@ -1,22 +1,35 @@
 
 function AnalyticsController() {
 	//Google analytics stuff
-	var GA = require('analytics.google');
-		
-	this.tracker = GA.getTracker("UA-52199402-1");
+	this.GA = require('analytics.google');
 	
-	//GA.debug = true; // Outputs more explicit messages to the console
+	//this.GA.debug = true; // Outputs more explicit messages to the console
 	//this.GA.trackUncaughtExceptions = true;
 }
 
+AnalyticsController.prototype.getTracker = function() {
+	if (this.tracker == null && this.trackerID !== null) {
+		this.tracker = this.GA.getTracker(this.trackerID);
+	}
+	return this.tracker;
+};
+
+AnalyticsController.prototype.setTrackerID = function(trackerID) {
+	this.trackerID = trackerID;
+};
+
 AnalyticsController.prototype.trackScreen = function(screenName){
+	var tracker = this.getTracker();
+	if (!tracker) {return false;}
 	Ti.API.info("Now tracking screen " + screenName);
-	this.tracker.trackScreen(screenName);
+	tracker.trackScreen(screenName);
 };
 
 AnalyticsController.prototype.trackEvent = function(category, action, label, value) {
+	var tracker = this.getTracker();
+	if (!tracker) {return false;}
 	Ti.API.info("Now tracking event with category: " + category + ", action: " + action + ", label: " + label + ", value: " + value);
-	this.tracker.trackEvent({
+	tracker.trackEvent({
 		category: category,
 		action: action,
 		label: label,
