@@ -3,7 +3,6 @@ var filterAges = true;
 //filterAges will be set to the value in memory
 
 function toggleMenu(e) {
-	//alert("well you clicked it...");
 	return Alloy.Globals.navController.toggleMenu();
 }
 
@@ -13,11 +12,9 @@ function openExhibitPage(e) {
 }
 
 function openAgeInput(e) {
-if (filterAges){
-	
-}
-
-
+	if (filterAges){
+		
+	}
 }
 
 function createEditAgesOption(){
@@ -25,3 +22,6 @@ function createEditAgesOption(){
 	
 	//$.rowEditAges.add()
 }
+
+
+
