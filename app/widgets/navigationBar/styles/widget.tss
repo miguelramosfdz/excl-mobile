@@ -53,7 +53,6 @@
 }
 
 ".menuButtonStyle":{
-	// backgroundColor: "#FF0000",
 	right: '0%',
 	font: {
 		fontSize: "14",
@@ -61,5 +60,11 @@
 		fontFamily: 'Helvetica Neue'
 	},
 	width: '10%'
+}
+
+"#flyoutButton":{
+	width:"130%",
+	height:"70%"
+	
 }
 
