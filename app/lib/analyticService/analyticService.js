@@ -1,15 +1,12 @@
 
-function AnalyticsController() {
-	//Google analytics stuff
-	this.GA = require('analytics.google');
-	
-	//this.GA.debug = true; // Outputs more explicit messages to the console
-	//this.GA.trackUncaughtExceptions = true;
-}
+function AnalyticsController() {}
 
 AnalyticsController.prototype.getTracker = function() {
 	if (this.tracker == null && this.trackerID != null) {
+		this.GA = require('analytics.google');
 		this.tracker = this.GA.getTracker(this.trackerID);
+		//this.GA.debug = true; // Outputs more explicit messages to the console
+		//this.GA.trackUncaughtExceptions = true;
 	}
 	return this.tracker;
 };
