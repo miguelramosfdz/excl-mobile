@@ -21,19 +21,11 @@ describe('parsedJson', function(){
 
 			var dataToSend = "\"social-media-settings\": {\"liking\": true,\"sharing\": false,\"commenting\": true},";
 			var expectedData = "\"social-media-settings\": {\"liking\":expectedData true,\"sharing\": false,\"commenting\": true},";
-			// spyOn(parseCalls, 'parse').andReturn(expectedData);
-			// var returnedData = dataRetriever.parseJson(dataToSend);
-			// expect(returnedData).toBe(expectedData);
-
-			// var spy = sinon.spy(parseCalls, "parse");
-			// dataRetriever.parseJson(dataToSend);
-			// parseCalls.parse(dataToSend);
-			// assertTrue(spy.called);
-
-			// var mock = sinon.mock(parseCalls);
-			// mock.expects('parse').once().returns(expectedData);
-			// mock.verify();
-
+			
+			var stub = sinon.stub(parseCalls, "parse");
+			stub.returns(expectedData);
+			var returnedData = dataRetriever.parseJson(dataToSend);
+			assert.equal(returnedData, expectedData);
 		});
 	});
 });
