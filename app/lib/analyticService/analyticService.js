@@ -8,7 +8,7 @@ function AnalyticsController() {
 }
 
 AnalyticsController.prototype.getTracker = function() {
-	if (this.tracker == null && this.trackerID !== null) {
+	if (this.tracker == null && this.trackerID != null) {
 		this.tracker = this.GA.getTracker(this.trackerID);
 	}
 	return this.tracker;

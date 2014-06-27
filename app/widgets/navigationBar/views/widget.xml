@@ -10,7 +10,8 @@
 		</View>
 		
 		<View id="flyout" onClick="menu" class="menuButtonStyle coloredGrey">
-			<ImageView id="flyoutButton" image="/hamburger.png"></ImageView>
+			<ImageView id = "flyoutIcon" image="/images/icons_android/drawer.png" platform="android"></ImageView>
+			<ImageView id = "flyoutIcon" image="/images/icons_ios/drawer.png" platform="ios"></ImageView>
 		</View>
 
 	</View>
