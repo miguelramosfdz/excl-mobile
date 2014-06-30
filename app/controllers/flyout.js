@@ -1,7 +1,7 @@
 var args = arguments[0] || {};
 
 var ageFilterEnabled = false;
-var filterAgeSet = true;
+var filterAgeSet = false;
 //filterAges vars will be set to the values in memory
 
 function toggleMenu(e) {
@@ -37,11 +37,11 @@ function disableAgeFilter(){
 }
 
 function showEditAgeOption() {
-	$.tableRowCollapsible.height = "30dip";
+	$.tableRowCollapsible.height = '30dip';
 }
 
 function hideEditAgeOption() {
-	$.tableRowCollapsible.height = "0";
+	$.tableRowCollapsible.height = 0;
 }
 
 function toggleAgeFilter(){
@@ -50,27 +50,12 @@ function toggleAgeFilter(){
 	else
 		disableAgeFilter();
 }
-/*
-function detectAgeFilterOn(filterAgeOn) {
-	if (filterAgeOn) {
-		toggleFilterOn();
-	} else {
-		toggleFilterOff();
-	}
-}
 
-function detectAgeFilterSet(filterAgeSet) {
-	if (filterAgeSet) {
-		showEditAgeOption();
-	} else {
-		hideEditAgeOption();
-	}
-}
-*/
 function openInputMenu(){
 	
-	alert("102");
-	
+	alert("Insert Jess's singleton Modal here?");
+	filterAgeSet = true;
+	/*
 	var modal = viewService.createModalInputView();
 	//var table = viewService.createTableView();
 	//modal.add(table);
@@ -87,11 +72,12 @@ function openInputMenu(){
 	
 	var closeButton = buttonService.createButtonWithCustomSize("Close", 20, 150);
 	closeButton.addEventListener("click", function(e){
-		$.menuTable.remove(modal);
+		$.menuView.remove(modal);
 	});
 	rowClose.add(closeButton);
+	//modal.add(closeButton);
 	
-	$.menuTable.add(modal);
+	$.menuView.add(modal);//*/
 	
 }
 
@@ -105,5 +91,8 @@ function init(){
 	buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
 	buttonService = new buttonService();
 }
+
+var viewService;
+var	buttonService;
 
 init();
