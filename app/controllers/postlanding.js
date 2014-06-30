@@ -45,7 +45,7 @@ function displaySocialMediaButtons(json) {
 		var commentButton = Ti.UI.createButton({
 			height : "40dip",
 			width : "40dip",
-			left : "60%",
+			left : "40%",
 			top : "0",
 			backgroundImage : "/images/icons_android/comment.png"
 		});
