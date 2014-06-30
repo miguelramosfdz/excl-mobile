@@ -1,8 +1,20 @@
 <Alloy>
 	<Collection src="post" instance="true" id="posts" />
-	<View class="container">
-		<ScrollableView dataCollection="$.posts">
+	
+	<View class="container" layout="vertical">
+		<Label id="sectionTitle">section title</Label>
+		
+		<ScrollableView id="scrollableView" dataCollection="$.posts">
+			<View>
+				<ImageView id="postImage" image="/finterns.png"/>
 			
+				<View id="postTitleBar">
+					<Label id="postTitle" text="post name"/>
+				</View>
+			</View>
 		</ScrollableView>
 	</View>
 </Alloy>
+
+<!--jly-->
+

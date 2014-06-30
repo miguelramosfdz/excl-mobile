@@ -15,6 +15,9 @@ function openExhibitPage(e) {
 }
 
 function openAgeInput(e) {
+	
+	alert("101");
+	
 	detectAgeFilterOn(filterAgeOn);
 	if (!filterAgeSet) {
 		openInputMenu();
@@ -58,6 +61,9 @@ function detectAgeFilterSet(filterAgeSet) {
 }
 
 function openInputMenu(){
+	
+	alert("102");
+	
 	var modal = viewService.createModalInputView();
 	//var table = viewService.createTableView();
 	//modal.add(table);
@@ -80,7 +86,6 @@ function openInputMenu(){
 	
 	$.menuTable.add(modal);
 	
-	alert("input menu opened");
 }
 
 function init() {
