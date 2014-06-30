@@ -12,12 +12,6 @@ var exhibitText = [];
 var loaded = false;
 var componentsInExhibit = [];
 
-//Google Analytics
-function trackHomescreen(){
-	Alloy.Globals.analyticsController.trackScreen("Exhibit Landing");
-}
-trackHomescreen();
-
 function retrieveJson(jsonURL, callback) {
 	spinner.addTo($.exhibitsSwipeableRow);
 	spinner.show();
@@ -131,7 +125,7 @@ function rotateHandler(direction, index, numOfItems){
 		exhibitIndex = index;
 		numOfExhibits = numOfItems;
 		if(direction == "right"){
-			removeComponents(exhibitIndex);		// Incrememnt Index
+			removeComponents(exhibitIndex);		// Increment Index
 			exhibitIndex = (exhibitIndex + 1) % numOfExhibits;
 			showComponents(exhibitIndex);
 			setExhibitText(exhibitText[exhibitIndex]);

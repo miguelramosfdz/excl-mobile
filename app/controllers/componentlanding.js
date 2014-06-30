@@ -29,13 +29,6 @@ var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
 var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner;
 
-//Google Analytics
-function trackComponentScreen() {
-	Alloy.Globals.analyticsController.trackScreen("Component Landing");
-}
-
-trackComponentScreen();
-
 function createNewSection(titleOfSection) {
 	Ti.API.info("title: " + titleOfSection);
 	createSectionHeading(titleOfSection);

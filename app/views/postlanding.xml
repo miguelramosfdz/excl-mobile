@@ -5,6 +5,10 @@
 			<ScrollView id="scroller">
 				<TableView id="tableView" >
 				</TableView>
+				<!-- <View id="seeMoreCommentsView">
+					<TableView id="seeMoreCommentsTableView" >
+					</TableView>
+				</View> -->
 			</ScrollView>
 		</View>
 	</Window>

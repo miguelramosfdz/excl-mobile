@@ -34,10 +34,10 @@ describe("fetchDataFromUrl", function(){
 					sendFunctionCalled = true;
 				},
 			});
-
 			dataRetriever.fetchDataFromUrl(url);
 			assert.equal(openFunctionCalled, true);
 			assert.equal(sendFunctionCalled, true);
-		})
-	})
-})
+		});
+	});
+});
+
