@@ -38,7 +38,7 @@ function displaySocialMediaButtons(json) {
 	}
 	if (json.image_sharing && !Alloy.Globals.navController.kioskMode) {
 		var shareImageButton = sharingImageService.initiateImageShareButton(json, instagramAnchor);
-		shareImageButton.left = "70%";
+		shareImageButton.left = "60%";
 		row.add(shareImageButton);
 	}
 
