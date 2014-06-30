@@ -131,7 +131,7 @@ function rotateHandler(direction, index, numOfItems){
 		exhibitIndex = index;
 		numOfExhibits = numOfItems;
 		if(direction == "right"){
-			removeComponents(exhibitIndex);		// Incrememnt Index
+			removeComponents(exhibitIndex);		// Increment Index
 			exhibitIndex = (exhibitIndex + 1) % numOfExhibits;
 			showComponents(exhibitIndex);
 			setExhibitText(exhibitText[exhibitIndex]);
