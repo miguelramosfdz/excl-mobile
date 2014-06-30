@@ -13,7 +13,7 @@ var loaded = false;
 var componentsInExhibit = [];
 
 function retrieveJson(jsonURL, callback) {
-	spinner.addTo($.exhibitsSwipeableRow);
+	// spinner.addTo($.exhibitsSwipeableRow);
 	spinner.show();
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
@@ -35,13 +35,33 @@ function openExhibitInfo(e){
 }
 
 function createExhibitsCarousel(exhibits){
-	$.exhibitsSwipeableCarousel.addToRotateFunc(rotateHandler);
+	// $.exhibitsSwipeableCarousel.addToRotateFunc(rotateHandler);
 	for(i = 0 ; i < exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
-		$.exhibitsSwipeableCarousel.addItem(exhibits[i], openExhibitInfo);
+		var viewConfig = { 
+			backgroundColor: "red",
+			width: Ti.UI.FILL,
+		 	image: '/images/700x300.png'
+		};
+		if(exhibits[i].image) {
+			viewConfig.image = exhibits[i].image;	
+		}
+		$.exhibitsCarousel.addView(Ti.UI.createImageView(viewConfig));
+		
+		
+		// $.exhibitsSwipeableCarousel.addItem(exhibits[i], openExhibitInfo);
 		numOfExhibits++;
 	}
+	
 }
+
+
+
+
+
+
+
+
 
 // Extract into a service in the Lib folder -> make into a widget when we write this in XML
 function createLabeledPicView(item, type){
@@ -86,7 +106,7 @@ function createTitleLabel(name, type){
 }
 
 function createComponentHeading(componentHeadingText){
-	$.componentHeading.text = componentHeadingText;
+	// $.componentHeading.text = componentHeadingText;
 }
 
 function createComponentsScrollView(exhibits){
@@ -110,14 +130,14 @@ function createComponentsScrollView(exhibits){
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[i].add(component);
 		}			
-		$.componentScrollView.add(componentsInExhibit[i]);
+		// $.componentScrollView.add(componentsInExhibit[i]);
 		componentsInExhibit[i].width = 0;
 	}
 	componentsInExhibit[0].width = 'auto';
 }
 
 function setExhibitText(text){
-	$.exhibitInfoLabel.text = text;
+	// $.exhibitInfoLabel.text = text;
 } 
 
 function rotateHandler(direction, index, numOfItems){
@@ -145,7 +165,7 @@ function removeComponents(index){
 	if(componentsInExhibit.length>0){
 		componentsInExhibit[index].width = 0;
 	}
-	$.componentScrollView.contentWidth = 0;
+	// $.componentScrollView.contentWidth = 0;
 }
 
 function showComponents(index){
@@ -157,7 +177,7 @@ function showComponents(index){
 			totalComponentWidth = 225*componentsInExhibit.length; //225 is hard-coded above as the width of each component
 			componentsInExhibit[index].width = totalComponentWidth + 'dip';
 		}
-		$.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
+		// $.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
 	}
 }
 
@@ -188,7 +208,4 @@ function populateWindow(json){
 	loaded = true;
 }
 
-// while(exhibitViews.length == 0); // WHAT IS THIS SUPOSED TO DO?
-
-//var componentWindow = Alloy.createController('componentlanding', e.source.itemId).getView();
 Alloy.Globals.navController.open(this);

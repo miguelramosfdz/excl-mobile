@@ -1,8 +1,25 @@
 
 ".container": {
 	navBarHidden: true,
-	fullscreen: true
+	fullscreen: true,
+	backgroundColor: "#FFF"
 }
+
+"#mainView": {
+	layout: 'vertical'
+}
+
+"#exhibitsCarousel": {
+	backgroundColor: "#000",
+	width: Ti.UI.FILL,
+	height: Ti.UI.SIZE,
+	showPagingControl: true,
+	overlayEnabled: true
+}
+
+
+
+
 
 ".largePictureRow": {
 	top: '5%',
