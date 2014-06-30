@@ -14,7 +14,6 @@
 						<TextField id="insertName" />
 						<TextField id="insertEmail" />
 						<TextField id="insertComment"/>
-						<!-- <TextField id="textField" borderStyle="Ti.UI.INPUT_BORDERSTYLE_ROUNDED" color="#336699" backgroundColor="blue" top="10" left="10" width="250" height="60" /> -->
 						<Button id="submitButton" onClick="verifyAndValidataData" />
 						<Label id="thankYouMessageComment">Thank you. Your message has been submitted. Your comment will be visible upon approval.</Label>
 					</View>
