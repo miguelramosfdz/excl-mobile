@@ -28,7 +28,8 @@ function retrieveJson(jsonURL, callback) {
 }
 
 function initializeWithJSON(json) {
-	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracker_id);
+	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
+	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);	
 	populateWindow(json);
 }
 
@@ -96,6 +97,7 @@ function openComponent(e){
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
 	Alloy.Globals.navController.open(Alloy.createController('componentlanding', component));
+	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Component Landing", 1);	
 	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
 }
 
