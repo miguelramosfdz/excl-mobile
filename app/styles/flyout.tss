@@ -3,7 +3,7 @@
 	opacity: ".9",
 	width: "100%",
 	left: "0%",
-	top: "50dp"
+	top: "50dip"
 },
 "#menuTable":{
 	separatorStyle: 'NONE',
@@ -24,25 +24,43 @@
 },
 ".rowIcon":{
 	left: '10%',
-	top: 7,
-	width: "20dp",
-	height: "20dp"
+	top: "7dip",
+	width: "20dip",
+	height: "20dip"
 },
+
+".rowIconIndented":{
+	left: '20%',
+	top: "3dip",
+	width: "10dip",
+	height: "10dip"
+}
+
 ".rowLabel":{
-	top: 7,
+	top: "7dip",
 	left: '15dp',
-	height: "20dp",
+	height: "20dip",
 	font:{
-		fontSize: "15dp"
+		fontSize: "15dip"
 	},
 	color: "#000"
 }
-".rowLabelEnabled":{
-	top: 7,
-	right: "10dp",
-	height: "20dp",
+".rowLabelIndented":{
+	top: "2dip",
+	right: "13dip",
+	height: "20dip",
 	font:{
-		fontSize: "15dp"
+		fontSize: "11dip"
+	},
+	color: "#000"
+}
+
+".rowLabelEnabled":{
+	top: "7dip",
+	right: "25dip",
+	height: "20dip",
+	font:{
+		fontSize: "15dip"
 	},
 	color: "#00CC00"
 }

@@ -20,16 +20,14 @@ NavigationController.prototype.open = function(controller) {
 	
 	windowToOpen = controller.getView();   //|kyle-clark@uiowa.edu|hey this component was awesome|
 	
-	//windowToOpen.add(this.flyoutMenu);
-	
 	self = this;
 	windowToOpen.addEventListener("focus", function(e){	
-		e.source.add(self.menu.flyoutMenu);
+		e.source.add(self.menu.getMenu());
 	});
 	
 	windowToOpen.addEventListener("blur", function(e){
 		self.menu.closeMenu();
-		e.source.remove(self.menu.flyoutMenu);
+		e.source.remove(self.menu.getMenu());
 	});	
 	
 	windowToOpen.onEnterKioskMode = function(window){};
