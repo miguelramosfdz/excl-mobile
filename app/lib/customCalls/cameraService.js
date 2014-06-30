@@ -11,10 +11,10 @@ cameraService.prototype.takePicture = function(postTags, shareImageButton, insta
 		saveToPhotoGallery : true,
 		mediaTypes : Titanium.Media.MEDIA_TYPE_PHOTO,
 		success : function(event) {
-			win = Ti.UI.createView();
+			win = Ti.UI.createWindow({ });
 			loadingSpinner.addTo(win);
+			loadingSpinner.show();
 			win.open();
-			spinner.show();
 			var fileName = 'excl' + new Date().getTime() + '.jpg';
 			var imageFile = Ti.Filesystem.getFile('file:///sdcard/').exists() ? Ti.Filesystem.getFile('file:///sdcard/', fileName) : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fileName);
 			imageFile.write(event.media);
