@@ -202,6 +202,8 @@ function compileDictOfSelectedAgesToPostAgeRange(selectedAges, hashSelectedAgesT
 	hashSelectedAgesToPosts = Alloy.Globals.arrayToEmptyDict(selectedAges);
 	var postAgeRange = Alloy.Globals.stringToArray(repairEmptyAgeRange(post.age_range), ", ");
 	
+	Ti.API.info("100: " + JSON.stringify(repairEmptyAgeRange(post.age_range)));
+	
 	Ti.API.info("101: " + JSON.stringify(postAgeRange));
 	
 	if (postAgeRange == selectedAges) {
