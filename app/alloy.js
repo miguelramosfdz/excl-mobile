@@ -30,10 +30,6 @@ Alloy.Globals.setPathForLibDirectory = function(libFile){
 	return lib;
 };
 
-Alloy.Globals.isNumeric = function(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-};
-
 Alloy.Globals.stringToArray = function(st, delineator) {
 	var array = [];
 	var item;
@@ -49,9 +45,9 @@ Alloy.Globals.stringToArray = function(st, delineator) {
 };
 
 Alloy.Globals.arrayToEmptyDict = function(array) {
-	var dict;
+	var dict = [];
 	for (var i = 0; i < array.length; i++){
-		dict.push({key: array[i], value: ""});
+		dict[array[i]] = " ";
 	};
 	return dict;
 };

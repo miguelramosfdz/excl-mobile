@@ -6,7 +6,6 @@ var LoadingSpinner = require('loadingSpinner/loadingSpinner');
 var spinner = new LoadingSpinner();
 
 var exhibitIndex = 0;
-var numOfExhibits;
 var exhibitViews = [];
 var exhibitText = [];
 var loaded = false;
@@ -28,7 +27,8 @@ function retrieveJson(jsonURL, callback) {
 }
 
 function initializeWithJSON(json) {
-	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracker_id);
+	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
+	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);	
 	populateWindow(json);
 }
 
@@ -43,7 +43,6 @@ function populateWindow(json){
 			components.add(componentModel);
 		}
 	}
-	numOfExhibits = json.data.museum.exhibits.length;
 	createExhibitsCarousel(json.data.museum.exhibits);
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
@@ -52,19 +51,55 @@ function populateWindow(json){
 
 function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
-	for(i = 0 ; i < exhibits.length; i++){
+	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
 		var viewConfig = { 
 			backgroundColor: "#000",
 			width: Ti.UI.FILL,
-		 	image: '/images/700x300.png'
+		 	image: '/images/700x300.png',
+		 	itemId: exhibits[i].id
 		};
 		if(exhibits[i].image) {
 			viewConfig.image = exhibits[i].image;	
 		}
-		$.exhibitsCarousel.addView(Ti.UI.createImageView(viewConfig));		
-		numOfExhibits++;
+		var imageView = Ti.UI.createImageView(viewConfig);
+		imageView.add(createExhibitTitleLabel(exhibits[i].name));
+		$.exhibitsCarousel.addView(imageView);		
 	}
+	$.exhibitsCarousel.addEventListener("scrollend", onExhibitsScroll);
+}
+
+function createExhibitTitleLabel(name){
+	var titleLabelView = Ti.UI.createView({
+		top: 0,
+		height: '10%',
+		backgroundColor: 'black',
+		opacity: 0.6
+	});
+	var label = Ti.UI.createLabel({
+		top: 0,
+		left: "5%",
+		text: name,
+		color: 'white',
+		horizontalWrap: false,
+		font: {
+			fontFamily : 'Arial',
+			fontSize : '25dip',
+			fontWeight : 'bold'
+		}
+	});
+	titleLabelView.add(label);
+	return titleLabelView;
+}
+
+function onExhibitsScroll(e) {
+	Ti.API.log(e.view.itemId);
+	
+	
+	
+	
+	
+	
 }
 
 function createComponentsScrollView(exhibits){
@@ -96,6 +131,7 @@ function openComponent(e){
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
 	Alloy.Globals.navController.open(Alloy.createController('componentlanding', component));
+	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Component Landing", 1);	
 	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
 }
 

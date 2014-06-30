@@ -9,15 +9,16 @@
 				</TableView>
 				</View> -->
 				<View id="addNewCommentContainer">
-					<Label id="closeCommentBoxButton">X</Label>
 					<View id="whiteCommentBox">
 						<Label id="submitYourCommentLabel">Submit your comment</Label>
-						<TextField id="insertName" text="Name"/>
-						<TextField id="insertEmail" text="Email"/>
+						<TextField id="insertName" />
+						<TextField id="insertEmail" />
 						<TextField id="insertComment"/>
 						<!-- <TextField id="textField" borderStyle="Ti.UI.INPUT_BORDERSTYLE_ROUNDED" color="#336699" backgroundColor="blue" top="10" left="10" width="250" height="60" /> -->
 						<Button id="submitButton" onClick="verifyAndValidataData" />
+						<Label id="thankYouMessageComment">Thank you. Your message has been submitted. Your comment will be visible upon approval.</Label>
 					</View>
+					<Label id="closeCommentBoxButton">X</Label>
 				</View>
 			</ScrollView>
 		</View>

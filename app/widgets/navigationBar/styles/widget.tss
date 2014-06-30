@@ -54,6 +54,8 @@
 	width: '80%'
 }
 
+
+
 ".flyoutIcon":{
 	width: "25dip",
 	height: "20dip",

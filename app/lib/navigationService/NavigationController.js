@@ -4,8 +4,8 @@
 function NavigationController() {
 	this.windowStack = [];
 	this.kioskMode = false;
-	this.homePage = null;
-	this.lockedHomePage = null;
+	this.Page = null;
+	this.lockedPage = null;
 	this.analyticsController = Alloy.Globals.analyticsController;
 	
 	
@@ -45,7 +45,7 @@ NavigationController.prototype.open = function(controller) {
 	if (OS_ANDROID) {
 		var self = this;
 		windowToOpen.addEventListener("android:back", function(e){
-			if(self.windowStack[self.windowStack.length-1] != self.lockedHomePage) {
+			if(self.windowStack[self.windowStack.length-1] != self.lockedPage) {
 				self.close(1);
 			}
 		});	
@@ -96,8 +96,8 @@ NavigationController.prototype.open = function(controller) {
 
 	//This is the first window
 	if (this.windowStack.length === 1) {
-		this.homePage = windowToOpen;
-		this.lockedHomePage = this.homePage;
+		this.Page = windowToOpen;
+		this.lockedPage = this.Page;
 		if (OS_ANDROID) {
 			windowToOpen.exitOnClose = true;
 			windowToOpen.open({animated : false});
@@ -121,7 +121,7 @@ NavigationController.prototype.open = function(controller) {
 
 // Note: without a parameter, close automatically closes 1 window
 NavigationController.prototype.close = function(numWindows) {
-	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedHomePage) {
+	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		if (numWindows > 1) {
 			// setup chain reaction by setting up the flags on all the windows
 			var i = this.windowStack.length - 1;
@@ -140,9 +140,9 @@ NavigationController.prototype.close = function(numWindows) {
 
 // go back to the initial window of the NavigationController
 NavigationController.prototype.home = function() {
-	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedHomePage) {
+	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		// setup chain reaction by setting up the flags on all the windows
-		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedHomePage; i--) {
+		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedPage; i--) {
 			// set dependent window
 			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
        	}
@@ -151,14 +151,14 @@ NavigationController.prototype.home = function() {
 	}
 };
 
-// Lock home page to current top of stack
-NavigationController.prototype.setLockedHome = function(){
-	this.lockedHomePage = this.windowStack[this.windowStack.length - 1];
+// Lock  page to current top of stack
+NavigationController.prototype.setLocked = function(){
+	this.lockedPage = this.windowStack[this.windowStack.length - 1];
 };
 
-// Reset home page to original home
-NavigationController.prototype.resetHome = function(){
-	this.lockedHomePage = this.homePage;
+// Reset  page to original 
+NavigationController.prototype.reset = function(){
+	this.lockedPage = this.Page;
 };
 
 // Return true if in kiosk mode and false otherwise
@@ -183,13 +183,13 @@ function updateKioskMode(self) {
 	// Deactivate kiosk mode if active or vice versa
 	if (self.kioskMode === false) {
     	self.kioskMode = true;
-    	self.setLockedHome();
+    	self.setLocked();
     	confirm.title = 'Activated Kiosk Mode';
     	self.menu.closeMenu();
 		window.onEnterKioskMode(window);	
 	} else {
 		self.kioskMode = false;
-		self.resetHome();
+		self.reset();
 	    confirm.title = 'Deactivated Kiosk Mode';
 		window.onExitKioskMode(window);	
 	}
