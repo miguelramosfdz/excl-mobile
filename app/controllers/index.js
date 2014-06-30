@@ -44,6 +44,7 @@ function populateWindow(json){
 		}
 	}
 	createExhibitsCarousel(json.data.museum.exhibits);
+	createCollapsibleInfoView();
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
 	loaded = true;
@@ -66,6 +67,7 @@ function createExhibitsCarousel(exhibits){
 		imageView.add(createExhibitTitleLabel(exhibits[i].name));
 		$.exhibitsCarousel.addView(imageView);		
 	}
+	$.exhibitsCarousel.addEventListener("click", onExhibitsClick);
 	$.exhibitsCarousel.addEventListener("scrollend", onExhibitsScroll);
 }
 
@@ -90,6 +92,10 @@ function createExhibitTitleLabel(name){
 	});
 	titleLabelView.add(label);
 	return titleLabelView;
+}
+
+function createCollapsibleInfoView(){
+//	$.collapsibleInfoView.size = 0;
 }
 
 function onExhibitsScroll(e) {
@@ -177,3 +183,10 @@ function createTitleLabel(name, type){
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
 } 
+
+function onExhibitsClick(){
+	var index = $.exhibitsCarousel.currentPage;
+	$.collapsibleInfoLabel.text = "Sample Text";
+	$.collapsibleInfoView.height = Ti.UI.SIZE;
+	
+}
