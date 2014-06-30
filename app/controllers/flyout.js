@@ -37,7 +37,7 @@ function showEditAgeOption() {
 	$.tableRowCollapsible.height = "30dip";
 }
 
-function shideEditAgeOption() {
+function hideEditAgeOption() {
 	$.tableRowCollapsible.height = "0";
 }
 
