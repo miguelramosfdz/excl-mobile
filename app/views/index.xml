@@ -3,7 +3,13 @@
 		
 		<View id="mainView">
 			<Widget src="navigationBar" id="navBar"/>
-			<ScrollableView id="exhibitsCarousel"></ScrollableView>
+			<ScrollableView id="exhibitsCarousel">
+				<View id="placeholder" height='180dip'></View>
+			</ScrollableView>
+			<View class="headingRow">
+				<Label class="headingText">Check out our Stations</Label>
+			</View>
+			
 		</View>	
 			
 	</Window>
@@ -22,6 +28,8 @@
 			<TableViewRow class="headingRow">
 				<Label id="componentHeading" class="headingText"></Label>
 			</TableViewRow>
+			
+			
 			<TableViewRow>
 				<ScrollView id="componentScrollView"></ScrollView>
 			</TableViewRow>

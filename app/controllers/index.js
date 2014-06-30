@@ -12,8 +12,12 @@ var exhibitText = [];
 var loaded = false;
 var componentsInExhibit = [];
 
+
+retrieveJson(url, initializeWithJSON);
+Alloy.Globals.navController.open(this);
+
 function retrieveJson(jsonURL, callback) {
-	// spinner.addTo($.exhibitsSwipeableRow);
+	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
@@ -22,6 +26,33 @@ function retrieveJson(jsonURL, callback) {
 		}
 	});
 }
+
+function initializeWithJSON(json) {
+	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracker_id);
+	populateWindow(json);
+}
+
+function populateWindow(json){
+	var components = Alloy.Collections.instance('component');
+	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
+		var exhibit = json.data.museum.exhibits[i];
+		for (var j = 0; j < exhibit.components.length; j++) {
+			component = exhibit.components[j];
+			var componentModel = Alloy.createModel('component');
+			componentModel.set({ 'id' : component.id, 'name': component.name, 'exhibit': exhibit.name });
+			components.add(componentModel);
+		}
+	}
+	numOfExhibits = json.data.museum.exhibits.length;
+	createExhibitsCarousel(json.data.museum.exhibits);
+	// createComponentHeading("Check out our Stations");
+	createComponentsScrollView(json.data.museum.exhibits);
+	setExhibitText(exhibitText[0]);
+	loaded = true;
+}
+
+
+
 
 function openComponent(e){
 	var components = Alloy.Collections.instance('component');
@@ -36,10 +67,11 @@ function openExhibitInfo(e){
 
 function createExhibitsCarousel(exhibits){
 	// $.exhibitsSwipeableCarousel.addToRotateFunc(rotateHandler);
+	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack so it dosent crash
 	for(i = 0 ; i < exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
 		var viewConfig = { 
-			backgroundColor: "red",
+			backgroundColor: "#000",
 			width: Ti.UI.FILL,
 		 	image: '/images/700x300.png'
 		};
@@ -54,14 +86,6 @@ function createExhibitsCarousel(exhibits){
 	}
 	
 }
-
-
-
-
-
-
-
-
 
 // Extract into a service in the Lib folder -> make into a widget when we write this in XML
 function createLabeledPicView(item, type){
@@ -105,9 +129,9 @@ function createTitleLabel(name, type){
 	return titleLabel;
 }
 
-function createComponentHeading(componentHeadingText){
+// function createComponentHeading(componentHeadingText){
 	// $.componentHeading.text = componentHeadingText;
-}
+// }
 
 function createComponentsScrollView(exhibits){
 
@@ -179,32 +203,3 @@ function showComponents(index){
 		// $.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
 	}
 }
-
-retrieveJson(url, initializeWithJSON);
-
-function initializeWithJSON(json) {
-	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracker_id);
-	populateWindow(json);
-}
-
-function populateWindow(json){
-	var components = Alloy.Collections.instance('component');
-	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
-		var exhibit = json.data.museum.exhibits[i];
-		for (var j = 0; j < exhibit.components.length; j++) {
-			component = exhibit.components[j];
-			var componentModel = Alloy.createModel('component');
-			componentModel.set({ 'id' : component.id, 'name': component.name, 'exhibit': exhibit.name });
-			components.add(componentModel);
-		}
-	}
-
-	numOfExhibits = json.data.museum.exhibits.length;
-	createExhibitsCarousel(json.data.museum.exhibits);
-	createComponentHeading("Check out our Stations");
-	createComponentsScrollView(json.data.museum.exhibits);
-	setExhibitText(exhibitText[0]);
-	loaded = true;
-}
-
-Alloy.Globals.navController.open(this);

@@ -17,35 +17,19 @@
 	overlayEnabled: true
 }
 
-
-
-
-
-".largePictureRow": {
-	top: '5%',
-	backgroundColor: '#FFFFFF',
-	height: '200dip'
-}
-
-"#scroller": {
-	height: '100%',
-	contentHeight: 'auto'
-}
-
-"#tableView": {
-	backgroundColor: '#FFFFFF',
-	height: '100%'
+"#exhibitsCarousel[platform=android]": {
+	// This is an android hack
+	height: '180dip'
 }
 
 ".headingRow": {
-	height: '50dip',
 	backgroundColor: "#253342",
-	borderRadius: "15dip",
 	width: Ti.UI.FILL,
+	height: '50dip'
 }
 
 ".headingText": {
-	color: 'black',
+	color: 'white',
 	font: {
 		fontFamily: 'Helvetica Neue',
 		fontSize: '22dip',
@@ -54,47 +38,60 @@
 	textAlign: 'center'
 }
 
-"#componentScrollView": {
-	layout: 'horizontal',
-	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
-	showHorizontalScrollIndicator: true,
-	width: '100%',
-	height: '120dip',
-	contentHeight: 'auto',
-	contentWidth: 'auto',
-	scrollType: 'horizontal',
-	horizontalWrap: false,
-	top: "15dip",
-	bottom: "15dip"
-}
 
-".infoRow": {
-	top: '10dip',
-	height: 'auto',
-	width: "100%",
-	backgroundColor: '#FFFFFF'
-}
 
-"#exhibitInfoLabel": {
-	color: '#232226',
-	font: {
-		fontFamily: 'Helvetica Neue',
-		fontSize: '13dip',
-		fontWeight: 'normal'
-	},
-	top: 0,
-	width: Ti.UI.SIZE,
-	height: '250dip',
-	verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
-	editable: false,
-	left: '5%',
-	horizontalWrap: true
-}
 
-"#navBar": {
-	top: 0
-}
 
-"#componentHeading":{
-	color: "#FFFFFF"
-}
+// ".largePictureRow": {
+	// top: '5%',
+	// backgroundColor: '#FFFFFF',
+	// height: '200dip'
+// }
+// 
+// "#scroller": {
+	// height: '100%',
+	// contentHeight: 'auto'
+// }
+// 
+// "#tableView": {
+	// backgroundColor: '#FFFFFF',
+	// height: '100%'
+// }
+// 
+// 
+// "#componentScrollView": {
+	// layout: 'horizontal',
+	// //pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
+	// showHorizontalScrollIndicator: true,
+	// width: '100%',
+	// height: '120dip',
+	// contentHeight: 'auto',
+	// contentWidth: 'auto',
+	// scrollType: 'horizontal',
+	// horizontalWrap: false,
+	// top: "15dip",
+	// bottom: "15dip"
+// }
+// 
+// ".infoRow": {
+	// top: '10dip',
+	// height: 'auto',
+	// width: "100%",
+	// backgroundColor: '#FFFFFF'
+// }
+// 
+// "#exhibitInfoLabel": {
+	// color: '#232226',
+	// font: {
+		// fontFamily: 'Helvetica Neue',
+		// fontSize: '13dip',
+		// fontWeight: 'normal'
+	// },
+	// top: 0,
+	// width: Ti.UI.SIZE,
+	// height: '250dip',
+	// verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
+	// editable: false,
+	// left: '5%',
+	// horizontalWrap: true
+// }
