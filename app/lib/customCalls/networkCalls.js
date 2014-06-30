@@ -15,8 +15,8 @@ function createNetworkErrorDialog(e){
 	var dialog = Ti.UI.createAlertDialog({
 	    cancel: 1,
 	    buttonNames: ['Try Again'],
-	    message: 'Poor network connection',
-	    title: 'Error',
+	    message: 'Looks like your network connection is having a a little too much fun at the moment!',
+	    title: 'Poor Connection',
 	    persistent: true
 	});
 	dialog.show();
