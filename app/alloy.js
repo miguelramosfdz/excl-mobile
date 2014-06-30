@@ -47,3 +47,11 @@ Alloy.Globals.stringToArray = function(st, delineator) {
 	}
 	return array;
 };
+
+Alloy.Globals.arrayToEmptyDict = function(array) {
+	var dict;
+	for (var i = 0; i < array.length; i++){
+		dict.push({key: array[i], value: ""});
+	};
+	return dict;
+};
