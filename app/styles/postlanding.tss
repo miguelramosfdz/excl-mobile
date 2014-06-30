@@ -1,11 +1,97 @@
 
-".container" : {
-  navBarHidden:true,
-  fullscreen:true, 
-  height: 'auto'
+".container": {
+	navBarHidden: true,
+	fullscreen: true,
+	height: 'auto'
 }
 
 "#scroller": {
 	height: '100%',
-	contentHeight: 'auto',
+	contentHeight: 'auto'
+}
+
+"#addNewCommentContainer":{
+	backgroundColor: 'black',
+	opacity: '0.9',
+	height: '100%',
+	width: '100%',
+	top: 0,
+	left: 0,
+	visible: false,
+	zOrder: 1
+}
+
+"#whiteCommentBox":{
+	backgroundColor: 'white',
+	top: '15%',
+	height: '70%',
+	left: '10%',
+	width: '80%',
+	opacity: '10.0',
+	zOrder: 2
+}
+
+"#insertName":{
+	text: 'Name',
+	opacity: '1.0',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '13dp',
+		fontWeight: 'normal'
+	},
+	top: '20%',
+	left: '15%',
+	zOrder: 2
+}
+
+
+"#insertEmail":{
+	text: 'Email',
+	// opacity: '1.0',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '13dp',
+		fontWeight: 'normal'
+	},
+	top: '20%',
+	left: '15%',
+	zOrder: 2
+}
+
+
+"#insertComment":{
+	text: 'Comment',
+	opacity: '1.0',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '13dp',
+		fontWeight: 'normal'
+	},
+	zOrder: 2
+}
+
+"#closeCommentBoxButton":{
+	color: 'red',
+	top: '5dip',
+	right: '5dip',
+	opacity: '1.0',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '16dp',
+		fontWeight: 'bold'
+	},
+	zOrder: 2
+}
+
+"#submitCommentLabel":{
+	opacity: '1.0',
+	color: 'black',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '20dp',
+		fontWeight: 'bold'
+	},
+	top: '10%',
+	textAlign : 'center',
+	zOrder: 2
 }

@@ -3,12 +3,20 @@
 		<View layout="vertical">
 			<Widget src="navigationBar" id="navBar"/>
 			<ScrollView id="scroller">
-				<TableView id="tableView" >
-				</TableView>
+				<TableView id="tableView" ></TableView>
 				<!-- <View id="seeMoreCommentsView">
-					<TableView id="seeMoreCommentsTableView" >
-					</TableView>
+				<TableView id="seeMoreCommentsTableView" >
+				</TableView>
 				</View> -->
+				<View id="addNewCommentContainer">
+					<Label id="closeCommentBoxButton">X</Label>
+					<View id="whiteCommentBox">
+						<Label id="submitCommentLabel">Submit your comment</Label>
+						<TextField id="insertName"/>
+						<TextField id="insertEmail"/>
+						<TextField id="insertComment"/>
+					</View>
+				</View>
 			</ScrollView>
 		</View>
 	</Window>
