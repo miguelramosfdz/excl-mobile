@@ -54,6 +54,7 @@ function toggleAgeFilter(){
 function openInputMenu(){
 	
 	alert("Insert Jess's singleton Modal here?");
+	filterAgeSet = true;
 	/*
 	var modal = viewService.createModalInputView();
 	//var table = viewService.createTableView();
