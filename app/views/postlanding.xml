@@ -3,12 +3,22 @@
 		<View layout="vertical">
 			<Widget src="navigationBar" id="navBar"/>
 			<ScrollView id="scroller">
-				<TableView id="tableView" >
-				</TableView>
+				<TableView id="tableView" ></TableView>
 				<!-- <View id="seeMoreCommentsView">
-					<TableView id="seeMoreCommentsTableView" >
-					</TableView>
+				<TableView id="seeMoreCommentsTableView" >
+				</TableView>
 				</View> -->
+				<View id="addNewCommentContainer">
+					<Label id="closeCommentBoxButton">X</Label>
+					<View id="whiteCommentBox">
+						<Label id="submitYourCommentLabel">Submit your comment</Label>
+						<TextField id="insertName" text="Name"/>
+						<TextField id="insertEmail" text="Email"/>
+						<TextField id="insertComment"/>
+						<!-- <TextField id="textField" borderStyle="Ti.UI.INPUT_BORDERSTYLE_ROUNDED" color="#336699" backgroundColor="blue" top="10" left="10" width="250" height="60" /> -->
+						<Button id="submitButton" onClick="verifyAndValidataData" />
+					</View>
+				</View>
 			</ScrollView>
 		</View>
 	</Window>

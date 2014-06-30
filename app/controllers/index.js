@@ -141,4 +141,3 @@ function createTitleLabel(name, type){
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
 } 
-
