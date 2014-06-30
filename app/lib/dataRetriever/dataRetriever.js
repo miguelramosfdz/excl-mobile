@@ -22,7 +22,7 @@ function fetchDataFromUrl(url, onSuccess) {
 
 }
 
-var rootPath = (typeof Titanium == 'undefined')? '../../lib/customCalls/' : 'customCalls/'
+var rootPath = (typeof Titanium == 'undefined')? '../../lib/customCalls/' : 'customCalls/';
 setPathForLibDirectory(rootPath);
 module.exports.parseJson = parseJson;
 module.exports.fetchDataFromUrl = fetchDataFromUrl;
