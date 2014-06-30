@@ -45,28 +45,12 @@ function populateWindow(json){
 	}
 	numOfExhibits = json.data.museum.exhibits.length;
 	createExhibitsCarousel(json.data.museum.exhibits);
-	// createComponentHeading("Check out our Stations");
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
 	loaded = true;
 }
 
-
-
-
-function openComponent(e){
-	var components = Alloy.Collections.instance('component');
-	var component = components.where({"id": e.source.itemId})[0];
-	Alloy.Globals.navController.open(Alloy.createController('componentlanding', component));
-	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
-}
-
-function openExhibitInfo(e){
-	//alert("will open additional Exhibit info"); 
-}
-
 function createExhibitsCarousel(exhibits){
-	// $.exhibitsSwipeableCarousel.addToRotateFunc(rotateHandler);
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack so it dosent crash
 	for(i = 0 ; i < exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
@@ -78,16 +62,37 @@ function createExhibitsCarousel(exhibits){
 		if(exhibits[i].image) {
 			viewConfig.image = exhibits[i].image;	
 		}
-		$.exhibitsCarousel.addView(Ti.UI.createImageView(viewConfig));
-		
-		
-		// $.exhibitsSwipeableCarousel.addItem(exhibits[i], openExhibitInfo);
+		$.exhibitsCarousel.addView(Ti.UI.createImageView(viewConfig));		
 		numOfExhibits++;
 	}
 	
 }
 
-// Extract into a service in the Lib folder -> make into a widget when we write this in XML
+function createComponentsScrollView(exhibits){
+	var image;
+	var component;
+	for (var i = 0; i < exhibits.length; i++){
+		componentsInExhibit[i] = Ti.UI.createView({
+			layout: 'horizontal',
+			horizontalWrap: false,
+			width: 'auto'
+		});// TSS CLASS
+
+		for(var j = 0; j< exhibits[i].components.length; j++){
+			component = createLabeledPicView(exhibits[i].components[j], '15dip');	// Later type will be 'component' and that wil be linked to the TSS class
+			component.left = 5;
+			component.right = 5;
+			component.width = '225dip';
+			component.id = exhibits[i].components[j].id;
+			component.addEventListener('click', openComponent);
+			componentsInExhibit[i].add(component);
+		}			
+		$.componentScrollView.add(componentsInExhibit[i]);
+		componentsInExhibit[i].width = 0;
+	}
+	componentsInExhibit[0].width = 'auto';
+}
+
 function createLabeledPicView(item, type){
 	var itemContainer = Ti.UI.createView();
 	var image = Ti.UI.createImageView({
@@ -123,83 +128,68 @@ function createTitleLabel(name, type){
 		}
 	});
 	//$.addClass(label, "myLabel"); 
-
 	titleLabel.add(label);
-
 	return titleLabel;
 }
 
-// function createComponentHeading(componentHeadingText){
-	// $.componentHeading.text = componentHeadingText;
-// }
 
-function createComponentsScrollView(exhibits){
 
-	var image;
-	var component;
 
-	for (var i = 0; i < exhibits.length; i++){
-		componentsInExhibit[i] = Ti.UI.createView({
-			layout: 'horizontal',
-			horizontalWrap: false,
-			width: 'auto'
-		});// TSS CLASS
 
-		for(var j = 0; j< exhibits[i].components.length; j++){
-			component = createLabeledPicView(exhibits[i].components[j], '15dip');	// Later type will be 'component' and that wil be linked to the TSS class
-			component.left = 5;
-			component.right = 5;
-			component.width = '225dip';
-			component.id = exhibits[i].components[j].id;
-			component.addEventListener('click', openComponent);
-			componentsInExhibit[i].add(component);
-		}			
-		// $.componentScrollView.add(componentsInExhibit[i]);
-		componentsInExhibit[i].width = 0;
-	}
-	componentsInExhibit[0].width = 'auto';
+
+
+function openComponent(e){
+	var components = Alloy.Collections.instance('component');
+	var component = components.where({"id": e.source.itemId})[0];
+	Alloy.Globals.navController.open(Alloy.createController('componentlanding', component));
+	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
 }
 
 function setExhibitText(text){
 	// $.exhibitInfoLabel.text = text;
 } 
 
-function rotateHandler(direction, index, numOfItems){
-	if(numOfExhibits > 0){
-		exhibitIndex = index;
-		numOfExhibits = numOfItems;
-		if(direction == "right"){
-			removeComponents(exhibitIndex);		// Increment Index
-			exhibitIndex = (exhibitIndex + 1) % numOfExhibits;
-			showComponents(exhibitIndex);
-			setExhibitText(exhibitText[exhibitIndex]);
-		}else if(direction == "left"){
-			removeComponents(exhibitIndex);
-			exhibitIndex--;
-			if(exhibitIndex == -1) {
-				exhibitIndex = numOfExhibits - 1;
-			}
-			showComponents(exhibitIndex);
-			setExhibitText(exhibitText[exhibitIndex]);
-		}
-	}
-}
 
-function removeComponents(index){
-	if(componentsInExhibit.length>0){
-		componentsInExhibit[index].width = 0;
-	}
-	// $.componentScrollView.contentWidth = 0;
-}
 
-function showComponents(index){
-	if(index<componentsInExhibit.length){
-		if (OS_ANDROID){
-			componentsInExhibit[index].width = 'auto';
-		}
-		else if (OS_IOS){
-			componentsInExhibit[index].width = Ti.UI.SIZE;
-		}
-		// $.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
-	}
-}
+
+
+
+// function rotateHandler(direction, index, numOfItems){
+	// if(numOfExhibits > 0){
+		// exhibitIndex = index;
+		// numOfExhibits = numOfItems;
+		// if(direction == "right"){
+			// removeComponents(exhibitIndex);		// Increment Index
+			// exhibitIndex = (exhibitIndex + 1) % numOfExhibits;
+			// showComponents(exhibitIndex);
+			// setExhibitText(exhibitText[exhibitIndex]);
+		// }else if(direction == "left"){
+			// removeComponents(exhibitIndex);
+			// exhibitIndex--;
+			// if(exhibitIndex == -1) {
+				// exhibitIndex = numOfExhibits - 1;
+			// }
+			// showComponents(exhibitIndex);
+			// setExhibitText(exhibitText[exhibitIndex]);
+		// }
+	// }
+// }
+// 
+// function removeComponents(index){
+	// if(componentsInExhibit.length>0){
+		// componentsInExhibit[index].width = 0;
+	// }
+	// // $.componentScrollView.contentWidth = 0;
+// }
+// 
+// function showComponents(index){
+	// if(index<componentsInExhibit.length){
+		// if (OS_ANDROID){
+			// componentsInExhibit[index].width = 'auto';
+		// }
+		// else if (OS_IOS){
+			// componentsInExhibit[index].width = Ti.UI.SIZE;
+		// }
+		// // $.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
+	// }
+// }

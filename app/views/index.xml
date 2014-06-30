@@ -1,6 +1,5 @@
 <Alloy>
 	<Window class="container">
-		
 		<View id="mainView">
 			<Widget src="navigationBar" id="navBar"/>
 			<ScrollableView id="exhibitsCarousel">
@@ -9,9 +8,13 @@
 			<View class="headingRow">
 				<Label class="headingText">Check out our Stations</Label>
 			</View>
-			
+			<View>
+				<ScrollView id="componentScrollView"></ScrollView>
+			</View>
+			<View class="infoRow">
+				<Label id="exhibitInfoLabel"></Label>
+			</View>
 		</View>	
-			
 	</Window>
 </Alloy>
 
@@ -23,21 +26,15 @@
 			<TableViewRow class="largePictureRow" id="exhibitsSwipeableRow" >
 				<Widget src="itemCarousel" id="exhibitsSwipeableCarousel"/>
 			</TableViewRow>
-			
-			
 			<TableViewRow class="headingRow">
 				<Label id="componentHeading" class="headingText"></Label>
 			</TableViewRow>
-			
-			
 			<TableViewRow>
 				<ScrollView id="componentScrollView"></ScrollView>
 			</TableViewRow>
 			<TableViewRow class="infoRow">
 				<Label id="exhibitInfoLabel"></Label>
 			</TableViewRow>
-			
-			
 		</TableView>
 	</ScrollView>
 </View> -->
