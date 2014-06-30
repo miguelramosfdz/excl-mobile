@@ -6,7 +6,6 @@ var LoadingSpinner = require('loadingSpinner/loadingSpinner');
 var spinner = new LoadingSpinner();
 
 var exhibitIndex = 0;
-var numOfExhibits;
 var exhibitViews = [];
 var exhibitText = [];
 var loaded = false;
@@ -44,7 +43,6 @@ function populateWindow(json){
 			components.add(componentModel);
 		}
 	}
-	numOfExhibits = json.data.museum.exhibits.length;
 	createExhibitsCarousel(json.data.museum.exhibits);
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
@@ -53,19 +51,55 @@ function populateWindow(json){
 
 function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
-	for(i = 0 ; i < exhibits.length; i++){
+	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
 		var viewConfig = { 
 			backgroundColor: "#000",
 			width: Ti.UI.FILL,
-		 	image: '/images/700x300.png'
+		 	image: '/images/700x300.png',
+		 	itemId: exhibits[i].id
 		};
 		if(exhibits[i].image) {
 			viewConfig.image = exhibits[i].image;	
 		}
-		$.exhibitsCarousel.addView(Ti.UI.createImageView(viewConfig));		
-		numOfExhibits++;
+		var imageView = Ti.UI.createImageView(viewConfig);
+		imageView.add(createExhibitTitleLabel(exhibits[i].name));
+		$.exhibitsCarousel.addView(imageView);		
 	}
+	$.exhibitsCarousel.addEventListener("scrollend", onExhibitsScroll);
+}
+
+function createExhibitTitleLabel(name){
+	var titleLabelView = Ti.UI.createView({
+		top: 0,
+		height: '10%',
+		backgroundColor: 'black',
+		opacity: 0.6
+	});
+	var label = Ti.UI.createLabel({
+		top: 0,
+		left: "5%",
+		text: name,
+		color: 'white',
+		horizontalWrap: false,
+		font: {
+			fontFamily : 'Arial',
+			fontSize : '25dip',
+			fontWeight : 'bold'
+		}
+	});
+	titleLabelView.add(label);
+	return titleLabelView;
+}
+
+function onExhibitsScroll(e) {
+	Ti.API.log(e.view.itemId);
+	
+	
+	
+	
+	
+	
 }
 
 function createComponentsScrollView(exhibits){
