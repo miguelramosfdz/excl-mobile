@@ -1,25 +1,19 @@
 <Alloy>
-	<Window class="container" backgroundColor='#FFFFFF'>
-		<View layout="vertical" id="mainView">
+	<Window class="container">
+		<View id="mainView">
 			<Widget src="navigationBar" id="navBar"/>
-			<ScrollView id="scroller">
-				<TableView id="tableView" >
-					<TableViewRow class="largePictureRow" id="exhibitsSwipeableRow" >
-						<!--<View id="exhibitsSwipeableView" onClick="openPostLanding"></View>-->
-						<Widget src="itemCarousel" id="exhibitsSwipeableCarousel"/>
-					</TableViewRow>
-					<TableViewRow class="headingRow">
-						<Label id="componentHeading" class="headingText"></Label>
-					</TableViewRow>
-					<TableViewRow>
-						<ScrollView id="componentScrollView"></ScrollView>
-					</TableViewRow>
-					<TableViewRow class="infoRow">
-						<Label id="exhibitInfoLabel"></Label>
-					</TableViewRow>
-				</TableView>
-			</ScrollView>
-		</View>
+			<ScrollableView id="exhibitsCarousel">
+				<View id="placeholder" height='180dip'></View>
+			</ScrollableView>
+			<View class="headingRow">
+				<Label class="headingText">Check out our Stations</Label>
+			</View>
+			<View>
+				<ScrollView id="componentScrollView"></ScrollView>
+			</View>
+			<View class="infoRow">
+				<Label id="exhibitInfoLabel"></Label>
+			</View>
+		</View>	
 	</Window>
 </Alloy>
-

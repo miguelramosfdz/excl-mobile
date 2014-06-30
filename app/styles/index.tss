@@ -1,34 +1,35 @@
 
 ".container": {
 	navBarHidden: true,
-	fullscreen: true
+	fullscreen: true,
+	backgroundColor: "#FFF"
 }
 
-".largePictureRow": {
-	top: '5%',
-	backgroundColor: '#FFFFFF',
-	height: '200dip'
+"#mainView": {
+	layout: 'vertical'
 }
 
-"#scroller": {
-	height: '100%',
-	contentHeight: 'auto'
+"#exhibitsCarousel": {
+	backgroundColor: "#000",
+	width: Ti.UI.FILL,
+	height: Ti.UI.SIZE,
+	showPagingControl: true,
+	overlayEnabled: true
 }
 
-"#tableView": {
-	backgroundColor: '#FFFFFF',
-	height: '100%'
+"#exhibitsCarousel[platform=android]": {
+	// This is an android hack
+	height: '180dip'
 }
 
 ".headingRow": {
-	height: '50dip',
 	backgroundColor: "#253342",
-	borderRadius: "15dip",
 	width: Ti.UI.FILL,
+	height: '50dip'
 }
 
 ".headingText": {
-	color: 'black',
+	color: 'white',
 	font: {
 		fontFamily: 'Helvetica Neue',
 		fontSize: '22dip',
@@ -72,12 +73,4 @@
 	editable: false,
 	left: '5%',
 	horizontalWrap: true
-}
-
-"#navBar": {
-	top: 0
-}
-
-"#componentHeading":{
-	color: "#FFFFFF"
 }

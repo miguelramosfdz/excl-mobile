@@ -13,12 +13,14 @@ function setPathForLibDirectory(apiCallsLib, parseCallsLib) {
 
 function createNetworkErrorDialog(e){
 	var dialog = Ti.UI.createAlertDialog({
-	    cancel: 1,
 	    buttonNames: ['Try Again'],
-	    message: 'Looks like your network connection is having a a little too much fun at the moment!',
+	    message: 'Looks like your network connection is having a little too much fun at the moment!',
 	    title: 'Poor Connection',
 	    persistent: true
 	});
+	if (OS_ANDROID){
+		dialog.cancel = 1;
+	}
 	dialog.show();
 	
 	dialog.addEventListener('click', function(e){
