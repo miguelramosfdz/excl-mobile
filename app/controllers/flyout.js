@@ -79,6 +79,8 @@ function openInputMenu(){
 	rowClose.add(closeButton);
 	
 	$.menuTable.add(modal);
+	
+	alert("input menu opened");
 }
 
 function init() {

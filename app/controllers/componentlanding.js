@@ -187,9 +187,6 @@ function organizeBySection(allPosts) {
 
 function organizeByAge(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
-
-		//Ti.API.info("Should be: " + allPosts[i].age_range[0] + "to " + allPosts[i].age_range[parseInt(allPosts[i].age_range.length - 1)]);
-
 		compileDictOfSelectedAgesToPostAgeRange(selectedAges, hashSelectedAgesToPosts, allPosts[i]);
 
 	}
@@ -203,9 +200,9 @@ function organizeByAge(allPosts) {
 
 function compileDictOfSelectedAgesToPostAgeRange(selectedAges, hashSelectedAgesToPosts, post) {
 	hashSelectedAgesToPosts = Alloy.Globals.arrayToEmptyDict(selectedAges);
-	var postAgeRange = Alloy.Globals.stringToArray(repairEmptyAgeRange(post.age_range), "|");
+	var postAgeRange = Alloy.Globals.stringToArray(repairEmptyAgeRange(post.age_range), ", ");
 	
-	Ti.API.info("stuff: " + JSON.stringify(postAgeRange));
+	Ti.API.info("101: " + JSON.stringify(postAgeRange));
 	
 	if (postAgeRange == selectedAges) {
 		hashSelectedAgesToPosts[0] = postAgeRange[j];
@@ -220,12 +217,14 @@ function compileDictOfSelectedAgesToPostAgeRange(selectedAges, hashSelectedAgesT
 		}
 	}
 
-	Ti.API.info("stuff: " + JSON.stringify(hashSelectedAgesToPosts));
+	Ti.API.info("102: " + JSON.stringify(hashSelectedAgesToPosts));
 }
 
 function repairEmptyAgeRange(ageRange){
 	if (ageRange == "a:0:{}"){
 		return 0;
+	} else {
+		return ageRange;
 	}
 }
 

@@ -11,12 +11,12 @@
 			<TableViewRow class="tableRow" id="row2" onClick="openAgeInput">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/ages.png" class="rowIcon"/>
-					<Label id="agesLabel" class="rowLabel">Test</Label>
+					<Label id="agesLabel" class="rowLabelSmall">Test</Label>
 				</View>
 			</TableViewRow>
-			<TableViewRow class="tableRowCollapsible" id="tableRowCollapsible">
+			<TableViewRow class="tableRowCollapsible" id="tableRowCollapsible" onClick="openInputMenu">
 				<View id="rowContainer">
-					<View backgroundImage="/flyoutMenuIcons/settingsGear.png" class="rowIconIndented" onClick="openInputMenu"/>
+					<View backgroundImage="/flyoutMenuIcons/settingsGear.png" class="rowIconIndented"/>
 					<Label class="rowLabelIndented">Edit My Ages</Label>
 				</View>
 			</TableViewRow>
