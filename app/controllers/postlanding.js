@@ -32,7 +32,8 @@ function setPageTitle(name) {
 function displaySocialMediaButtons(json) {
 	//Create anchor for instagram viewer
 	var instagramAnchor = Ti.UI.createButton({
-		title:''
+		title : '',
+		opacity : 0.0
 	});
 	$.postlanding.add(instagramAnchor);
 	

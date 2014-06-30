@@ -46,7 +46,6 @@ intentService.prototype.sendIntentImageiOS = function(postTags, imageFilePath, i
 			type : "open.instagram",
 			image : "/images/instagram-256.png",
 			callback : function(e) {
-				alert("About to call openInstagram. " + imageFilePathInstagram);
 				intentService.prototype.openInstagram(postTags, imageFilePathInstagram, instagramAnchor);
 			}}]);
 
@@ -57,9 +56,12 @@ intentService.prototype.sendIntentImageiOS = function(postTags, imageFilePath, i
 
 intentService.prototype.openInstagram = function(postTags, imageFilePathInstagram, instagramAnchor) {
 	alert("Made it to openInstagram");
-    var docViewer = Ti.UI.iOS.createDocumentViewer({ url: imageFilePathInstagram });
-    docViewer.UTI = "com.instagram.exclusivegram";
+	
+    var docViewer = Ti.UI.iOS.createDocumentViewer({ url: "/images/Testpdf.pdf" });
+    
+    //docViewer.UTI = "com.instagram.exclusivegram";
     docViewer.show({ view: instagramAnchor, animated: true });
+    
 };
 
 module.exports = intentService;
