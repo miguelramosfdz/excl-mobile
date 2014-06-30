@@ -203,7 +203,10 @@ function organizeByAge(allPosts) {
 
 function compileDictOfSelectedAgesToPostAgeRange(selectedAges, hashSelectedAgesToPosts, post) {
 	hashSelectedAgesToPosts = Alloy.Globals.arrayToEmptyDict(selectedAges);
-	var postAgeRange = Alloy.Globals.stringToArray(post.age_range, "|");
+	var postAgeRange = Alloy.Globals.stringToArray(repairEmptyAgeRange(post.age_range), "|");
+	
+	Ti.API.info("stuff: " + JSON.stringify(postAgeRange));
+	
 	if (postAgeRange == selectedAges) {
 		hashSelectedAgesToPosts[0] = postAgeRange[j];
 	} else {
@@ -212,13 +215,18 @@ function compileDictOfSelectedAgesToPostAgeRange(selectedAges, hashSelectedAgesT
 				if (postAgeRange[j] == selectedAges[i]) {
 					hashSelectedAgesToPosts[selectedAges[i]] = postAgeRange[j];
 				}
-
 			}
 
 		}
 	}
 
 	Ti.API.info("stuff: " + JSON.stringify(hashSelectedAgesToPosts));
+}
+
+function repairEmptyAgeRange(ageRange){
+	if (ageRange == "a:0:{}"){
+		return 0;
+	}
 }
 
 function replaceTempHeadingsForAgeFiltering(selectedAges) {
