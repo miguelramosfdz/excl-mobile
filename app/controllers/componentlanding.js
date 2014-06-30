@@ -1,3 +1,7 @@
+//Testing variable
+var selectedAges = [7, 4, 6].sort();
+////
+
 var args = arguments[0] || {};
 var component = args;
 var componentID = component.get('id');
@@ -50,7 +54,7 @@ function addToExistingSection(post) {
 }
 
 function addToAgeSection(post) {
-	var sectionIndex = existingSortByAge.indexOf(post.section);
+	var sectionIndex = existingSortByAge.indexOf(post.section); //need to change post.section to the age appropriate section title
 	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
 }
 
@@ -103,20 +107,33 @@ function fetchPostById(postID) {
 	return toReturn;
 }
 
-function compileAgeRange(post) {
-	if (!post.min_age && !post.max_age) {
-		return "For All Selected Ages";
-	} else if (!post.min_age && post.max_age) {
-		return "For My 1-" + replaceBoleanWithNumeric(post.max_age) + " Yr Old";
-	} else if (post.min_age && !post.max_age) {
-		return "For My " + replaceBoleanWithNumeric(post.min_age) + " Yr Old";
-	} else if (post.min_age && post.max_age) {
-		if (parseInt(post.min_age) >= parseInt(post.max_age)) {
-			return "Invalid Age Range";
-		} else {
-			return "For My " + replaceBoleanWithNumeric(post.min_age) + "-" + replaceBoleanWithNumeric(post.max_age) + " Yr Old";
+function createNumericalArray(st) {
+	var array = [];
+	for (var i = 0; i < st.length; i++) {
+		if (Alloy.Globals.isNumeric(st[i])) {
+			array.push(st[i]);
 		}
 	}
+	Ti.API.info("array: " + array);
+	return array.sort();
+}
+
+function createAgeRange(post) {
+	var ageRange = post.age_range;
+	if (!ageRange | ageRange == "a:0:{}") {
+		return [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+	}
+	createNumericalArray(ageRange);
+	return ageRange;
+}
+
+function replaceNumeric(int) {
+	var newInt = int;
+	newInt = replaceBoleanWithNumeric(int);
+	if (newInt == "14") {
+		newInt == "Adult";
+	}
+	return parseInt(newInt);
 }
 
 function replaceBoleanWithNumeric(bol) {
@@ -124,8 +141,6 @@ function replaceBoleanWithNumeric(bol) {
 		return "1";
 	} else if (bol == false) {
 		return "0";
-	} else {
-		return parseInt(bol);
 	}
 }
 
@@ -149,6 +164,34 @@ function setSwitchEvent() {
 		addSpinner();
 		retrieveComponentData();
 	});
+}
+
+function checkIfSelectedAgeInPostAgeRange(selectedAge, ageRange) {
+	if (selectedAge.lenth == 0) {
+		Ti.API.info("No ages selected");
+	} else if (ageRange.length == 1) {
+		if (selectedAge == ageRange[0]) {
+			return true;
+		} else {
+			return false;
+		}
+	} else if (ageRange.length == 2) {
+		if (selectedAge >= ageRange[0] && selectedAge <= ageRange[1]) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+function createSectionHeadingsForSelectedAges(selectedAges) {
+	existingSortByAge.push("For All Selected Ages");
+	createNewSection("For All Selected Ages");
+	for (var j = 0; j < selectedAges.length; j++) {
+		var section = "For My " + selectedAges[j] + " Yr Old";
+		existingSortByAge.push(section);
+		createNewSection(section);
+	}
 }
 
 function retrieveComponentData() {
@@ -201,13 +244,17 @@ function organizeBySection(allPosts) {
 
 function organizeByAge(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
-		Ti.API.info("Should be: " + allPosts[i].min_age + ", " + allPosts[i].max_age);
-		var ageRange = compileAgeRange(allPosts[i]);
-		if (existingSortByAge.indexOf(ageRange) == -1) {
-			existingSortByAge.push(ageRange);
-			createNewSection(ageRange);
+		Ti.API.info("Should be: " + allPosts[i].age_range[0] + "to " + allPosts[i].age_range[parseInt(allPosts[i].age_range.length - 1)]);
+		var ageRange = createAgeRange(allPosts[i]);
+
+		createSectionHeadingsForSelectedAges(selectedAges);
+
+		for (var j = 0; j < selectedAges.length; j++) {
+			if (checkIfSelectedAgeInPostAgeRange(selectedAges[j], ageRange)) {
+				addToAgeSection(allPosts[j]);
+			}
 		}
-		addToAgeSection(allPosts[i]);
+
 	}
 	setTableDataAndSpacing();
 }
