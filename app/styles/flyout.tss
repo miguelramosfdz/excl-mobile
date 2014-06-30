@@ -22,6 +22,11 @@
 	height: '30dp',
 	layout: 'horizontal'
 },
+"#rowContainerIndented":{
+	height: '30dp',
+	layout: 'horizontal',
+	left:'10%'
+}
 ".rowIcon":{
 	left: '10%',
 	top: "7dip",
@@ -29,23 +34,23 @@
 	height: "20dip"
 },
 
-".rowIconIndented":{
+/*".rowIconIndented":{
 	left: '20%',
 	top: "3dip",
 	width: "10dip",
 	height: "10dip"
-}
+}*/
 
 ".rowLabel":{
-	top: "7dip",
-	left: '15dp',
+	top: "6dip",
+	left: '12dp',
 	height: "20dip",
 	font:{
 		fontSize: "15dip"
 	},
 	color: "#000"
 }
-".rowLabelIndented":{
+/*".rowLabelIndented":{
 	top: "2dip",
 	right: "13dip",
 	height: "20dip",
@@ -53,14 +58,4 @@
 		fontSize: "11dip"
 	},
 	color: "#000"
-}
-
-".rowLabelEnabled":{
-	top: "7dip",
-	right: "25dip",
-	height: "20dip",
-	font:{
-		fontSize: "15dip"
-	},
-	color: "#00CC00"
-}
+}*/

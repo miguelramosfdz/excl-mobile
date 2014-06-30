@@ -139,7 +139,7 @@ NavigationController.prototype.close = function(numWindows) {
 };
 
 // go back to the initial window of the NavigationController
-NavigationController.prototype. = function() {
+NavigationController.prototype.home = function() {
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		// setup chain reaction by setting up the flags on all the windows
 		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedPage; i--) {
