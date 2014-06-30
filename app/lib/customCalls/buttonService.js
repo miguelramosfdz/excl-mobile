@@ -19,11 +19,11 @@ buttonService.prototype.createButton = function(id, title) {
 
 buttonService.prototype.createButtonWithCustomSize = function(title, heightAsDip, widthAsDip) {
 	title = title || "";
-	height = height || "40";
-	width = width || "40";
+	heightAsDip = heightAsDip || "40";
+	widthAsDip = widthAsDip || "40";
 	var button = Ti.UI.createButton({
-		height : height + "dip",
-		width : width + "dip",
+		height : heightAsDip + "dip",
+		width : widthAsDip + "dip",
 		left : "0",
 		top : "0",
 		title: title
