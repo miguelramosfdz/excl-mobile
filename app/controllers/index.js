@@ -154,8 +154,7 @@ function showComponents(index){
 			componentsInExhibit[index].width = 'auto';
 		}
 		else if (OS_IOS){
-			totalComponentWidth = 225*componentsInExhibit.length; //225 is hard-coded above as the width of each component
-			componentsInExhibit[index].width = totalComponentWidth + 'dip';
+			componentsInExhibit[index].width = Ti.UI.SIZE;
 		}
 		$.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
 	}

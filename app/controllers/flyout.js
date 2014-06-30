@@ -1,7 +1,7 @@
 var args = arguments[0] || {};
 
 var filterAgeOn = true;
-var filterAgeSet = false;
+var filterAgeSet = true;
 //filterAges vars will be set to the values in memory
 
 function toggleMenu(e) {
@@ -24,13 +24,13 @@ function openAgeInput(e) {
 function toggleFilterOn() {
 	filterAgeOn = true;
 	$.agesLabel.color = "#00CC00";
-	$.agesLabel.text = "Filter By Age/n Enabled";
+	$.agesLabel.text = "Filter By Age Enabled";
 }
 
 function toggleFilterOff() {
 	filterAgeOn = false;
 	$.agesLabel.color = "#000099";
-	$.agesLabel.text = "Filter By Age/n Disabled";
+	$.agesLabel.text = "Filter By Age Disabled";
 }
 
 function showEditAgeOption() {
@@ -59,18 +59,21 @@ function detectAgeFilterSet(filterAgeSet) {
 
 function openInputMenu(){
 	var modal = viewService.createModalInputView();
-	var table = viewService.createTableVieW();
-	modal.add(table);
+	//var table = viewService.createTableView();
+	//modal.add(table);
 	
 	var rowContent = viewService.createTableRow("80");
 	var rowSave = viewService.createTableRow("10");
 	var rowClose = viewService.createTableRow("10");
-	table.add(rowContent);
-	table.add(rowSave);
-	table.add(rowClose);
+	modal.add(rowContent);
+	modal.add(rowSave);
+	modal.add(rowClose);
+	// table.add(rowContent);
+	// table.add(rowSave);
+	// table.add(rowClose);
 	
 	var closeButton = buttonService.createButtonWithCustomSize("Close", 20, 150);
-	closeButton.addListenerEvent("click", function(e){
+	closeButton.addEventListener("click", function(e){
 		$.menuTable.remove(modal);
 	});
 	rowClose.add(closeButton);
