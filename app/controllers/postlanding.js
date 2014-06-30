@@ -51,6 +51,9 @@ function displaySocialMediaButtons(json) {
 		});
 		commentButton.addEventListener('click', function(e) {
 			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+			$.insertName.visible = $.insertEmail.visible = $.insertComment.visible = $.submitButton.visible = true;
+			$.insertName.value = $.insertEmail.value = $.insertComment.value  = "";
+			$.thankYouMessageComment.visible = false;
 		});
 
 		$.closeCommentBoxButton.addEventListener('click', function(e) {
@@ -332,10 +335,22 @@ function displayComments(comments) {
 
 }
 
-function verifyAndValidataData(){
+function verifyAndValidataData() {
 	// This function should verify that the data exists in the form fields
 	// Once verified, it should send the data to the WP DB
 	// And display a 'message sent' message
+
+	Ti.API.info($.insertName.value);
+	Ti.API.info($.insertEmail.value);
+	Ti.API.info($.insertComment.value);
+
+	if (!$.insertComment.value) {
+		alert("Please enter a comment. Its clearly NOT optional....");
+	} else {
+		// thank you, your message has been submitted!
+		$.insertName.visible = $.insertEmail.visible = $.insertComment.visible = $.submitButton.visible = false;
+		$.thankYouMessageComment.visible = true;
+	}
 }
 
 function initializePage() {

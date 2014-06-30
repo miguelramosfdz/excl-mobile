@@ -45,7 +45,7 @@
 }
 
 "#insertName":{
-	hintText: 'Name',
+	hintText: 'Name (Optional)',
 	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
 	opacity: '1.0',
 	font: {
@@ -66,7 +66,7 @@
 
 
 "#insertEmail":{
-	hintText: 'Email',
+	hintText: 'Email (Optional)',
 	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
 	opacity: '1.0',
 	font: {
@@ -126,15 +126,33 @@
 	zOrder: 2
 }
 
+"#thankYouMessageComment":{
+	opacity: '1.0',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '13dp',
+		fontWeight: 'normal'
+	},
+	textAlign: 'center',
+	color: 'green',
+	top: '35%',
+	left: '7%',
+	width: '85%',
+	height: 'auto',
+	// backgroundColor: '#f2f2f2',
+	zOrder: 2,
+}
+
 "#closeCommentBoxButton":{
 	color: 'red',
-	top: '5dip',
-	right: '5dip',
+	top: '15%',
+	// right: '5dip',
+	left: '86%',
 	opacity: '1.0',
 	font: {
 		fontFamily: 'Helvetica Neue',
 		fontSize: '16dp',
 		fontWeight: 'bold'
 	},
-	zOrder: 2
+	zOrder: 3
 }
