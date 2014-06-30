@@ -29,25 +29,3 @@ Alloy.Globals.setPathForLibDirectory = function(libFile){
 	}
 	return lib;
 };
-
-Alloy.Globals.stringToArray = function(st, delineator) {
-	var array = [];
-	var item;
-	for (var i = 0; i < st.length; i++){
-		if (!st[i] == delineator){
-			item += st[i];
-		} else {
-			array.push(item);
-			item = "";
-		}
-	}
-	return array;
-};
-
-Alloy.Globals.arrayToEmptyDict = function(array) {
-	var dict = [];
-	for (var i = 0; i < array.length; i++){
-		dict[array[i]] = " ";
-	};
-	return dict;
-};

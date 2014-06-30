@@ -186,10 +186,13 @@ function organizeBySection(allPosts) {
 }
 
 function organizeByAge(allPosts) {
+	hashSelectedAgesToPosts = {};
 	for (var i = 0; i < allPosts.length; i++) {
 		compileDictOfSelectedAgesToPostAgeRange(selectedAges, hashSelectedAgesToPosts, allPosts[i]);
-
 	}
+	Ti.API.info("output: " + JSON.stringify(hashSelectedAgesToPosts));
+	Ti.API.info("Selected ages: " + JSON.stringify(selectedAges));
+	displayDictKeys(hashSelectedAgesToPosts);
 
 	//createTempHeadingsForAgeFiltering(selectedAges);
 
@@ -199,38 +202,59 @@ function organizeByAge(allPosts) {
 }
 
 function compileDictOfSelectedAgesToPostAgeRange(selectedAges, hashSelectedAgesToPosts, post) {
-	hashSelectedAgesToPosts = Alloy.Globals.arrayToEmptyDict(selectedAges);
-	var postAgeRange = Alloy.Globals.stringToArray(repairEmptyAgeRange(post.age_range), ", ");
-	
-	Ti.API.info("100: " + JSON.stringify(repairEmptyAgeRange(post.age_range)));
-	
-	Ti.API.info("101: " + JSON.stringify(postAgeRange));
-	
+	var postAgeRange = JSON.parse("[" + repairEmptyAgeRange(post.age_range) + "]");
 	if (postAgeRange == selectedAges) {
+		Ti.API.info("Matched all selected");
 		hashSelectedAgesToPosts[0] = postAgeRange[j];
 	} else {
 		for (var i = 0; i < selectedAges.length; i++) {
-			for (var j = 0; j < postAgeRange.length; i++) {
-				if (postAgeRange[j] == selectedAges[i]) {
-					hashSelectedAgesToPosts[selectedAges[i]] = postAgeRange[j];
-				}
-			}
+			var itemPostArray = createHashArrayForItem(postAgeRange, itemPostArray, selectedAges[i], post);
 
+			Ti.API.info("Item Hash: " + JSON.stringify(itemPostArray));
+
+			addItemArrayToHash(itemPostArray, hashSelectedAgesToPosts);
 		}
 	}
-
-	Ti.API.info("102: " + JSON.stringify(hashSelectedAgesToPosts));
+	var listKeys;
+	for (key in hashSelectedAgesToPosts) {
+		listKeys += " " + key;
+	}
+	Ti.API.info("Selected keys: [" + listKeys + "]");
 }
 
-function repairEmptyAgeRange(ageRange){
-	if (ageRange == "a:0:{}"){
+function addItemArrayToHash(itemPostArray, hashSelectedAgesToPosts) {
+	
+	Ti.API.info("To be matched: " + hashSelectedAgesToPosts[selectedAges[i]]);
+	
+	if (hashSelectedAgesToPosts[selectedAges[i]] = "") {
+		Ti.API.info("101");
+		hashSelectedAgesToPosts[selectedAges[i]] = itemPostArray;
+	} else {
+		hashSelectedAgesToPosts[selectedAges[i]] = hashSelectedAgesToPosts[selectedAges[i]].concat(itemPostArray);
+		Ti.API.info("102");
+	}
+}
+
+function createHashArrayForItem(postAgeRange, hashItemArray, selectedAge, post) {
+	for (var j = 0; j < postAgeRange.length; j++) {
+		//Ti.API.info("i-" + i + ", j-" + j + ": " + (postAgeRange[j] == selectedAges[i]));
+		if (postAgeRange[j] == selectedAges[i]) {
+			hashItemArray.push(post);
+		}
+	}
+	return hashItemArray;
+
+}
+
+function repairEmptyAgeRange(ageRange) {
+	if (ageRange == "a:0:{}") {
 		return 0;
 	} else {
 		return ageRange;
 	}
 }
 
-function replaceTempHeadingsForAgeFiltering(selectedAges) {
+function replaceTempHeadingsForAgeFiltering(hashSelectedAgesToPosts) {
 
 	//Replace dict keys with real headings
 
@@ -243,3 +267,15 @@ function init() {
 }
 
 init();
+
+
+/*
+ * TODO
+ * Add entries to dict
+ * 
+ * Populate keys with appropriate posts
+ * 
+ * Replace titles of hash
+ * 
+ * Push to table data
+ */
