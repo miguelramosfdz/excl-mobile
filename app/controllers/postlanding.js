@@ -40,6 +40,25 @@ function displaySocialMediaButtons(json) {
 		shareImageButton.left = "70%";
 		row.add(shareImageButton);
 	}
+	if (json.commenting && !Alloy.Globals.navController.kioskMode) {
+		var commentButton = Ti.UI.createButton({
+			height : "40dip",
+			width : "40dip",
+			left : "60%",
+			top : "0",
+			backgroundImage : "/images/icons_android/comment.png"
+		});
+		commentButton.addEventListener('click', function(e) {
+			Ti.API.info("Clicked!! => " + $.addNewCommentContainer.visible.toString());
+			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+		});
+
+		$.closeCommentBoxButton.addEventListener('click', function(e) {
+			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+		});
+
+		row.add(commentButton);
+	}
 
 	return row;
 }
