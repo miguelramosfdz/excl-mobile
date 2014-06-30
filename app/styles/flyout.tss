@@ -1,5 +1,5 @@
 "#menuView":{
-	layout: 'vertical',
+	layout: 'horizontal',
 	opacity: ".9",
 	width: "100%",
 	left: "0%",
@@ -10,7 +10,7 @@
 	separatorColor: 'transparent',
 	backgroundColor: '#F2F2F2',
 	width: "50%",
-	left: "50%"
+	//left: "50%"
 },
 ".tableRow":{
 	height: '50dp'
@@ -40,6 +40,12 @@
 	width: "10dip",
 	height: "10dip"
 },
+
+".clearPageProtecterView": {
+	left: 0,
+	width: "50%",
+	opacity: 0
+}
 
 ".rowLabel":{
 	top: "6dip",
