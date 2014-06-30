@@ -32,10 +32,10 @@ function setPageTitle(name) {
 function displaySocialMediaButtons(json) {
 	//Create anchor for instagram viewer
 	var instagramAnchor = Ti.UI.createButton({
-		title:''
+		title : ''
 	});
 	$.postlanding.add(instagramAnchor);
-	
+
 	var row = createPlainRowWithHeight('auto');
 	if (json.text_sharing && !Alloy.Globals.navController.kioskMode) {
 		var shareTextButton = sharingTextService.initiateTextShareButton(json);
@@ -161,6 +161,8 @@ function addTableDataToTheView(tableData) {
 		//Accounts for bounce buffer
 		$.tableView.bottom = "48dip";
 	}
+	$.tableView.bottom = "10dip";
+	// some extra margin after comments are displayed
 	$.tableView.data = tableData;
 }
 
@@ -186,7 +188,7 @@ function creatingCommentTextHeading() {
 	tableData.push(row);
 }
 
-function displayThereAreNoCommentsToDisplayText(){
+function displayThereAreNoCommentsToDisplayText() {
 	var row = createPlainRowWithHeight('auto');
 	var commentHeading = Ti.UI.createLabel({
 		top : 10,
@@ -202,7 +204,7 @@ function displayThereAreNoCommentsToDisplayText(){
 		text : "There are no comments for this post"
 	});
 	row.add(commentHeading);
-	tableData.push(row);	
+	tableData.push(row);
 }
 
 function addCommentToView(commentText, commentDate) {
@@ -285,6 +287,37 @@ function displayComments(comments) {
 
 	}
 
+	// var row = createPlainRowWithHeight('auto');
+	// var text = Ti.UI.createLabel({
+	// top : 10,
+	// width : '94%',
+	// right : '3%',
+	// left : '3%',
+	// color : '#005ab3',
+	// font : {
+	// fontFamily : 'Helvetica Neue',
+	// fontSize : '13dp',
+	// fontWeight : 'normal',
+	// },
+	// text : "Show more comments",
+	// textAlign : 'center',
+	// });
+	// row.add(text);
+	//
+	// var arr = [row];
+	// $.seeMoreCommentsTableView.data = arr;
+	//
+	// // if clicked, hide it and show the other comments
+	// $.seeMoreCommentsView.addEventListener('click', function(e) {
+	// Ti.API.info("The view is clicked!!");
+	// $.seeMoreCommentsView.animate({
+	// top : "100%",
+	// curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
+	// duration : 300
+	// });
+	// // view.hide();
+	// });
+
 }
 
 function initializePage() {
@@ -303,12 +336,11 @@ function initializePage() {
 			}
 		}
 	}
-	
+
 	creatingCommentTextHeading();
-	if(post_content.comments != false){
+	if (post_content.comments != false) {
 		displayComments(post_content.comments);
-	}
-	else{
+	} else {
 		displayThereAreNoCommentsToDisplayText();
 	}
 	addTableDataToTheView(tableData);
