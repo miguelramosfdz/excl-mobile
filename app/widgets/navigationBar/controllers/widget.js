@@ -1,4 +1,5 @@
-function back(e){
+function goBack(e){
+	alert("Back Button Was Clicked");
 	Alloy.Globals.navController.close();
 }
 

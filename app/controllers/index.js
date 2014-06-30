@@ -110,7 +110,6 @@ function onExhibitsClick(exhibits){
 }
 
 function onExhibitsScroll(e) {
-	Ti.API.log(e.view.itemId);
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;

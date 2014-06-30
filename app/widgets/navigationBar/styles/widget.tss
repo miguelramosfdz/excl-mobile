@@ -1,5 +1,4 @@
 ".backButtonStyle":{
-	// backgroundColor: "#00FF00",
 	left: '0%',
 	font: {
 		fontSize: "14",
@@ -9,14 +8,20 @@
 	width: '10%' 
 }
 
+".menuButtonStyle": {
+	right: '0%',
+	width: '10%'
+}
 
-
+".flyoutIcon":{
+	width: "25dip",
+	height: "20dip",
+	right: "2%"
+}
 
 //iPhone
 ".pageTitleStyle[platform=ios formFactor=handheld]":{
-	// backgroundColor: "#0000FF",
-	// left: "50%",
-	color: "#FFFFFF",
+	color: "#FFF",
 	font: {
 		fontSize: '13.8dip',
 		fontWeight: 'bold',
@@ -28,9 +33,7 @@
 
 //iPad
 ".pageTitleStyle[platform=ios formFactor=tablet]":{
-	// backgroundColor: "#0000FF",
-	// left: "50%",
-	color: "#FFFFFF",
+	color: "#FFF",
 	font: {
 		fontSize: '18dip',
 		fontWeight: 'bold',
@@ -42,9 +45,7 @@
 
 //Android
 ".pageTitleStyle[platform=android]":{
-	// backgroundColor: "#0000FF",
-	// left: "50%",
-	color: "#FFFFFF",
+	color: "#FFF",
 	font: {
 		fontSize: '18dip',
 		fontWeight: 'bold',
@@ -53,12 +54,3 @@
 	textAlign: 'center',
 	width: '80%'
 }
-
-
-
-".flyoutIcon":{
-	width: "25dip",
-	height: "20dip",
-	right: "2%"
-}
-
