@@ -1,7 +1,7 @@
 var args = arguments[0] || {};
 
 var filterAgeOn = true;
-var filterAgeSet = true;
+var filterAgeSet = false;
 //filterAges vars will be set to the values in memory
 
 function toggleMenu(e) {
@@ -15,22 +15,20 @@ function openExhibitPage(e) {
 }
 
 function openAgeInput(e) {
-	if (filterAgeOn) {
-		alert("Iz on senior");
-	} else {
-		alert("Iz off senior");
-		filterAgeOn = true;
-		filterAgeSet = true;
+	detectAgeFilterOn(filterAgeOn);
+	if (!filterAgeSet) {
+		openInputMenu();
 	}
-
 }
 
 function toggleFilterOn() {
+	filterAgeOn = true;
 	$.agesLabel.color = "#00CC00";
 	$.agesLabel.text = "Filter By Age/n Enabled";
 }
 
 function toggleFilterOff() {
+	filterAgeOn = false;
 	$.agesLabel.color = "#000099";
 	$.agesLabel.text = "Filter By Age/n Disabled";
 }
@@ -59,9 +57,35 @@ function detectAgeFilterSet(filterAgeSet) {
 	}
 }
 
+function openInputMenu(){
+	var modal = viewService.createModalInputView();
+	var table = viewService.createTableVieW();
+	modal.add(table);
+	
+	var rowContent = viewService.createTableRow("80");
+	var rowSave = viewService.createTableRow("10");
+	var rowClose = viewService.createTableRow("10");
+	table.add(rowContent);
+	table.add(rowSave);
+	table.add(rowClose);
+	
+	var closeButton = buttonService.createButtonWithCustomSize("Close", 20, 150);
+	closeButton.addListenerEvent("click", function(e){
+		$.menuTable.remove(modal);
+	});
+	rowClose.add(closeButton);
+	
+	$.menuTable.add(modal);
+}
+
 function init() {
 	detectAgeFilterSet(filterAgeSet);
 	detectAgeFilterOn(filterAgeOn);
+	
+	viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
+	viewService = new viewService();
+	buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
+	buttonService = new buttonService();
 }
 
 init();

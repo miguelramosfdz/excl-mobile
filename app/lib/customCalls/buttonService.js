@@ -17,6 +17,20 @@ buttonService.prototype.createButton = function(id, title) {
 	return button;
 };
 
+buttonService.prototype.createButtonWithCustomSize = function(title, heightAsDip, widthAsDip) {
+	title = title || "";
+	height = height || "40";
+	width = width || "40";
+	var button = Ti.UI.createButton({
+		height : height + "dip",
+		width : width + "dip",
+		left : "0",
+		top : "0",
+		title: title
+	});
+	return button;
+};
+
 buttonService.prototype.setButtonEnabled = function(button, bol) {
 	button.enabled = bol;
 };
