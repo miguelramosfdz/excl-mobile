@@ -186,6 +186,25 @@ function creatingCommentTextHeading() {
 	tableData.push(row);
 }
 
+function displayThereAreNoCommentsToDisplayText(){
+	var row = createPlainRowWithHeight('auto');
+	var commentHeading = Ti.UI.createLabel({
+		top : 10,
+		width : '94%',
+		right : '3%',
+		left : '3%',
+		color : '#48464e',
+		font : {
+			fontFamily : 'Helvetica Neue',
+			fontSize : '13dp',
+			fontWeight : 'normal',
+		},
+		text : "There are no comments for this post"
+	});
+	row.add(commentHeading);
+	tableData.push(row);	
+}
+
 function addCommentToView(commentText, commentDate) {
 	var row = createPlainRowWithHeight('auto');
 	var text = Ti.UI.createLabel({
@@ -228,8 +247,6 @@ function displayComments(comments) {
 	// should be hidden with the 'see more comments' text
 	// once that text is clicked it should load all the comments
 
-
-	creatingCommentTextHeading();
 	var commentsLengthLimit = 2;
 	var commentsLength = (comments.length > commentsLengthLimit) ? commentsLengthLimit : comments.length;
 	for (var i = 0; i < commentsLength; i++) {
@@ -286,8 +303,13 @@ function initializePage() {
 			}
 		}
 	}
+	
+	creatingCommentTextHeading();
 	if(post_content.comments != false){
 		displayComments(post_content.comments);
+	}
+	else{
+		displayThereAreNoCommentsToDisplayText();
 	}
 	addTableDataToTheView(tableData);
 }
