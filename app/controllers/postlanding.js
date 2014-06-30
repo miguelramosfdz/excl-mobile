@@ -26,7 +26,8 @@ function displaySocialMediaButtons(json) {
 	//Create anchor for instagram viewer
 	var instagramAnchor = Ti.UI.createButton({
 		title : '',
-		opacity : 0.0
+		opacity : 0.0,
+		left: "10%"
 	});
 	$.postlanding.add(instagramAnchor);
 
