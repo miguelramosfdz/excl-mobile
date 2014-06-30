@@ -1,19 +1,19 @@
 var args = arguments[0] || {};
+
 var dataRetriever = require('dataRetriever/dataRetriever');
+var LoadingSpinner = require('loadingSpinner/loadingSpinner');
+
+var spinner = new LoadingSpinner();
 var url = Alloy.Globals.rootWebServiceUrl;
 
-var LoadingSpinner = require('loadingSpinner/loadingSpinner');
-var spinner = new LoadingSpinner();
-
-var exhibitIndex = 0;
-var exhibitViews = [];
 var exhibitText = [];
-var loaded = false;
 var componentsInExhibit = [];
+var jsonData;
 
 
 retrieveJson(url, initializeWithJSON);
 Alloy.Globals.navController.open(this);
+
 
 function retrieveJson(jsonURL, callback) {
 	spinner.addTo($.exhibitsCarousel);
@@ -33,6 +33,7 @@ function initializeWithJSON(json) {
 }
 
 function populateWindow(json){
+	jsonData = json;
 	var components = Alloy.Collections.instance('component');
 	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
 		var exhibit = json.data.museum.exhibits[i];
@@ -46,7 +47,6 @@ function populateWindow(json){
 	createExhibitsCarousel(json.data.museum.exhibits);
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
-	loaded = true;
 }
 
 function createExhibitsCarousel(exhibits){
@@ -94,9 +94,7 @@ function createExhibitTitleLabel(name){
 
 function onExhibitsScroll(e) {
 	Ti.API.log(e.view.itemId);
-	
-	
-	
+	Ti.API.log(JSON.stringify(jsonData));
 	
 	
 	
