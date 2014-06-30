@@ -16,7 +16,7 @@ viewService.prototype.createTableView = function() {
 	return table;
 };
 
-vieWService.prototype.createTableRow = function (heightAsPercent){
+viewService.prototype.createTableRow = function (heightAsPercent){
 	height = height || "50";
 	var row = Ti.UI.createTableViewRow({
 		height: height + "%"
