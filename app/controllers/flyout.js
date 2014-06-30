@@ -1,6 +1,6 @@
 var args = arguments[0] || {};
 
-var filterAgeOn = true;
+var ageFilterEnabled = false;
 var filterAgeSet = true;
 //filterAges vars will be set to the values in memory
 
@@ -14,26 +14,26 @@ function openExhibitPage(e) {
 	// Maybe we should change this
 }
 
-function openAgeInput(e) {
-	
-	alert("101");
-	
-	detectAgeFilterOn(filterAgeOn);
+function bestForAgesHandler(e) {
+	//detectAgeFilterOn(filterAgeOn);
+	toggleAgeFilter();
 	if (!filterAgeSet) {
 		openInputMenu();
 	}
 }
 
-function toggleFilterOn() {
-	filterAgeOn = true;
+function enableAgeFilter(){
+	ageFilterEnabled = true;
 	$.agesLabel.color = "#00CC00";
-	$.agesLabel.text = "Filter By Age Enabled";
+	//$.agesLabel.text = "Filter By Age";
+	showEditAgeOption();
 }
 
-function toggleFilterOff() {
-	filterAgeOn = false;
-	$.agesLabel.color = "#000099";
-	$.agesLabel.text = "Filter By Age Disabled";
+function disableAgeFilter(){
+	ageFilterEnabled = false;
+	//$.agesLabel.text = "Filter By Age";
+	$.agesLabel.color = "black";
+	hideEditAgeOption();
 }
 
 function showEditAgeOption() {
@@ -44,6 +44,13 @@ function hideEditAgeOption() {
 	$.tableRowCollapsible.height = "0";
 }
 
+function toggleAgeFilter(){
+	if(!ageFilterEnabled)
+		enableAgeFilter();
+	else
+		disableAgeFilter();
+}
+/*
 function detectAgeFilterOn(filterAgeOn) {
 	if (filterAgeOn) {
 		toggleFilterOn();
@@ -59,7 +66,7 @@ function detectAgeFilterSet(filterAgeSet) {
 		hideEditAgeOption();
 	}
 }
-
+*/
 function openInputMenu(){
 	
 	alert("102");
@@ -88,9 +95,10 @@ function openInputMenu(){
 	
 }
 
-function init() {
-	detectAgeFilterSet(filterAgeSet);
-	detectAgeFilterOn(filterAgeOn);
+function init(){
+	//detectAgeFilterSet(filterAgeSet);
+	//detectAgeFilterOn(filterAgeOn);
+	//disableAgeFilter();
 	
 	viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
 	viewService = new viewService();
