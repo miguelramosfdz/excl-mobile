@@ -22,6 +22,11 @@
 	height: '30dp',
 	layout: 'horizontal'
 },
+"#rowContainerIndented":{
+	height: '30dp',
+	layout: 'horizontal',
+	left: '10%'
+}
 ".rowIcon":{
 	left: '10%',
 	top: "7dip",
@@ -34,33 +39,37 @@
 	top: "3dip",
 	width: "10dip",
 	height: "10dip"
-}
+},
 
 ".rowLabel":{
-	top: "7dip",
-	left: '15dp',
+	top: "6dip",
+	left: '12dp',
 	height: "20dip",
 	font:{
 		fontSize: "15dip"
 	},
 	color: "#000"
-}
+},
+
+// ".rowLabelSmall":{
+// top: "7dip",
+// left: '15dp',
+
 ".rowLabelIndented":{
 	top: "2dip",
 	right: "13dip",
 	height: "20dip",
 	font:{
-		fontSize: "11dip"
+		fontSize: "12dip"
 	},
 	color: "#000"
 }
-
-".rowLabelEnabled":{
-	top: "7dip",
-	right: "25dip",
+".rowLabelIndented":{
+	top: "2dip",
+	left: "22%",
 	height: "20dip",
 	font:{
-		fontSize: "15dip"
+		fontSize: "10dip"
 	},
-	color: "#00CC00"
+	color: "#000"
 }

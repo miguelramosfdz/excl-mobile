@@ -2,8 +2,13 @@ var assert = require("assert");
 var sinon = require("sinon");
 
 var analyticsController = require('../../lib/analyticService/analyticService');
+var apiCalls = require('../../lib/customCalls/apiCalls');
 
 describe('Analytics Service', function(){
+	before(function() {
+		var stub = sinon.stub(apiCalls, "info");
+	});
+	
 	beforeEach(function() {
 		fakeTracker = {
 			trackScreen: function() {},
@@ -14,6 +19,7 @@ describe('Analytics Service', function(){
 		serviceWithStub = new analyticsController();
 		sinon.stub(serviceWithStub, "getTracker").returns(fakeTracker);
 		serviceWithoutStub = new analyticsController();
+		
 	});
 	
 	describe('#trackScreen()', function(){
