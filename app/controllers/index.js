@@ -27,7 +27,7 @@ function openComponent(e){
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
 	Alloy.Globals.navController.open(Alloy.createController('componentlanding', component));
-	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
+	Alloy.Globals.analyticsController.trackScreen(component.getScreenName(), "Component Landing");
 }
 
 function openExhibitInfo(e){

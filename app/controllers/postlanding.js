@@ -41,6 +41,24 @@ function displaySocialMediaButtons(json) {
 		shareImageButton.left = "60%";
 		row.add(shareImageButton);
 	}
+	if (json.commenting && !Alloy.Globals.navController.kioskMode) {
+		var commentButton = Ti.UI.createButton({
+			height : "40dip",
+			width : "40dip",
+			left : "60%",
+			top : "0",
+			backgroundImage : "/images/icons_android/comment.png"
+		});
+		commentButton.addEventListener('click', function(e) {
+			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+		});
+
+		$.closeCommentBoxButton.addEventListener('click', function(e) {
+			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+		});
+
+		row.add(commentButton);
+	}
 
 	return row;
 }
@@ -312,6 +330,12 @@ function displayComments(comments) {
 	// // view.hide();
 	// });
 
+}
+
+function verifyAndValidataData(){
+	// This function should verify that the data exists in the form fields
+	// Once verified, it should send the data to the WP DB
+	// And display a 'message sent' message
 }
 
 function initializePage() {
