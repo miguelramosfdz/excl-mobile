@@ -1,4 +1,4 @@
-function back(e){
+function goBack(e){
 	Alloy.Globals.navController.close();
 }
 
