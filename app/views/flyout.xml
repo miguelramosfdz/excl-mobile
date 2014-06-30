@@ -11,43 +11,43 @@
 			<TableViewRow class="tableRow" id="row2" onClick="openAgeInput">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/ages.png" class="rowIcon"/>
-					<Label id="agesLabel" class="rowLabel">Test</Label>
+					<Label id="agesLabel" class="rowLabel">Filter by Age</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRowCollapsible" id="tableRowCollapsible">
-				<View id="rowContainer">
-					<View backgroundImage="/flyoutMenuIcons/settingsGear.png" class="rowIconIndented" onClick="openInputMenu"/>
-					<Label class="rowLabelIndented">Edit My Ages</Label>
+				<View id="rowContainerIndented">
+					<View backgroundImage="/flyoutMenuIcons/edit.png" class="rowIcon" onClick="openInputMenu"/>
+					<Label class="rowLabel">Edit My Ages</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row4">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/favorites.png" class="rowIcon"/>
-					<Label id="favoritesLabel" class="rowLabel">My Favorites</Label>
+					<Label id="favoritesLabel" color="red" class="rowLabel">My Favorites</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row5">
 				<View id="rowContainer">
 					<View backgroundImage= "/flyoutMenuIcons/map.png" class="rowIcon"/>
-					<Label id="mapLabel" class="rowLabel">Map</Label>
+					<Label id="mapLabel" color="red" class="rowLabel">Map</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row6">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/info.png" class="rowIcon"/>
-					<Label id="museumInfoLabel" class="rowLabel">Museum Info</Label>
+					<Label id="museumInfoLabel" color="red" class="rowLabel">Museum Info</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row7">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/tutorial.png" class="rowIcon"/>
-					<Label id="tutorialLabel" class="rowLabel">Tutorial</Label>
+					<Label id="tutorialLabel" color="red" class="rowLabel">Tutorial</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row8">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/settingsGear.png" class="rowIcon"/>
-					<Label id="settingsLabel" class="rowLabel">Settings</Label>
+					<Label id="settingsLabel" color="red" class="rowLabel">Settings</Label>
 				</View>
 			</TableViewRow>
 		</TableView>
