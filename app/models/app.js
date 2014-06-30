@@ -1,12 +1,11 @@
 exports.definition = {
 	config: {
 		defaults: {
-			name: "post name",
-			image: "/finterns.png"
+			bfa: false
 		},
 		adapter: {
 			type: "properties",
-			collection_name: "post"
+			collection_name: "app"
 		}
 	},
 	extendModel: function(Model) {
