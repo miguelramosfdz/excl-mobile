@@ -32,10 +32,10 @@ function setPageTitle(name) {
 function displaySocialMediaButtons(json) {
 	//Create anchor for instagram viewer
 	var instagramAnchor = Ti.UI.createButton({
-		title:''
+		title : ''
 	});
 	$.postlanding.add(instagramAnchor);
-	
+
 	var row = createPlainRowWithHeight('auto');
 	if (json.text_sharing && !Alloy.Globals.navController.kioskMode) {
 		var shareTextButton = sharingTextService.initiateTextShareButton(json);
@@ -161,6 +161,8 @@ function addTableDataToTheView(tableData) {
 		//Accounts for bounce buffer
 		$.tableView.bottom = "48dip";
 	}
+	$.tableView.bottom = "10dip";
+	// some extra margin after comments are displayed
 	$.tableView.data = tableData;
 }
 
@@ -181,6 +183,25 @@ function creatingCommentTextHeading() {
 		textAlign : 'center',
 		borderWidth : '1',
 		borderColor : '#aaa',
+	});
+	row.add(commentHeading);
+	tableData.push(row);
+}
+
+function displayThereAreNoCommentsToDisplayText() {
+	var row = createPlainRowWithHeight('auto');
+	var commentHeading = Ti.UI.createLabel({
+		top : 10,
+		width : '94%',
+		right : '3%',
+		left : '3%',
+		color : '#48464e',
+		font : {
+			fontFamily : 'Helvetica Neue',
+			fontSize : '13dp',
+			fontWeight : 'normal',
+		},
+		text : "There are no comments for this post"
 	});
 	row.add(commentHeading);
 	tableData.push(row);
@@ -228,8 +249,6 @@ function displayComments(comments) {
 	// should be hidden with the 'see more comments' text
 	// once that text is clicked it should load all the comments
 
-
-	creatingCommentTextHeading();
 	var commentsLengthLimit = 2;
 	var commentsLength = (comments.length > commentsLengthLimit) ? commentsLengthLimit : comments.length;
 	for (var i = 0; i < commentsLength; i++) {
@@ -268,6 +287,37 @@ function displayComments(comments) {
 
 	}
 
+	// var row = createPlainRowWithHeight('auto');
+	// var text = Ti.UI.createLabel({
+	// top : 10,
+	// width : '94%',
+	// right : '3%',
+	// left : '3%',
+	// color : '#005ab3',
+	// font : {
+	// fontFamily : 'Helvetica Neue',
+	// fontSize : '13dp',
+	// fontWeight : 'normal',
+	// },
+	// text : "Show more comments",
+	// textAlign : 'center',
+	// });
+	// row.add(text);
+	//
+	// var arr = [row];
+	// $.seeMoreCommentsTableView.data = arr;
+	//
+	// // if clicked, hide it and show the other comments
+	// $.seeMoreCommentsView.addEventListener('click', function(e) {
+	// Ti.API.info("The view is clicked!!");
+	// $.seeMoreCommentsView.animate({
+	// top : "100%",
+	// curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
+	// duration : 300
+	// });
+	// // view.hide();
+	// });
+
 }
 
 function initializePage() {
@@ -286,8 +336,12 @@ function initializePage() {
 			}
 		}
 	}
-	if(post_content.comments != false){
+
+	creatingCommentTextHeading();
+	if (post_content.comments != false) {
 		displayComments(post_content.comments);
+	} else {
+		displayThereAreNoCommentsToDisplayText();
 	}
 	addTableDataToTheView(tableData);
 }
