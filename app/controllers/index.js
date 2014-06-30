@@ -51,7 +51,7 @@ function populateWindow(json){
 }
 
 function createExhibitsCarousel(exhibits){
-	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack so it dosent crash
+	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
 	for(i = 0 ; i < exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
 		var viewConfig = { 
@@ -65,7 +65,6 @@ function createExhibitsCarousel(exhibits){
 		$.exhibitsCarousel.addView(Ti.UI.createImageView(viewConfig));		
 		numOfExhibits++;
 	}
-	
 }
 
 function createComponentsScrollView(exhibits){
@@ -91,6 +90,13 @@ function createComponentsScrollView(exhibits){
 		componentsInExhibit[i].width = 0;
 	}
 	componentsInExhibit[0].width = 'auto';
+}
+
+function openComponent(e){
+	var components = Alloy.Collections.instance('component');
+	var component = components.where({"id": e.source.itemId})[0];
+	Alloy.Globals.navController.open(Alloy.createController('componentlanding', component));
+	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
 }
 
 function createLabeledPicView(item, type){
@@ -132,64 +138,7 @@ function createTitleLabel(name, type){
 	return titleLabel;
 }
 
-
-
-
-
-
-
-function openComponent(e){
-	var components = Alloy.Collections.instance('component');
-	var component = components.where({"id": e.source.itemId})[0];
-	Alloy.Globals.navController.open(Alloy.createController('componentlanding', component));
-	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
-}
-
 function setExhibitText(text){
-	// $.exhibitInfoLabel.text = text;
+	$.exhibitInfoLabel.text = text;
 } 
 
-
-
-
-
-
-// function rotateHandler(direction, index, numOfItems){
-	// if(numOfExhibits > 0){
-		// exhibitIndex = index;
-		// numOfExhibits = numOfItems;
-		// if(direction == "right"){
-			// removeComponents(exhibitIndex);		// Increment Index
-			// exhibitIndex = (exhibitIndex + 1) % numOfExhibits;
-			// showComponents(exhibitIndex);
-			// setExhibitText(exhibitText[exhibitIndex]);
-		// }else if(direction == "left"){
-			// removeComponents(exhibitIndex);
-			// exhibitIndex--;
-			// if(exhibitIndex == -1) {
-				// exhibitIndex = numOfExhibits - 1;
-			// }
-			// showComponents(exhibitIndex);
-			// setExhibitText(exhibitText[exhibitIndex]);
-		// }
-	// }
-// }
-// 
-// function removeComponents(index){
-	// if(componentsInExhibit.length>0){
-		// componentsInExhibit[index].width = 0;
-	// }
-	// // $.componentScrollView.contentWidth = 0;
-// }
-// 
-// function showComponents(index){
-	// if(index<componentsInExhibit.length){
-		// if (OS_ANDROID){
-			// componentsInExhibit[index].width = 'auto';
-		// }
-		// else if (OS_IOS){
-			// componentsInExhibit[index].width = Ti.UI.SIZE;
-		// }
-		// // $.componentScrollView.contentWidth = componentsInExhibit[index].size.width;
-	// }
-// }
