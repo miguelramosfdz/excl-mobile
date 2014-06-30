@@ -163,7 +163,7 @@ function showComponents(index){
 retrieveJson(url, initializeWithJSON);
 
 function initializeWithJSON(json) {
-	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracker_id);
+	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
 	populateWindow(json);
 }
 
