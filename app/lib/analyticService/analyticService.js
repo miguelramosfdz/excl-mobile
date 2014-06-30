@@ -1,13 +1,20 @@
 
 function AnalyticsController() {}
 
+var apiCalls;
+var rootPath = (typeof Titanium == 'undefined')? '../../lib/customCalls/' : 'customCalls/';
+setPathForLibDirectory(rootPath);
+function setPathForLibDirectory(rootPath) {
+	apiCalls = require(rootPath + 'apiCalls');
+}
+
 AnalyticsController.prototype.getTracker = function() {
 	if (this.trackerID == null) {
-		Ti.API.info("No Google Analytics Tracker ID found. Turning off analytics.");
+		apiCalls.info("No Google Analytics Tracker ID found. Turning off analytics.");
 		return false;
 	}
 	if (this.tracker == null && this.trackerID != null) {
-		Ti.API.info("Instantiating Google Analytics tracker...");
+		apiCalls.info("Instantiating Google Analytics tracker...");
 		this.GA = require('analytics.google');
 		//this.GA.debug = true; // Outputs more explicit messages to the console
 		//this.GA.trackUncaughtExceptions = true;
@@ -29,13 +36,13 @@ AnalyticsController.prototype.trackScreen = function(screenName, customDimension
 	dimensions["Post Landing"] = 1;
 	
 	var dimensionIndex = dimensions[customDimension];
+	var customDimensionObject = {};
+	customDimensionObject[dimensionIndex = customDimension];
 
-	Ti.API.info("Now tracking screen " + screenName);
+	apiCalls.info("Now tracking screen " + screenName);
 	var properties = {
 		path: screenName,
-		customDimension: {
-			dimensionIndex: customDimension
-		}
+		customDimension: customDimensionObject
 	};
 	tracker.trackScreen(properties);
 };
@@ -43,7 +50,7 @@ AnalyticsController.prototype.trackScreen = function(screenName, customDimension
 AnalyticsController.prototype.trackEvent = function(category, action, label, value) {
 	var tracker = this.getTracker();
 	if (!tracker) {return false;}
-	Ti.API.info("Now tracking event with category: " + category + ", action: " + action + ", label: " + label + ", value: " + value);
+	apiCalls.info("Now tracking event with category: " + category + ", action: " + action + ", label: " + label + ", value: " + value);
 	tracker.trackEvent({
 		category: category,
 		action: action,
