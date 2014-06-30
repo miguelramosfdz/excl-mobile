@@ -66,7 +66,7 @@ function createExhibitsCarousel(exhibits){
 		imageView.add(createExhibitTitleLabel(exhibits[i].name));
 		$.exhibitsCarousel.addView(imageView);		
 	}
-	$.exhibitsCarousel.addEventListener("click", onExhibitsClick);
+	$.exhibitsCarousel.addEventListener("singletap", function(e){ onExhibitsClick(exhibits); });
 	$.exhibitsCarousel.addEventListener("scrollend", onExhibitsScroll);
 }
 
@@ -94,7 +94,19 @@ function createExhibitTitleLabel(name){
 }
 
 function createCollapsibleInfoView(){
-//	$.collapsibleInfoView.size = 0;
+	$.collapsibleInfoView.size = 0;
+	$.collapsibleInfoLabel.font = {
+		fontFamily : 'Arial',
+		fontSize : '12dip',
+	};
+}
+
+function onExhibitsClick(exhibits){
+	alert("Click detected");
+	var index = $.exhibitsCarousel.currentPage;
+	$.collapsibleInfoLabel.text = exhibits[index].long_description;
+	$.collapsibleInfoView.height = "40%";
+	
 }
 
 function onExhibitsScroll(e) {
@@ -177,10 +189,3 @@ function createTitleLabel(name, type){
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
 } 
-
-function onExhibitsClick(){
-	var index = $.exhibitsCarousel.currentPage;
-	$.collapsibleInfoLabel.text = "Sample Text";
-	$.collapsibleInfoView.height = Ti.UI.SIZE;
-	
-}
