@@ -49,6 +49,7 @@ AnalyticsController.prototype.trackScreen = function(screenName, customDimension
 
 AnalyticsController.prototype.trackEvent = function(category, action, label, value) {
 	var tracker = this.getTracker();
+	alert(tracker);
 	if (!tracker) {return false;}
 	apiCalls.info("Now tracking event with category: " + category + ", action: " + action + ", label: " + label + ", value: " + value);
 	tracker.trackEvent({
