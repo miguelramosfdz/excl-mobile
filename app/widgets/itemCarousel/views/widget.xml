@@ -1,6 +1,0 @@
-<Alloy>
-	<View id="carouselView" onSwipe="swipeHandler">
-		<ImageView id="leftArrow" image="/leftArrowBlack2.png"/>
-		<ImageView id="rightArrow" image="/rightArrowBlack2.png"/>
-	</View>
-</Alloy>

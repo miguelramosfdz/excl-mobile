@@ -1,19 +1,19 @@
 var args = arguments[0] || {};
+
 var dataRetriever = require('dataRetriever/dataRetriever');
+var LoadingSpinner = require('loadingSpinner/loadingSpinner');
+
+var spinner = new LoadingSpinner();
 var url = Alloy.Globals.rootWebServiceUrl;
 
-var LoadingSpinner = require('loadingSpinner/loadingSpinner');
-var spinner = new LoadingSpinner();
-
-var exhibitIndex = 0;
-var exhibitViews = [];
 var exhibitText = [];
-var loaded = false;
 var componentsInExhibit = [];
+var currExhibitId;
 
 
 retrieveJson(url, initializeWithJSON);
 Alloy.Globals.navController.open(this);
+
 
 function retrieveJson(jsonURL, callback) {
 	spinner.addTo($.exhibitsCarousel);
@@ -44,9 +44,9 @@ function populateWindow(json){
 		}
 	}
 	createExhibitsCarousel(json.data.museum.exhibits);
+	createCollapsibleInfoView();
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
-	loaded = true;
 }
 
 function createExhibitsCarousel(exhibits){
@@ -66,6 +66,7 @@ function createExhibitsCarousel(exhibits){
 		imageView.add(createExhibitTitleLabel(exhibits[i].name));
 		$.exhibitsCarousel.addView(imageView);		
 	}
+	$.exhibitsCarousel.addEventListener("click", onExhibitsClick);
 	$.exhibitsCarousel.addEventListener("scrollend", onExhibitsScroll);
 }
 
@@ -92,39 +93,37 @@ function createExhibitTitleLabel(name){
 	return titleLabelView;
 }
 
+function createCollapsibleInfoView(){
+//	$.collapsibleInfoView.size = 0;
+}
+
 function onExhibitsScroll(e) {
-	Ti.API.log(e.view.itemId);
-	
-	
-	
-	
-	
-	
+	componentsInExhibit[currExhibitId].width = 0;
+	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
+	currExhibitId = e.view.itemId;
 }
 
 function createComponentsScrollView(exhibits){
-	var image;
-	var component;
-	for (var i = 0; i < exhibits.length; i++){
-		componentsInExhibit[i] = Ti.UI.createView({
+	currExhibitId = exhibits[0].id;
+	for (var i=0; i<exhibits.length; i++){
+		componentsInExhibit[exhibits[i].id] = Ti.UI.createView({
 			layout: 'horizontal',
 			horizontalWrap: false,
 			width: 'auto'
-		});// TSS CLASS
-
-		for(var j = 0; j< exhibits[i].components.length; j++){
-			component = createLabeledPicView(exhibits[i].components[j], '15dip');	// Later type will be 'component' and that wil be linked to the TSS class
+		});
+		for(var j=0; j<exhibits[i].components.length; j++){
+			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
 			component.left = 5;
 			component.right = 5;
 			component.width = '225dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
-			componentsInExhibit[i].add(component);
+			componentsInExhibit[exhibits[i].id].add(component);
 		}			
-		$.componentScrollView.add(componentsInExhibit[i]);
-		componentsInExhibit[i].width = 0;
+		$.componentScrollView.add(componentsInExhibit[exhibits[i].id]);
+		componentsInExhibit[exhibits[i].id].width = 0;
 	}
-	componentsInExhibit[0].width = 'auto';
+	componentsInExhibit[currExhibitId].width = Ti.UI.SIZE;
 }
 
 function openComponent(e){
@@ -177,3 +176,10 @@ function createTitleLabel(name, type){
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
 } 
+
+function onExhibitsClick(){
+	var index = $.exhibitsCarousel.currentPage;
+	$.collapsibleInfoLabel.text = "Sample Text";
+	$.collapsibleInfoView.height = Ti.UI.SIZE;
+	
+}

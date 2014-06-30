@@ -1,5 +1,5 @@
 "#menuView":{
-	layout: 'vertical',
+	layout: 'horizontal',
 	opacity: ".9",
 	width: "100%",
 	left: "0%",
@@ -10,7 +10,7 @@
 	separatorColor: 'transparent',
 	backgroundColor: '#F2F2F2',
 	width: "50%",
-	left: "50%"
+	//left: "50%"
 },
 ".tableRow":{
 	height: '50dp'
@@ -41,6 +41,12 @@
 	height: "10dip"
 },
 
+".clearPageProtecterView": {
+	left: 0,
+	width: "50%",
+	opacity: 0
+}
+
 ".rowLabel":{
 	top: "6dip",
 	left: '12dp',
@@ -56,20 +62,11 @@
 // left: '15dp',
 
 ".rowLabelIndented":{
-	top: "2dip",
-	right: "13dip",
+	top: "6dip",
+	left: "12dip",
 	height: "20dip",
 	font:{
-		fontSize: "12dip"
-	},
-	color: "#000"
-}
-".rowLabelIndented":{
-	top: "2dip",
-	left: "22%",
-	height: "20dip",
-	font:{
-		fontSize: "10dip"
+		fontSize: "15dip"
 	},
 	color: "#000"
 }

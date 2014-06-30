@@ -8,6 +8,9 @@
 			<View class="headingRow">
 				<Label class="headingText">Check out our Stations</Label>
 			</View>
+			<View id="collapsibleInfoView" height='50dip'>
+				<Label id="collapsibleInfoLabel"></Label>
+			</View>
 			<View>
 				<ScrollView id="componentScrollView"></ScrollView>
 			</View>
