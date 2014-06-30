@@ -56,20 +56,11 @@
 // left: '15dp',
 
 ".rowLabelIndented":{
-	top: "2dip",
-	right: "13dip",
+	top: "6dip",
+	left: "12dip",
 	height: "20dip",
 	font:{
-		fontSize: "12dip"
+		fontSize: "15dip"
 	},
 	color: "#000"
-}
-".rowLabelIndented":{
-	top: "2dip",
-	left: "22%",
-	height: "20dip",
-	font:{
-		fontSize: "10dip"
-	},
-	color: "#000"
-}
+},

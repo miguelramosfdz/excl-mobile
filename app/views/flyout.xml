@@ -8,7 +8,7 @@
 					<Label id="exhibitLabel" class="rowLabel">Exhibits</Label>
 				</View>
 			</TableViewRow>
-			<TableViewRow class="tableRow" id="row2" onClick="openAgeInput">
+			<TableViewRow class="tableRow" id="row2" onClick="bestForAgesHandler">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/ages.png" class="rowIcon"/>
 					<Label id="agesLabel" class="rowLabel">Filter by Age</Label>
