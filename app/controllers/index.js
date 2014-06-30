@@ -12,12 +12,6 @@ var exhibitText = [];
 var loaded = false;
 var componentsInExhibit = [];
 
-//Google Analytics
-function trackHomescreen(){
-	Alloy.Globals.analyticsController.trackScreen("Exhibit Landing");
-}
-trackHomescreen();
-
 function retrieveJson(jsonURL, callback) {
 	spinner.addTo($.exhibitsSwipeableRow);
 	spinner.show();
