@@ -29,3 +29,7 @@ Alloy.Globals.setPathForLibDirectory = function(libFile){
 	}
 	return lib;
 };
+
+Alloy.Globals.isNumeric = function(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+};
