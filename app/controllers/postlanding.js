@@ -1,13 +1,6 @@
 var post_content = arguments[0] || {};
 var tableData = [];
 
-//Google Analytics
-function trackPostScreen() {
-	Alloy.Globals.analyticsController.trackScreen("Post Landing");
-}
-
-trackPostScreen();
-
 function createPlainRowWithHeight(rowHeight) {
 	var row = Ti.UI.createTableViewRow({
 		height : rowHeight,
@@ -32,7 +25,8 @@ function setPageTitle(name) {
 function displaySocialMediaButtons(json) {
 	//Create anchor for instagram viewer
 	var instagramAnchor = Ti.UI.createButton({
-		title : ''
+		title : '',
+		opacity : 0.0
 	});
 	$.postlanding.add(instagramAnchor);
 

@@ -1,7 +1,7 @@
 <Alloy>
 	<View onClick="toggleMenu" id="menuView">
 		<!-- <View id="menuTopBar"/> -->
-		<TableView class="menuTable" id="menuTable">
+		<TableView class="menuTable" id="menuTable" onLoad="init">
 			<TableViewRow class="tableRow" id="row1" onClick="openExhibitPage">
 				<View id="rowContainer">
 					<ImageView id="rowExhibit" backgroundImage= "/flyoutMenuIcons/exhibit.png" class="rowIcon" />
@@ -13,7 +13,7 @@
 			<TableViewRow class="tableRow" id="row2" onClick="openAgeInput">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/ages.png" class="rowIcon"/>
-					<Label id="agesLabel" class="rowLabel"/>
+					<Label id="agesLabel" class="rowLabel">Test</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRowCollapsible" id="tableRowCollapsible">
