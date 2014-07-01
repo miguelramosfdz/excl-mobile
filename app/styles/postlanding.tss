@@ -12,7 +12,7 @@
 
 "#addNewCommentContainer":{
 	backgroundColor: 'black',
-	opacity: '0.99',
+	opacity: '0.75',
 	height: '100%',
 	width: '100%',
 	top: 0,
@@ -27,7 +27,8 @@
 	height: '70%',
 	left: '10%',
 	width: '80%',
-	opacity: '10.0',
+	opacity: '1.0',
+	visible: false,
 	// zOrder: 2
 }
 
@@ -61,7 +62,8 @@
 	// backgroundColor: '#f2f2f2',
 	// zOrder: 2,
 	borderWidth: '1',
-	borderColor: 'black'
+	borderColor: 'black',
+	clearOnEdit: true
 }
 
 
@@ -82,7 +84,8 @@
 	// backgroundColor: '#f2f2f2',
 	// zOrder: 2,
 	borderWidth: '1',
-	borderColor: 'black'
+	borderColor: 'black',
+	clearOnEdit: true
 }
 
 
@@ -103,7 +106,8 @@
 	// backgroundColor: '#f2f2f2',
 	// zOrder: 2,
 	borderWidth: '1',
-	borderColor: 'black'
+	borderColor: 'black',
+	clearOnEdit: true
 }
 
 "#submitButton":{
@@ -145,9 +149,9 @@
 
 "#closeCommentBoxButton":{
 	color: 'red',
-	top: '15%',
+	top: '1%',
 	// right: '5dip',
-	left: '86%',
+	left: '95%',
 	opacity: '1.0',
 	font: {
 		fontFamily: 'Helvetica Neue',
