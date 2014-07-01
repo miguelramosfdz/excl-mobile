@@ -64,7 +64,7 @@ function displaySocialMediaButtons(json) {
 		commentButton.addEventListener('click', function(e) {
 			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
 			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
-			$.insertName.visible = $.insertEmail.visible = $.insertComment.visible = $.submitButton.visible = true;
+			$.insertName.visible = $.insertEmail.visible = $.insertComment.visible = $.submitButton.visible = $.insertNameDisclaimer.visible = $.insertEmailDisclaimer.visible = true;
 			$.insertName.value = $.insertEmail.value = $.insertComment.value  = "";
 			$.thankYouMessageComment.visible = false;
 		});
@@ -359,10 +359,10 @@ function verifyAndValidataData() {
 	Ti.API.info($.insertComment.value);
 
 	if (!$.insertComment.value) {
-		alert("Please enter a comment. Its clearly NOT optional....");
+		alert("Please enter a comment. Its clearly NOT optional...");
 	} else {
 		// thank you, your message has been submitted!
-		$.insertName.visible = $.insertEmail.visible = $.insertComment.visible = $.submitButton.visible = false;
+		$.insertName.visible = $.insertEmail.visible = $.insertComment.visible = $.submitButton.visible = $.insertNameDisclaimer.visible = $.insertEmailDisclaimer.visible = false;
 		$.thankYouMessageComment.visible = true;
 	}
 }
