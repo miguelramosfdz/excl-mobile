@@ -67,7 +67,7 @@ function createExhibitsCarousel(exhibits){
 		$.exhibitsCarousel.addView(imageView);		
 	}
 	$.exhibitsCarousel.addEventListener("singletap", function(e){ onExhibitsClick(exhibits); });
-	$.exhibitsCarousel.addEventListener("scrollend", onExhibitsScroll);
+	$.exhibitsCarousel.addEventListener("scrollend", function(e){ onExhibitsScroll(e, exhibits); });
 }
 
 function createExhibitTitleLabel(name){
@@ -95,6 +95,7 @@ function createExhibitTitleLabel(name){
 
 function createCollapsibleInfoView(){
 	$.collapsibleInfoView.size = 0;
+	$.collapsibleInfoView.height = 0;
 	$.collapsibleInfoLabel.font = {
 		fontFamily : 'Arial',
 		fontSize : '12dip',
@@ -102,16 +103,28 @@ function createCollapsibleInfoView(){
 }
 
 function onExhibitsClick(exhibits){
-	var index = $.exhibitsCarousel.currentPage;
-	$.collapsibleInfoLabel.text = exhibits[index].long_description;
-	$.collapsibleInfoView.height = "40%";
+	if ($.collapsibleInfoView.height == 0){
+		//Collapsible view is closed; toggle it open
+		var index = $.exhibitsCarousel.currentPage;
+		$.collapsibleInfoLabel.text = exhibits[index].long_description;
+		$.collapsibleInfoView.height = Ti.UI.SIZE;
+	}
+	else{
+		$.collapsibleInfoView.height = 0;
+	}
 	
 }
 
-function onExhibitsScroll(e) {
+function onExhibitsScroll(e, exhibits) {
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
+	
+	if ($.collapsibleInfoView.height != 0){
+		//Collapsible view is open; must update the exhibit info
+		var index = $.exhibitsCarousel.currentPage;
+		$.collapsibleInfoLabel.text = exhibits[index].long_description;
+	}
 }
 
 function createComponentsScrollView(exhibits){
@@ -186,4 +199,6 @@ function createTitleLabel(name, type){
 
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
+	$.infoRow.add($.exhibitInfoLabel);
+	$.exhibitInfoScrollView.add($.infoRow);
 } 

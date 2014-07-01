@@ -26,7 +26,6 @@
 	horizontalWrap: true	
 }
 
-
 ".headingRow": {
 	backgroundColor: "#253342",
 	width: Ti.UI.FILL,
@@ -58,9 +57,10 @@
 	bottom: "15dip"
 }
 
+
 ".infoRow": {
 	//top: '10dip',
-	//height: 'auto',
+	height: Ti.UI.SIZE,
 	width: "100%",
 	backgroundColor: '#FFFFFF'
 }
@@ -72,6 +72,7 @@
 		fontSize: '13dip',
 		fontWeight: 'normal'
 	},
+	top: '0dip',
 	editable: false,
 	left: '5%',
 	horizontalWrap: true

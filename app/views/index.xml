@@ -9,13 +9,13 @@
 				<View class="headingRow">
 					<Label class="headingText">Check out our Stations</Label>
 				</View>
-				<View id="collapsibleInfoView" height='50dip'>
+				<View id="collapsibleInfoView">
 					<Label id="collapsibleInfoLabel"></Label>
 				</View>
 				<View>
 					<ScrollView id="componentScrollView"></ScrollView>
 				</View>
-				<View class="infoRow">
+				<View id="infoRow" class="infoRow">
 					<Label id="exhibitInfoLabel"></Label>
 				</View>
 			</ScrollView>
