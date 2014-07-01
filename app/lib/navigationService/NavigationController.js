@@ -152,7 +152,7 @@ NavigationController.prototype.close = function(numWindows) {
 
 // go back to the initial window of the NavigationController
 NavigationController.prototype.home = function() {
-	this.lockedPage.show();
+	
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		// setup chain reaction by setting up the flags on all the windows
 		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedPage; i--) {
@@ -276,7 +276,7 @@ NavigationController.prototype.toggleMenu = function(){
 
 NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
 	if (!window || !window.analyticsPageTitle || !window.analyticsPageLevel) {return false;}
-	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel, this.isInKioskMode());	// Kyle's Line Change (Happy Merging)
+	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel);	// Kyle's Line Change (Happy Merging)
 };
 
 module.exports = NavigationController;

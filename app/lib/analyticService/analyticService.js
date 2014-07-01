@@ -32,17 +32,17 @@ AnalyticsController.prototype.setTrackerID = function(trackerID) {
 	this.trackerID = trackerID;
 };
 
-AnalyticsController.prototype.trackScreen = function(screenName, pageLevel, kioskMode){
+AnalyticsController.prototype.trackScreen = function(screenName, pageLevel){
 	var tracker = this.getTracker();
 	if (!tracker) {return false;}
 
 	var customDimensionObject = {};
 	customDimensionObject[this.pageLevelCustomDimensionIndex] = pageLevel;
 	
-	if(kioskMode)
+	if(Alloy.Globals.navController.isInKioskMode())
 		customDimensionObject[this.kioskModeCustomDimensionIndex] = "on";
 	else
-		customDimensionObject[this.pageLevelCustomDimensionIndex] = "off";
+		customDimensionObject[this.kioskModeCustomDimensionIndex] = "off";
 
 	apiCalls.info("Now tracking screen " + screenName);
 	var properties = {
