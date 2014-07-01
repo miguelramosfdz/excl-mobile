@@ -232,20 +232,22 @@ function repairEmptyAgeRange(ageRange) {
 	}
 }
 
-
+function replaceStringWithFilterHeading (st){
+	if (st == 0){
+			newKeys.push("For All Selected Ages");
+		} else if (!Alloy.Globals.isNumber(st)) {
+			newKeys.push("For my " + st);
+		} else if(Alloy.Globals.isNumber(st)){
+			newKeys.push("For my " + st + " year old");
+		}
+}
 
 function replaceHashKeysWithFilterHeadings(oldHash) {
 	var oldKeys = returnHashKeys(oldHash);
 	var newKeys = [];
 	var newHash = {};
 	for (var i = 0; i < oldKeys.length; i++){
-		if (oldKeys[i] == 0){
-			newKeys.push("For All Selected Ages");
-		} else if (!Alloy.Globals.isNumber(oldKeys[i])) {
-			newKeys.push("For my " + oldKeys[i]);
-		} else if(Alloy.Globals.isNumber(oldKeys[i])){
-			newKeys.push("For my " + oldKeys[i] + " year old");
-		}
+		replaceStringWithFilterHeading (oldKeys[i]);
 	}
 	
 	Ti.API.info("new keys: " + JSON.stringify(newKeys));
@@ -253,10 +255,7 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 	for (var i = 0; i < oldKeys.length; i++){
 		newHash[newKeys[i]] = oldHash[oldKeys[i]];
 	}
-	
-	
 	return newHash;
-
 }
 
 function init() {
