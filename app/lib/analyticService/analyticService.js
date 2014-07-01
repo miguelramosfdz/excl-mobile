@@ -1,15 +1,17 @@
+var rootPath = (typeof Titanium == 'undefined')? '../../lib/customCalls/' : 'customCalls/';
+var apiCalls;
+setPathForLibDirectory(rootPath);
+function setPathForLibDirectory(rootPath) {
+	apiCalls = require(rootPath + 'apiCalls');
+}
 
 function AnalyticsController() {
 	this.pageLevelCustomDimensionIndex = 4; // Index from Google Analytics website // TODO: get from Wordpress dynamically
 }
 
 AnalyticsController.prototype.getTracker = function() {
-<<<<<<< HEAD
-	if (this.trackerID == null) {
-=======
 	if (!this.validateTrackerID(this.trackerID)) {
 		apiCalls.info("Invalid or no Google Analytics Tracker ID found. Turning off analytics.");
->>>>>>> Added Google Analytics tracking to the Navigation controller. Known issue: right now it double counts hits for some reason.
 		return false;
 	}
 	if (this.tracker == null && this.trackerID != null) {
