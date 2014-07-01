@@ -5,6 +5,10 @@ var filterAgeOn = true;
 var filterAgeSet = true;
 //filterAges vars will be set to the values in memory
 
+function bestForAgesHandler() {
+	
+}
+
 function toggleMenu(e) {
 	//alert("well you clicked it...");
 	return Alloy.Globals.navController.toggleMenu();
