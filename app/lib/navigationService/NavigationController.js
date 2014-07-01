@@ -105,6 +105,8 @@ NavigationController.prototype.open = function(controller) {
 	if (this.windowStack.length === 1) {
 		this.Page = windowToOpen;
 		this.lockedPage = this.Page;
+		windowToOpen.analyticsPageTitle = "Home";
+		windowToOpen.analyticsPageLevel = "Exhibit Landing";
 		if (OS_ANDROID) {
 			windowToOpen.exitOnClose = true;
 			windowToOpen.open({animated : false});
@@ -162,6 +164,7 @@ NavigationController.prototype.home = function() {
        	
         // start chain reaction, close first window
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
+		this.analyticsTrackWindowScreen(this.windowStack[0]);
 	}
 };
 

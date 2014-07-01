@@ -12,33 +12,28 @@ var currExhibitId;
 var analyticsPageTitle = "Home";
 var analyticsPageLevel = "Exhibit Landing";
 
-var setAnalyticsPageTitle = function(title) { analyticsPageTitle = title; };
-var getAnalyticsPageTitle = function() { return analyticsPageTitle; };
-var setAnalyticsPageLevel = function(level) { analyticsPageLevel = level; };
-var getAnalyticsPageLevel = function() { return analyticsPageLevel; };
-exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
-exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
-exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
-exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
+function setAnalyticsPageTitle (title) { analyticsPageTitle = title; }
+function getAnalyticsPageTitle () { return analyticsPageTitle; }
+function setAnalyticsPageLevel (level) { analyticsPageLevel = level; }
+function getAnalyticsPageLevel () { return analyticsPageLevel; }
 
-retrieveJson(url, initializeWithJSON);
-Alloy.Globals.navController.open(this);
+retrieveJson(url, initializeWithJSON, this);
 
-function retrieveJson(jsonURL, callback) {
+function retrieveJson(jsonURL, callback, controller) {
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
-			callback(returnedData);
+			callback(returnedData, controller);
 			spinner.hide();
 		}
 	});
 }
 
-function initializeWithJSON(json) {
+function initializeWithJSON(json, controller) {
 	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);
-	Alloy.Globals.analyticsController.trackScreen(analyticsPageTitle, analyticsPageLevel);
+	Alloy.Globals.navController.open(controller);
 	populateWindow(json);
 }
 
@@ -62,7 +57,7 @@ function populateWindow(json){
 function createExhibitsCarousel(exhibits){
 	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
-		var viewConfig = { 
+		var viewConfig = {
 			backgroundColor: "#000",
 			width: Ti.UI.FILL,
 		 	image: '/images/700x300.png',
