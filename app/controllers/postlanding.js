@@ -1,5 +1,16 @@
 var post_content = arguments[0] || {};
 var tableData = [];
+var analyticsPageTitle = "";
+var analyticsPageLevel = "";
+
+var setAnalyticsPageTitle = function(title) { analyticsPageTitle = title; };
+var getAnalyticsPageTitle = function() { return analyticsPageTitle; };
+var setAnalyticsPageLevel = function(level) { analyticsPageLevel = level; };
+var getAnalyticsPageLevel = function() { return analyticsPageLevel; };
+exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
+exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
+exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
+exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 function createPlainRowWithHeight(rowHeight) {
 	var row = Ti.UI.createTableViewRow({
@@ -45,13 +56,15 @@ function displaySocialMediaButtons(json) {
 		});
 		commentButton.addEventListener('click', function(e) {
 			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
-			$.insertName.visible = $.insertEmail.visible = $.insertComment.visible = $.submitButton.visible = true;
+			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
+			$.submitCommentFormView.visible = true;
 			$.insertName.value = $.insertEmail.value = $.insertComment.value  = "";
-			$.thankYouMessageComment.visible = false;
+			$.thankYouMessageView.visible = false;
 		});
 
 		$.closeCommentBoxButton.addEventListener('click', function(e) {
 			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
 		});
 
 		row.add(commentButton);
@@ -339,11 +352,11 @@ function verifyAndValidataData() {
 	Ti.API.info($.insertComment.value);
 
 	if (!$.insertComment.value) {
-		alert("Please enter a comment. Its clearly NOT optional....");
+		alert("Please enter a comment. Its clearly NOT optional...");
 	} else {
 		// thank you, your message has been submitted!
-		$.insertName.visible = $.insertEmail.visible = $.insertComment.visible = $.submitButton.visible = false;
-		$.thankYouMessageComment.visible = true;
+		$.submitCommentFormView.visible = false;
+		$.thankYouMessageView.visible = true;
 	}
 }
 

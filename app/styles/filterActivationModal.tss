@@ -1,0 +1,13 @@
+
+".container" : {
+  
+}
+
+".title": {
+	color : '#FFFFFF',
+	font : {
+		fontFamily : 'Helvetica Neue',
+		fontSize : '22dp',
+		fontWeight : 'bold'
+	}
+}

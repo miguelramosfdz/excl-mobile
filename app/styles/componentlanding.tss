@@ -5,7 +5,7 @@
 }
 
 "#scroller": {
-	height: '100%',
+	height: '40%',
 	contentHeight: 'auto'
 }
 

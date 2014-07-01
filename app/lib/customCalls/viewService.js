@@ -24,5 +24,4 @@ viewService.prototype.createTableRow = function (heightAsPercent){
 	return row;
 };
 
-
 module.exports = viewService;

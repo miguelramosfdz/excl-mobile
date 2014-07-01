@@ -4,12 +4,12 @@
 	<View class="container" layout="vertical">
 		<Label id="sectionTitle">section title</Label>
 		
-		<ScrollableView id="scrollableView" dataCollection="$.posts">
+		<ScrollableView dataCollection="$.posts">
 			<View>
-				<ImageView id="postImage" image="/finterns.png"/>
+				<ImageView id="postImage" image="{image}"/>
 			
 				<View id="postTitleBar">
-					<Label id="postTitle" text="post name"/>
+					<Label id="postTitle" text="{name}"/>
 				</View>
 			</View>
 		</ScrollableView>

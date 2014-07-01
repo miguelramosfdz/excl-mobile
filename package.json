@@ -12,7 +12,7 @@
     "mocha": "^1.20.1"
   },
   "scripts": {
-    "test": "istanbul cover node_modules/mocha/bin/_mocha app/spec/mochaTests"
+    "test": "istanbul cover node_modules/mocha/bin/_mocha app/spec/mochaTests -x app/lib/customCalls/apiCalls.js -x app/lib/customCalls/networkCalls.js -x app/lib/customCalls/parseCalls.js"
   },
   "author": "Muhammad Naviwala",
   "license": "ISC"

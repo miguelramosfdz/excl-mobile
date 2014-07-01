@@ -57,14 +57,6 @@
 	bottom: "15dip",
 }
 
-
-".infoRow": {
-	top: Ti.UI.FILL,
-	height: Ti.UI.SIZE,
-	width: "100%",
-	backgroundColor: '#FFFFFF'
-}
-
 "#exhibitInfoLabel": {
 	color: '#232226',
 	font: {
