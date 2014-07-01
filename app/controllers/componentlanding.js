@@ -162,6 +162,9 @@ function organizeBySection(allPosts) {
 
 function organizeByAge(allPosts) {
 	hashOrderedPostsByAge = {};
+	
+	Ti.API.info("101 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	
 	for (var i = 0; i < allPosts.length; i++) {
 		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
 	}
@@ -185,6 +188,9 @@ function returnHashKeys(hash) {
 
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = JSON.parse("[" + repairEmptyAgeRange(post.age_range) + "]");
+	
+	Ti.API.info("102 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	
 	if (postAgeRange == selectedAges) {
 		Ti.API.info("Matched all selected");
 		addItemArrayToHash(0, postAgeRange[j], hasSelectedAgesToPost);
@@ -199,13 +205,14 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 		}
 	}
 
-	Ti.API.info("Selected keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	Ti.API.info("105 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
 }
 
 function addItemArrayToHash(selectedAge, itemArray, hashOrderedPostsByAge) {
 
 	Ti.API.info("To be matched: " + hashOrderedPostsByAge[selectedAges[i]]);
 	Ti.API.info("i-" + i + " , selected: " + selectedAges[i]);
+	Ti.API.info("104 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
 
 	hashOrderedPostsByAge[selectedAge] = hashOrderedPostsByAge[selectedAge].concat(itemArray);
 }
