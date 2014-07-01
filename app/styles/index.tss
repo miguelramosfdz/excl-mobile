@@ -14,7 +14,8 @@
 	width: Ti.UI.FILL,
 	height: Ti.UI.SIZE,
 	showPagingControl: true,
-	overlayEnabled: true
+	overlayEnabled: true,
+	pagingControlAlpha: "0.5"
 }
 
 "#exhibitsCarousel[platform=android]": {
