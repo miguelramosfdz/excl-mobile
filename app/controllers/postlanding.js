@@ -52,6 +52,7 @@ function displaySocialMediaButtons(json) {
 		});
 		commentButton.addEventListener('click', function(e) {
 			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
 			$.insertName.visible = $.insertEmail.visible = $.insertComment.visible = $.submitButton.visible = true;
 			$.insertName.value = $.insertEmail.value = $.insertComment.value  = "";
 			$.thankYouMessageComment.visible = false;
@@ -59,6 +60,7 @@ function displaySocialMediaButtons(json) {
 
 		$.closeCommentBoxButton.addEventListener('click', function(e) {
 			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
 		});
 
 		row.add(commentButton);

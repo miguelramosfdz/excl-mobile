@@ -38,6 +38,11 @@ var flyoutService = {
 		visible = false;
 		return visible;
 	},
+	closeMenuWithoutAnimation: function(){
+		this.getMenu().left = '100%';
+		visible = false;
+		return visible;
+	},
 	toggleMenu: function(){
 	
 		if(visible)
