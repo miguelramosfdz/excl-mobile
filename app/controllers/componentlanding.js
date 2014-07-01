@@ -194,8 +194,8 @@ function organizeByAge(allPosts) {
 	// Ti.API.info("106 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
 	// Ti.API.info("106 Full: " + JSON.stringify(hashOrderedPostsByAge));
 
-	displayAgeFilteredSections(hashOrderedPostsByAge);
-
+	createAgeFilteredSections(hashOrderedPostsByAge);
+	Ti.API.info("Did it happen?");
 	setTableDataAndSpacing();
 }
 
@@ -231,13 +231,11 @@ function addItemArrayToHash(selectedAge, itemArray, hashOrderedPostsByAge) {
 function createPostArray(postAgeRange, selectedAge, post) {
 	var itemArray = [];
 	for (var j = 0; j < postAgeRange.length; j++) {
-		//Ti.API.info("i-" + i + ", j-" + j + ": " + (postAgeRange[j] == selectedAges[i]));
 		if (postAgeRange[j] == selectedAges[i]) {
 			itemArray.push(post);
 		}
 	}
 	return itemArray;
-
 }
 
 function repairEmptyAgeRange(ageRange) {
@@ -275,31 +273,46 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 	return newHash;
 }
 
-function displayAgeFilteredSections(hash) {
+function stepIntoHash(hash, key, scroller) {
+	//This level is a list of dictionaries
+	var length = hash[key].length;
+	for (var i = 0; i < length; i++) {
+		//send single dictionary
+		dict = hash[key][i];
+		stepIntoPostDictionaryCollection(dict, scroller);
+	}
+}
+
+function stepIntoPostDictionaryCollection(dict, scroller) {
+	//This level is a single dictionary
+	var length = returnHashKeys(dict).length;
+	var post = Alloy.createModel('post');
+	for (var i = 0; i < length; i++) {
+		//send single key
+		key = returnHashKeys(dict)[i];
+		stepIntoPostDictionary(dict, key, post);
+	}
+	scroller.posts.add(post);
+}
+
+function stepIntoPostDictionary(dict, key, post) {
+	//This level is a key
+	//examine key-value pair
+	if (key == "name") {
+		post.name = dict[key];
+	}
+	if (key == "image") {
+		post.image = dict[key];
+	}
+}
+
+function createAgeFilteredSections(hash) {
 	var scroller = Alloy.createController('postScroller');
 	var hashLength = returnHashKeys(hash).length;
 	for (key in hash) {
-		//post dicts
-		Ti.API.info("key: " + JSON.stringify(key));
-		
+		//cycle through hash keys
 		scroller.sectionTitle = key;
-		for (var i = 0; i < hash[key].length; i++) {
-			
-			Ti.API.info("post dict: " + JSON.stringify(hash[key][0]));
-			Ti.API.info("post dict keys: " + JSON.stringify(returnHashKeys(hash[key][0])));
-			Ti.API.info("post dict key?: " + JSON.stringify(returnHashKeys(hash[key][0])[0]));
-
-			//post dict
-			for (var j = 0; j < returnHashKeys(hash[key][i]).length; j++) {
-				//post dict keys
-				
-				Ti.API.info("post dict key: " + JSON.stringify(hash[key][i][returnHashKeys(hash[key][i])]));
-				
-				var post = Alloy.createModel('post');
-			}
-
-		}
-		scroller.posts.add(post);
+		stepIntoHash(hash, key, scroller);
 	}
 }
 
