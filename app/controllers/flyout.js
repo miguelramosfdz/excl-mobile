@@ -15,11 +15,7 @@ function openExhibitPage(e) {
 }
 
 function bestForAgesHandler(e) {
-	//detectAgeFilterOn(filterAgeOn);
-	toggleAgeFilter();
-	if (!filterAgeSet) {
-		openInputMenu();
-	}
+	Alloy.createController('filterActivationModal').getView().open();
 }
 
 function enableAgeFilter(){
