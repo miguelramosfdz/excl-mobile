@@ -19,12 +19,7 @@ exports.definition = {
 	extendCollection: function(Collection) {
 		_.extend(Collection.prototype, {
 			// extended functions and properties go here
-			fill: function(n) {
-				for(var i = 0; i < n; i = i + 1) {
-					var filter = Alloy.createModel('filter');
-					this.add(filter);
-				};
-			}
+			ready: false
 		});
 
 		return Collection;
