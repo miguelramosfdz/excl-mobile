@@ -1,17 +1,17 @@
 <Alloy>
-	<Window class="container" layout="vertical">
+	<View class="container" layout="vertical">
 		<Label id="sectionTitle">section title</Label>
 		
 		<ScrollableView>
 			<View>
-				<ImageView id="postImage" image="{image}"/>
+				<ImageView id="postImage" image="/finterns.png"/>
 			
 				<View id="postTitleBar">
-					<Label id="postTitle" text="{name}"/>
+					<Label id="postTitle" text="post name"/>
 				</View>
 			</View>
 		</ScrollableView>
-	</Window>
+	</View>
 </Alloy>
 
 <!--jly-->
