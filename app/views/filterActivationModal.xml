@@ -1,4 +1,6 @@
 <Alloy>
+	<Collection src="filter">
+	
 	<Window class="container" modal="true" layout="vertical">
 		<View height="35dip" backgroundColor="black">
 			<Label class="title" left="10dip">
@@ -15,11 +17,7 @@
 		</Label>
 		
 		<TableView>
-			<TableViewRow>
-				<Label class="title" left="10dip" text="filter name"/>
-				
-				<Switch value="false" right="10dip"/>
-			</TableViewRow>
+			<TableViewSection id="table"/>
 		</TableView>
 	</Window>
 </Alloy>

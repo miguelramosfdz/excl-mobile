@@ -2,7 +2,9 @@
 	<Window class="container">
 		<View id="mainView">
 			<Widget src="navigationBar" id="navBar"/>
-			<ScrollableView id="exhibitsCarousel"></ScrollableView>
+			<ScrollableView id="exhibitsCarousel">
+				<View id="placeholder" height='180dip'></View>
+			</ScrollableView>
 			<View class="headingRow">
 				<Label class="headingText">Check out our Stations</Label>
 			</View>
