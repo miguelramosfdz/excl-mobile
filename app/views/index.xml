@@ -12,10 +12,8 @@
 				<View id="collapsibleInfoView">
 					<Label id="collapsibleInfoLabel"></Label>
 				</View>
-				<View>
+				<View layout='vertical' height=Ti.UI.SIZE>
 					<ScrollView id="componentScrollView"></ScrollView>
-				</View>
-				<View id="infoRow" class="infoRow">
 					<Label id="exhibitInfoLabel"></Label>
 				</View>
 			</ScrollView>

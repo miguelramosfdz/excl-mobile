@@ -199,6 +199,6 @@ function createTitleLabel(name, type){
 
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
-	$.infoRow.add($.exhibitInfoLabel);
-	$.exhibitInfoScrollView.add($.infoRow);
+	//$.infoRow.add($.exhibitInfoLabel);
+	//$.exhibitInfoScrollView.add($.infoRow);
 } 

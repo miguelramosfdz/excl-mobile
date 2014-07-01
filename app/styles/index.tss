@@ -23,7 +23,7 @@
 }
 
 "#collapsibleInfoLabel": {
-	horizontalWrap: true	
+	horizontalWrap: true
 }
 
 ".headingRow": {
@@ -54,12 +54,12 @@
 	scrollType: 'horizontal',
 	horizontalWrap: false,
 	top: "15dip",
-	bottom: "15dip"
+	bottom: "15dip",
 }
 
 
 ".infoRow": {
-	//top: '10dip',
+	top: Ti.UI.FILL,
 	height: Ti.UI.SIZE,
 	width: "100%",
 	backgroundColor: '#FFFFFF'
