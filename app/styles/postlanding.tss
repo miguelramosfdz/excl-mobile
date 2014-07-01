@@ -151,7 +151,7 @@
 	// zOrder: 2
 }
 
-"#thankYouMessageComment":{
+".thankYouMessageComment":{
 	opacity: '1.0',
 	font: {
 		fontFamily: 'Helvetica Neue',
