@@ -9,7 +9,17 @@ var url = Alloy.Globals.rootWebServiceUrl;
 var exhibitText = [];
 var componentsInExhibit = [];
 var currExhibitId;
+var analyticsPageTitle = "";
+var analyticsPageLevel = "";
 
+var setAnalyticsPageTitle = function(title) { analyticsPageTitle = title; };
+var getAnalyticsPageTitle = function() { return analyticsPageTitle; };
+var setAnalyticsPageLevel = function(level) { analyticsPageLevel = level; };
+var getAnalyticsPageLevel = function() { return analyticsPageLevel; };
+exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
+exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
+exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
+exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 retrieveJson(url, initializeWithJSON);
 Alloy.Globals.navController.open(this);
@@ -141,9 +151,14 @@ function createComponentsScrollView(exhibits){
 function openComponent(e){
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
-	Alloy.Globals.navController.open(Alloy.createController('componentlanding', component));
-	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Component Landing", 1);	
-	Alloy.Globals.analyticsController.trackScreen(component.getScreenName());
+	var controller = Alloy.createController('componentlanding', component);
+	var analyticsTitle = component.getScreenName();
+	var analyticsLevel = "Component Landing";
+	controller.setAnalyticsPageTitle(analyticsTitle);
+	controller.setAnalyticsPageLevel(analyticsLevel);
+	Alloy.Globals.navController.open(controller);
+	Alloy.Globals.analyticsController.trackScreen(analyticsTitle, analyticsLevel);
+	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", analyticsLevel, 1);	
 }
 
 function createLabeledPicView(item, type){
