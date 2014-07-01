@@ -10,8 +10,7 @@ var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 var sectionCarousels = [];
 var tableData = [];
 var existingSortBySections = [];
-var existingSortByAge = [];
-var hashSelectedAgesToPosts = {};
+var hashOrderedPostsByAge = {};
 var allPosts;
 
 function changeTitleOfThePage(name) {
@@ -39,12 +38,6 @@ function createSectionCarousel(titleOfSection) {
 
 function addToExistingSection(post) {
 	var sectionIndex = existingSortBySections.indexOf(post.section);
-	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
-}
-
-function addToAgeSection(post) {
-	var sectionIndex = existingSortByAge.indexOf(post.section);
-	//need to change post.section to the age appropriate section title
 	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
 }
 
@@ -108,7 +101,7 @@ function clearTableAndData() {
 	tableData = [];
 	$.tableView.data = tableData;
 	existingSortBySections = [];
-	existingSortByAge = [];
+	hashOrderedPostsByAge = {};
 }
 
 function setSwitchEvent() {
@@ -117,24 +110,6 @@ function setSwitchEvent() {
 		addSpinner();
 		retrieveComponentData();
 	});
-}
-
-function checkIfSelectedAgeInPostAgeRange(selectedAge, ageRange) {
-	if (selectedAge.lenth == 0) {
-		Ti.API.info("No ages selected");
-	} else if (ageRange.length == 1) {
-		if (selectedAge == ageRange[0]) {
-			return true;
-		} else {
-			return false;
-		}
-	} else if (ageRange.length == 2) {
-		if (parseInt(selectedAge) >= parseInt(ageRange[0]) && parseInt(selectedAge) <= parseInt(ageRange[1])) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 }
 
 function retrieveComponentData() {
@@ -162,7 +137,7 @@ function checkStateOfSwitch(allPosts) {
 		$.sortIndicator.text = "Filter By Age On";
 		$.sortIndicator.color = "#00CC00";
 		organizeByAge(allPosts);
-		Ti.API.info("All sections: " + existingSortByAge);
+		Ti.API.info("All sections: " + returnHashKeys(hashOrderedPostsByAge));
 	} else if ($.sortSwitch.value == false) {
 		$.sortIndicator.text = "Filter By Age Off";
 		$.sortIndicator.color = "#FFFFFF";
@@ -186,63 +161,65 @@ function organizeBySection(allPosts) {
 }
 
 function organizeByAge(allPosts) {
-	hashSelectedAgesToPosts = {};
+	hashOrderedPostsByAge = {};
 	for (var i = 0; i < allPosts.length; i++) {
-		compileDictOfSelectedAgesToPostAgeRange(selectedAges, hashSelectedAgesToPosts, allPosts[i]);
+		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
 	}
-	Ti.API.info("output: " + JSON.stringify(hashSelectedAgesToPosts));
+	Ti.API.info("output: " + JSON.stringify(hashOrderedPostsByAge));
 	Ti.API.info("Selected ages: " + JSON.stringify(selectedAges));
-	displayDictKeys(hashSelectedAgesToPosts);
-
-	//createTempHeadingsForAgeFiltering(selectedAges);
+	displayDictKeys(hashOrderedPostsByAge);
 
 	//replaceTempHeadingsForAgeFiltering(selectedAges);
+	//attatchHashToTableData
 
 	setTableDataAndSpacing();
 }
 
-function compileDictOfSelectedAgesToPostAgeRange(selectedAges, hashSelectedAgesToPosts, post) {
+function returnHashKeys(hash) {
+	var listKeys;
+	for (key in hash) {
+		listKeys += " " + key;
+	}
+	return listKeys;
+}
+
+function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = JSON.parse("[" + repairEmptyAgeRange(post.age_range) + "]");
 	if (postAgeRange == selectedAges) {
 		Ti.API.info("Matched all selected");
-		hashSelectedAgesToPosts[0] = postAgeRange[j];
+		addItemArrayToHash(0, postAgeRange[j], hasSelectedAgesToPost);
+		//hashOrderedPostsByAge[0] = postAgeRange[j];
 	} else {
 		for (var i = 0; i < selectedAges.length; i++) {
-			var itemPostArray = createHashArrayForItem(postAgeRange, itemPostArray, selectedAges[i], post);
+			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
 
-			Ti.API.info("Item Hash: " + JSON.stringify(itemPostArray));
+			Ti.API.info("Item ary: " + JSON.stringify(itemArray));
 
-			addItemArrayToHash(itemPostArray, hashSelectedAgesToPosts);
+			addItemArrayToHash(selectedAges[i], itemArray, hashOrderedPostsByAge);
 		}
 	}
-	var listKeys;
-	for (key in hashSelectedAgesToPosts) {
-		listKeys += " " + key;
-	}
-	Ti.API.info("Selected keys: [" + listKeys + "]");
+
+	Ti.API.info("Selected keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
 }
 
-function addItemArrayToHash(itemPostArray, hashSelectedAgesToPosts) {
-	
-	Ti.API.info("To be matched: " + hashSelectedAgesToPosts[selectedAges[i]]);
-	
-	if (hashSelectedAgesToPosts[selectedAges[i]] = "") {
-		Ti.API.info("101");
-		hashSelectedAgesToPosts[selectedAges[i]] = itemPostArray;
-	} else {
-		hashSelectedAgesToPosts[selectedAges[i]] = hashSelectedAgesToPosts[selectedAges[i]].concat(itemPostArray);
-		Ti.API.info("102");
-	}
+function addItemArrayToHash(selectedAge, itemArray, hashOrderedPostsByAge) {
+
+	Ti.API.info("To be matched: " + hashOrderedPostsByAge[selectedAges[i]]);
+	Ti.API.info("i-" + i + " , selected: " + selectedAges[i]);
+
+	hashOrderedPostsByAge[selectedAge] = hashOrderedPostsByAge[selectedAge].concat(itemArray);
 }
 
-function createHashArrayForItem(postAgeRange, hashItemArray, selectedAge, post) {
+function createPostArray(postAgeRange, selectedAge, post) {
+	var itemArray = [];
 	for (var j = 0; j < postAgeRange.length; j++) {
 		//Ti.API.info("i-" + i + ", j-" + j + ": " + (postAgeRange[j] == selectedAges[i]));
 		if (postAgeRange[j] == selectedAges[i]) {
-			hashItemArray.push(post);
+			Ti.API.info("post: " + post);
+			itemArray.push(post);
 		}
 	}
-	return hashItemArray;
+	return itemArray;
 
 }
 
@@ -254,7 +231,7 @@ function repairEmptyAgeRange(ageRange) {
 	}
 }
 
-function replaceTempHeadingsForAgeFiltering(hashSelectedAgesToPosts) {
+function replaceTempHeadingsForAgeFiltering(hashOrderedPostsByAge) {
 
 	//Replace dict keys with real headings
 
@@ -268,14 +245,13 @@ function init() {
 
 init();
 
-
 /*
  * TODO
  * Add entries to dict
- * 
+ *
  * Populate keys with appropriate posts
- * 
+ *
  * Replace titles of hash
- * 
+ *
  * Push to table data
  */
