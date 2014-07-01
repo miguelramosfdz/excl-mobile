@@ -276,7 +276,7 @@ NavigationController.prototype.toggleMenu = function(){
 
 NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
 	if (!window || !window.analyticsPageTitle || !window.analyticsPageLevel) {return false;}
-	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel);
+	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel, this.isInKioskMode());	// Kyle's Line Change (Happy Merging)
 };
 
 module.exports = NavigationController;

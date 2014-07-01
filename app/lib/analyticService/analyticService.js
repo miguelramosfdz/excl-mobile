@@ -7,6 +7,7 @@ function setPathForLibDirectory(rootPath) {
 
 function AnalyticsController() {
 	this.pageLevelCustomDimensionIndex = 4; // Index from Google Analytics website // TODO: get from Wordpress dynamically
+	this.kioskModeCustomDimensionIndex = 5; // Index from Google Analytics website
 }
 
 AnalyticsController.prototype.getTracker = function() {
@@ -31,12 +32,17 @@ AnalyticsController.prototype.setTrackerID = function(trackerID) {
 	this.trackerID = trackerID;
 };
 
-AnalyticsController.prototype.trackScreen = function(screenName, pageLevel){
+AnalyticsController.prototype.trackScreen = function(screenName, pageLevel, kioskMode){
 	var tracker = this.getTracker();
 	if (!tracker) {return false;}
 
 	var customDimensionObject = {};
 	customDimensionObject[this.pageLevelCustomDimensionIndex] = pageLevel;
+	
+	if(kioskMode)
+		customDimensionObject[this.kioskModeCustomDimensionIndex] = "on";
+	else
+		customDimensionObject[this.pageLevelCustomDimensionIndex] = "off";
 
 	apiCalls.info("Now tracking screen " + screenName);
 	var properties = {
