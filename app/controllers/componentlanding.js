@@ -263,7 +263,7 @@ function stepIntoPostDictionary(dict, key, post) {
 function init() {
 	$.sortSwitch.value = false;
 	
-	alert("did this work? " + JSON.stringify(alloy.collection.filters));
+	//alert("did this work? " + JSON.stringify(alloy.collection.filters));
 	
 	setSwitchEvent();
 	retrieveComponentData();
