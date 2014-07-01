@@ -36,38 +36,15 @@ intentService.prototype.sendIntentImageAndroid = function(postTags, imageFilePat
 
 intentService.prototype.sendIntentImageiOS = function(postTags, imageFilePath, imageFilePathInstagram, instagramAnchor){
 	//Use TiSocial.Framework module to send image to other apps
-	var Social = require('dk.napp.social');
-	if (Social.isActivityViewSupported()) {
-		Social.activityView({
-			image : imageFilePath,
-			text : postTags
-		}, [{
-			title : "Instagram",
-			type : "open.instagram",
-			image : "/images/instagram-256.png",
-			callback : function(e) {
-				intentService.prototype.openInstagram(postTags, imageFilePathInstagram, instagramAnchor);
-			}}]);
 
-	} else {
-		alert("Photo sharing is not available on this device");
-	}
-};
-
-intentService.prototype.openInstagram = function(postTags, imageFilePathInstagram, instagramAnchor) {
-	alert("Made it to openInstagram");
-	
-	var win = Ti.UI.createWindow();
-	
-	//var docImageView = Ti.UI.createImageView({ "image": imageFilePathInstagram});
-	//win.add(docImageView);
-	win.open();
-	
-    //var docViewer = Ti.UI.iOS.createDocumentViewer({ "url": imageFilePathInstagram, "UTI": "com.instagram.exclusivegram" });
-    //alert(docViewer);
-    //docViewer.UTI = "com.instagram.exclusivegram";
-   // docViewer.show({ "view": instagramAnchor, "animated": true });
-    
+	var docViewer = Ti.UI.iOS.createDocumentViewer({ "url": imageFilePathInstagram });
+	docViewer.UTI = "com.instagram.exclusivegram";
+	/*
+	var annotationObj = new Object();
+	annotationObj.InstagramCaption = postTags;
+	docViewer.annotation = annotationObj;
+	*/
+	docViewer.show({ "view": instagramAnchor, "animated": true });
 };
 
 module.exports = intentService;

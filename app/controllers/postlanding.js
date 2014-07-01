@@ -24,13 +24,6 @@ function setPageTitle(name) {
  */
 function displaySocialMediaButtons(json) {
 	//Create anchor for instagram viewer
-	var instagramAnchor = Ti.UI.createButton({
-		title : '',
-		opacity : 0.0,
-		left: "10%"
-	});
-	$.postlanding.add(instagramAnchor);
-
 	var row = createPlainRowWithHeight('auto');
 	if (json.text_sharing && !Alloy.Globals.navController.kioskMode) {
 		var shareTextButton = sharingTextService.initiateTextShareButton(json);
@@ -38,7 +31,7 @@ function displaySocialMediaButtons(json) {
 		row.add(shareTextButton);
 	}
 	if (json.image_sharing && !Alloy.Globals.navController.kioskMode) {
-		var shareImageButton = sharingImageService.initiateImageShareButton(json, instagramAnchor);
+		var shareImageButton = sharingImageService.initiateImageShareButton(json, $.postlanding);
 		shareImageButton.left = "60%";
 		row.add(shareImageButton);
 	}

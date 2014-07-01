@@ -102,7 +102,6 @@ function createCollapsibleInfoView(){
 }
 
 function onExhibitsClick(exhibits){
-	alert("Click detected");
 	var index = $.exhibitsCarousel.currentPage;
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	$.collapsibleInfoView.height = "40%";

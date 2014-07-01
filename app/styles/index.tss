@@ -59,8 +59,8 @@
 }
 
 ".infoRow": {
-	top: '10dip',
-	height: 'auto',
+	//top: '10dip',
+	//height: 'auto',
 	width: "100%",
 	backgroundColor: '#FFFFFF'
 }
@@ -72,11 +72,11 @@
 		fontSize: '13dip',
 		fontWeight: 'normal'
 	},
-	top: 0,
-	width: Ti.UI.SIZE,
-	height: '250dip',
-	verticalAlign: Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
 	editable: false,
 	left: '5%',
 	horizontalWrap: true
+}
+
+"#exhibitInfoScrollView": {
+	contentHeight: Ti.UI.SIZE
 }

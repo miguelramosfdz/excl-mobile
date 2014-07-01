@@ -28,9 +28,8 @@ cameraService.prototype.takePicture = function(postTags, shareImageButton, insta
 					fileNameInstagram = "excl" + new Date().getTime() + "_temp.ig";
 					imageFileInstagram = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fileNameInstagram);
 					imageFileInstagram.write(event.media);
-					alert("Instagram file saved: " + imageFileInstagram.nativePath);
 					loadingSpinner.hide();
-					intentService.sendIntentImageiOS(postTags, imageFilePath, imageFileInstagram.nativePath, instagramAnchor);
+					intentService.sendIntentImageiOS(postTags, imageFilePath, imageFileInstagram.getNativePath(), instagramAnchor);
 				}
 			}	
 		},
