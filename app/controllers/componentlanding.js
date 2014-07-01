@@ -1,5 +1,6 @@
 //Testing variable
 var selectedAges = [0, 4, 6, 7, "Adult"];
+//will become: alloy.collection.filters
 ////
 
 var args = arguments[0] || {};
@@ -7,12 +8,16 @@ var component = args;
 var componentID = component.get('id');
 var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
-var sectionCarousels = [];
-var tableData = [];
-var existingSortBySections = [];
+var hashOrderedPostsBySection = {};
 var hashOrderedPostsByAge = {};
 
 var allPosts;
+var initialLoad = false;
+
+var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
+var loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
+var spinner = new loadingSpinner;
+
 var analyticsPageTitle = "";
 var analyticsPageLevel = "";
 
@@ -37,63 +42,6 @@ function changeTitleOfThePage(name) {
 	$.componentlanding.title = name;
 }
 
-var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
-var loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
-var spinner = new loadingSpinner;
-
-function createNewSection(titleOfSection) {
-	Ti.API.info("title: " + titleOfSection);
-	createSectionHeading(titleOfSection);
-	createSectionCarousel(titleOfSection);
-	// createPostCarousel();
-}
-
-function createSectionCarousel(titleOfSection) {
-	var row = createRow();
-	var sectionIndex = existingSortBySections.indexOf(titleOfSection);
-	sectionCarousels[sectionIndex] = Alloy.createWidget("itemCarousel");
-	row.add(sectionCarousels[sectionIndex].getView());
-	tableData.push(row);
-}
-
-function addToExistingSection(post) {
-	var sectionIndex = existingSortBySections.indexOf(post.section);
-	sectionCarousels[sectionIndex].addItem(post, goToPostLandingPage);
-}
-
-function createRow() {
-	var row = Ti.UI.createTableViewRow({
-		height : '190dp',
-		top : '10dp',
-		backgroundColor : 'white',
-	});
-	return row;
-}
-
-function createHeadingRow() {
-	var row = Ti.UI.createTableViewRow({
-		height : '50dp',
-		backgroundColor : '#253342',
-	});
-	return row;
-}
-
-function createSectionHeading(headingTitle) {
-	var headingRow = createHeadingRow();
-	var sectionHeading = Ti.UI.createLabel({
-		color : '#FFFFFF',
-		font : {
-			fontFamily : 'Helvetica Neue',
-			fontSize : '22dp',
-			fontWeight : 'bold'
-		},
-		text : headingTitle,
-		textAlign : 'center',
-	});
-	headingRow.add(sectionHeading);
-	tableData.push(headingRow);
-}
-
 function goToPostLandingPage(e) {
 	var post = fetchPostById(e.source.itemId);
 	var analyticsTitle = component.getScreenName() + '/' + post.name;
@@ -104,45 +52,39 @@ function goToPostLandingPage(e) {
 	Alloy.Globals.navController.open(controller);
 }
 
-function fetchPostById(postID) {
-	var toReturn;
-	for (var i = 0; i < allPosts.length; i++) {
-		if (allPosts[i].id == postID) {
-			toReturn = allPosts[i];
-		}
-	}
-	return toReturn;
-}
-
-function setTableDataAndSpacing() {
-	$.tableView.data = tableData;
+function checkPostViewSpacing() {
 	if (OS_IOS) {
-		$.tableView.bottom = "48dip";
+		$.postView.bottom = "48dip";
 	}
 }
 
-function clearTableAndData() {
-	tableData = [];
-	$.tableView.data = tableData;
-	existingSortBySections = [];
+function clearOrderedPostHashes() {
+	hashOrderedPostsBySection = {};
 	hashOrderedPostsByAge = {};
 }
 
 function setSwitchEvent() {
+	//DEPRECIATED///////////////////////////////////////////////////////////////////////
 	$.sortSwitch.addEventListener("click", function(e) {
-		clearTableAndData();
+		clearOrderedPostHashes();
 		addSpinner();
 		retrieveComponentData();
 	});
 }
 
 function retrieveComponentData() {
-	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-		changeTitleOfThePage(returnedData.data.component.name);
-		allPosts = returnedData.data.component.posts;
-		checkStateOfSwitch(allPosts);
-		setTableDataAndSpacing();
-	});
+	if (!initialLoad) {
+		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+			changeTitleOfThePage(returnedData.data.component.name);
+			allPosts = returnedData.data.component.posts;
+			initialLoad = true;
+			checkIfAgeFilterOn(allPosts);
+			checkPostViewSpacing();
+		});
+	} else {
+		checkIfAgeFilterOn(allPosts);
+		checkPostViewSpacing();
+	}
 }
 
 function addSpinner() {
@@ -154,9 +96,8 @@ function removeSpinner() {
 	spinner.hide();
 }
 
-function checkStateOfSwitch(allPosts) {
-	Ti.API.info("toggle: " + $.sortSwitch.value);
-
+function checkIfAgeFilterOn(allPosts) {
+	//CHANGE REFERENCE TO SWITCH TO REF TO GLOBAL CHECKING FOR AGE SET ENABLED
 	if ($.sortSwitch.value == true) {
 		$.sortIndicator.text = "Filter By Age On";
 		$.sortIndicator.color = "#00CC00";
@@ -166,22 +107,26 @@ function checkStateOfSwitch(allPosts) {
 		$.sortIndicator.text = "Filter By Age Off";
 		$.sortIndicator.color = "#FFFFFF";
 		organizeBySection(allPosts);
-		Ti.API.info("All sections: " + existingSortBySections);
+		Ti.API.info("All sections: " + JSON.stringify(returnHashKeys(hashOrderedPostsBySection)));
 	}
 	removeSpinner();
 }
 
 function organizeBySection(allPosts) {
+	hashOrderedPostsBySection = {};
+
 	for (var i = 0; i < allPosts.length; i++) {
-		if (allPosts[i].section) {
-			if (existingSortBySections.indexOf(allPosts[i].section) == -1) {
-				existingSortBySections.push(allPosts[i].section);
-				createNewSection(allPosts[i].section);
-			}
-			addToExistingSection(allPosts[i]);
-		}
+		compileHashOfSections(allPosts[i], hashOrderedPostsBySection);
 	}
-	setTableDataAndSpacing();
+	Ti.API.info("sections: " + JSON.stringify(hashOrderedPostsBySection));
+	sortPostsIntoSections(hashOrderedPostsBySection);
+	checkPostViewSpacing();
+}
+
+function compileHashOfSections(post, hash) {
+	if (post.section) {
+		addItemArrayToHash(post.section, "["+ post +"]", hash);
+	}
 }
 
 function organizeByAge(allPosts) {
@@ -190,11 +135,11 @@ function organizeByAge(allPosts) {
 		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
 	}
 	hashOrderedPostsByAge = replaceHashKeysWithFilterHeadings(hashOrderedPostsByAge);
-	createAgeFilteredSections(hashOrderedPostsByAge);
-	
+	sortPostsIntoSections(hashOrderedPostsByAge);
+
 	Ti.API.info("Did it happen?");
-	
-	setTableDataAndSpacing();
+
+	checkPostViewSpacing();
 }
 
 function returnHashKeys(hash) {
@@ -209,7 +154,6 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 	var postAgeRange = JSON.parse("[" + repairEmptyAgeRange(post.age_range) + "]");
 	if (postAgeRange == selectedAges | postAgeRange == 0) {
 		addItemArrayToHash(0, postAgeRange, hashOrderedPostsByAge);
-		//hashOrderedPostsByAge[0] = postAgeRange[j];
 	} else {
 		for (var i = 0; i < selectedAges.length; i++) {
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
@@ -218,11 +162,11 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 	}
 }
 
-function addItemArrayToHash(selectedAge, itemArray, hashOrderedPostsByAge) {
-	if (hashOrderedPostsByAge[selectedAge]) {
-		hashOrderedPostsByAge[selectedAge] = hashOrderedPostsByAge[selectedAge].concat(itemArray);
+function addItemArrayToHash(key, itemArray, hash) {
+	if (hash[key]) {
+		hash[key] = hash[key].concat(itemArray);
 	} else {
-		hashOrderedPostsByAge[selectedAge] = itemArray;
+		hash[key] = itemArray;
 	}
 }
 
@@ -271,15 +215,15 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 	return newHash;
 }
 
-function createAgeFilteredSections(hash) {
+function sortPostsIntoSections(hash) {
 	var hashLength = returnHashKeys(hash).length;
 	for (key in hash) {
-		var scroller = Alloy.createController('postScroller');
+		var postScroller = Alloy.createController('postScroller');
 		//cycle through hash keys
-		scroller.sectionTitle = key;
-		stepIntoHash(hash, key, scroller);
+		postScroller.sectionTitle = key;
+		stepIntoHash(hash, key, postScroller);
 		Ti.API.info("Adding...");
-		$.vertView.add(scroller);
+		$.vertView.add(postScroller);
 	}
 }
 
@@ -318,19 +262,11 @@ function stepIntoPostDictionary(dict, key, post) {
 
 function init() {
 	$.sortSwitch.value = false;
+	
+	alert("did this work? " + JSON.stringify(alloy.collection.filters));
+	
 	setSwitchEvent();
 	retrieveComponentData();
 }
 
 init();
-
-/*
- * TODO
- * Add entries to dict
- *
- * Populate keys with appropriate posts
- *
- * Replace titles of hash
- *
- * Push to table data
- */
