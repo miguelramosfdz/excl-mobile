@@ -8,7 +8,6 @@ function NavigationController() {
 	this.lockedPage = null;
 	this.analyticsController = Alloy.Globals.analyticsController;
 	
-	
 	this.menu = require("navigationService/flyoutService");
 	/*
 	this.flyoutMenu = Alloy.createController('flyout').getView();
@@ -18,7 +17,7 @@ function NavigationController() {
 // Open new window and add it to window stack
 NavigationController.prototype.open = function(controller) {
 	
-	windowToOpen = controller.getView();   //|kyle-clark@uiowa.edu|hey this component was awesome|
+	windowToOpen = controller.getView();
 	
 	self = this;
 	windowToOpen.addEventListener("focus", function(e){	
@@ -26,7 +25,7 @@ NavigationController.prototype.open = function(controller) {
 	});
 	
 	windowToOpen.addEventListener("blur", function(e){
-		self.menu.closeMenu();
+		self.menu.closeMenuWithoutAnimation();
 		e.source.remove(self.menu.getMenu());
 	});	
 	
@@ -41,6 +40,15 @@ NavigationController.prototype.open = function(controller) {
 		windowToOpen.onExitKioskMode = controller.onExitKioskMode;
 	}
 	
+	// Store the window's title on it from the controller
+	if (controller && controller.getAnalyticsPageTitle && typeof(controller.getAnalyticsPageTitle) === 'function') {
+		Ti.API.info("Setting windows analytics title to " + controller.getAnalyticsPageTitle());
+		windowToOpen.analyticsTitle = controller.getAnalyticsPageTitle();
+	}
+	if (controller && controller.getAnalyticsPageLevel && typeof(controller.getAnalyticsPageLevel) === 'function') {
+		windowToOpen.analyticsLevel = controller.getAnalyticsPageLevel();
+	}
+	
 	// Capture Android back button
 	if (OS_ANDROID) {
 		var self = this;
@@ -48,7 +56,7 @@ NavigationController.prototype.open = function(controller) {
 			if(self.windowStack[self.windowStack.length-1] != self.lockedPage) {
 				self.close(1);
 			}
-		});	
+		});
 	}
 	
 	//add the window to the stack of windows managed by the controller
@@ -116,11 +124,13 @@ NavigationController.prototype.open = function(controller) {
 			this.navGroup.openWindow(windowToOpen, {animated : false});
 		}
 	}
+	this.analyticsTrackWindowScreen(windowToOpen);
 	return windowToOpen;
 };
 
 // Note: without a parameter, close automatically closes 1 window
 NavigationController.prototype.close = function(numWindows) {
+	this.menu.closeMenuWithoutAnimation();
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		if (numWindows > 1) {
 			// setup chain reaction by setting up the flags on all the windows
@@ -131,21 +141,28 @@ NavigationController.prototype.close = function(numWindows) {
 				i--;
 	       	}
 	        // start chain reaction, close first window
-			(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
+			(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close({animated : false});
 		} else {
 			(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
 		}
+		Ti.API.info("About to track closing window...");
+		this.analyticsTrackWindowScreen(this.windowStack[this.windowStack.length -1]);
 	}
 };
 
 // go back to the initial window of the NavigationController
 NavigationController.prototype.home = function() {
+	this.lockedPage.show();
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		// setup chain reaction by setting up the flags on all the windows
+		
+		
+		
 		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedPage; i--) {
 			// set dependent window
 			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
-       	}
+       	}//*/       	
+       	
         // start chain reaction, close first window
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
 	}
@@ -258,6 +275,11 @@ NavigationController.prototype.addKioskModeListener = function(element) {
 
 NavigationController.prototype.toggleMenu = function(){
 	this.menu.toggleMenu();
+};
+
+NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
+	//if (!window || !window.analyticsTitle || !windows.analyticsLevel) {return false;}
+	Alloy.Globals.analyticsController.trackScreen(window.analyticsTitle, window.analyticsLevel);
 };
 
 module.exports = NavigationController;

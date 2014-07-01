@@ -1,7 +1,7 @@
 <Alloy>
 	<View id="menuView">
 		<!-- <View id="menuTopBar"/> -->
-		<View class="clearPageProtecterView" onClick="toggleMenu"/>
+		<View class="clearPageProtecterView" onClick="closeMenu"/>
 		<TableView class="menuTable" id="menuTable" onLoad="init">
 			<TableViewRow class="tableRow" id="row1" onClick="openExhibitPage">
 				<View id="rowContainer">

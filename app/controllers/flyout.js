@@ -1,15 +1,10 @@
 var args = arguments[0] || {};
 
-var filterAgeOn = true;
-
-var filterAgeSet = true;
+var ageFilterEnabled = false;
+var filterAgeSet = false;
 //filterAges vars will be set to the values in memory
 
-function bestForAgesHandler() {
-	
-}
-
-function toggleMenu(e) {
+function closeMenu(e) {
 	//alert("well you clicked it...");
 	return Alloy.Globals.navController.toggleMenu();
 }
@@ -19,64 +14,48 @@ function openExhibitPage(e) {
 	// Maybe we should change this
 }
 
-function openAgeInput(e) {
-	
-	alert("101");
-	
-	detectAgeFilterOn(filterAgeOn);
+function bestForAgesHandler(e) {
+	//detectAgeFilterOn(filterAgeOn);
+	toggleAgeFilter();
 	if (!filterAgeSet) {
 		openInputMenu();
 	}
 }
 
-/*function detectAgeFilterOn(filterAgeOn) {
-	if (filterAgeOn) {
-		toggleFilterOn();
-	} else {
-		toggleFilterOff();
-	}
-} */
-
-function toggleFilterOn() {
-	filterAgeOn = true;
+function enableAgeFilter(){
+	ageFilterEnabled = true;
 	$.agesLabel.color = "#00CC00";
-	$.agesLabel.text = "Age Filter Enabled";
+	//$.agesLabel.text = "Filter By Age";
+	showEditAgeOption();
 }
 
-function toggleFilterOff() {
-	filterAgeOn = false;
-	$.agesLabel.color = "#000099";
-	$.agesLabel.text = "Age Filter Disabled";
+function disableAgeFilter(){
+	ageFilterEnabled = false;
+	//$.agesLabel.text = "Filter By Age";
+	$.agesLabel.color = "black";
+	hideEditAgeOption();
 }
 
 function showEditAgeOption() {
-	$.tableRowCollapsible.height = "30dip";
+	$.tableRowCollapsible.height = '30dip';
 }
 
 function hideEditAgeOption() {
-	$.tableRowCollapsible.height = "0";
+	$.tableRowCollapsible.height = 0;
 }
 
-function detectAgeFilterOn(filterAgeOn) {
-	if (filterAgeOn) {
-		toggleFilterOn();
-	} else {
-		toggleFilterOff();
-	}
-}
-
-function detectAgeFilterSet(filterAgeSet) {
-	if (filterAgeSet) {
-		showEditAgeOption();
-	} else {
-		hideEditAgeOption();
-	}
+function toggleAgeFilter(){
+	if(!ageFilterEnabled)
+		enableAgeFilter();
+	else
+		disableAgeFilter();
 }
 
 function openInputMenu(){
 	
-	alert("102");
-	
+	alert("Insert Jess's singleton Modal here");
+	filterAgeSet = true;
+	/*
 	var modal = viewService.createModalInputView();
 	//var table = viewService.createTableView();
 	//modal.add(table);
@@ -93,22 +72,27 @@ function openInputMenu(){
 	
 	var closeButton = buttonService.createButtonWithCustomSize("Close", 20, 150);
 	closeButton.addEventListener("click", function(e){
-		$.menuTable.remove(modal);
+		$.menuView.remove(modal);
 	});
 	rowClose.add(closeButton);
+	//modal.add(closeButton);
 	
-	$.menuTable.add(modal);
+	$.menuView.add(modal);//*/
 	
 }
 
-function init() {
-	detectAgeFilterSet(filterAgeSet);
-	detectAgeFilterOn(filterAgeOn);
+function init(){
+	//detectAgeFilterSet(filterAgeSet);
+	//detectAgeFilterOn(filterAgeOn);
+	//disableAgeFilter();
 	
 	viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
 	viewService = new viewService();
 	buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
 	buttonService = new buttonService();
 }
+
+var viewService;
+var	buttonService;
 
 init();

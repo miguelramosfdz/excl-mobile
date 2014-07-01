@@ -1,5 +1,5 @@
 //Testing variable
-var selectedAges = [7, 4, 6, 0].sort();
+var selectedAges = [0, 4, 6, 7, "Adult"];
 ////
 
 var args = arguments[0] || {};
@@ -12,6 +12,17 @@ var tableData = [];
 var existingSortBySections = [];
 var hashOrderedPostsByAge = {};
 var allPosts;
+var analyticsPageTitle = "";
+var analyticsPageLevel = "";
+
+var setAnalyticsPageTitle = function(title) { analyticsPageTitle = title; };
+var getAnalyticsPageTitle = function() { return analyticsPageTitle; };
+var setAnalyticsPageLevel = function(level) { analyticsPageLevel = level; };
+var getAnalyticsPageLevel = function() { return analyticsPageLevel; };
+exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
+exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
+exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
+exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 function changeTitleOfThePage(name) {
 	$.componentlanding.title = name;
@@ -76,8 +87,14 @@ function createSectionHeading(headingTitle) {
 
 function goToPostLandingPage(e) {
 	var post = fetchPostById(e.source.itemId);
-	Alloy.Globals.analyticsController.trackScreen(component.getScreenName() + '/' + post.name, "Post Landing");
-	Alloy.Globals.navController.open(Alloy.createController('postlanding', post));
+	var analyticsTitle = component.getScreenName() + '/' + post.name;
+	var analyticsLevel = "Post Landing";
+	Alloy.Globals.analyticsController.trackScreen(analyticsTitle, analyticsLevel);
+	var controller = Alloy.createController('postlanding', post);
+	controller.setAnalyticsPageTitle(analyticsTitle);
+	controller.setAnalyticsPageLevel(analyticsLevel);
+	Alloy.Globals.navController.open(controller);
+	Alloy.Globals.navController.open(controller);
 }
 
 function fetchPostById(postID) {
@@ -162,59 +179,54 @@ function organizeBySection(allPosts) {
 
 function organizeByAge(allPosts) {
 	hashOrderedPostsByAge = {};
-	
+
 	Ti.API.info("101 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
-	
+
 	for (var i = 0; i < allPosts.length; i++) {
 		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
 	}
-	Ti.API.info("output: " + JSON.stringify(hashOrderedPostsByAge));
-	Ti.API.info("Selected ages: " + JSON.stringify(selectedAges));
-	displayDictKeys(hashOrderedPostsByAge);
+	
+	Ti.API.info("106 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	Ti.API.info("106 Full: " + JSON.stringify(hashOrderedPostsByAge));
 
-	//replaceTempHeadingsForAgeFiltering(selectedAges);
+	hashOrderedPostsByAge = replaceHashKeysWithFilterHeadings(hashOrderedPostsByAge);
 	//attatchHashToTableData
 
 	setTableDataAndSpacing();
 }
 
 function returnHashKeys(hash) {
-	var listKeys;
+	var listKeys = [];
 	for (key in hash) {
-		listKeys += " " + key;
+		listKeys.push(key);
 	}
 	return listKeys;
 }
 
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = JSON.parse("[" + repairEmptyAgeRange(post.age_range) + "]");
-	
-	Ti.API.info("102 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
-	
-	if (postAgeRange == selectedAges) {
+	if (postAgeRange == selectedAges | postAgeRange == 0) {
 		Ti.API.info("Matched all selected");
-		addItemArrayToHash(0, postAgeRange[j], hasSelectedAgesToPost);
+		addItemArrayToHash(0, postAgeRange, hashOrderedPostsByAge);
 		//hashOrderedPostsByAge[0] = postAgeRange[j];
 	} else {
 		for (var i = 0; i < selectedAges.length; i++) {
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
-
-			Ti.API.info("Item ary: " + JSON.stringify(itemArray));
-
 			addItemArrayToHash(selectedAges[i], itemArray, hashOrderedPostsByAge);
 		}
 	}
 
-	Ti.API.info("105 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	Ti.API.info("106 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
 }
 
 function addItemArrayToHash(selectedAge, itemArray, hashOrderedPostsByAge) {
-
-	Ti.API.info("To be matched: " + hashOrderedPostsByAge[selectedAges[i]]);
-	Ti.API.info("i-" + i + " , selected: " + selectedAges[i]);
-	Ti.API.info("104 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
-
-	hashOrderedPostsByAge[selectedAge] = hashOrderedPostsByAge[selectedAge].concat(itemArray);
+	if (hashOrderedPostsByAge[selectedAge]) {
+		hashOrderedPostsByAge[selectedAge] = hashOrderedPostsByAge[selectedAge].concat(itemArray);
+		Ti.API.info("105a keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	} else {
+		hashOrderedPostsByAge[selectedAge] = itemArray;
+		Ti.API.info("105b keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	}
 }
 
 function createPostArray(postAgeRange, selectedAge, post) {
@@ -222,7 +234,6 @@ function createPostArray(postAgeRange, selectedAge, post) {
 	for (var j = 0; j < postAgeRange.length; j++) {
 		//Ti.API.info("i-" + i + ", j-" + j + ": " + (postAgeRange[j] == selectedAges[i]));
 		if (postAgeRange[j] == selectedAges[i]) {
-			Ti.API.info("post: " + post);
 			itemArray.push(post);
 		}
 	}
@@ -238,10 +249,30 @@ function repairEmptyAgeRange(ageRange) {
 	}
 }
 
-function replaceTempHeadingsForAgeFiltering(hashOrderedPostsByAge) {
+function replaceStringWithFilterHeading (st){
+	if (st == 0){
+			newKeys.push("For All Selected Ages");
+		} else if (!Alloy.Globals.isNumber(st)) {
+			newKeys.push("For my " + st);
+		} else if(Alloy.Globals.isNumber(st)){
+			newKeys.push("For my " + st + " year old");
+		}
+}
 
-	//Replace dict keys with real headings
-
+function replaceHashKeysWithFilterHeadings(oldHash) {
+	var oldKeys = returnHashKeys(oldHash);
+	var newKeys = [];
+	var newHash = {};
+	for (var i = 0; i < oldKeys.length; i++){
+		replaceStringWithFilterHeading (oldKeys[i]);
+	}
+	
+	Ti.API.info("new keys: " + JSON.stringify(newKeys));
+	
+	for (var i = 0; i < oldKeys.length; i++){
+		newHash[newKeys[i]] = oldHash[oldKeys[i]];
+	}
+	return newHash;
 }
 
 function init() {

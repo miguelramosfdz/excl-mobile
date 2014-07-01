@@ -8,15 +8,16 @@
 				<TableView id="seeMoreCommentsTableView" >
 				</TableView>
 				</View> -->
-				<View id="addNewCommentContainer">
-					<View id="whiteCommentBox">
-						<Label id="submitYourCommentLabel">Submit your comment</Label>
-						<TextField id="insertName" />
-						<TextField id="insertEmail" />
-						<TextField id="insertComment"/>
-						<Button id="submitButton" onClick="verifyAndValidataData" />
-						<Label id="thankYouMessageComment">Thank you. Your message has been submitted. Your comment will be visible upon approval.</Label>
-					</View>
+				<View id="addNewCommentContainer"></View>
+				<View id="whiteCommentBox">
+					<Label id="submitYourCommentLabel">Submit your comment</Label>
+					<TextField id="insertName" />
+					<Label id="insertNameDisclaimer">Optional - Won't be displayed publicly</Label>
+					<TextField id="insertEmail" />
+					<Label id="insertEmailDisclaimer">Optional - Won't be displayed publicly</Label>
+					<TextField id="insertComment"/>
+					<Button id="submitButton" onClick="verifyAndValidataData" />
+					<Label id="thankYouMessageComment">Thank you. Your message has been submitted. Your comment will be visible upon approval.</Label>
 					<Label id="closeCommentBoxButton">X</Label>
 				</View>
 			</ScrollView>
