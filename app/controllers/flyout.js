@@ -15,7 +15,10 @@ function openExhibitPage(e) {
 }
 
 function bestForAgesHandler(e) {
-	Alloy.createController('filterActivationModal').getView().open();
+	var ready = Alloy.Collections.filter.ready;
+	
+	if(ready) Alloy.createController('filterActivationModal').getView().open();
+	else alert('filters not yet retrieved');
 }
 
 function enableAgeFilter(){
