@@ -16,19 +16,21 @@ exports.definition = {
 				var url = dreamhostersAPI;
 	
 				retriever.fetchDataFromUrl(url, function(response) {
-					var filters = response.data.museum.tailored_content_categories;
-					filters = filters.split('|');
-					
-					for(var i = 0; i < filters.length; i++) {
-						var filter = filters[i];
-						var args = {
-							name: filter,
-							active: false
-						};
-						filter = Alloy.createModel('filter', args);
-						Alloy.Collections.filter.add(filter);
+					if(response) {
+						var filters = response.data.museum.tailored_content_categories;
+						filters = filters.split('|');
+						
+						for(var i = 0; i < filters.length; i++) {
+							var filter = filters[i];
+							var args = {
+								name: filter,
+								active: false
+							};
+							filter = Alloy.createModel('filter', args);
+							Alloy.Collections.filter.add(filter);
+						}
+						Alloy.Collections.filter.ready = true;
 					}
-					Alloy.Collections.filter.ready = true;
 				});
 			}
 		});

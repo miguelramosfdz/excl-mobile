@@ -3,20 +3,10 @@
   navBarHidden:true,
   fullscreen: true
 }
-
-"#scroller": {
-	height: '40%',
-	contentHeight: 'auto'
-}
-
 ".sortBar":{
 	height: "30dip",
 	backgroundColor: "#232226",
 	top: "0"
-}
-".tableView":{
-	height: "96%",
-	top: "4%"
 }
 ".switch":{
 	left: "80%",
