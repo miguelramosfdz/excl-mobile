@@ -19,13 +19,29 @@ describe('Analytics Service', function(){
 		serviceWithStub = new analyticsController();
 		sinon.stub(serviceWithStub, "getTracker").returns(fakeTracker);
 		serviceWithoutStub = new analyticsController();
-		
+	});
+	
+	describe('analyticsController', function() {
+		it('should have a page level custom dimension index set', function() {
+			assert(typeof serviceWithStub.pageLevelCustomDimensionIndex == "number", "pageLevelCustomDimensionIndex is " + serviceWithStub.pageLevelCustomDimensionIndex);
+		});
 	});
 	
 	describe('#trackScreen()', function(){
 		it('should call GA.getTracker', function(){
-			serviceWithStub.getTracker().trackScreen();
-			assert(trackScreenSpy.called);
+			serviceWithStub.getTracker().trackScreen("Screen Name", "Page Level");
+			assert(trackScreenSpy.calledOnce);
+		});
+		it('should call tracker.trackScreen with correct arguments', function() {
+			var customDimensionObject = {};
+			customDimensionObject[serviceWithStub.pageLevelCustomDimensionIndex] = "Page Level";
+			var properties = {
+				path: "Screen Name",
+				customDimension: customDimensionObject
+			};
+
+			serviceWithStub.trackScreen("Screen Name", "Page Level");
+			assert(JSON.stringify(trackScreenSpy.args[0][0]) == JSON.stringify(properties), "\n\tExpected:\t" + JSON.stringify(properties) + "\n\tActual:\t\t" + JSON.stringify(trackScreenSpy.args[0][0]));
 		});
 		it('should return false if tracker is not defined', function() {
 			assert(false === serviceWithoutStub.trackScreen());

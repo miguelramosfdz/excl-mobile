@@ -1,5 +1,16 @@
 var post_content = arguments[0] || {};
 var tableData = [];
+var analyticsPageTitle = "";
+var analyticsPageLevel = "";
+
+var setAnalyticsPageTitle = function(title) { analyticsPageTitle = title; };
+var getAnalyticsPageTitle = function() { return analyticsPageTitle; };
+var setAnalyticsPageLevel = function(level) { analyticsPageLevel = level; };
+var getAnalyticsPageLevel = function() { return analyticsPageLevel; };
+exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
+exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
+exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
+exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 function createPlainRowWithHeight(rowHeight) {
 	var row = Ti.UI.createTableViewRow({

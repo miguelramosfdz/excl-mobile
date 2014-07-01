@@ -138,7 +138,7 @@
 		fontWeight: 'normal'
 	},
 	textAlign: 'center',
-	color: 'green',
+	color: 'black',
 	top: '35%',
 	left: '7%',
 	width: '85%',
