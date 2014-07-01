@@ -50,7 +50,6 @@ function populateWindow(json){
 }
 
 function createExhibitsCarousel(exhibits){
-	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
 	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
 		var viewConfig = { 
