@@ -33,3 +33,6 @@ Alloy.Globals.setPathForLibDirectory = function(libFile){
 Alloy.Globals.isNumber = function(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 };
+
+Alloy.Models.app = Alloy.Models.instance('app');
+Alloy.Collections.filter = Alloy.Collections.instance('filter');
