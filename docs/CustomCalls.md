@@ -24,10 +24,10 @@ apiCalls.info(someobject);
 ```
   
 To use iconService:
-iconService assumes that iOS and Android icons are placed in the images/icons_ios and images/icons_android folder respectively, with identical file names. To use iconService, create an instance of the service as shown above, and then call:
+The purpose of this service is to set the backgroundImage of a button to a platform-specific icon. iconService assumes that iOS and Android icons are placed in the images/icons_ios and images/icons_android folder respectively, with identical file names. To use iconService, create an instance of the service as shown above, and then call:
 ```html
 iconService.setIcon(button, filename);
 ```
-where button is the button whose imageBackground property should be set, and the filename is the filename of the desired image. This service 
+where button is the button whose imageBackground property should be set, and the filename is the filename of the desired image.
   
 Checkout 'apiCalls.js', 'networkCalls.js', and 'parseCalls.js' (under lib/customCalls) to see which Titanium calls are ready to be mocked out.
