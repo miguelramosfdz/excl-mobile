@@ -11,6 +11,8 @@
 			<ScrollView id="scroller">
 				<TableView id="tableView" class="tableView"/>
 			</ScrollView>
+			<View layout="vertical" id="vertView">
+			</View>
 		</View>
 	</Window>
 </Alloy>

@@ -190,12 +190,10 @@ function organizeByAge(allPosts) {
 		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
 	}
 	hashOrderedPostsByAge = replaceHashKeysWithFilterHeadings(hashOrderedPostsByAge);
-
-	// Ti.API.info("106 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
-	// Ti.API.info("106 Full: " + JSON.stringify(hashOrderedPostsByAge));
-
 	createAgeFilteredSections(hashOrderedPostsByAge);
+	
 	Ti.API.info("Did it happen?");
+	
 	setTableDataAndSpacing();
 }
 
@@ -273,6 +271,18 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 	return newHash;
 }
 
+function createAgeFilteredSections(hash) {
+	var hashLength = returnHashKeys(hash).length;
+	for (key in hash) {
+		var scroller = Alloy.createController('postScroller');
+		//cycle through hash keys
+		scroller.sectionTitle = key;
+		stepIntoHash(hash, key, scroller);
+		Ti.API.info("Adding...");
+		$.vertView.add(scroller);
+	}
+}
+
 function stepIntoHash(hash, key, scroller) {
 	//This level is a list of dictionaries
 	var length = hash[key].length;
@@ -303,16 +313,6 @@ function stepIntoPostDictionary(dict, key, post) {
 	}
 	if (key == "image") {
 		post.image = dict[key];
-	}
-}
-
-function createAgeFilteredSections(hash) {
-	var scroller = Alloy.createController('postScroller');
-	var hashLength = returnHashKeys(hash).length;
-	for (key in hash) {
-		//cycle through hash keys
-		scroller.sectionTitle = key;
-		stepIntoHash(hash, key, scroller);
 	}
 }
 
