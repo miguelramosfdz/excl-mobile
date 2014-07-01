@@ -98,11 +98,9 @@ function goToPostLandingPage(e) {
 	var post = fetchPostById(e.source.itemId);
 	var analyticsTitle = component.getScreenName() + '/' + post.name;
 	var analyticsLevel = "Post Landing";
-	Alloy.Globals.analyticsController.trackScreen(analyticsTitle, analyticsLevel);
 	var controller = Alloy.createController('postlanding', post);
 	controller.setAnalyticsPageTitle(analyticsTitle);
 	controller.setAnalyticsPageLevel(analyticsLevel);
-	Alloy.Globals.navController.open(controller);
 	Alloy.Globals.navController.open(controller);
 }
 

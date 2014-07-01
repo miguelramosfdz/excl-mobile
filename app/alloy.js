@@ -34,5 +34,8 @@ Alloy.Globals.isNumber = function(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
+// do not remove: initialization of global backbone models
 Alloy.Models.app = Alloy.Models.instance('app');
 Alloy.Collections.filter = Alloy.Collections.instance('filter');
+Alloy.Models.app.retrieveFilters();
+

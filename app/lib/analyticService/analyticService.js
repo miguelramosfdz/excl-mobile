@@ -7,6 +7,7 @@ function setPathForLibDirectory(rootPath) {
 
 function AnalyticsController() {
 	this.pageLevelCustomDimensionIndex = 4; // Index from Google Analytics website // TODO: get from Wordpress dynamically
+	this.kioskModeCustomDimensionIndex = 5; // Index from Google Analytics website
 }
 
 AnalyticsController.prototype.getTracker = function() {
@@ -37,6 +38,11 @@ AnalyticsController.prototype.trackScreen = function(screenName, pageLevel){
 
 	var customDimensionObject = {};
 	customDimensionObject[this.pageLevelCustomDimensionIndex] = pageLevel;
+	
+	if(Alloy.Globals.navController.isInKioskMode())
+		customDimensionObject[this.kioskModeCustomDimensionIndex] = "on";
+	else
+		customDimensionObject[this.kioskModeCustomDimensionIndex] = "off";
 
 	apiCalls.info("Now tracking screen " + screenName);
 	var properties = {

@@ -7,7 +7,7 @@ var flyoutService = {
 		if(!flyoutMenu){
 			flyoutMenu = Alloy.createController('flyout').getView();
 			flyoutMenu.zindex = 1;
-			this.closeMenu();
+			this.closeMenuWithoutAnimation();
 			time = 100;
 		}
 		return flyoutMenu;
