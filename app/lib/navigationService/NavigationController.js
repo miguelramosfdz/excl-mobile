@@ -42,11 +42,10 @@ NavigationController.prototype.open = function(controller) {
 	
 	// Store the window's title on it from the controller
 	if (controller && controller.getAnalyticsPageTitle && typeof(controller.getAnalyticsPageTitle) === 'function') {
-		Ti.API.info("Setting windows analytics title to " + controller.getAnalyticsPageTitle());
-		windowToOpen.analyticsTitle = controller.getAnalyticsPageTitle();
+		windowToOpen.analyticsPageTitle = controller.getAnalyticsPageTitle();
 	}
 	if (controller && controller.getAnalyticsPageLevel && typeof(controller.getAnalyticsPageLevel) === 'function') {
-		windowToOpen.analyticsLevel = controller.getAnalyticsPageLevel();
+		windowToOpen.analyticsPageLevel = controller.getAnalyticsPageLevel();
 	}
 	
 	// Capture Android back button
@@ -70,13 +69,13 @@ NavigationController.prototype.open = function(controller) {
 		if (self.windowStack.length > 1) // don't pop the last Window, which is the base one
 		{
 			var popped = self.windowStack.pop();
-		
+
 			// Last window should NOT have been popped. Push it back on the stack!
 			if (lastPushed != popped)
 			{
 				self.windowStack.push(popped);
 			}
-			
+
 			// close dependent window ?
 			if (this.toClose) {
 			 	// close "parent" window, do not use animation (it looks weird with animation)
@@ -87,7 +86,7 @@ NavigationController.prototype.open = function(controller) {
 			// open dependent window ?
 			if (this.toOpen) {
 			 	self.open(this.toOpen, {animated : false});
-			} 
+			}
 		} // end if windowStack.length > 1, and end of my hack
 	}); // end eventListener 'close'
 	
@@ -145,8 +144,9 @@ NavigationController.prototype.close = function(numWindows) {
 		} else {
 			(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
 		}
-		Ti.API.info("About to track closing window...");
-		this.analyticsTrackWindowScreen(this.windowStack[this.windowStack.length -1]);
+		this.analyticsTrackWindowScreen(this.windowStack[this.windowStack.length - 2]);
+	} else {
+		this.analyticsTrackWindowScreen(this.windowStack[0]);
 	}
 };
 
@@ -155,13 +155,10 @@ NavigationController.prototype.home = function() {
 	this.lockedPage.show();
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		// setup chain reaction by setting up the flags on all the windows
-		
-		
-		
 		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedPage; i--) {
 			// set dependent window
 			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
-       	}//*/       	
+       	}      	
        	
         // start chain reaction, close first window
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
@@ -278,8 +275,8 @@ NavigationController.prototype.toggleMenu = function(){
 };
 
 NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
-	//if (!window || !window.analyticsTitle || !windows.analyticsLevel) {return false;}
-	Alloy.Globals.analyticsController.trackScreen(window.analyticsTitle, window.analyticsLevel);
+	if (!window || !window.analyticsPageTitle || !window.analyticsPageLevel) {return false;}
+	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel);
 };
 
 module.exports = NavigationController;

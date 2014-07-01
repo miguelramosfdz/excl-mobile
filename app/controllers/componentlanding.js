@@ -11,6 +11,7 @@ var sectionCarousels = [];
 var tableData = [];
 var existingSortBySections = [];
 var hashOrderedPostsByAge = {};
+
 var allPosts;
 var analyticsPageTitle = "";
 var analyticsPageLevel = "";
@@ -89,11 +90,9 @@ function goToPostLandingPage(e) {
 	var post = fetchPostById(e.source.itemId);
 	var analyticsTitle = component.getScreenName() + '/' + post.name;
 	var analyticsLevel = "Post Landing";
-	Alloy.Globals.analyticsController.trackScreen(analyticsTitle, analyticsLevel);
 	var controller = Alloy.createController('postlanding', post);
 	controller.setAnalyticsPageTitle(analyticsTitle);
 	controller.setAnalyticsPageLevel(analyticsLevel);
-	Alloy.Globals.navController.open(controller);
 	Alloy.Globals.navController.open(controller);
 }
 
@@ -203,6 +202,26 @@ function returnHashKeys(hash) {
 	return listKeys;
 }
 
+function displayAgeFilteredSections(hash){
+	var scroller = Alloy.createController('postScroller');
+	
+	for (key in hash) {
+		
+		scroller.sectionTitle = "";
+	scroller.posts.add(post);
+		
+		
+		
+	}
+	
+	
+	post = Alloy.createModel('post');
+	
+	
+	
+	
+}
+
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = JSON.parse("[" + repairEmptyAgeRange(post.age_range) + "]");
 	if (postAgeRange == selectedAges | postAgeRange == 0) {
@@ -250,13 +269,20 @@ function repairEmptyAgeRange(ageRange) {
 }
 
 function replaceStringWithFilterHeading (st){
+	var newSt = "";
 	if (st == 0){
-			newKeys.push("For All Selected Ages");
+			newSt = "For All Selected Ages";
 		} else if (!Alloy.Globals.isNumber(st)) {
-			newKeys.push("For my " + st);
+			newSt = "For " + st;
+			if (newSt.substring(newSt.lenth-1) != "s"){
+				
+				alert("this: " + newSt.substring(newSt.lenth-1));
+				newSt += 's';
+			}
 		} else if(Alloy.Globals.isNumber(st)){
-			newKeys.push("For my " + st + " year old");
+			newSt = "For my " + st + " year old";
 		}
+	return newSt;
 }
 
 function replaceHashKeysWithFilterHeadings(oldHash) {
@@ -264,7 +290,7 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 	var newKeys = [];
 	var newHash = {};
 	for (var i = 0; i < oldKeys.length; i++){
-		replaceStringWithFilterHeading (oldKeys[i]);
+		newKeys.push(replaceStringWithFilterHeading (oldKeys[i]));
 	}
 	
 	Ti.API.info("new keys: " + JSON.stringify(newKeys));

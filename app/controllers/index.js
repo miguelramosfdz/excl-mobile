@@ -9,8 +9,8 @@ var url = Alloy.Globals.rootWebServiceUrl;
 var exhibitText = [];
 var componentsInExhibit = [];
 var currExhibitId;
-var analyticsPageTitle = "";
-var analyticsPageLevel = "";
+var analyticsPageTitle = "Home";
+var analyticsPageLevel = "Exhibit Landing";
 
 var setAnalyticsPageTitle = function(title) { analyticsPageTitle = title; };
 var getAnalyticsPageTitle = function() { return analyticsPageTitle; };
@@ -23,7 +23,6 @@ exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 retrieveJson(url, initializeWithJSON);
 Alloy.Globals.navController.open(this);
-
 
 function retrieveJson(jsonURL, callback) {
 	spinner.addTo($.exhibitsCarousel);
@@ -38,7 +37,8 @@ function retrieveJson(jsonURL, callback) {
 
 function initializeWithJSON(json) {
 	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
-	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);	
+	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);
+	Alloy.Globals.analyticsController.trackScreen(analyticsPageTitle, analyticsPageLevel);
 	populateWindow(json);
 }
 
@@ -60,7 +60,6 @@ function populateWindow(json){
 }
 
 function createExhibitsCarousel(exhibits){
-	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
 	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
 		var viewConfig = { 
@@ -157,7 +156,6 @@ function openComponent(e){
 	controller.setAnalyticsPageTitle(analyticsTitle);
 	controller.setAnalyticsPageLevel(analyticsLevel);
 	Alloy.Globals.navController.open(controller);
-	Alloy.Globals.analyticsController.trackScreen(analyticsTitle, analyticsLevel);
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", analyticsLevel, 1);	
 }
 
