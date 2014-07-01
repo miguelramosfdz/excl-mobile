@@ -22,11 +22,17 @@
 	height: '180dip'
 }
 
+"#collapsibleInfoLabel": {
+	horizontalWrap: true	
+}
+
+
 ".headingRow": {
 	backgroundColor: "#253342",
 	width: Ti.UI.FILL,
 	height: '50dip'
 }
+
 
 ".headingText": {
 	color: 'white',
