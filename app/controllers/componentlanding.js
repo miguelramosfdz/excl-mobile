@@ -1,5 +1,5 @@
 //Testing variable
-var selectedAges = [7, 4, 6, 0].sort();
+var selectedAges = [0, 4, 6, 7, "Adult"];
 ////
 
 var args = arguments[0] || {};
@@ -162,59 +162,54 @@ function organizeBySection(allPosts) {
 
 function organizeByAge(allPosts) {
 	hashOrderedPostsByAge = {};
-	
+
 	Ti.API.info("101 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
-	
+
 	for (var i = 0; i < allPosts.length; i++) {
 		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
 	}
-	Ti.API.info("output: " + JSON.stringify(hashOrderedPostsByAge));
-	Ti.API.info("Selected ages: " + JSON.stringify(selectedAges));
-	displayDictKeys(hashOrderedPostsByAge);
+	
+	Ti.API.info("106 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	Ti.API.info("106 Full: " + JSON.stringify(hashOrderedPostsByAge));
 
-	//replaceTempHeadingsForAgeFiltering(selectedAges);
+	hashOrderedPostsByAge = replaceHashKeysWithFilterHeadings(hashOrderedPostsByAge);
 	//attatchHashToTableData
 
 	setTableDataAndSpacing();
 }
 
 function returnHashKeys(hash) {
-	var listKeys;
+	var listKeys = [];
 	for (key in hash) {
-		listKeys += " " + key;
+		listKeys.push(key);
 	}
 	return listKeys;
 }
 
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = JSON.parse("[" + repairEmptyAgeRange(post.age_range) + "]");
-	
-	Ti.API.info("102 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
-	
-	if (postAgeRange == selectedAges) {
+	if (postAgeRange == selectedAges | postAgeRange == 0) {
 		Ti.API.info("Matched all selected");
-		addItemArrayToHash(0, postAgeRange[j], hasSelectedAgesToPost);
+		addItemArrayToHash(0, postAgeRange, hashOrderedPostsByAge);
 		//hashOrderedPostsByAge[0] = postAgeRange[j];
 	} else {
 		for (var i = 0; i < selectedAges.length; i++) {
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
-
-			Ti.API.info("Item ary: " + JSON.stringify(itemArray));
-
 			addItemArrayToHash(selectedAges[i], itemArray, hashOrderedPostsByAge);
 		}
 	}
 
-	Ti.API.info("105 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	Ti.API.info("106 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
 }
 
 function addItemArrayToHash(selectedAge, itemArray, hashOrderedPostsByAge) {
-
-	Ti.API.info("To be matched: " + hashOrderedPostsByAge[selectedAges[i]]);
-	Ti.API.info("i-" + i + " , selected: " + selectedAges[i]);
-	Ti.API.info("104 keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
-
-	hashOrderedPostsByAge[selectedAge] = hashOrderedPostsByAge[selectedAge].concat(itemArray);
+	if (hashOrderedPostsByAge[selectedAge]) {
+		hashOrderedPostsByAge[selectedAge] = hashOrderedPostsByAge[selectedAge].concat(itemArray);
+		Ti.API.info("105a keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	} else {
+		hashOrderedPostsByAge[selectedAge] = itemArray;
+		Ti.API.info("105b keys: [" + returnHashKeys(hashOrderedPostsByAge) + "]");
+	}
 }
 
 function createPostArray(postAgeRange, selectedAge, post) {
@@ -222,7 +217,6 @@ function createPostArray(postAgeRange, selectedAge, post) {
 	for (var j = 0; j < postAgeRange.length; j++) {
 		//Ti.API.info("i-" + i + ", j-" + j + ": " + (postAgeRange[j] == selectedAges[i]));
 		if (postAgeRange[j] == selectedAges[i]) {
-			Ti.API.info("post: " + post);
 			itemArray.push(post);
 		}
 	}
@@ -238,9 +232,30 @@ function repairEmptyAgeRange(ageRange) {
 	}
 }
 
-function replaceTempHeadingsForAgeFiltering(hashOrderedPostsByAge) {
 
-	//Replace dict keys with real headings
+
+function replaceHashKeysWithFilterHeadings(oldHash) {
+	var oldKeys = returnHashKeys(oldHash);
+	var newKeys = [];
+	var newHash = {};
+	for (var i = 0; i < oldKeys.length; i++){
+		if (oldKeys[i] == 0){
+			newKeys.push("For All Selected Ages");
+		} else if (!Alloy.Globals.isNumber(oldKeys[i])) {
+			newKeys.push("For my " + oldKeys[i]);
+		} else if(Alloy.Globals.isNumber(oldKeys[i])){
+			newKeys.push("For my " + oldKeys[i] + " year old");
+		}
+	}
+	
+	Ti.API.info("new keys: " + JSON.stringify(newKeys));
+	
+	for (var i = 0; i < oldKeys.length; i++){
+		newHash[newKeys[i]] = oldHash[oldKeys[i]];
+	}
+	
+	
+	return newHash;
 
 }
 
