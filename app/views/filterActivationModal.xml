@@ -1,0 +1,27 @@
+<Alloy>
+	<Window class="container" modal="true" layout="vertical">
+		<View height="35dip" backgroundColor="black">
+			<Label class="title" left="10dip">
+				Customize Learning
+			</Label>
+			
+			<Button id="doneButton" onClick="closeWindow" right="10dip">
+				Done
+			</Button>
+		</View>
+		
+		<Label textAlign="center">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+		</Label>
+		
+		<TableView>
+			<TableViewRow>
+				<Label class="title" left="10dip" text="filter name"/>
+				
+				<Switch value="false" right="10dip"/>
+			</TableViewRow>
+		</TableView>
+	</Window>
+</Alloy>
+
+<!--jly-->
