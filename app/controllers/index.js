@@ -150,14 +150,18 @@ function toggleExpanderCollapsed(){
 }
 
 function onExhibitsScroll(e, exhibits) {
-	$.collapsibleInfoView.height = $.collapsibleInfoView.height; //Fixes bug on iOS where components wouldn't scroll if collapsible info collapsed
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
 	setExhibitText(exhibits[$.exhibitsCarousel.currentPage].description);
 	
-	if ($.collapsibleInfoView.height != 0){
-		//Collapsible view is open; must update the exhibit info
+	$.componentScrollView.scrollTo(0, 0);
+	
+	// Fixes bug on iOS where components wouldn't scroll if collapsible info collapsed
+	$.collapsibleInfoView.height = $.collapsibleInfoView.height; 
+	
+	// If collapsible view is open, update the exhibit info
+	if ($.collapsibleInfoView.height != 0){ 
 		var index = $.exhibitsCarousel.currentPage;
 		$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	}
@@ -169,14 +173,11 @@ function createComponentsScrollView(exhibits){
 		componentsInExhibit[exhibits[i].id] = Ti.UI.createView({
 			layout: 'horizontal',
 			horizontalWrap: false,
-			width: Ti.UI.SIZE
+			width: Ti.UI.SIZE,
+			height: Ti.UI.SIZE
 		});
 		for(var j=0; j<exhibits[i].components.length; j++){
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
-			component.left = 3;
-			// component.right = 3;
-			component.width = '300dip';
-			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[exhibits[i].id].add(component);
 		}			
@@ -184,6 +185,48 @@ function createComponentsScrollView(exhibits){
 		componentsInExhibit[exhibits[i].id].width = 0;
 	}
 	componentsInExhibit[currExhibitId].width = Ti.UI.SIZE;
+}
+
+function createLabeledPicView(item, type){
+	var image = Ti.UI.createImageView({
+		image: item.image,
+		itemId: item.id,
+		height: '150dip',
+		width: '300dip',
+		zIndex: 0
+	});
+	var container = Ti.UI.createView({
+		left: '3dip', 
+		height: '150dip',
+		width: '300dip',
+	});
+	container.add(image);
+	container.add(createTitleLabel(item.name, type));
+	return container;
+}
+
+function createTitleLabel(name, type){
+	var titleLabel = Ti.UI.createView({
+		backgroundColor: 'black',
+		opacity: 0.6,
+		top: 0,
+		height: '15%',
+		zIndex: 2
+	});
+	var label = Ti.UI.createLabel({
+		text: name,
+		top: 0,
+		left: 10,
+		color: 'white',
+		font: {
+			fontFamily: 'Arial',
+			fontSize: type,
+			fontWeight: 'bold'
+		},
+		zIndex: 1
+	});
+	titleLabel.add(label);
+	return titleLabel;
 }
 
 function openComponent(e){
@@ -198,50 +241,6 @@ function openComponent(e){
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", analyticsLevel, 1);	
 }
 
-function createLabeledPicView(item, type){
-	var itemContainer = Ti.UI.createView();
-	var image = Ti.UI.createImageView({
-		height: '100%',
-		width: '100%'
-	});
-	var clickCatcher = Ti.UI.createView({
-		itemId: item.id
-	});//*/
-	image.image = item.image;
-	
-	itemContainer.add(image);
-	itemContainer.add(createTitleLabel(item.name, type));
-	itemContainer.add(clickCatcher);
-	return itemContainer;
-}
-
-function createTitleLabel(name, type){
-	var titleLabel = Ti.UI.createView({
-		backgroundColor: 'black',
-		opacity: 0.6,
-		height: '15%',
-		top: 0
-	});
-	//$.addClass(exhibitImages[i], "exhibitTitleShadow"); 
-	
-	var label = Ti.UI.createLabel({
-		text: name,
-		top: 0,
-		left: 10,
-		color: 'white',
-		font: {
-			fontFamily: 'Arial',
-			fontSize: type,
-			fontWeight: 'bold'
-		}
-	});
-	//$.addClass(label, "myLabel"); 
-	titleLabel.add(label);
-	return titleLabel;
-}
-
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
-	//$.infoRow.add($.exhibitInfoLabel);
-	//$.exhibitInfoScrollView.add($.infoRow);
 } 

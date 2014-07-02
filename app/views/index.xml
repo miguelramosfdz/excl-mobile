@@ -1,13 +1,14 @@
 <Alloy>
 	<Window class="container">
 		<View id="mainView">
-			<Widget src="navigationBar" id="navBar"/>
+			
 			<ScrollView id="exhibitInfoScrollView" scrollType="vertical" layout="vertical" contentWidth="100%">
+				<Widget src="navigationBar" id="navBar"/>
 				<ScrollableView id="exhibitsCarousel">
 					<View id="placeholder" height='180dip'></View>
 				</ScrollableView>
 				<View id = "headingRow" class="headingRow">
-					<Label class="headingText">Check out our Stations</Label>
+					<Label class="headingText">Featured Activities</Label>
 					<Button id="expanderButton"></Button>
 				</View>
 				<View id="collapsibleInfoView">
