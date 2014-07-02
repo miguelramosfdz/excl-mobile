@@ -61,6 +61,7 @@ function checkPostViewSpacing() {
 function clearOrderedPostHashes() {
 	hashOrderedPostsBySection = {};
 	hashOrderedPostsByAge = {};
+	$.scrollView.removeAllChildren();
 }
 
 function setSwitchEvent(view) {
@@ -246,23 +247,18 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 }
 
 function sortPostsIntoSections(hash) {
-	var hashLength = returnHashKeys(hash).length;
-	for (key in hash) {
+	var hashKeys = returnHashKeys(hash);
+	var hashLength = hashKeys.length;
+	for (var i = 0; i < hashLength; i++) {
 		//cycle through hash keys
 		var postCollection = Alloy.createCollection('post');
-		stepIntoHash(hash, key, postCollection);
-
-		Ti.API.info("Adding has been enabled?");
-
+		stepIntoHash(hash, hashKeys[i], postCollection);
 		args = {
 			posts : postCollection
 		};
 		var postScroller = Alloy.createController('postScroller', args);
-		postScroller.sectionTitle.text = key;
-		Ti.API.info("key: " + key);
-
-		Ti.API.info("adding scroller: " + JSON.stringify(postScroller));
-
+		postScroller.sectionTitle.text = hashKeys[i];
+		
 		$.scrollView.add(postScroller.getView());
 	}
 	
