@@ -280,6 +280,8 @@ NavigationController.prototype.toggleMenu = function(){
 NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
 	//if (!window || !window.analyticsPageTitle || !window.analyticsPageLevel) {return false;}
 	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel, this.isInKioskMode());
+	var kioskModeString = (this.isInKioskMode()) ? "KioskModeOn" : "KioskModeOff";
+	Alloy.Globals.analyticsController.trackEvent(kioskModeString, window.analyticsPageLevel, window.analyticsPageTitle, 1);
 };
 
 module.exports = NavigationController;
