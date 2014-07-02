@@ -367,16 +367,15 @@ function verifyAndValidataData() {
 	} else {
 		var url = Alloy.Globals.rootWebServiceUrl + "/posts/" + post_content.id + "/comments";
 
-		var jsonToSend = {
+		var jsonToSend = ({
 			"name" : $.insertName.value,
 			"email" : $.insertEmail.value,
 			"comment_body" : $.insertComment.value
-		};
-
+		});
+		
 		dataRetriever.sendJsonToUrl(url, jsonToSend, function(returnedData) {
 			$.submitCommentFormView.visible = false;
 			$.thankYouMessageView.visible = true;
-			alert("data submitted successfully! \n" + returnedData.toString());
 		});
 
 	}
