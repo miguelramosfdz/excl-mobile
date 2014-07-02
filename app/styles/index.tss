@@ -15,16 +15,26 @@
 	height: Ti.UI.SIZE,
 	showPagingControl: true,
 	overlayEnabled: true,
-	pagingControlAlpha: "0.5"
+	pagingControlAlpha: "0.5",
 }
 
 "#exhibitsCarousel[platform=android]": {
 	// This is an android hack
+	// This should probably be calculated based on ... something
 	height: '180dip'
 }
 
 "#collapsibleInfoLabel": {
-	horizontalWrap: true
+	horizontalWrap: true,
+	color: '#232226',
+	font:{
+		fontFamily: 'Helvetica Neue',
+		fontSize: '13dip',
+		fontWeight: 'normal'
+	},
+	left: "3%",
+	right: "3%",
+	top: "3%"
 }
 
 ".headingRow": {
@@ -44,6 +54,10 @@
 	textAlign: 'center'
 }
 
+"#expanderButton": {
+	left: "85%"
+}
+
 "#componentScrollView": {
 	layout: 'horizontal',
 	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
@@ -55,7 +69,7 @@
 	scrollType: 'horizontal',
 	horizontalWrap: false,
 	top: "15dip",
-	bottom: "15dip",
+	bottom: "0dip",
 }
 
 "#exhibitInfoLabel": {
@@ -65,10 +79,18 @@
 		fontSize: '13dip',
 		fontWeight: 'normal'
 	},
-	top: '0dip',
+	top: '3%',
 	editable: false,
-	left: '5%',
-	horizontalWrap: true
+	left: '3%',
+	right: '3%',
+	horizontalWrap: true,
+	height: Ti.UI.SIZE,
+	contentHeight: Ti.UI.SIZE
+}
+
+"#exhibitInfoView":{
+	height: Ti.UI.SIZE,
+	contentHeight: Ti.UI.SIZE
 }
 
 "#exhibitInfoScrollView": {

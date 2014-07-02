@@ -6,16 +6,19 @@
 				<ScrollableView id="exhibitsCarousel">
 					<View id="placeholder" height='180dip'></View>
 				</ScrollableView>
-				<View class="headingRow">
+				<View id = "headingRow" class="headingRow">
 					<Label class="headingText">Check out our Stations</Label>
+					<Button id="expanderButton"></Button>
 				</View>
 				<View id="collapsibleInfoView">
 					<Label id="collapsibleInfoLabel"></Label>
 				</View>
-				<View layout='vertical' height=Ti.UI.SIZE>
+				<!--<View layout='vertical' height=Ti.UI.FILL> -->
 					<ScrollView id="componentScrollView"></ScrollView>
-					<Label id="exhibitInfoLabel"></Label>
-				</View>
+					<View id="exhibitInfoView" layout='vertical'>
+						<Label id="exhibitInfoLabel"></Label>
+					</View>
+				
 			</ScrollView>
 		</View>	
 	</Window>

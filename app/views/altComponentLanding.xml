@@ -1,5 +1,5 @@
 <Alloy>
-	<Window class="container" backgroundColor="black" top="10dip">
+	<Window class="container" backgroundColor="black">
 
 	</Window>
 </Alloy>
