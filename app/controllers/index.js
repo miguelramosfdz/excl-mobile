@@ -17,6 +17,7 @@ function getAnalyticsPageTitle () { return analyticsPageTitle; }
 function setAnalyticsPageLevel (level) { analyticsPageLevel = level; }
 function getAnalyticsPageLevel () { return analyticsPageLevel; }
 
+$.navBar.hideBackBtn();
 retrieveJson(url, initializeWithJSON, this);
 
 function retrieveJson(jsonURL, callback, controller) {
@@ -69,9 +70,15 @@ function createExhibitsCarousel(exhibits){
 		}
 		var imageView = Ti.UI.createImageView(viewConfig);
 		imageView.add(createExhibitTitleLabel(exhibits[i].name));
+		if (OS_ANDROID){
+			imageView.addEventListener("click", function(e){ onExhibitsClick(exhibits); });
+		}
 		$.exhibitsCarousel.addView(imageView);		
 	}
-	$.exhibitsCarousel.addEventListener("singletap", function(e){ onExhibitsClick(exhibits); });
+	if (OS_IOS){
+		//Android doesn't respond to singletap event, so the Android event listener is added above
+		$.exhibitsCarousel.addEventListener("singletap", function(e){ onExhibitsClick(exhibits); });
+	}
 	$.exhibitsCarousel.addEventListener("scrollend", function(e){ onExhibitsScroll(e, exhibits); });
 }
 

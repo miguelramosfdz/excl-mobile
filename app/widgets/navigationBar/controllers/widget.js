@@ -8,3 +8,6 @@ function menu(e){
 
 Alloy.Globals.navController.addKioskModeListener($.flyoutBtn);
 
+exports.hideBackBtn = function() {
+	$.backBtn.visible = false;
+};

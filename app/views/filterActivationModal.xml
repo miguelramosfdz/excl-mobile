@@ -1,6 +1,4 @@
 <Alloy>
-	<Collection src="filter">
-	
 	<Window class="container" modal="true" layout="vertical">
 		<View id="titleBar" height="35dip" backgroundColor="black">
 			<Label class="title" left="10dip">
