@@ -46,13 +46,15 @@
 "#collapsibleInfoLabel[platform=ios formFactor=handheld]": {
 	font: {
 		fontSize: '14dip'
-	}
+	},
+	height: Ti.UI.SIZE
 }
 
 "#collapsibleInfoLabel[platform=ios formFactor=tablet]": {
 	font: {
 		fontSize: '20dip'
-	}
+	},
+	height: Ti.UI.SIZE
 }
 
 ".headingRow": {
