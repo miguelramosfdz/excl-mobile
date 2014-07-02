@@ -28,8 +28,8 @@ function createPostView(post) {
 	
 	args = {
 		backgroundColor: 'black',
-		opacity: 0.5,
-		height: '20%',
+		opacity: 0.6,
+		height: Ti.UI.SIZE,
 		top: 0
 	};
 	var titleBar = Ti.UI.createView(args);
