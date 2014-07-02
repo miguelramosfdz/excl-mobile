@@ -14,7 +14,7 @@ function setPathForLibDirectory(apiCallsLib, parseCallsLib) {
 function createNetworkErrorDialog(e){
 	var dialog = Ti.UI.createAlertDialog({
 	    buttonNames: ['Try Again'],
-	    message: 'Looks like your network connection is having a little too much fun at the moment!',
+	    message: 'Looks like your network connection is playing hide and seek!',
 	    title: 'Poor Connection',
 	    persistent: true
 	});
