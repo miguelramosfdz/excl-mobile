@@ -1,8 +1,3 @@
-//Testing variable
-var selectedAges = ["0", "2-3", "4", "6", "13+", "Adult"];
-//will become: alloy.collection.filter
-////
-
 var args = arguments[0] || {};
 var component = args;
 var componentID = component.get('id');
@@ -10,9 +5,11 @@ var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
 var hashOrderedPostsBySection = {};
 var hashOrderedPostsByAge = {};
+var selectedAges;
 
 var allPosts;
 var initialLoad = false;
+var genericAllAgesSectionTitle = "For All Selected Ages";
 
 var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
 var loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
@@ -116,15 +113,12 @@ function checkIfAgeFilterOn(allPosts) {
 
 function organizeBySection(allPosts) {
 	hashOrderedPostsBySection = {};
-
 	for (var i = 0; i < allPosts.length; i++) {
 		compileHashOfSections(allPosts[i], hashOrderedPostsBySection);
 	}
 	sortPostsIntoSections(hashOrderedPostsBySection);
-
-	Ti.API.info("110: " + JSON.stringify(hashOrderedPostsBySection));
+	Ti.API.info("Organized Content: " + JSON.stringify(hashOrderedPostsBySection));
 	Ti.API.info("Finished Organizing by Section");
-
 	checkPostViewSpacing();
 }
 
@@ -136,16 +130,18 @@ function compileHashOfSections(post, hash) {
 
 function organizeByAge(allPosts) {
 	hashOrderedPostsByAge = {};
+
+	selectedAges = parseFilterHashIntoArray(JSON.stringify(Alloy.Collections.filter));
+	Ti.API.info("Age Filter: " + JSON.stringify(selectedAges));
+
 	for (var i = 0; i < allPosts.length; i++) {
 		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
 	}
-
 	hashOrderedPostsByAge = replaceHashKeysWithFilterHeadings(hashOrderedPostsByAge);
 	sortPostsIntoSections(hashOrderedPostsByAge);
 
-	Ti.API.info("110: " + JSON.stringify(hashOrderedPostsByAge));
+	Ti.API.info("Organized Content: " + JSON.stringify(hashOrderedPostsByAge));
 	Ti.API.info("Finished Filtering by Age");
-
 	checkPostViewSpacing();
 }
 
@@ -160,8 +156,8 @@ function returnHashKeys(hash) {
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
-	if (postAgeRange == selectedAges || postAgeRange == "0") {
-		addItemArrayToHash("0", postAgeRange, hashOrderedPostsByAge);
+	if ((postAgeRange != selectedAges && selectedAges.length != 1) || postAgeRange == "0" || (selectedAges.length == 1 && selectedAges[0] == "0")) {
+		addItemArrayToHash("0", post, hashOrderedPostsByAge);
 	} else {
 		for (var i = 0; i < selectedAges.length; i++) {
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
@@ -171,14 +167,9 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 }
 
 function addItemArrayToHash(key, itemArray, hash) {
-
-	////////////GO HERE TO FIX PASSING OF [0] TO FOR ALL AGES
-
 	if (JSON.stringify(itemArray) != ["0"]) {
-
 		if (hash[key]) {
 			hash[key] = hash[key].concat(itemArray);
-			//hash[key] = itemArray;
 		} else {
 			hash[key] = [].concat(itemArray);
 		}
@@ -222,7 +213,7 @@ function parseStringIntoArray(st, deliniator) {
 function replaceStringWithFilterHeading(st) {
 	var newSt = "";
 	if (st == "0") {
-		newSt = "For All Selected Ages";
+		newSt = genericAllAgesSectionTitle;
 	} else if (st.toLowerCase() == "adult") {
 		newSt = "For " + st + "s";
 	} else if (!Alloy.Globals.isNumber(st[0])) {
@@ -253,15 +244,22 @@ function sortPostsIntoSections(hash) {
 		//cycle through hash keys
 		var postCollection = Alloy.createCollection('post');
 		stepIntoHash(hash, hashKeys[i], postCollection);
-		args = {
-			posts : postCollection
-		};
+
+		Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
+
+		//if (hashKeys[i] != genericAllAgesSectionTitle && JSON.stringify(postCollection) != "[]") {
+		if (JSON.stringify(postCollection) != "[]") {
+
+			args = {
+				posts : postCollection
+			};
+		}
 		var postScroller = Alloy.createController('postScroller', args);
 		postScroller.sectionTitle.text = hashKeys[i];
-		
+
 		$.scrollView.add(postScroller.getView());
 	}
-	
+
 }
 
 function stepIntoHash(hash, key, postCollection) {
@@ -283,24 +281,37 @@ function stepIntoPostDictionaryCollection(dict, postCollection) {
 		key = returnHashKeys(dict)[i];
 		stepIntoPostDictionary(dict, key, post);
 	}
-	Ti.API.info("Post: " + JSON.stringify(post));
+	//Ti.API.info("Post: " + JSON.stringify(post));
+	post.set({
+		raw : dict
+	});
 	postCollection.add(post);
 }
 
 function stepIntoPostDictionary(dict, key, post) {
 	//This level is a key >>> examine key-value pair
 	if (key == "name") {
-		Ti.API.info("name: " + JSON.stringify(dict[key]));
 		post.set({
 			name : dict[key]
 		});
 	}
 	if (key == "image") {
-		Ti.API.info("image: " + JSON.stringify(dict[key]));
 		post.set({
 			image : dict[key]
 		});
 	}
+}
+
+function parseFilterHashIntoArray(ary) {
+	var newAry = ["0"];
+	ary = JSON.parse(ary);
+	for (var i = 0; i < ary.length; i++) {
+		var hash = ary[i];
+		if (hash["active"] == true) {
+			newAry.push(hash["name"]);
+		}
+	}
+	return newAry;
 }
 
 function init() {
