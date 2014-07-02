@@ -17,6 +17,7 @@ function createFilterView(filter) {
 	var color = 'white';
 	if(OS_IOS) {
 		color = 'black';
+		$.titleBar.top = '10dip';
 		$.hint.color = 'white';
 	}
 	

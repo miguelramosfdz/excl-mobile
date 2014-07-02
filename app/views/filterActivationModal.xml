@@ -2,7 +2,7 @@
 	<Collection src="filter">
 	
 	<Window class="container" modal="true" layout="vertical">
-		<View height="35dip" backgroundColor="black" top="10dip">
+		<View id="titleBar" height="35dip" backgroundColor="black">
 			<Label class="title" left="10dip">
 				Customize Learning
 			</Label>

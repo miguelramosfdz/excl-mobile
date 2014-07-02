@@ -2,13 +2,9 @@
 	<View class="container" layout="vertical">
 		<Label id="sectionTitle">section title</Label>
 		
-		<ScrollableView>
+		<ScrollableView id="scroller">
 			<View>
-				<ImageView id="postImage" image="/finterns.png"/>
-			
-				<View id="postTitleBar">
-					<Label id="postTitle" text="post name"/>
-				</View>
+				<Label text="placeholder" color="white"/>
 			</View>
 		</ScrollableView>
 	</View>

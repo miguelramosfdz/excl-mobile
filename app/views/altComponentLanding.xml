@@ -1,6 +1,8 @@
 <Alloy>
-	<Window class="container">
-		<Require type="view" src="postScroller"/>
+	<Window class="container" backgroundColor="black" top="10dip">
+		<View>
+			<Require type="view" src="postScroller"/>
+		</View>
 	</Window>
 </Alloy>
 
