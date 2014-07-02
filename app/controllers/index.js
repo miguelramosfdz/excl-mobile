@@ -120,6 +120,7 @@ function onExhibitsClick(exhibits){
 }
 
 function onExhibitsScroll(e, exhibits) {
+	$.collapsibleInfoView.height = $.collapsibleInfoView.height; //Fixes bug on iOS where components wouldn't scroll if collapsible info collapsed
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
