@@ -9,3 +9,5 @@ build
 Resources
 .settings
 coverage
+app/assets/images/icons_ios/expander_collapse.xcf
+app/assets/images/icons_ios/expander_expand.xcf
