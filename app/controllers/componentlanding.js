@@ -35,6 +35,9 @@ exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
 exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
 exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
+Alloy.Models.app.on("change:customizeLearning", detectEvent());
+var ageFilterOn;
+
 function changeTitleOfThePage(name) {
 	$.componentlanding.title = name;
 }
@@ -61,14 +64,11 @@ function clearOrderedPostHashes() {
 	$.scrollView.removeAllChildren();
 }
 
-function setSwitchEvent(view) {
-	//DEPRECIATED///////////////////////////////////////////////////////////////////////
-	$.sortSwitch.addEventListener("change", function(e) {
-		Ti.API.info("Switch toggled: " + $.sortSwitch.value);
-		clearOrderedPostHashes();
-		addSpinner();
-		retrieveComponentData();
-	});
+function detectEvent() {
+	ageFilterOn = Alloy.Models.app.get("customizeLearning");
+	clearOrderedPostHashes();
+	addSpinner();
+	retrieveComponentData(ageFilterOn);
 }
 
 function retrieveComponentData() {
@@ -96,7 +96,6 @@ function removeSpinner() {
 }
 
 function checkIfAgeFilterOn(allPosts) {
-	//CHANGE REFERENCE TO SWITCH TO REF TO GLOBAL CHECKING FOR AGE SET ENABLED
 	if ($.sortSwitch.value == true) {
 		$.sortIndicator.text = "Filter By Age On";
 		$.sortIndicator.color = "#00CC00";
@@ -196,23 +195,22 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
 	if (selectedAges.length > 1) {
-		
+
 		/*Below is commented out for I don't know why but it is required (albeit buggy) to check for:
-		 * Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
-		 * Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
-		 * Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
-		 */
-			
-		
+		* Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
+		* Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
+		* Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
+		*/
+
 		// Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
 		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
-	// } else if (checkIfAbbrevArray(postAgeRange)) {
+		// } else if (checkIfAbbrevArray(postAgeRange)) {
 		// Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
 		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
-	// } else if (checkIfArrayInArray(postAgeRange, selectedAges)) {
+		// } else if (checkIfArrayInArray(postAgeRange, selectedAges)) {
 		// Ti.API.info("3-Adding to zed: " + JSON.stringify(post));
 		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
-	// } else {
+		// } else {
 
 		Ti.API.info("Adding to other: " + JSON.stringify(post));
 
