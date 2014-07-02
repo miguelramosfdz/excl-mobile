@@ -4,7 +4,9 @@ var filters = Alloy.Collections.filter;
 for(var i = 0; i < filters.size(); i++)
 {
 	var filter = filters.at(i);
-	var row = createFilterView(filter);
+	var row = Ti.UI.createTableViewRow();
+	filter = createFilterView(filter);
+	row.add(filter);
 	$.table.add(row);
 };
 
@@ -12,8 +14,14 @@ function createFilterView(filter) {
 	var name = filter.get('name');
 	var active = filter.get('active');
 	
+	var color = 'white';
+	if(OS_IOS) {
+		color = 'black';
+		$.hint.color = 'white';
+	}
+	
 	var args = {
-		color : '#FFFFFF',
+		color : color,
 		font : {
 			fontFamily : 'Helvetica Neue',
 			fontSize : '22dp',
@@ -34,7 +42,7 @@ function createFilterView(filter) {
 		filter.set('active', _switch.value);
 	});
 	
-	var view = Ti.UI.createTableViewRow();
+	var view = Ti.UI.createView();
 	view.add(label);
 	view.add(_switch);
 	

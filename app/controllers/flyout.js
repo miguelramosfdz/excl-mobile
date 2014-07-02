@@ -18,7 +18,10 @@ function bestForAgesHandler(e) {
 	var ready = Alloy.Collections.filter.ready;
 	
 	if(ready) Alloy.createController('filterActivationModal').getView().open();
-	else alert('filters not yet retrieved');
+	else {
+		Alloy.Models.app.retrieveFilters();
+		alert('Attempting to retrieve filters.  Try again in a moment.');
+	}
 }
 
 function enableAgeFilter(){
