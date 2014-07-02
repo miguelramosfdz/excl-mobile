@@ -24,6 +24,7 @@ function getAnalyticsPageTitle () { return analyticsPageTitle; }
 function setAnalyticsPageLevel (level) { analyticsPageLevel = level; }
 function getAnalyticsPageLevel () { return analyticsPageLevel; }
 
+$.navBar.hideBackBtn();
 retrieveJson(url, initializeWithJSON, this);
 
 function retrieveJson(jsonURL, callback, controller) {
