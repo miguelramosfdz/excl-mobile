@@ -73,18 +73,18 @@ function setSwitchEvent() {
 }
 
 function retrieveComponentData() {
-	if (!initialLoad) {
-		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-			changeTitleOfThePage(returnedData.data.component.name);
-			allPosts = returnedData.data.component.posts;
-			initialLoad = true;
-			checkIfAgeFilterOn(allPosts);
-			checkPostViewSpacing();
-		});
-	} else {
+	//if (!initialLoad) {
+	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+		changeTitleOfThePage(returnedData.data.component.name);
+		allPosts = returnedData.data.component.posts;
+		initialLoad = true;
 		checkIfAgeFilterOn(allPosts);
 		checkPostViewSpacing();
-	}
+	});
+	//} else {
+	// checkIfAgeFilterOn(allPosts);
+	// checkPostViewSpacing();
+	//}
 }
 
 function addSpinner() {
@@ -98,7 +98,7 @@ function removeSpinner() {
 
 function checkIfAgeFilterOn(allPosts) {
 	//CHANGE REFERENCE TO SWITCH TO REF TO GLOBAL CHECKING FOR AGE SET ENABLED
-	if ($.sortSwitch.value == true) {
+	if ($.sortSwitch.value == false) {
 		$.sortIndicator.text = "Filter By Age On";
 		$.sortIndicator.color = "#00CC00";
 		organizeByAge(allPosts);
@@ -125,7 +125,7 @@ function organizeBySection(allPosts) {
 
 function compileHashOfSections(post, hash) {
 	if (post.section) {
-		addItemArrayToHash(post.section, "["+ post +"]", hash);
+		addItemArrayToHash(post.section, "[" + post + "]", hash);
 	}
 }
 
@@ -135,6 +135,9 @@ function organizeByAge(allPosts) {
 		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
 	}
 	hashOrderedPostsByAge = replaceHashKeysWithFilterHeadings(hashOrderedPostsByAge);
+
+	//Ti.API.info("110: " + JSON.stringify(hashOrderedPostsByAge));
+
 	sortPostsIntoSections(hashOrderedPostsByAge);
 
 	Ti.API.info("Did it happen?");
@@ -151,6 +154,7 @@ function returnHashKeys(hash) {
 }
 
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
+
 	var postAgeRange = JSON.parse("[" + repairEmptyAgeRange(post.age_range) + "]");
 	if (postAgeRange == selectedAges | postAgeRange == 0) {
 		addItemArrayToHash(0, postAgeRange, hashOrderedPostsByAge);
@@ -163,10 +167,17 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 }
 
 function addItemArrayToHash(key, itemArray, hash) {
-	if (hash[key]) {
-		hash[key] = hash[key].concat(itemArray);
+
+	//Ti.API.info("103: " + key + ", " + JSON.stringify(itemArray));
+	if (JSON.stringify(itemArray) != "[0]") {
+		if (hash[key]) {
+			//hash[key] = hash[key].concat(itemArray);
+			hash[key] = itemArray;
+		} else {
+			hash[key] = [].concat(itemArray);
+		}
 	} else {
-		hash[key] = itemArray;
+		Ti.API.info("Empty Array prevented: " + JSON.stringify(itemArray));
 	}
 }
 
@@ -216,10 +227,12 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 }
 
 function sortPostsIntoSections(hash) {
+	Ti.API.info("103");
 	var hashLength = returnHashKeys(hash).length;
 	for (key in hash) {
 		var postScroller = Alloy.createController('postScroller');
 		//cycle through hash keys
+		Ti.API.info("104");
 		postScroller.sectionTitle = key;
 		stepIntoHash(hash, key, postScroller);
 		Ti.API.info("Adding...");
@@ -233,6 +246,9 @@ function stepIntoHash(hash, key, scroller) {
 	for (var i = 0; i < length; i++) {
 		//send single dictionary
 		dict = hash[key][i];
+		
+		Ti.API.info("107: " + JSON.stringify(dict));
+		
 		stepIntoPostDictionaryCollection(dict, scroller);
 	}
 }
@@ -244,8 +260,14 @@ function stepIntoPostDictionaryCollection(dict, scroller) {
 	for (var i = 0; i < length; i++) {
 		//send single key
 		key = returnHashKeys(dict)[i];
+		
+		Ti.API.info("109: " + JSON.stringify(key));
+		
 		stepIntoPostDictionary(dict, key, post);
 	}
+
+	Ti.API.info("post: " + JSON.stringify(post));
+
 	scroller.posts.add(post);
 }
 
@@ -253,18 +275,21 @@ function stepIntoPostDictionary(dict, key, post) {
 	//This level is a key
 	//examine key-value pair
 	if (key == "name") {
-		post.name = dict[key];
+		Ti.API.info("110a: " + JSON.stringify(key) + ", " + JSON.stringify(dict[key]));
+		//ERROR IS SETTING POST NAME >>> NAME VARIABLE NOT FOUND
+		post.set(name, dict[key]);
 	}
 	if (key == "image") {
-		post.image = dict[key];
+		Ti.API.info("110b: " + JSON.stringify(key) + ", " + JSON.stringify(dict[key]));
+		post.set(image, dict[key]);
 	}
 }
 
 function init() {
 	$.sortSwitch.value = false;
-	
+
 	//alert("did this work? " + JSON.stringify(alloy.collection.filters));
-	
+
 	setSwitchEvent();
 	retrieveComponentData();
 }
