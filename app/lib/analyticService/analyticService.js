@@ -18,7 +18,7 @@ AnalyticsController.prototype.getTracker = function() {
 	if (this.tracker == null && this.trackerID != null) {
 		this.GA = require('analytics.google');
 		this.tracker = this.GA.getTracker(this.trackerID);
-		this.GA.debug = true; // Outputs more explicit messages to the console
+		//this.GA.debug = true; // Outputs more explicit messages to the console
 		//this.GA.trackUncaughtExceptions = true;
 	}
 	return this.tracker;
@@ -32,14 +32,14 @@ AnalyticsController.prototype.setTrackerID = function(trackerID) {
 	this.trackerID = trackerID;
 };
 
-AnalyticsController.prototype.trackScreen = function(screenName, pageLevel){
+AnalyticsController.prototype.trackScreen = function(screenName, pageLevel, kioskMode){
 	var tracker = this.getTracker();
 	if (!tracker) {return false;}
 
 	var customDimensionObject = {};
 	customDimensionObject[this.pageLevelCustomDimensionIndex] = pageLevel;
 	
-	if(Alloy.Globals.navController.isInKioskMode())
+	if(kioskMode)
 		customDimensionObject[this.kioskModeCustomDimensionIndex] = "on";
 	else
 		customDimensionObject[this.kioskModeCustomDimensionIndex] = "off";
@@ -47,9 +47,11 @@ AnalyticsController.prototype.trackScreen = function(screenName, pageLevel){
 	apiCalls.info("Now tracking screen " + screenName);
 	var properties = {
 		path: screenName,
-		customDimension: customDimensionObject
+		customDimension: customDimensionObject,
+		toString: function(){	return this.path;}		// Overwrites the Object toString which returns [object Object]. This allows screen tracking in GA module 1.0
 	};
-	tracker.trackScreen(properties);
+	//apiCalls.info(JSON.stringify(properties));
+	tracker.trackScreen(screenName);
 };
 
 AnalyticsController.prototype.trackEvent = function(category, action, label, value) {

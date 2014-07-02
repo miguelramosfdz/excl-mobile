@@ -35,12 +35,13 @@ describe('Analytics Service', function(){
 		it('should call tracker.trackScreen with correct arguments', function() {
 			var customDimensionObject = {};
 			customDimensionObject[serviceWithStub.pageLevelCustomDimensionIndex] = "Page Level";
+			customDimensionObject[serviceWithStub.kioskModeCustomDimensionIndex] = "off";
 			var properties = {
 				path: "Screen Name",
 				customDimension: customDimensionObject
 			};
 
-			serviceWithStub.trackScreen("Screen Name", "Page Level");
+			serviceWithStub.trackScreen("Screen Name", "Page Level", false);
 			assert(JSON.stringify(trackScreenSpy.args[0][0]) == JSON.stringify(properties), "\n\tExpected:\t" + JSON.stringify(properties) + "\n\tActual:\t\t" + JSON.stringify(trackScreenSpy.args[0][0]));
 		});
 		it('should return false if tracker is not defined', function() {
@@ -60,8 +61,8 @@ describe('Analytics Service', function(){
 	
 	describe('#setTrackerID()', function() {
 		it('should set tracker ID', function() {
-			serviceWithStub.setTrackerID('asdf');
-			assert(serviceWithStub.trackerID = 'asdf');
+			serviceWithStub.setTrackerID('GA-XXXXXXXX-X');
+			assert(serviceWithStub.trackerID = 'GA-XXXXXXXX-X');
 		});
 	});
 	
@@ -70,9 +71,13 @@ describe('Analytics Service', function(){
 			serviceWithoutStub.setTrackerID(null);
 			assert(!serviceWithoutStub.getTracker());
 		});
+		it('should return falsy if invalid tracker ID set', function() {
+			serviceWithoutStub.setTrackerID('GA-123123123123');
+			assert(!serviceWithoutStub.getTracker());
+		});
 		it("should return tracker if tracker ID set", function() {
 			serviceWithStub.setTrackerID('GA-XXXXXXXX-X');
-			assert.equal(fakeTracker, serviceWithStub.getTracker(), "return tracker is not the expected tracker object");
+			assert.equal(fakeTracker, serviceWithStub.getTracker(), "returned tracker is not the expected tracker object");
 		});
 	});
 });
