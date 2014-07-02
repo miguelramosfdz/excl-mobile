@@ -99,8 +99,7 @@
 }
 
 "#exhibitInfoView":{
-	height: Ti.UI.SIZE,
-	contentHeight: Ti.UI.SIZE
+	height: "100dip"
 }
 
 "#exhibitInfoScrollView": {

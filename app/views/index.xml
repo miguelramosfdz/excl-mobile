@@ -13,12 +13,10 @@
 				<View id="collapsibleInfoView">
 					<Label id="collapsibleInfoLabel"></Label>
 				</View>
-				<!--<View layout='vertical' height=Ti.UI.FILL> -->
-					<ScrollView id="componentScrollView"></ScrollView>
-					<View id="exhibitInfoView" layout='vertical'>
-						<Label id="exhibitInfoLabel"></Label>
-					</View>
-				
+				<ScrollView id="componentScrollView"></ScrollView>
+				<View id="exhibitInfoView" layout='vertical'>
+					<Label id="exhibitInfoLabel"></Label>
+				</View>
 			</ScrollView>
 		</View>	
 	</Window>
