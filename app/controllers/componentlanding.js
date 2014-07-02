@@ -119,14 +119,13 @@ function organizeBySection(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
 		compileHashOfSections(allPosts[i], hashOrderedPostsBySection);
 	}
-	Ti.API.info("sections: " + JSON.stringify(hashOrderedPostsBySection));
 	sortPostsIntoSections(hashOrderedPostsBySection);
 	checkPostViewSpacing();
 }
 
 function compileHashOfSections(post, hash) {
 	if (post.section) {
-		addItemArrayToHash(post.section, "[" + post + "]", hash);
+		addItemArrayToHash(post.section, post, hash);
 	}
 }
 
@@ -241,30 +240,17 @@ function sortPostsIntoSections(hash) {
 
 function stepIntoHash(hash, key, scroller) {
 	//This level is a list of dictionaries
-	
-	Ti.API.info("99: " + JSON.stringify(hash));
-	
-	var length = hash[key].length;
-	for (var i = 0; i < length; i++) {
-		
-		Ti.API.info("99.5: " + JSON.stringify(hash[key]));
-		Ti.API.info("99.75: " + JSON.stringify(returnHashKeys(hash)));
-		
-		
+	var dictList = hash[key];
+	for (var i = 0; i < dictList.length; i++) {
 		//send single dictionary
-		dict = returnHashKeys(hash)[i];
+		dict = dictList[i];
 		stepIntoPostDictionaryCollection(dict, scroller);
 	}
 }
 
 function stepIntoPostDictionaryCollection(dict, scroller) {
 	//This level is a single dictionary
-	Ti.API.info("100: " + JSON.stringify(dict));
-	
 	var length = returnHashKeys(dict).length;
-	
-	Ti.API.info("101: " + length);
-	
 	var post = Alloy.createModel('post');
 	for (var i = 0; i < length; i++) {
 		//send single key
