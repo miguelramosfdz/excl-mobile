@@ -54,19 +54,16 @@ function goToPostLandingPage(e) {
 
 function checkPostViewSpacing() {
 	if (OS_IOS) {
-		$.postView.bottom = "48dip";
+		$.scrollView.bottom = "48dip";
 	}
 }
 
 function clearOrderedPostHashes() {
 	hashOrderedPostsBySection = {};
 	hashOrderedPostsByAge = {};
-	// for(var c=$.ScrollView.children.length-1;c >= 0; c-- ) {
-        // $.ScrollView.remove( $.ScrollView.children[c] );
-    // }
 }
 
-function setSwitchEvent() {
+function setSwitchEvent(view) {
 	//DEPRECIATED///////////////////////////////////////////////////////////////////////
 	$.sortSwitch.addEventListener("change", function(e) {
 		Ti.API.info("Switch toggled: " + $.sortSwitch.value);
@@ -162,7 +159,7 @@ function returnHashKeys(hash) {
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
-	if (postAgeRange == selectedAges | postAgeRange == "0") {
+	if (postAgeRange == selectedAges || postAgeRange == "0") {
 		addItemArrayToHash("0", postAgeRange, hashOrderedPostsByAge);
 	} else {
 		for (var i = 0; i < selectedAges.length; i++) {
@@ -177,9 +174,7 @@ function addItemArrayToHash(key, itemArray, hash) {
 	////////////GO HERE TO FIX PASSING OF [0] TO FOR ALL AGES
 
 	if (JSON.stringify(itemArray) != ["0"]) {
-		
-		
-		
+
 		if (hash[key]) {
 			hash[key] = hash[key].concat(itemArray);
 			//hash[key] = itemArray;
@@ -265,10 +260,10 @@ function sortPostsIntoSections(hash) {
 		var postScroller = Alloy.createController('postScroller', args);
 		postScroller.sectionTitle.text = key;
 		Ti.API.info("key: " + key);
-		
+
 		Ti.API.info("adding scroller: " + JSON.stringify(postScroller));
-			
-		$.postView.add(postScroller.getView());
+
+		$.scrollView.add(postScroller.getView());
 	}
 	
 }
