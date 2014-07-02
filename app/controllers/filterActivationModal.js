@@ -4,10 +4,8 @@ var filters = Alloy.Collections.filter;
 for(var i = 0; i < filters.size(); i++)
 {
 	var filter = filters.at(i);
-	var row = Ti.UI.createTableViewRow();
 	filter = createFilterView(filter);
-	row.add(filter);
-	$.table.add(row);
+	$.filters.add(filter);
 };
 
 function createFilterView(filter) {
@@ -47,7 +45,10 @@ function createFilterView(filter) {
 	view.add(label);
 	view.add(_switch);
 	
-	return view;
+	var row = Ti.UI.createTableViewRow();
+	row.add(view);
+	
+	return row;
 }
 
 function closeWindow(e) {
