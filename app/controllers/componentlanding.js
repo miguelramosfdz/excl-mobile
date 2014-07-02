@@ -153,12 +153,69 @@ function returnHashKeys(hash) {
 	return listKeys;
 }
 
+function checkIfArrayInArray(arySmall, aryLarge) {
+
+	if (checkIfAbbrevArray(aryLarge)) {
+		return true;
+	}
+
+	lengthSmall = arySmall.length;
+	lengthLarge = aryLarge.length;
+
+	if (lengthSmall > lengthLarge) {
+		var holder = arySmall;
+		arySmall = aryLarge;
+		aryLarge = arySmall;
+	}
+
+	Ti.API.info("aryLarge: " + JSON.stringify(aryLarge) + ", small: " + JSON.stringify(arySmall));
+
+	for (var i = 0; i < lengthLarge - lengthSmall; i++) {
+		var subLarge = [];
+		for (var j = i; j < i + lengthSmall; j++) {
+			subLarge.push(aryLarge[j]);
+		}
+
+		Ti.API.info("sublarge: " + JSON.stringify(subLarge) + ", small: " + JSON.stringify(arySmall));
+
+		if (arySmall == aryLarge) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function checkIfAbbrevArray(ary) {
+	if (ary.length == 1 && ary[0] == "0") {
+		return true;
+	}
+	return false;
+}
+
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
-	if ((postAgeRange != selectedAges && selectedAges.length != 1) || postAgeRange == "0" || (selectedAges.length == 1 && selectedAges[0] == "0")) {
-		addItemArrayToHash("0", post, hashOrderedPostsByAge);
-	} else {
+	if (selectedAges.length > 1) {
+		
+		/*Below is commented out for I don't know why but it is required (albeit buggy) to check for:
+		 * Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
+		 * Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
+		 * Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
+		 */
+			
+		
+		// Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
+		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
+	// } else if (checkIfAbbrevArray(postAgeRange)) {
+		// Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
+		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
+	// } else if (checkIfArrayInArray(postAgeRange, selectedAges)) {
+		// Ti.API.info("3-Adding to zed: " + JSON.stringify(post));
+		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
+	// } else {
+
+		Ti.API.info("Adding to other: " + JSON.stringify(post));
+
 		for (var i = 0; i < selectedAges.length; i++) {
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
 			addItemArrayToHash(selectedAges[i], itemArray, hashOrderedPostsByAge);
