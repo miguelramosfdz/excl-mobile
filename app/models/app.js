@@ -22,13 +22,19 @@ exports.definition = {
 						
 						for(var i = 0; i < filters.length; i++) {
 							var filter = filters[i];
-							var args = {
+							filter = {
 								name: filter,
 								active: false
 							};
-							filter = Alloy.createModel('filter', args);
 							Alloy.Collections.filter.add(filter);
 						}
+						filters = Alloy.Collections.filter;
+						
+						for(var i = 0; i < filters.size(); ++i) {
+							Alloy.Models.app.listenTo(filters.at(i), 'change:active', function(e) {
+								Alloy.Models.app.trigger('change:customizeLearning');
+							});
+						};
 						Alloy.Collections.filter.ready = true;
 					}
 				});
