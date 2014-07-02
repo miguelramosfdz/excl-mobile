@@ -1,9 +1,3 @@
-//Testing variable
-//var selectedAges = ["0", "4", "6", "13+"];
-var selectedAges = parseFilterHashIntoArray(JSON.stringify(Alloy.Collections.filter));
-//will become: alloy.collection.filter
-////
-
 var args = arguments[0] || {};
 var component = args;
 var componentID = component.get('id');
@@ -11,6 +5,7 @@ var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
 var hashOrderedPostsBySection = {};
 var hashOrderedPostsByAge = {};
+var selectedAges;
 
 var allPosts;
 var initialLoad = false;
@@ -54,11 +49,11 @@ function goToPostLandingPage(e) {
 	Alloy.Globals.navController.open(controller);
 }
 
-// function checkPostViewSpacing() {
-// if (OS_IOS) {
-// $.scrollView.bottom = "48dip";
-// }
-// }
+function checkPostViewSpacing() {
+	if (OS_IOS) {
+		$.scrollView.bottom = "48dip";
+	}
+}
 
 function clearOrderedPostHashes() {
 	hashOrderedPostsBySection = {};
@@ -83,11 +78,11 @@ function retrieveComponentData() {
 			allPosts = returnedData.data.component.posts;
 			initialLoad = true;
 			checkIfAgeFilterOn(allPosts);
-			//checkPostViewSpacing();
+			checkPostViewSpacing();
 		});
 	} else {
 		checkIfAgeFilterOn(allPosts);
-		//checkPostViewSpacing();
+		checkPostViewSpacing();
 	}
 }
 
@@ -124,7 +119,7 @@ function organizeBySection(allPosts) {
 	sortPostsIntoSections(hashOrderedPostsBySection);
 	Ti.API.info("Organized Content: " + JSON.stringify(hashOrderedPostsBySection));
 	Ti.API.info("Finished Organizing by Section");
-	//checkPostViewSpacing();
+	checkPostViewSpacing();
 }
 
 function compileHashOfSections(post, hash) {
@@ -135,16 +130,19 @@ function compileHashOfSections(post, hash) {
 
 function organizeByAge(allPosts) {
 	hashOrderedPostsByAge = {};
+
+	selectedAges = parseFilterHashIntoArray(JSON.stringify(Alloy.Collections.filter));
+	Ti.API.info("Age Filter: " + JSON.stringify(selectedAges));
+
 	for (var i = 0; i < allPosts.length; i++) {
 		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
 	}
 	hashOrderedPostsByAge = replaceHashKeysWithFilterHeadings(hashOrderedPostsByAge);
 	sortPostsIntoSections(hashOrderedPostsByAge);
-	
-	
+
 	Ti.API.info("Organized Content: " + JSON.stringify(hashOrderedPostsByAge));
 	Ti.API.info("Finished Filtering by Age");
-	//checkPostViewSpacing();
+	checkPostViewSpacing();
 }
 
 function returnHashKeys(hash) {
@@ -246,7 +244,7 @@ function sortPostsIntoSections(hash) {
 		//cycle through hash keys
 		var postCollection = Alloy.createCollection('post');
 		stepIntoHash(hash, hashKeys[i], postCollection);
-		
+
 		Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
 
 		//if (hashKeys[i] != genericAllAgesSectionTitle && JSON.stringify(postCollection) != "[]") {
@@ -287,7 +285,7 @@ function stepIntoPostDictionaryCollection(dict, postCollection) {
 	post.set({
 		raw : dict
 	});
-		postCollection.add(post);
+	postCollection.add(post);
 }
 
 function stepIntoPostDictionary(dict, key, post) {
@@ -320,9 +318,6 @@ function init() {
 	$.sortSwitch.value = false;
 	setSwitchEvent();
 	retrieveComponentData();
-
-	Ti.API.info("Age Filter: " + JSON.stringify(selectedAges));
-
 }
 
 init();
