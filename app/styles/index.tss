@@ -20,6 +20,7 @@
 
 "#exhibitsCarousel[platform=android]": {
 	// This is an android hack
+	// This should probably be calculated based on ... something
 	height: '180dip'
 }
 
@@ -55,6 +56,16 @@
 
 "#expanderButton": {
 	left: "85%"
+}
+
+".headingText": {
+	color: 'white',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '22dip',
+		fontWeight: 'bold'
+	},
+	textAlign: 'center'
 }
 
 "#componentScrollView": {

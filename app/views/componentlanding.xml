@@ -1,15 +1,11 @@
 <Alloy>
 	<Window class="container" backgroundColor='#FFFFFF'>
-		<View layout="vertical">
+		<ScrollView layout="vertical" id="postView" contentWidth="100%">
 			<Widget src="navigationBar" id="navBar"/>
-			<TableView id="sortBar" class="sortBar">
-				<TableViewRow>
-					<Label id="sortIndicator" class="indicator"/>
-					<Switch id="sortSwitch" class= "switch" />
-				</TableViewRow>
-			</TableView>
-			<View layout="vertical" id="postView">
+			<View layout="horizontal" class="sortBar" id="sortBar">
+				<Label id="sortIndicator" class="indicator"/>
+				<Switch id="sortSwitch" class= "switch" />
 			</View>
-		</View>
+		</ScrollView>
 	</Window>
 </Alloy>
