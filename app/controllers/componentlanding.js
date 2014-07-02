@@ -266,14 +266,15 @@ function sortPostsIntoSections(hash) {
 		args = {
 			posts : postCollection
 		};
-		var postScroller = Alloy.createController('postScroller');
-		postScroller.sectionTitle = key;
+		var postScroller = Alloy.createController('postScroller', args);
+		postScroller.sectionTitle.text = key;
+		Ti.API.info("key: " + key);
 		
 		Ti.API.info("adding scroller: " + JSON.stringify(postScroller));
-		
+			
 		$.postView.add(postScroller.getView());
-	
 	}
+	
 }
 
 function stepIntoHash(hash, key, postCollection) {
