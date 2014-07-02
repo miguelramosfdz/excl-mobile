@@ -1,5 +1,5 @@
 //Testing variable
-var selectedAges = [0, 4, 6, 7, "Adult"];
+var selectedAges = [0, 4, 6, "13+", "Adult"];
 //will become: alloy.collection.filters
 ////
 
@@ -205,9 +205,9 @@ function replaceStringWithFilterHeading(st) {
 		newSt = "For All Selected Ages";
 	} else if (st.toLowerCase() == "adult") {
 		newSt = "For " + st + "s";
-	} else if (!Alloy.Globals.isNumber(st)) {
+	} else if (!Alloy.Globals.isNumber(st[0])) {
 		newSt = "For " + st;
-	} else if (Alloy.Globals.isNumber(st)) {
+	} else if (Alloy.Globals.isNumber(st[0])) {
 		newSt = "For my " + st + " year old";
 	}
 	return newSt;
@@ -227,16 +227,14 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 }
 
 function sortPostsIntoSections(hash) {
-	Ti.API.info("103");
 	var hashLength = returnHashKeys(hash).length;
 	for (key in hash) {
 		var postScroller = Alloy.createController('postScroller');
 		//cycle through hash keys
-		Ti.API.info("104");
 		postScroller.sectionTitle = key;
 		stepIntoHash(hash, key, postScroller);
-		Ti.API.info("Adding...");
-		$.vertView.add(postScroller);
+		Ti.API.info("Adding has been disabled for now");
+		//$.vertView.add(postScroller);
 	}
 }
 
@@ -246,9 +244,6 @@ function stepIntoHash(hash, key, scroller) {
 	for (var i = 0; i < length; i++) {
 		//send single dictionary
 		dict = hash[key][i];
-		
-		Ti.API.info("107: " + JSON.stringify(dict));
-		
 		stepIntoPostDictionaryCollection(dict, scroller);
 	}
 }
@@ -260,28 +255,22 @@ function stepIntoPostDictionaryCollection(dict, scroller) {
 	for (var i = 0; i < length; i++) {
 		//send single key
 		key = returnHashKeys(dict)[i];
-		
-		Ti.API.info("109: " + JSON.stringify(key));
-		
 		stepIntoPostDictionary(dict, key, post);
 	}
 
-	Ti.API.info("post: " + JSON.stringify(post));
+	Ti.API.info("Post: " + JSON.stringify(post));
 
-	scroller.posts.add(post);
+	//scroller.posts.add(post);
 }
 
 function stepIntoPostDictionary(dict, key, post) {
 	//This level is a key
 	//examine key-value pair
 	if (key == "name") {
-		Ti.API.info("110a: " + JSON.stringify(key) + ", " + JSON.stringify(dict[key]));
-		//ERROR IS SETTING POST NAME >>> NAME VARIABLE NOT FOUND
-		post.set(name, dict[key]);
+		post.set({name: dict[key]});
 	}
 	if (key == "image") {
-		Ti.API.info("110b: " + JSON.stringify(key) + ", " + JSON.stringify(dict[key]));
-		post.set(image, dict[key]);
+		post.set({image: dict[key]});
 	}
 }
 
