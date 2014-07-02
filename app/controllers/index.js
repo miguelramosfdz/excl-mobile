@@ -178,13 +178,16 @@ function createLabeledPicView(item, type){
 	var itemContainer = Ti.UI.createView();
 	var image = Ti.UI.createImageView({
 		height: '100%',
-		width: '100%',
-		itemId: item.id
+		width: '100%'
 	});
+	var clickCatcher = Ti.UI.createView({
+		itemId: item.id
+	});//*/
 	image.image = item.image;
 	
 	itemContainer.add(image);
 	itemContainer.add(createTitleLabel(item.name, type));
+	itemContainer.add(clickCatcher);
 	return itemContainer;
 }
 
