@@ -68,7 +68,7 @@ function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
 	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
-		var viewConfig = {
+		/*var viewConfig = {
 			backgroundColor: "#253342",
 			width: Ti.UI.FILL,
 		 	image: '/images/700x400.png',
@@ -76,13 +76,12 @@ function createExhibitsCarousel(exhibits){
 		};
 		if(exhibits[i].image) {
 			viewConfig.image = exhibits[i].image;	
-		}
-		var imageView = Ti.UI.createImageView(viewConfig);
-		imageView.add(createExhibitTitleLabel(exhibits[i].name));
+		}//*/
+		var exhibitView = createExhibitTitleLabel(exhibits[i]);
 		if (OS_ANDROID){
-			imageView.addEventListener("click", function(e){ onExhibitsClick(exhibits); });
+			exhibitView.addEventListener("click", function(e){ onExhibitsClick(exhibits); });
 		}
-		$.exhibitsCarousel.addView(imageView);		
+		$.exhibitsCarousel.addView(exhibitView);		
 	}
 	if (OS_IOS){
 		//Android doesn't respond to singletap event, so the Android event listener is added above
@@ -91,27 +90,28 @@ function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.addEventListener("scrollend", function(e){ onExhibitsScroll(e, exhibits); });
 }
 
-function createExhibitTitleLabel(name){
-	var titleLabelView = Ti.UI.createView({
-		top: 0,
-		height: '7%',
-		backgroundColor: '#000',
-		opacity: 0.6
+function createExhibitTitleLabel(exhibit){
+	var itemContainer = Ti.UI.createView({
+		itemId: exhibit.id
 	});
-	var label = Ti.UI.createLabel({
-		top: 0,
-		left: "3%",
-		text: name,
-		color: 'white',
-		horizontalWrap: false,
-		font: {
-			fontFamily : 'Arial',
-			fontSize : '24dip',
-			fontWeight : 'bold'
-		}
+	var image = Ti.UI.createImageView({
+		width: '100%',
+		backgroundColor: "#253342",
+		width: Ti.UI.FILL,
+	 	image: '/images/700x400.png',
 	});
-	titleLabelView.add(label);
-	return titleLabelView;
+	// This is the view that catches a click event on the overall image/label combonation
+	var clickCatcher = Ti.UI.createView({
+		itemId: exhibit.id
+	});//*/
+	
+	if(exhibit.image)
+		image.image = exhibit.image;
+	
+	itemContainer.add(image);
+	itemContainer.add(createTitleLabel(exhibit.name, '25dip'));
+	itemContainer.add(clickCatcher);
+	return itemContainer;
 }
 
 function createHeadingRow(exhibits){
