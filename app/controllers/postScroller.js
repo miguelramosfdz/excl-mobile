@@ -52,8 +52,10 @@ function createPostView(post) {
 	
 	image.addEventListener('click', function(e) {
 		var args = post.get('raw');
-		post = Alloy.createController('postlanding', args);
-		Alloy.Globals.navController.open(post);
+		postController = Alloy.createController('postlanding', args);
+		postController.setAnalyticsPageTitle(post.get("name"));
+		postController.setAnalyticsPageLevel("Post Landing");
+		Alloy.Globals.navController.open(postController);
 	});
 	
 	return image;
