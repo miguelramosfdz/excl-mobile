@@ -2,7 +2,8 @@ exports.definition = {
 	config: {
 		defaults: {
 			name: "post name",
-			image: "/finterns.png"
+			image: "/finterns.png",
+			raw: {}
 		},
 		adapter: {
 			type: "properties",
