@@ -13,7 +13,10 @@ function openExhibitPage(e) {
 function bestForAgesHandler(e) {
 	var ready = Alloy.Collections.filter.ready;
 	
-	if(ready) Alloy.createController('filterActivationModal').getView().open();
+	if(ready) {
+		Alloy.Models.app.set('customizeLearning', true);
+		Alloy.createController('filterActivationModal').getView().open();
+	}
 	else {
 		Alloy.Models.app.retrieveFilters();
 		alert('Attempting to retrieve filters.  Try again in a moment.');

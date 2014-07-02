@@ -31,7 +31,7 @@ exports.definition = {
 						filters = Alloy.Collections.filter;
 						
 						for(var i = 0; i < filters.size(); ++i) {
-							Alloy.Models.app.listenTo(filters.at(i), 'change:active', function(e) {
+							filters.at(i).on('change:active', function(e) {
 								Alloy.Models.app.trigger('change:customizeLearning');
 							});
 						};
