@@ -363,7 +363,7 @@ function verifyAndValidataData() {
 	// Email validations?			<=======
 
 	if (!$.insertComment.value) {
-		alert("Please enter a comment. Its clearly NOT optional...");
+		alert("Please enter a comment. It's clearly NOT optional...");
 	} else {
 		var url = Alloy.Globals.rootWebServiceUrl + "/posts/" + post_content.id + "/comments";
 
@@ -377,7 +377,6 @@ function verifyAndValidataData() {
 			$.submitCommentFormView.visible = false;
 			$.thankYouMessageView.visible = true;
 		});
-
 	}
 }
 
