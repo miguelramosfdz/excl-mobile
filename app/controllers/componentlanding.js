@@ -1,5 +1,5 @@
 //Testing variable
-var selectedAges = [0, 4, 6, "13+", "Adult"];
+var selectedAges = ["0", "4", "6", "13+", "Adult"];
 //will become: alloy.collection.filters
 ////
 
@@ -264,8 +264,7 @@ function stepIntoPostDictionaryCollection(dict, scroller) {
 }
 
 function stepIntoPostDictionary(dict, key, post) {
-	//This level is a key
-	//examine key-value pair
+	//This level is a key >>> examine key-value pair
 	if (key == "name") {
 		Ti.API.info("name: " + JSON.stringify(dict[key]));
 		post.set({
@@ -282,9 +281,6 @@ function stepIntoPostDictionary(dict, key, post) {
 
 function init() {
 	$.sortSwitch.value = false;
-
-	//alert("did this work? " + JSON.stringify(alloy.collection.filters));
-
 	setSwitchEvent();
 	retrieveComponentData();
 }
