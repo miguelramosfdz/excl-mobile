@@ -14,20 +14,9 @@ if(posts) {
 	};
 	$.scroller.removeView($.placeholder);
 }
-else{
-	//No posts; supply no content for age image
-	post = createEmptyPostPage();
-	$.scroller.addView(post);
-	$.scroller.removeView($.placeholder);
-}
-
-
-function createEmptyPostPage(){
-	var page = Ti.UI.createView();
-	var filepath = OS_ANDROID? '/images/' : 'images/'; //Android requires starting slash
-	var image = Ti.UI.createImageView(filepath + 'No_content_for_age.png');
-	page.add(image);
-	return page;
+else{ //View is empty; insert no content message into placeholder
+	var filepath = OS_ANDROID? '/images/' : '/images/'; //Android requires starting slash
+	$.placeholderImage.image = filepath + 'No_content_for_age.png';
 }
 
 function createPostView(post) {

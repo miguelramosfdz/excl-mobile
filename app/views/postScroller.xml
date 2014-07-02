@@ -6,7 +6,7 @@
 		
 		<ScrollableView id="scroller" showPagingControl="true" overlayEnabled="true">
 			<View id="placeholder">
-				<Label text="placeholder" color="white"/>
+				<ImageView id="placeholderImage"/>
 			</View>
 		</ScrollableView>
 	</View>
