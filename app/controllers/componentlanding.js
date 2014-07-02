@@ -54,16 +54,17 @@ function goToPostLandingPage(e) {
 
 function checkPostViewSpacing() {
 	if (OS_IOS) {
-		$.postView.bottom = "48dip";
+		$.scrollView.bottom = "48dip";
 	}
 }
 
 function clearOrderedPostHashes() {
 	hashOrderedPostsBySection = {};
 	hashOrderedPostsByAge = {};
+	$.scrollView.removeAllChildren();
 }
 
-function setSwitchEvent() {
+function setSwitchEvent(view) {
 	//DEPRECIATED///////////////////////////////////////////////////////////////////////
 	$.sortSwitch.addEventListener("change", function(e) {
 		Ti.API.info("Switch toggled: " + $.sortSwitch.value);
@@ -158,15 +159,8 @@ function returnHashKeys(hash) {
 
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
-
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
-
-	Ti.API.info("Post age range: " + postAgeRange);
-
-	if (postAgeRange == selectedAges | postAgeRange == "0") {
-
-		Ti.API.info("Matched: " + JSON.stringify(postAgeRange));
-
+	if (postAgeRange == selectedAges || postAgeRange == "0") {
 		addItemArrayToHash("0", postAgeRange, hashOrderedPostsByAge);
 	} else {
 		for (var i = 0; i < selectedAges.length; i++) {
@@ -181,9 +175,7 @@ function addItemArrayToHash(key, itemArray, hash) {
 	////////////GO HERE TO FIX PASSING OF [0] TO FOR ALL AGES
 
 	if (JSON.stringify(itemArray) != ["0"]) {
-		
-		
-		
+
 		if (hash[key]) {
 			hash[key] = hash[key].concat(itemArray);
 			//hash[key] = itemArray;
@@ -255,25 +247,21 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 }
 
 function sortPostsIntoSections(hash) {
-	var hashLength = returnHashKeys(hash).length;
-	for (key in hash) {
+	var hashKeys = returnHashKeys(hash);
+	var hashLength = hashKeys.length;
+	for (var i = 0; i < hashLength; i++) {
 		//cycle through hash keys
 		var postCollection = Alloy.createCollection('post');
-		stepIntoHash(hash, key, postCollection);
-
-		Ti.API.info("Adding has been enabled?");
-
+		stepIntoHash(hash, hashKeys[i], postCollection);
 		args = {
 			posts : postCollection
 		};
-		var postScroller = Alloy.createController('postScroller');
-		postScroller.sectionTitle = key;
+		var postScroller = Alloy.createController('postScroller', args);
+		postScroller.sectionTitle.text = hashKeys[i];
 		
-		Ti.API.info("adding scroller: " + JSON.stringify(postScroller));
-		
-		$.postView.add(postScroller.getView());
-	
+		$.scrollView.add(postScroller.getView());
 	}
+	
 }
 
 function stepIntoHash(hash, key, postCollection) {

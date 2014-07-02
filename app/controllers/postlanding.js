@@ -120,7 +120,7 @@ function getVideoThumbnailViewFromPartAndroid(part) {
 		height : '100%'
 	});
 	var playTriangle = Ti.UI.createImageView({
-		image : "/images/icons_android/Video-Player-icon-small.png",
+		image : "/images/icons_android/Video-Player-icon-simple.png",
 	});
 	thumbnailView.add(thumbnailImageView);
 	thumbnailView.add(playTriangle);
