@@ -99,7 +99,7 @@ function createExhibitTitleLabel(name){
 }
 
 function createCollapsibleInfoView(){
-	$.collapsibleInfoView.size = 0;
+	//$.collapsibleInfoView.size = 0;
 	$.collapsibleInfoView.height = 0;
 	$.collapsibleInfoLabel.font = {
 		fontFamily : 'Arial',
