@@ -15,7 +15,7 @@
 		</Label>
 		
 		<TableView>
-			<TableViewSection id="table"/>
+			<TableViewSection id="filters"/>
 		</TableView>
 	</Window>
 </Alloy>
