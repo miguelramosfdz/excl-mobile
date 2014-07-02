@@ -20,6 +20,7 @@
 
 "#exhibitsCarousel[platform=android]": {
 	// This is an android hack
+	// This should probably be calculated based on ... something
 	height: '180dip'
 }
 
