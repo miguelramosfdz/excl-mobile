@@ -7,7 +7,7 @@
 					<View id="placeholder" height='180dip'></View>
 				</ScrollableView>
 				<View id = "headingRow" class="headingRow">
-					<Label class="headingText">Check out our Stations</Label>
+					<Label class="headingText">Featured Activities</Label>
 					<Button id="expanderButton"></Button>
 				</View>
 				<View id="collapsibleInfoView">
