@@ -9,4 +9,4 @@ for(var i = 0; i < 5; i++) {
 args = { posts: posts };
 var scroller = Alloy.createController('postScroller', args);
 
-$.getView().add( scroller.getView() );
+$.altComponentLanding.add( scroller.getView() );
