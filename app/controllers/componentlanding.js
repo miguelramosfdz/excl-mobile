@@ -1,5 +1,5 @@
 //Testing variable
-var selectedAges = [0, 4, 6, "13+", "Adult"];
+var selectedAges = ["0", "4", "6", "13+", "Adult"];
 //will become: alloy.collection.filters
 ////
 
@@ -65,7 +65,8 @@ function clearOrderedPostHashes() {
 
 function setSwitchEvent() {
 	//DEPRECIATED///////////////////////////////////////////////////////////////////////
-	$.sortSwitch.addEventListener("click", function(e) {
+	$.sortSwitch.addEventListener("change", function(e) {
+		Ti.API.info("Switch toggled: " + $.sortSwitch.value);
 		clearOrderedPostHashes();
 		addSpinner();
 		retrieveComponentData();
@@ -73,18 +74,18 @@ function setSwitchEvent() {
 }
 
 function retrieveComponentData() {
-	//if (!initialLoad) {
-	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-		changeTitleOfThePage(returnedData.data.component.name);
-		allPosts = returnedData.data.component.posts;
-		initialLoad = true;
+	if (!initialLoad) {
+		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+			changeTitleOfThePage(returnedData.data.component.name);
+			allPosts = returnedData.data.component.posts;
+			initialLoad = true;
+			checkIfAgeFilterOn(allPosts);
+			checkPostViewSpacing();
+		});
+	} else {
 		checkIfAgeFilterOn(allPosts);
 		checkPostViewSpacing();
-	});
-	//} else {
-	// checkIfAgeFilterOn(allPosts);
-	// checkPostViewSpacing();
-	//}
+	}
 }
 
 function addSpinner() {
@@ -98,7 +99,7 @@ function removeSpinner() {
 
 function checkIfAgeFilterOn(allPosts) {
 	//CHANGE REFERENCE TO SWITCH TO REF TO GLOBAL CHECKING FOR AGE SET ENABLED
-	if ($.sortSwitch.value == false) {
+	if ($.sortSwitch.value == true) {
 		$.sortIndicator.text = "Filter By Age On";
 		$.sortIndicator.color = "#00CC00";
 		organizeByAge(allPosts);
@@ -118,14 +119,13 @@ function organizeBySection(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
 		compileHashOfSections(allPosts[i], hashOrderedPostsBySection);
 	}
-	Ti.API.info("sections: " + JSON.stringify(hashOrderedPostsBySection));
 	sortPostsIntoSections(hashOrderedPostsBySection);
 	checkPostViewSpacing();
 }
 
 function compileHashOfSections(post, hash) {
 	if (post.section) {
-		addItemArrayToHash(post.section, "[" + post + "]", hash);
+		addItemArrayToHash(post.section, post, hash);
 	}
 }
 
@@ -140,7 +140,7 @@ function organizeByAge(allPosts) {
 
 	sortPostsIntoSections(hashOrderedPostsByAge);
 
-	Ti.API.info("Did it happen?");
+	Ti.API.info("Filter completed");
 
 	checkPostViewSpacing();
 }
@@ -240,10 +240,10 @@ function sortPostsIntoSections(hash) {
 
 function stepIntoHash(hash, key, scroller) {
 	//This level is a list of dictionaries
-	var length = hash[key].length;
-	for (var i = 0; i < length; i++) {
+	var dictList = hash[key];
+	for (var i = 0; i < dictList.length; i++) {
 		//send single dictionary
-		dict = hash[key][i];
+		dict = dictList[i];
 		stepIntoPostDictionaryCollection(dict, scroller);
 	}
 }
@@ -264,21 +264,23 @@ function stepIntoPostDictionaryCollection(dict, scroller) {
 }
 
 function stepIntoPostDictionary(dict, key, post) {
-	//This level is a key
-	//examine key-value pair
+	//This level is a key >>> examine key-value pair
 	if (key == "name") {
-		post.set({name: dict[key]});
+		Ti.API.info("name: " + JSON.stringify(dict[key]));
+		post.set({
+			name : dict[key]
+		});
 	}
 	if (key == "image") {
-		post.set({image: dict[key]});
+		Ti.API.info("image: " + JSON.stringify(dict[key]));
+		post.set({
+			image : dict[key]
+		});
 	}
 }
 
 function init() {
 	$.sortSwitch.value = false;
-
-	//alert("did this work? " + JSON.stringify(alloy.collection.filters));
-
 	setSwitchEvent();
 	retrieveComponentData();
 }
