@@ -47,7 +47,8 @@ AnalyticsController.prototype.trackScreen = function(screenName, pageLevel, kios
 	apiCalls.info("Now tracking screen " + screenName);
 	var properties = {
 		path: screenName,
-		customDimension: customDimensionObject
+		customDimension: customDimensionObject,
+		toString: function(){	return this.path;}		// Overwrites the Object toString which returns [object Object]. This allows screen tracking in GA module 1.0
 	};
 	//apiCalls.info(JSON.stringify(properties));
 	tracker.trackScreen(screenName);
