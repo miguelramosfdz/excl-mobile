@@ -27,14 +27,32 @@
 "#collapsibleInfoLabel": {
 	horizontalWrap: true,
 	color: '#232226',
-	font:{
+	font: {
 		fontFamily: 'Helvetica Neue',
-		fontSize: '13dip',
 		fontWeight: 'normal'
 	},
 	left: "3%",
 	right: "3%",
-	top: "3%"
+	top: "1%",
+	bottom: "1%"
+}
+
+"#collapsibleInfoLabel[platform=android]": {
+	font: {
+		fontSize: '17dip'
+	}
+}
+
+"#collapsibleInfoLabel[platform=ios formFactor=handheld]": {
+	font: {
+		fontSize: '14dip'
+	}
+}
+
+"#collapsibleInfoLabel[platform=ios formFactor=tablet]": {
+	font: {
+		fontSize: '20dip'
+	}
 }
 
 ".headingRow": {
@@ -85,7 +103,6 @@
 	color: '#232226',
 	font: {
 		fontFamily: 'Helvetica Neue',
-		fontSize: '13dip',
 		fontWeight: 'normal'
 	},
 	top: '3%',
@@ -97,8 +114,26 @@
 	contentHeight: Ti.UI.SIZE
 }
 
+"#exhibitInfoLabel[platform=android]": {
+	font: {
+		fontSize: '17dip'
+	}
+}
+
+"#exhibitInfoLabel[platform=ios formFactor=handheld]": {
+	font: {
+		fontSize: '14dip'
+	}
+}
+
+"#exhibitInfoLabel[platform=ios formFactor=tablet]": {
+	font: {
+		fontSize: '20dip'
+	}
+}
+
 "#exhibitInfoView":{
-	height: "100dip"
+	height: "150dip"
 }
 
 "#exhibitInfoScrollView": {
