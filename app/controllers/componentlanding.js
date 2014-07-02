@@ -71,7 +71,7 @@ function detectEvent() {
 	retrieveComponentData(ageFilterOn);
 }
 
-function retrieveComponentData() {
+function retrieveComponentData(ageFilterOn) {
 	if (!initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 			changeTitleOfThePage(returnedData.data.component.name);
