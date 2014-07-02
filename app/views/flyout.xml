@@ -17,7 +17,7 @@
 			</TableViewRow>
 			<TableViewRow class="tableRowCollapsible" id="tableRowCollapsible">
 				<View id="rowContainerIndented">
-					<View backgroundImage="/flyoutMenuIcons/edit.png" class="rowIcon" onClick="openInputMenu"/>
+					<View backgroundImage="/flyoutMenuIcons/edit.png" class="rowIcon"/>
 					<Label class="rowLabelIndented">Edit My Ages</Label>
 				</View>
 			</TableViewRow>
