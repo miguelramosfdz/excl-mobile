@@ -3,7 +3,7 @@
 		<Label id="sectionTitle">section title</Label>
 		
 		<ScrollableView id="scroller">
-			<View>
+			<View id="placeholder">
 				<Label text="placeholder" color="white"/>
 			</View>
 		</ScrollableView>
