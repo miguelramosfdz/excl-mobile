@@ -2,32 +2,3 @@
 ".container" : {
   
 }
-
-"#postTitleBar": {
-	backgroundColor: 'black',
-	opacity: 0.5,
-	height: '20%',
-	top: 0
-}
-
-"#postTitle": {
-	top: 0,
-	left: "10dip",
-	color: 'white',
-	horizontalWrap: false,
-	font: {
-		fontFamily : 'Arial',
-		fontSize : '25dip',
-		fontWeight : 'bold'
-	}
-}
-
-"#sectionTitle": {
-	color : '#FFFFFF',
-	font : {
-		fontFamily : 'Helvetica Neue',
-		fontSize : '22dp',
-		fontWeight : 'bold'
-	},
-	textAlign : 'center'
-}
