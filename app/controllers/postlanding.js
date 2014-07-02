@@ -2,11 +2,20 @@ var post_content = arguments[0] || {};
 var tableData = [];
 var analyticsPageTitle = "";
 var analyticsPageLevel = "";
+var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
 
-var setAnalyticsPageTitle = function(title) { analyticsPageTitle = title; };
-var getAnalyticsPageTitle = function() { return analyticsPageTitle; };
-var setAnalyticsPageLevel = function(level) { analyticsPageLevel = level; };
-var getAnalyticsPageLevel = function() { return analyticsPageLevel; };
+var setAnalyticsPageTitle = function(title) {
+	analyticsPageTitle = title;
+};
+var getAnalyticsPageTitle = function() {
+	return analyticsPageTitle;
+};
+var setAnalyticsPageLevel = function(level) {
+	analyticsPageLevel = level;
+};
+var getAnalyticsPageLevel = function() {
+	return analyticsPageLevel;
+};
 exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
 exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
 exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
@@ -58,7 +67,7 @@ function displaySocialMediaButtons(json) {
 			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
 			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
 			$.submitCommentFormView.visible = true;
-			$.insertName.value = $.insertEmail.value = $.insertComment.value  = "";
+			$.insertName.value = $.insertEmail.value = $.insertComment.value = "";
 			$.thankYouMessageView.visible = false;
 		});
 
@@ -350,13 +359,26 @@ function verifyAndValidataData() {
 	Ti.API.info($.insertName.value);
 	Ti.API.info($.insertEmail.value);
 	Ti.API.info($.insertComment.value);
+	
+	// Email validations?			<=======
 
 	if (!$.insertComment.value) {
 		alert("Please enter a comment. Its clearly NOT optional...");
 	} else {
-		// thank you, your message has been submitted!
-		$.submitCommentFormView.visible = false;
-		$.thankYouMessageView.visible = true;
+		var url = Alloy.Globals.rootWebServiceUrl + "/posts/" + post_content.id + "/comments";
+
+		var jsonToSend = {
+			"name" : $.insertName.value,
+			"email" : $.insertEmail.value,
+			"comment_body" : $.insertComment.value
+		};
+
+		dataRetriever.sendJsonToUrl(url, jsonToSend, function(returnedData) {
+			$.submitCommentFormView.visible = false;
+			$.thankYouMessageView.visible = true;
+			alert("data submitted successfully! \n" + returnedData.toString());
+		});
+
 	}
 }
 
