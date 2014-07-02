@@ -120,7 +120,7 @@ function getVideoThumbnailViewFromPartAndroid(part) {
 		height : '100%'
 	});
 	var playTriangle = Ti.UI.createImageView({
-		image : "/images/icons_android/Video-Player-icon-small.png",
+		image : "/images/icons_android/Video-Player-icon-simple.png",
 	});
 	thumbnailView.add(thumbnailImageView);
 	thumbnailView.add(playTriangle);
@@ -363,22 +363,20 @@ function verifyAndValidataData() {
 	// Email validations?			<=======
 
 	if (!$.insertComment.value) {
-		alert("Please enter a comment. Its clearly NOT optional...");
+		alert("Please enter a comment. It's clearly NOT optional...");
 	} else {
 		var url = Alloy.Globals.rootWebServiceUrl + "/posts/" + post_content.id + "/comments";
 
-		var jsonToSend = {
+		var jsonToSend = ({
 			"name" : $.insertName.value,
 			"email" : $.insertEmail.value,
 			"comment_body" : $.insertComment.value
-		};
-
+		});
+		
 		dataRetriever.sendJsonToUrl(url, jsonToSend, function(returnedData) {
 			$.submitCommentFormView.visible = false;
 			$.thankYouMessageView.visible = true;
-			alert("data submitted successfully! \n" + returnedData.toString());
 		});
-
 	}
 }
 

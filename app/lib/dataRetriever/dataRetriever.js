@@ -26,8 +26,9 @@ function sendJsonToUrl(url, jsonData, onSuccess) {
 	var client = networkCalls.network(url, onSuccess);
 
 	if (client) {
+		client.setRequestHeader("Content-Type", "application/json");
 		client.open("POST", url);
-		client.send(jsonData);
+		client.send(JSON.stringify(jsonData));
 	}
 
 }
@@ -36,3 +37,4 @@ var rootPath = (typeof Titanium == 'undefined')? '../../lib/customCalls/' : 'cus
 setPathForLibDirectory(rootPath);
 module.exports.parseJson = parseJson;
 module.exports.fetchDataFromUrl = fetchDataFromUrl;
+module.exports.sendJsonToUrl = sendJsonToUrl;

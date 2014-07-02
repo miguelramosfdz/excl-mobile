@@ -1,5 +1,5 @@
 //Testing variable
-var selectedAges = ["0", "2-3", "4", "6", "13+", "Adult"];
+var selectedAges = ["0", "4", "6", "13+"];
 //will become: alloy.collection.filter
 ////
 
@@ -13,6 +13,7 @@ var hashOrderedPostsByAge = {};
 
 var allPosts;
 var initialLoad = false;
+var genericAllAgesSectionTitle = "For All Selected Ages";
 
 var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
 var loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
@@ -54,19 +55,17 @@ function goToPostLandingPage(e) {
 
 function checkPostViewSpacing() {
 	if (OS_IOS) {
-		$.postView.bottom = "48dip";
+		$.scrollView.bottom = "48dip";
 	}
 }
 
 function clearOrderedPostHashes() {
 	hashOrderedPostsBySection = {};
 	hashOrderedPostsByAge = {};
-	// for(var c=$.ScrollView.children.length-1;c >= 0; c-- ) {
-        // $.ScrollView.remove( $.ScrollView.children[c] );
-    // }
+	$.scrollView.removeAllChildren();
 }
 
-function setSwitchEvent() {
+function setSwitchEvent(view) {
 	//DEPRECIATED///////////////////////////////////////////////////////////////////////
 	$.sortSwitch.addEventListener("change", function(e) {
 		Ti.API.info("Switch toggled: " + $.sortSwitch.value);
@@ -118,15 +117,12 @@ function checkIfAgeFilterOn(allPosts) {
 
 function organizeBySection(allPosts) {
 	hashOrderedPostsBySection = {};
-
 	for (var i = 0; i < allPosts.length; i++) {
 		compileHashOfSections(allPosts[i], hashOrderedPostsBySection);
 	}
 	sortPostsIntoSections(hashOrderedPostsBySection);
-
-	Ti.API.info("110: " + JSON.stringify(hashOrderedPostsBySection));
+	//Ti.API.info("Organized Content: " + JSON.stringify(hashOrderedPostsBySection));
 	Ti.API.info("Finished Organizing by Section");
-
 	checkPostViewSpacing();
 }
 
@@ -141,13 +137,10 @@ function organizeByAge(allPosts) {
 	for (var i = 0; i < allPosts.length; i++) {
 		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
 	}
-
 	hashOrderedPostsByAge = replaceHashKeysWithFilterHeadings(hashOrderedPostsByAge);
 	sortPostsIntoSections(hashOrderedPostsByAge);
-
-	Ti.API.info("110: " + JSON.stringify(hashOrderedPostsByAge));
+	//Ti.API.info("Organized Content: " + JSON.stringify(hashOrderedPostsByAge));
 	Ti.API.info("Finished Filtering by Age");
-
 	checkPostViewSpacing();
 }
 
@@ -162,7 +155,8 @@ function returnHashKeys(hash) {
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
-	if (postAgeRange == selectedAges | postAgeRange == "0") {
+	
+	if ((postAgeRange == selectedAges && selectedAges.length > 0) || postAgeRange == "0") {
 		addItemArrayToHash("0", postAgeRange, hashOrderedPostsByAge);
 	} else {
 		for (var i = 0; i < selectedAges.length; i++) {
@@ -173,16 +167,9 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 }
 
 function addItemArrayToHash(key, itemArray, hash) {
-
-	////////////GO HERE TO FIX PASSING OF [0] TO FOR ALL AGES
-
 	if (JSON.stringify(itemArray) != ["0"]) {
-		
-		
-		
 		if (hash[key]) {
 			hash[key] = hash[key].concat(itemArray);
-			//hash[key] = itemArray;
 		} else {
 			hash[key] = [].concat(itemArray);
 		}
@@ -226,7 +213,10 @@ function parseStringIntoArray(st, deliniator) {
 function replaceStringWithFilterHeading(st) {
 	var newSt = "";
 	if (st == "0") {
-		newSt = "For All Selected Ages";
+		newSt = genericAllAgesSectionTitle;
+		
+		Ti.API.info("Replaced with generic");
+		
 	} else if (st.toLowerCase() == "adult") {
 		newSt = "For " + st + "s";
 	} else if (!Alloy.Globals.isNumber(st[0])) {
@@ -251,26 +241,29 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 }
 
 function sortPostsIntoSections(hash) {
-	var hashLength = returnHashKeys(hash).length;
-	for (key in hash) {
+	var hashKeys = returnHashKeys(hash);
+	var hashLength = hashKeys.length;
+	for (var i = 0; i < hashLength; i++) {
 		//cycle through hash keys
 		var postCollection = Alloy.createCollection('post');
-		stepIntoHash(hash, key, postCollection);
+		stepIntoHash(hash, hashKeys[i], postCollection);
 
-		Ti.API.info("Adding has been enabled?");
+		Ti.API.info("postCollection: " + JSON.stringify(postCollection));
+		Ti.API.info("key: " + JSON.stringify(hashKeys[i]));
 
-		args = {
-			posts : postCollection
-		};
-		var postScroller = Alloy.createController('postScroller', args);
-		postScroller.sectionTitle.text = key;
-		Ti.API.info("key: " + key);
-		
-		Ti.API.info("adding scroller: " + JSON.stringify(postScroller));
-			
-		$.postView.add(postScroller.getView());
+		if (hashKeys[i] != genericAllAgesSectionTitle && JSON.stringify(postCollection) != "[]") {
+			args = {
+				posts : postCollection
+			};
+			var postScroller = Alloy.createController('postScroller', args);
+			postScroller.sectionTitle.text = hashKeys[i];
+
+			$.scrollView.add(postScroller.getView());
+		} else {
+			Ti.API.info("For All Ages hidden");
+		}
 	}
-	
+
 }
 
 function stepIntoHash(hash, key, postCollection) {
@@ -293,6 +286,9 @@ function stepIntoPostDictionaryCollection(dict, postCollection) {
 		stepIntoPostDictionary(dict, key, post);
 	}
 	Ti.API.info("Post: " + JSON.stringify(post));
+	post.set({
+		raw : dict
+	});
 	postCollection.add(post);
 }
 
