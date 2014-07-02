@@ -4,7 +4,7 @@
 			<ImageView image="/images/dark/appbar.arrow.left.png"></ImageView>
 		</View>
 		<View class="coloredWhite pageTitleStyle">
-			<Label id="pageTitle" class="pageTitleStyle">Children's Museum Of Houston</Label>
+			<Label id="pageTitle" class="pageTitleStyle">Children's Museum of Houston</Label>
 		</View>
 		<View id="flyoutBtn" class="menuButtonStyle coloredGrey" onClick="menu">
 			<ImageView class="flyoutIcon" image="/images/drawer.png" platform="android"></ImageView>
