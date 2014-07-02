@@ -69,9 +69,9 @@ function createExhibitsCarousel(exhibits){
 	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
 		var viewConfig = {
-			backgroundColor: "#000",
+			backgroundColor: "#253342",
 			width: Ti.UI.FILL,
-		 	image: '/images/700x300.png',
+		 	image: '/images/700x400.png',
 		 	itemId: exhibits[i].id
 		};
 		if(exhibits[i].image) {
@@ -94,19 +94,19 @@ function createExhibitsCarousel(exhibits){
 function createExhibitTitleLabel(name){
 	var titleLabelView = Ti.UI.createView({
 		top: 0,
-		height: Ti.UI.SIZE,
-		backgroundColor: 'black',
+		height: '7%',
+		backgroundColor: '#000',
 		opacity: 0.6
 	});
 	var label = Ti.UI.createLabel({
 		top: 0,
-		left: "5%",
+		left: "3%",
 		text: name,
 		color: 'white',
 		horizontalWrap: false,
 		font: {
 			fontFamily : 'Arial',
-			fontSize : '25dip',
+			fontSize : '24dip',
 			fontWeight : 'bold'
 		}
 	});
@@ -172,13 +172,13 @@ function createComponentsScrollView(exhibits){
 		componentsInExhibit[exhibits[i].id] = Ti.UI.createView({
 			layout: 'horizontal',
 			horizontalWrap: false,
-			width: 'auto'
+			width: Ti.UI.SIZE
 		});
 		for(var j=0; j<exhibits[i].components.length; j++){
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
-			component.left = 5;
-			component.right = 5;
-			component.width = '225dip';
+			component.left = 3;
+			// component.right = 3;
+			component.width = '300dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[exhibits[i].id].add(component);
@@ -218,8 +218,8 @@ function createLabeledPicView(item, type){
 function createTitleLabel(name, type){
 	var titleLabel = Ti.UI.createView({
 		backgroundColor: 'black',
-		opacity: 0.5,
-		height: '20%',
+		opacity: 0.6,
+		height: '15%',
 		top: 0
 	});
 	//$.addClass(exhibitImages[i], "exhibitTitleShadow"); 
