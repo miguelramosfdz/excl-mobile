@@ -57,6 +57,16 @@
 	left: "85%"
 }
 
+".headingText": {
+	color: 'white',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '22dip',
+		fontWeight: 'bold'
+	},
+	textAlign: 'center'
+}
+
 "#componentScrollView": {
 	layout: 'horizontal',
 	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
@@ -88,8 +98,7 @@
 }
 
 "#exhibitInfoView":{
-	height: Ti.UI.SIZE,
-	contentHeight: Ti.UI.SIZE
+	height: "100dip"
 }
 
 "#exhibitInfoScrollView": {

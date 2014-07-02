@@ -22,6 +22,16 @@ function fetchDataFromUrl(url, onSuccess) {
 
 }
 
+function sendJsonToUrl(url, jsonData, onSuccess) {
+	var client = networkCalls.network(url, onSuccess);
+
+	if (client) {
+		client.open("POST", url);
+		client.send(jsonData);
+	}
+
+}
+
 var rootPath = (typeof Titanium == 'undefined')? '../../lib/customCalls/' : 'customCalls/';
 setPathForLibDirectory(rootPath);
 module.exports.parseJson = parseJson;
