@@ -40,23 +40,17 @@ function hideEditAgeOption() {
 	$.tableRowCollapsible.height = 0;
 }
 
-function toggleAgeFilter(){
-	if(!ageFilterEnabled)
+function toggleAgeFilter(ageFilterOn){
+	if(ageFilterOn){
 		enableAgeFilter();
-	else
+	}else{
 		disableAgeFilter();
-}
-
-function openInputMenu(){
-	
-	alert("Insert Jess's singleton Modal here");
-	filterAgeSet = true;
-	
 }
 
 function init(){
 	
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
+	toggleAgeFilter(ageFilterOn);
 	
 	Ti.API.info("custom learn: " + ageFilterOn);
 	
