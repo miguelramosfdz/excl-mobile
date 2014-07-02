@@ -7,9 +7,8 @@ if(posts) {
 	for(var i = 0; i < posts.size(); i++) {
 		var post = posts.at(i);
 		post = createPostPage(post);
-		$.scroller.add(post);
+		$.scroller.addView(post);
 	};
-	
 	$.scroller.removeView($.placeholder);
 };
 

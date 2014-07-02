@@ -1,8 +1,8 @@
 <Alloy>
 	<View class="container" layout="vertical">
-		<Label id="sectionTitle">section title</Label>
+		<Label id="sectionTitle" color="white">section title</Label>
 		
-		<ScrollableView id="scroller">
+		<ScrollableView id="scroller" showPagingControl="true" overlayEnabled="true">
 			<View id="placeholder">
 				<Label text="placeholder" color="white"/>
 			</View>
