@@ -65,7 +65,8 @@ function clearOrderedPostHashes() {
 
 function setSwitchEvent() {
 	//DEPRECIATED///////////////////////////////////////////////////////////////////////
-	$.sortSwitch.addEventListener("click", function(e) {
+	$.sortSwitch.addEventListener("change", function(e) {
+		Ti.API.info("Switch toggled: " + $.sortSwitch.value);
 		clearOrderedPostHashes();
 		addSpinner();
 		retrieveComponentData();
@@ -73,18 +74,18 @@ function setSwitchEvent() {
 }
 
 function retrieveComponentData() {
-	//if (!initialLoad) {
-	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-		changeTitleOfThePage(returnedData.data.component.name);
-		allPosts = returnedData.data.component.posts;
-		initialLoad = true;
+	if (!initialLoad) {
+		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+			changeTitleOfThePage(returnedData.data.component.name);
+			allPosts = returnedData.data.component.posts;
+			initialLoad = true;
+			checkIfAgeFilterOn(allPosts);
+			checkPostViewSpacing();
+		});
+	} else {
 		checkIfAgeFilterOn(allPosts);
 		checkPostViewSpacing();
-	});
-	//} else {
-	// checkIfAgeFilterOn(allPosts);
-	// checkPostViewSpacing();
-	//}
+	}
 }
 
 function addSpinner() {
@@ -98,7 +99,7 @@ function removeSpinner() {
 
 function checkIfAgeFilterOn(allPosts) {
 	//CHANGE REFERENCE TO SWITCH TO REF TO GLOBAL CHECKING FOR AGE SET ENABLED
-	if ($.sortSwitch.value == false) {
+	if ($.sortSwitch.value == true) {
 		$.sortIndicator.text = "Filter By Age On";
 		$.sortIndicator.color = "#00CC00";
 		organizeByAge(allPosts);
@@ -140,7 +141,7 @@ function organizeByAge(allPosts) {
 
 	sortPostsIntoSections(hashOrderedPostsByAge);
 
-	Ti.API.info("Did it happen?");
+	Ti.API.info("Filter completed");
 
 	checkPostViewSpacing();
 }
@@ -240,17 +241,30 @@ function sortPostsIntoSections(hash) {
 
 function stepIntoHash(hash, key, scroller) {
 	//This level is a list of dictionaries
+	
+	Ti.API.info("99: " + JSON.stringify(hash));
+	
 	var length = hash[key].length;
 	for (var i = 0; i < length; i++) {
+		
+		Ti.API.info("99.5: " + JSON.stringify(hash[key]));
+		Ti.API.info("99.75: " + JSON.stringify(returnHashKeys(hash)));
+		
+		
 		//send single dictionary
-		dict = hash[key][i];
+		dict = returnHashKeys(hash)[i];
 		stepIntoPostDictionaryCollection(dict, scroller);
 	}
 }
 
 function stepIntoPostDictionaryCollection(dict, scroller) {
 	//This level is a single dictionary
+	Ti.API.info("100: " + JSON.stringify(dict));
+	
 	var length = returnHashKeys(dict).length;
+	
+	Ti.API.info("101: " + length);
+	
 	var post = Alloy.createModel('post');
 	for (var i = 0; i < length; i++) {
 		//send single key
@@ -267,10 +281,16 @@ function stepIntoPostDictionary(dict, key, post) {
 	//This level is a key
 	//examine key-value pair
 	if (key == "name") {
-		post.set({name: dict[key]});
+		Ti.API.info("name: " + JSON.stringify(dict[key]));
+		post.set({
+			name : dict[key]
+		});
 	}
 	if (key == "image") {
-		post.set({image: dict[key]});
+		Ti.API.info("image: " + JSON.stringify(dict[key]));
+		post.set({
+			image : dict[key]
+		});
 	}
 }
 
