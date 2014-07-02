@@ -181,6 +181,9 @@ function addItemArrayToHash(key, itemArray, hash) {
 	////////////GO HERE TO FIX PASSING OF [0] TO FOR ALL AGES
 
 	if (JSON.stringify(itemArray) != ["0"]) {
+		
+		
+		
 		if (hash[key]) {
 			hash[key] = hash[key].concat(itemArray);
 			//hash[key] = itemArray;
@@ -266,8 +269,10 @@ function sortPostsIntoSections(hash) {
 		var postScroller = Alloy.createController('postScroller');
 		postScroller.sectionTitle = key;
 		
-		Ti.API.info("adding scroller");
-		//$.getView().add(postScroller.getView());
+		Ti.API.info("adding scroller: " + JSON.stringify(postScroller));
+		
+		$.postView.add(postScroller.getView());
+	
 	}
 }
 
