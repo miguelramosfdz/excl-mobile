@@ -3,6 +3,12 @@ var args = arguments[0] || {};
 var dataRetriever = require('dataRetriever/dataRetriever');
 var LoadingSpinner = require('loadingSpinner/loadingSpinner');
 
+var iconService = Alloy.Globals.setPathForLibDirectory('customCalls/iconService');
+var iconService = new iconService();
+
+var buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
+var buttonService = new buttonService();
+
 var spinner = new LoadingSpinner();
 var url = Alloy.Globals.rootWebServiceUrl;
 
@@ -11,6 +17,7 @@ var componentsInExhibit = [];
 var currExhibitId;
 var analyticsPageTitle = "Home";
 var analyticsPageLevel = "Exhibit Landing";
+var expanderButton;
 
 function setAnalyticsPageTitle (title) { analyticsPageTitle = title; }
 function getAnalyticsPageTitle () { return analyticsPageTitle; }
@@ -49,6 +56,8 @@ function populateWindow(json){
 		}
 	}
 	createExhibitsCarousel(json.data.museum.exhibits);
+	createHeadingRow(json.data.museum.exhibits);
+	createExpanderButton();
 	createCollapsibleInfoView();
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
@@ -104,6 +113,14 @@ function createExhibitTitleLabel(name){
 	return titleLabelView;
 }
 
+function createHeadingRow(exhibits){
+	$.headingRow.addEventListener('click', function(e){ onExhibitsClick(exhibits); });
+}
+
+function createExpanderButton(){
+	iconService.setIcon($.expanderButton, 'expander_expand.png');
+}
+
 function createCollapsibleInfoView(){
 	//$.collapsibleInfoView.size = 0;
 	$.collapsibleInfoView.height = 0;
@@ -119,10 +136,20 @@ function onExhibitsClick(exhibits){
 		var index = $.exhibitsCarousel.currentPage;
 		$.collapsibleInfoLabel.text = exhibits[index].long_description;
 		$.collapsibleInfoView.height = Ti.UI.SIZE;
+		toggleExpanderExpanded();
 	}
 	else{
 		$.collapsibleInfoView.height = 0;
+		toggleExpanderCollapsed();
 	}
+}
+
+function toggleExpanderExpanded(){
+	iconService.setIcon($.expanderButton, 'expander_collapse.png');
+}
+
+function toggleExpanderCollapsed(){
+	iconService.setIcon($.expanderButton, 'expander_expand.png');
 }
 
 function onExhibitsScroll(e, exhibits) {
