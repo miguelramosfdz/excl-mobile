@@ -61,6 +61,9 @@ function checkPostViewSpacing() {
 function clearOrderedPostHashes() {
 	hashOrderedPostsBySection = {};
 	hashOrderedPostsByAge = {};
+	// for(var c=$.ScrollView.children.length-1;c >= 0; c-- ) {
+        // $.ScrollView.remove( $.ScrollView.children[c] );
+    // }
 }
 
 function setSwitchEvent() {
@@ -158,15 +161,8 @@ function returnHashKeys(hash) {
 
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
-
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
-
-	Ti.API.info("Post age range: " + postAgeRange);
-
 	if (postAgeRange == selectedAges | postAgeRange == "0") {
-
-		Ti.API.info("Matched: " + JSON.stringify(postAgeRange));
-
 		addItemArrayToHash("0", postAgeRange, hashOrderedPostsByAge);
 	} else {
 		for (var i = 0; i < selectedAges.length; i++) {
