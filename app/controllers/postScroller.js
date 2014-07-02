@@ -2,11 +2,14 @@ var args = arguments[0] || {};
 // expects:
 // posts - backbone.js collection of backbone.js model of post type
 
+$.scroller.width = Ti.UI.FILL;
+$.scroller.height = Ti.UI.SIZE;
+
 var posts = args.posts;
 if(posts) {
 	for(var i = 0; i < posts.size(); i++) {
 		var post = posts.at(i);
-		post = createPostPage(post);
+		post = createPostView(post);
 		$.scroller.addView(post);
 	};
 	$.scroller.removeView($.placeholder);
@@ -27,14 +30,12 @@ function createEmptyPostPage(){
 	return page;
 }
 
-function createPostPage(post) {
-	var page = Ti.UI.createView();
-	
+function createPostView(post) {
 	var args = {
+		width: Ti.UI.FILL,
 		image: post.get('image')
 	};
 	var image = Ti.UI.createImageView(args);
-	page.add(image);
 	
 	args = {
 		backgroundColor: 'black',
@@ -58,7 +59,13 @@ function createPostPage(post) {
 	};
 	var title = Ti.UI.createLabel(args);
 	titleBar.add(title);
-	page.add(titleBar);
+	image.add(titleBar);
 	
-	return page;
+	image.addEventListener('click', function(e) {
+		var args = post.get('raw');
+		post = Alloy.createController('postlanding', args);
+		Alloy.Globals.navController.open(post);
+	});
+	
+	return image;
 }
