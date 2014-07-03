@@ -35,7 +35,7 @@ exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
 exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
 exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
-Alloy.Models.app.on("change:customizeLearning", detectEvent());
+Alloy.Models.app.on("change:customizeLearning", detectEvent);
 var ageFilterOn;
 
 function changeTitleOfThePage(name) {
@@ -66,18 +66,22 @@ function clearOrderedPostHashes() {
 
 function detectEvent() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
+	
+	Ti.API.info("on? " + ageFilterOn);
+	
 	clearOrderedPostHashes();
 	addSpinner();
 	retrieveComponentData(ageFilterOn);
 }
 
 function retrieveComponentData(ageFilterOn) {
+	clearOrderedPostHashes();
 	if (!initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 			changeTitleOfThePage(returnedData.data.component.name);
 			allPosts = returnedData.data.component.posts;
 			initialLoad = true;
-			checkIfAgeFilterOn(allPosts);
+			checkIfAgeFilterOn(allPosts, ageFilterOn);
 			checkPostViewSpacing();
 		});
 	} else {
@@ -87,7 +91,7 @@ function retrieveComponentData(ageFilterOn) {
 }
 
 function addSpinner() {
-	spinner.addTo($.sortBar);
+	spinner.addTo($.topBar);
 	spinner.show();
 }
 
@@ -96,14 +100,10 @@ function removeSpinner() {
 }
 
 function checkIfAgeFilterOn(allPosts) {
-	if ($.sortSwitch.value == true) {
-		$.sortIndicator.text = "Filter By Age On";
-		$.sortIndicator.color = "#00CC00";
+	if (ageFilterOn == true) {
 		organizeByAge(allPosts);
 		Ti.API.info("All sections: " + JSON.stringify(returnHashKeys(hashOrderedPostsByAge)));
-	} else if ($.sortSwitch.value == false) {
-		$.sortIndicator.text = "Filter By Age Off";
-		$.sortIndicator.color = "#FFFFFF";
+	} else if (ageFilterOn == false) {
 		organizeBySection(allPosts);
 		Ti.API.info("All sections: " + JSON.stringify(returnHashKeys(hashOrderedPostsBySection)));
 	}
@@ -369,10 +369,4 @@ function parseFilterHashIntoArray(ary) {
 	return newAry;
 }
 
-function init() {
-	$.sortSwitch.value = false;
-	setSwitchEvent();
-	retrieveComponentData();
-}
-
-init();
+detectEvent();
