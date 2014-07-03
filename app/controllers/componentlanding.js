@@ -193,9 +193,9 @@ function checkIfAbbrevArray(ary) {
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
-	
+
 	Ti.API.info("Num of ages selected: " + selectedAges.length);
-	
+
 	if (selectedAges.length > 1) {
 
 		/*Below is commented out to avoid bugginess but the system is required to check for:
@@ -312,14 +312,21 @@ function sortPostsIntoSections(hash) {
 				posts : postCollection
 			};
 		}
+		//}
 		var postScroller = Alloy.createController('postScroller', args);
 		postScroller.sectionTitle.text = hashKeys[i];
 
 		var view = postScroller.getView();
 		view.top = "0";
+		view.height = "65%";
 
+		if (i == hashLength - 1) {
+			view.bottom = "65dip";
+		}
+		
 		$.scrollView.add(view);
 	}
+	//	$.scrollView.bottom = "100dip";
 
 }
 
@@ -342,7 +349,9 @@ function stepIntoPostDictionaryCollection(dict, postCollection) {
 		key = returnHashKeys(dict)[i];
 		stepIntoPostDictionary(dict, key, post);
 	}
-	//Ti.API.info("Post: " + JSON.stringify(post));
+
+	Ti.API.info("Post: " + JSON.stringify(post));
+
 	post.set({
 		raw : dict
 	});
