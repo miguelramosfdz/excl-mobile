@@ -2,6 +2,17 @@ var args = arguments[0] || {};
 
 var ageFilterOn;
 
+Alloy.Models.app.on('change:customizeLearning', function(e) {
+	var customizeLearning = Alloy.Models.app.get('customizeLearning');
+	
+	if(customizeLearning && !ageFilterEnabled) enableAgeFilter();
+	else if(!customizeLearning && ageFilterEnabled) disableAgeFilter();
+});	// jly
+
+function disableCustomLearn(e) {
+	Alloy.Models.app.set('customizeLearning', false);
+}
+
 function closeMenu(e) {
 	return Alloy.Globals.navController.toggleMenu();
 }
