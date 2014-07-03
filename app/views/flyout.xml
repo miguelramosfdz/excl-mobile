@@ -15,10 +15,10 @@
 					<Label id="agesLabel" class="rowLabel">Filter by Age</Label>
 				</View>
 			</TableViewRow>
-			<TableViewRow class="tableRowCollapsible" id="tableRowCollapsible">
+			<TableViewRow class="tableRowCollapsible" id="tableRowCollapsible" onClick="disableCustomLearn">
 				<View id="rowContainerIndented">
 					<View backgroundImage="/flyoutMenuIcons/edit.png" class="rowIcon"/>
-					<Label class="rowLabelIndented">Edit My Ages</Label>
+					<Label class="rowLabelIndented">Disable</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row4">

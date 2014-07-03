@@ -66,9 +66,9 @@ function clearOrderedPostHashes() {
 
 function detectEvent() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
-	
-	Ti.API.info("Age Filter: " + ageFilterOn);
-	
+
+	Ti.API.info("Age Filter On: " + ageFilterOn);
+
 	clearOrderedPostHashes();
 	addSpinner();
 	retrieveComponentData(ageFilterOn);
@@ -129,7 +129,6 @@ function compileHashOfSections(post, hash) {
 
 function organizeByAge(allPosts) {
 	hashOrderedPostsByAge = {};
-
 	selectedAges = parseFilterHashIntoArray(JSON.stringify(Alloy.Collections.filter));
 	Ti.API.info("Age Filter: " + JSON.stringify(selectedAges));
 
@@ -194,6 +193,9 @@ function checkIfAbbrevArray(ary) {
 function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
+	
+	Ti.API.info("Num of ages selected: " + selectedAges.length);
+	
 	if (selectedAges.length > 1) {
 
 		/*Below is commented out to avoid bugginess but the system is required to check for:
@@ -218,6 +220,8 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
 			addItemArrayToHash(selectedAges[i], itemArray, hashOrderedPostsByAge);
 		}
+	} else {
+		//addItemArrayToHash("0", post, hashOrderedPostsByAge);
 	}
 }
 
@@ -304,7 +308,6 @@ function sortPostsIntoSections(hash) {
 
 		//if (hashKeys[i] != genericAllAgesSectionTitle && JSON.stringify(postCollection) != "[]") {
 		if (JSON.stringify(postCollection) != "[]") {
-
 			args = {
 				posts : postCollection
 			};
@@ -312,7 +315,10 @@ function sortPostsIntoSections(hash) {
 		var postScroller = Alloy.createController('postScroller', args);
 		postScroller.sectionTitle.text = hashKeys[i];
 
-		$.scrollView.add(postScroller.getView());
+		var view = postScroller.getView();
+		view.top = "0";
+
+		$.scrollView.add(view);
 	}
 
 }
