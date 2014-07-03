@@ -34,7 +34,8 @@
 	left: "3%",
 	right: "3%",
 	top: "1%",
-	bottom: "1%"
+	bottom: "1%",
+	height: Ti.UI.SIZE
 }
 
 "#collapsibleInfoLabel[platform=android]": {
@@ -51,7 +52,7 @@
 
 "#collapsibleInfoLabel[platform=ios formFactor=tablet]": {
 	font: {
-		fontSize: '20dip'
+		fontSize: '30dip'
 	}
 }
 
