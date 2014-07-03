@@ -40,7 +40,7 @@
 
 "#collapsibleInfoLabel[platform=android]": {
 	font: {
-		fontSize: '17dip'
+		fontSize: '15dip'
 	}
 }
 
@@ -117,7 +117,7 @@
 
 "#exhibitInfoLabel[platform=android]": {
 	font: {
-		fontSize: '17dip'
+		fontSize: '15dip'
 	}
 }
 
