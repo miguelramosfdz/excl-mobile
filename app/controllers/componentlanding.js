@@ -79,7 +79,7 @@ function retrieveComponentData(ageFilterOn) {
 	if (!initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 			changeTitleOfThePage(returnedData.data.component.name);
-			allPosts = returnedData.data.component.posts;
+			allPosts = returnedData.data.component.posts[0];
 			initialLoad = true;
 			checkIfAgeFilterOn(allPosts, ageFilterOn);
 			checkPostViewSpacing();

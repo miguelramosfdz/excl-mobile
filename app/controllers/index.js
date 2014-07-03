@@ -68,7 +68,7 @@ function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
 	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
-		var viewConfig = {
+		/*var viewConfig = {
 			backgroundColor: "#253342",
 			width: Ti.UI.FILL,
 		 	image: '/images/700x400.png',
@@ -76,13 +76,12 @@ function createExhibitsCarousel(exhibits){
 		};
 		if(exhibits[i].image) {
 			viewConfig.image = exhibits[i].image;	
-		}
-		var imageView = Ti.UI.createImageView(viewConfig);
-		imageView.add(createExhibitTitleLabel(exhibits[i].name));
+		}//*/
+		var exhibitView = createExhibitTitleLabel(exhibits[i]);
 		if (OS_ANDROID){
-			imageView.addEventListener("click", function(e){ onExhibitsClick(exhibits); });
+			exhibitView.addEventListener("click", function(e){ onExhibitsClick(exhibits); });
 		}
-		$.exhibitsCarousel.addView(imageView);		
+		$.exhibitsCarousel.addView(exhibitView);		
 	}
 	if (OS_IOS){
 		//Android doesn't respond to singletap event, so the Android event listener is added above
@@ -91,27 +90,28 @@ function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.addEventListener("scrollend", function(e){ onExhibitsScroll(e, exhibits); });
 }
 
-function createExhibitTitleLabel(name){
-	var titleLabelView = Ti.UI.createView({
-		top: 0,
-		height: Ti.UI.SIZE,
-		backgroundColor: '#000',
-		opacity: 0.6
+function createExhibitTitleLabel(exhibit){
+	var itemContainer = Ti.UI.createView({
+		itemId: exhibit.id
 	});
-	var label = Ti.UI.createLabel({
-		top: 0,
-		left: "3%",
-		text: name,
-		color: 'white',
-		horizontalWrap: false,
-		font: {
-			fontFamily : 'Arial',
-			fontSize : '24dip',
-			fontWeight : 'bold'
-		}
+	var image = Ti.UI.createImageView({
+		width: '100%',
+		backgroundColor: "#253342",
+		width: Ti.UI.FILL,
+	 	image: '/images/700x400.png',
 	});
-	titleLabelView.add(label);
-	return titleLabelView;
+	// This is the view that catches a click event on the overall image/label combonation
+	var clickCatcher = Ti.UI.createView({
+		itemId: exhibit.id
+	});//*/
+	
+	if(exhibit.image)
+		image.image = exhibit.image;
+	
+	itemContainer.add(image);
+	itemContainer.add(createTitleLabel(exhibit.name, '25dip'));
+	itemContainer.add(clickCatcher);
+	return itemContainer;
 }
 
 function createHeadingRow(exhibits){
@@ -125,6 +125,10 @@ function createExpanderButton(){
 function createCollapsibleInfoView(){
 	//$.collapsibleInfoView.size = 0;
 	$.collapsibleInfoView.height = 0;
+	$.collapsibleInfoLabel.font = {
+		fontFamily : 'Arial',
+		fontSize : '12dip',
+	};
 }
 
 function onExhibitsClick(exhibits){
@@ -150,18 +154,13 @@ function toggleExpanderCollapsed(){
 }
 
 function onExhibitsScroll(e, exhibits) {
+	$.collapsibleInfoView.height = $.collapsibleInfoView.height; //Fixes bug on iOS where components wouldn't scroll if collapsible info collapsed
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
-	setExhibitText(exhibits[$.exhibitsCarousel.currentPage].description);
 	
-	$.componentScrollView.scrollTo(0, 0);
-	
-	// Fixes bug on iOS where components wouldn't scroll if collapsible info collapsed
-	$.collapsibleInfoView.height = $.collapsibleInfoView.height; 
-	
-	// If collapsible view is open, update the exhibit info
-	if ($.collapsibleInfoView.height != 0){ 
+	if ($.collapsibleInfoView.height != 0){
+		//Collapsible view is open; must update the exhibit info
 		var index = $.exhibitsCarousel.currentPage;
 		$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	}
@@ -173,11 +172,14 @@ function createComponentsScrollView(exhibits){
 		componentsInExhibit[exhibits[i].id] = Ti.UI.createView({
 			layout: 'horizontal',
 			horizontalWrap: false,
-			width: Ti.UI.SIZE,
-			height: Ti.UI.SIZE
+			width: Ti.UI.SIZE
 		});
 		for(var j=0; j<exhibits[i].components.length; j++){
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
+			component.left = 3;
+			// component.right = 3;
+			component.width = '300dip';
+			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
 			componentsInExhibit[exhibits[i].id].add(component);
 		}			
@@ -185,48 +187,6 @@ function createComponentsScrollView(exhibits){
 		componentsInExhibit[exhibits[i].id].width = 0;
 	}
 	componentsInExhibit[currExhibitId].width = Ti.UI.SIZE;
-}
-
-function createLabeledPicView(item, type){
-	var image = Ti.UI.createImageView({
-		image: item.image,
-		itemId: item.id,
-		height: '150dip',
-		width: '300dip',
-		zIndex: 0
-	});
-	var container = Ti.UI.createView({
-		left: '3dip', 
-		height: '150dip',
-		width: '300dip',
-	});
-	container.add(image);
-	container.add(createTitleLabel(item.name, type));
-	return container;
-}
-
-function createTitleLabel(name, type){
-	var titleLabel = Ti.UI.createView({
-		backgroundColor: 'black',
-		opacity: 0.6,
-		top: 0,
-		height: '15%',
-		zIndex: 2
-	});
-	var label = Ti.UI.createLabel({
-		text: name,
-		top: 0,
-		left: 10,
-		color: 'white',
-		font: {
-			fontFamily: 'Arial',
-			fontSize: type,
-			fontWeight: 'bold'
-		},
-		zIndex: 1
-	});
-	titleLabel.add(label);
-	return titleLabel;
 }
 
 function openComponent(e){
@@ -241,6 +201,50 @@ function openComponent(e){
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", analyticsLevel, 1);	
 }
 
+function createLabeledPicView(item, type){
+	var itemContainer = Ti.UI.createView();
+	var image = Ti.UI.createImageView({
+		height: '100%',
+		width: '100%'
+	});
+	var clickCatcher = Ti.UI.createView({
+		itemId: item.id
+	});//*/
+	image.image = item.image;
+	
+	itemContainer.add(image);
+	itemContainer.add(createTitleLabel(item.name, type));
+	itemContainer.add(clickCatcher);
+	return itemContainer;
+}
+
+function createTitleLabel(name, type){
+	var titleLabel = Ti.UI.createView({
+		backgroundColor: 'black',
+		opacity: 0.6,
+		height: '15%',
+		top: 0
+	});
+	//$.addClass(exhibitImages[i], "exhibitTitleShadow"); 
+	
+	var label = Ti.UI.createLabel({
+		text: name,
+		top: 0,
+		left: 10,
+		color: 'white',
+		font: {
+			fontFamily: 'Arial',
+			fontSize: type,
+			fontWeight: 'bold'
+		}
+	});
+	//$.addClass(label, "myLabel"); 
+	titleLabel.add(label);
+	return titleLabel;
+}
+
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
+	//$.infoRow.add($.exhibitInfoLabel);
+	//$.exhibitInfoScrollView.add($.infoRow);
 } 
