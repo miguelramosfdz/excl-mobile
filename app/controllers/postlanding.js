@@ -72,6 +72,9 @@ function displaySocialMediaButtons(json) {
 		});
 
 		$.closeCommentBoxButton.addEventListener('click', function(e) {
+			$.insertName.blur();
+			$.insertEmail.blur();
+			$.insertComment.blur();
 			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
 			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
 		});

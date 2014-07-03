@@ -64,7 +64,8 @@
 	// zOrder: 2,
 	borderWidth: '1',
 	borderColor: 'black',
-	clearOnEdit: true
+	clearOnEdit: true,
+	paddingLeft: "5dip"
 }
 
 "#insertNameDisclaimer":{
@@ -96,7 +97,8 @@
 	// zOrder: 2,
 	borderWidth: '1',
 	borderColor: 'black',
-	clearOnEdit: true
+	clearOnEdit: true,
+	paddingLeft: "5dip"
 }
 
 "#insertEmailDisclaimer":{
@@ -129,7 +131,8 @@
 	// zOrder: 2,
 	borderWidth: '1',
 	borderColor: 'black',
-	clearOnEdit: true
+	clearOnEdit: true,
+	paddingLeft: "5dip"
 }
 
 "#submitButton":{
