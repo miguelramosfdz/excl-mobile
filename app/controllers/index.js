@@ -154,10 +154,11 @@ function onExhibitsScroll(e, exhibits) {
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
+	var index = $.exhibitsCarousel.currentPage;
+	$.exhibitInfoLabel.text = exhibits[index].description;
 	
 	if ($.collapsibleInfoView.height != 0){
 		//Collapsible view is open; must update the exhibit info
-		var index = $.exhibitsCarousel.currentPage;
 		$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	}
 }
