@@ -111,7 +111,7 @@ function createExhibitsImageAndroid(exhibit){
 	 	image: '/images/700x400.png',
 	});
 	var clickCatcher = Ti.UI.createView({
-		itemId: item.id
+		itemId: exhibit.id
 	});//*/
 	image.image = item.image;
 	
