@@ -21,7 +21,7 @@ else{ //View is empty; insert no content message into placeholder
 
 function createPostView(post) {
 	var args = {
-		width: Ti.UI.FILL,
+		height: Ti.UI.FILL,
 		image: post.get('image')
 	};
 	var image = Ti.UI.createImageView(args);
@@ -48,9 +48,18 @@ function createPostView(post) {
 	};
 	var title = Ti.UI.createLabel(args);
 	titleBar.add(title);
-	image.add(titleBar);
 	
-	image.addEventListener('click', function(e) {
+	var view;
+	if(OS_IOS) {
+		view = image;
+	}
+	else if(OS_ANDROID) {
+		view = Ti.UI.createView();
+		view.add(image);
+	}
+	view.add(titleBar);
+	
+	view.addEventListener('click', function(e) {
 		var args = post.get('raw');
 		postController = Alloy.createController('postlanding', args);
 		postController.setAnalyticsPageTitle(post.get("name"));
@@ -58,5 +67,5 @@ function createPostView(post) {
 		Alloy.Globals.navController.open(postController);
 	});
 	
-	return image;
+	return view;
 }

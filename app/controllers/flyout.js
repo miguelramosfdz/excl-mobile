@@ -11,6 +11,10 @@ Alloy.Models.app.on('change:customizeLearning', function(e) {
 
 function disableCustomLearn(e) {
 	Alloy.Models.app.set('customizeLearning', false);
+	
+	Ti.API.info("disabled");
+	
+	closeMenu(e);
 }
 
 function closeMenu(e) {
@@ -35,22 +39,26 @@ function bestForAgesHandler(e) {
 
 function enableAgeFilter() {
 	ageFilterEnabled = true;
-	$.agesLabel.color = "#00CC00";
+	$.row2.backgroundColor = "#00CC00";
+	$.agesLabel.text = "Edit Filter";
 	showEditAgeOption();
 }
 
 function disableAgeFilter() {
 	ageFilterEnabled = false;
-	$.agesLabel.color = "black";
+	$.row2.backgroundColor = "#F2F2F2";
+	$.agesLabel.text = "Filter by Age";
 	hideEditAgeOption();
 }
 
 function showEditAgeOption() {
 	$.tableRowCollapsible.height = '30dip';
+	$.disableLabel.color = "#000000";
 }
 
 function hideEditAgeOption() {
 	$.tableRowCollapsible.height = 0;
+	$.disableLabel.color = "#C0C0C0";
 }
 
 function toggleAgeFilter(ageFilterOn) {

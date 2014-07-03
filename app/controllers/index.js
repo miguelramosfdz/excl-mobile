@@ -113,7 +113,7 @@ function createExhibitsImageAndroid(exhibit){
 	var clickCatcher = Ti.UI.createView({
 		itemId: exhibit.id
 	});//*/
-	image.image = item.image;
+	image.image = exhibit.image;
 	
 	itemContainer.add(image);
 	itemContainer.add(createTitleLabel(exhibit.name, '25dip'));
