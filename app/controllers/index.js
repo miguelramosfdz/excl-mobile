@@ -94,7 +94,7 @@ function createExhibitsCarousel(exhibits){
 function createExhibitTitleLabel(name){
 	var titleLabelView = Ti.UI.createView({
 		top: 0,
-		height: '7%',
+		height: Ti.UI.SIZE,
 		backgroundColor: '#000',
 		opacity: 0.6
 	});
@@ -125,10 +125,6 @@ function createExpanderButton(){
 function createCollapsibleInfoView(){
 	//$.collapsibleInfoView.size = 0;
 	$.collapsibleInfoView.height = 0;
-	$.collapsibleInfoLabel.font = {
-		fontFamily : 'Arial',
-		fontSize : '12dip',
-	};
 }
 
 function onExhibitsClick(exhibits){
