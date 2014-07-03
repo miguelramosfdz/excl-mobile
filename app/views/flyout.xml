@@ -18,37 +18,37 @@
 			<TableViewRow class="tableRowCollapsible" id="tableRowCollapsible" onClick="disableCustomLearn">
 				<View id="rowContainerIndented">
 					<View backgroundImage="/flyoutMenuIcons/edit.png" class="rowIcon"/>
-					<Label class="rowLabelIndented">Disable</Label>
+					<Label class="rowLabelIndented" id="disableLabel">Disable Filter</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row4">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/favorites.png" class="rowIcon"/>
-					<Label id="favoritesLabel" color="red" class="rowLabel">My Favorites</Label>
+					<Label id="favoritesLabel" color="#C0C0C0" class="rowLabel">My Favorites</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row5">
 				<View id="rowContainer">
 					<View backgroundImage= "/flyoutMenuIcons/map.png" class="rowIcon"/>
-					<Label id="mapLabel" color="red" class="rowLabel">Map</Label>
+					<Label id="mapLabel" color="#C0C0C0" class="rowLabel">Map</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row6">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/info.png" class="rowIcon"/>
-					<Label id="museumInfoLabel" color="red" class="rowLabel">Museum Info</Label>
+					<Label id="museumInfoLabel" color="#C0C0C0" class="rowLabel">Museum Info</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row7">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/tutorial.png" class="rowIcon"/>
-					<Label id="tutorialLabel" color="red" class="rowLabel">Tutorial</Label>
+					<Label id="tutorialLabel" color="#C0C0C0" class="rowLabel">Tutorial</Label>
 				</View>
 			</TableViewRow>
 			<TableViewRow class="tableRow" id="row8">
 				<View id="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/settingsGear.png" class="rowIcon"/>
-					<Label id="settingsLabel" color="red" class="rowLabel">Settings</Label>
+					<Label id="settingsLabel" color="#C0C0C0" class="rowLabel">Settings</Label>
 				</View>
 			</TableViewRow>
 		</TableView>
