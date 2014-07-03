@@ -125,10 +125,6 @@ function createExpanderButton(){
 function createCollapsibleInfoView(){
 	//$.collapsibleInfoView.size = 0;
 	$.collapsibleInfoView.height = 0;
-	$.collapsibleInfoLabel.font = {
-		fontFamily : 'Arial',
-		fontSize : '12dip',
-	};
 }
 
 function onExhibitsClick(exhibits){
