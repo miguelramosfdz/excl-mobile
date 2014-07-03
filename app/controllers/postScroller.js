@@ -2,8 +2,10 @@ var args = arguments[0] || {};
 // expects:
 // posts - backbone.js collection of backbone.js model of post type
 
-$.scroller.width = Ti.UI.FILL;
+$.scroller.width = Ti.UI.SIZE;
 $.scroller.height = Ti.UI.SIZE;
+$.scroller.top = "0";
+$.scroller.bottom = "0";
 
 var posts = args.posts;
 if(posts) {

@@ -196,7 +196,7 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
 	if (selectedAges.length > 1) {
 
-		/*Below is commented out for I don't know why but it is required (albeit buggy) to check for:
+		/*Below is commented out to avoid bugginess but the system is required to check for:
 		* Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
 		* Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
 		* Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
