@@ -57,8 +57,8 @@ function displaySocialMediaButtons(json) {
 	}
 	if (json.commenting && !Alloy.Globals.navController.kioskMode) {
 		var commentButton = Ti.UI.createButton({
-			height : "40dip",
-			width : "40dip",
+			height : "55dip",
+			width : "55dip",
 			left : "40%",
 			top : "0",
 			backgroundImage : "/images/icons_android/comment.png"
