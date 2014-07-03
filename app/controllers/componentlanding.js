@@ -318,12 +318,17 @@ function sortPostsIntoSections(hash) {
 
 		var view = postScroller.getView();
 		view.top = "0";
-		view.height = "65%";
+
+		if (OS_IOS) {
+			view.height = "65%";
+		} else {
+			view.height = "340dip";
+		}
 
 		if (i == hashLength - 1) {
 			view.bottom = "65dip";
 		}
-		
+
 		$.scrollView.add(view);
 	}
 	//	$.scrollView.bottom = "100dip";
