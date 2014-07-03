@@ -40,13 +40,13 @@ function bestForAgesHandler(e) {
 function enableAgeFilter() {
 	ageFilterEnabled = true;
 	$.row2.backgroundColor = "#00CC00";
-	$.agesLabel.text = "Filter Active!";
+	$.agesLabel.text = "Edit Filter";
 	showEditAgeOption();
 }
 
 function disableAgeFilter() {
 	ageFilterEnabled = false;
-	$.row2.backgroundColor = "white";
+	$.row2.backgroundColor = "#F2F2F2";
 	$.agesLabel.text = "Filter by Age";
 	hideEditAgeOption();
 }
