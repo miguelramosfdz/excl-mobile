@@ -15,7 +15,7 @@
 						<Label id="insertNameDisclaimer">Name is optional - Won't be shared publicly</Label>
 						<TextField id="insertEmail" />
 						<Label id="insertEmailDisclaimer">Email is optional - Won't be shared publicly</Label>
-						<TextArea id="insertComment"/>
+						<TextField id="insertComment"/>
 						<Button id="submitButton" onClick="verifyAndValidataData" />
 					</View>
 					<View id="thankYouMessageView">

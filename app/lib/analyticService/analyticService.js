@@ -32,6 +32,7 @@ AnalyticsController.prototype.setTrackerID = function(trackerID) {
 	this.trackerID = trackerID;
 };
 
+// TODO if screenName, pageLevel are blank, don't track anything
 AnalyticsController.prototype.trackScreen = function(screenName, pageLevel, kioskMode){
 	var tracker = this.getTracker();
 	if (!tracker) {return false;}

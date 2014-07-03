@@ -1,93 +1,87 @@
 var args = arguments[0] || {};
 
-var ageFilterEnabled = false;
-var filterAgeSet = false;
-//filterAges vars will be set to the values in memory
+var ageFilterOn;
+
+Alloy.Models.app.on('change:customizeLearning', function(e) {
+	var customizeLearning = Alloy.Models.app.get('customizeLearning');
+	
+	if(customizeLearning && !ageFilterEnabled) enableAgeFilter();
+	else if(!customizeLearning && ageFilterEnabled) disableAgeFilter();
+});	// jly
+
+function disableCustomLearn(e) {
+	Alloy.Models.app.set('customizeLearning', false);
+	
+	Ti.API.info("disabled");
+	
+	closeMenu(e);
+}
 
 function closeMenu(e) {
-	//alert("well you clicked it...");
 	return Alloy.Globals.navController.toggleMenu();
 }
 
 function openExhibitPage(e) {
 	Alloy.Globals.navController.home();
-	// Maybe we should change this
 }
 
 function bestForAgesHandler(e) {
 	var ready = Alloy.Collections.filter.ready;
-	
-	if(ready) Alloy.createController('filterActivationModal').getView().open();
-	else {
+
+	if (ready) {
+		Alloy.Models.app.set('customizeLearning', true);
+		Alloy.createController('filterActivationModal').getView().open();
+	} else {
 		Alloy.Models.app.retrieveFilters();
 		alert('Attempting to retrieve filters.  Try again in a moment.');
 	}
 }
 
-function enableAgeFilter(){
+function enableAgeFilter() {
 	ageFilterEnabled = true;
-	$.agesLabel.color = "#00CC00";
-	//$.agesLabel.text = "Filter By Age";
+	$.row2.backgroundColor = "#00CC00";
+	$.agesLabel.text = "Edit Filter";
 	showEditAgeOption();
 }
 
-function disableAgeFilter(){
+function disableAgeFilter() {
 	ageFilterEnabled = false;
-	//$.agesLabel.text = "Filter By Age";
-	$.agesLabel.color = "black";
+	$.row2.backgroundColor = "#F2F2F2";
+	$.agesLabel.text = "Filter by Age";
 	hideEditAgeOption();
 }
 
 function showEditAgeOption() {
 	$.tableRowCollapsible.height = '30dip';
+	$.disableLabel.color = "#000000";
 }
 
 function hideEditAgeOption() {
 	$.tableRowCollapsible.height = 0;
+	$.disableLabel.color = "#C0C0C0";
 }
 
-function toggleAgeFilter(){
-	if(!ageFilterEnabled)
+function toggleAgeFilter(ageFilterOn) {
+	if (ageFilterOn) {
 		enableAgeFilter();
-	else
+	} else {
 		disableAgeFilter();
+	}
 }
 
-function openInputMenu(){
-	
-	alert("Insert Jess's singleton Modal here");
-	filterAgeSet = true;
-	/*
-	var modal = viewService.createModalInputView();
-	//var table = viewService.createTableView();
-	//modal.add(table);
-	
-	var rowContent = viewService.createTableRow("80");
-	var rowSave = viewService.createTableRow("10");
-	var rowClose = viewService.createTableRow("10");
-	modal.add(rowContent);
-	modal.add(rowSave);
-	modal.add(rowClose);
-	// table.add(rowContent);
-	// table.add(rowSave);
-	// table.add(rowClose);
-	
-	var closeButton = buttonService.createButtonWithCustomSize("Close", 20, 150);
-	closeButton.addEventListener("click", function(e){
-		$.menuView.remove(modal);
-	});
-	rowClose.add(closeButton);
-	//modal.add(closeButton);
-	
-	$.menuView.add(modal);//*/
-	
-}
+function init() {
 
-function init(){
-	//detectAgeFilterSet(filterAgeSet);
-	//detectAgeFilterOn(filterAgeOn);
-	//disableAgeFilter();
-	
+	ageFilterOn = Alloy.Models.app.get("customizeLearning");
+	toggleAgeFilter(ageFilterOn);
+
+	Ti.API.info("custom learn: " + ageFilterOn);
+
+	//Alloy.Models.app.on("change:customizeLearning", myInit)
+
+	// detectAgeFilterSet(filterAgeSet);
+	// detectAgeFilterOn(filterAgeOn);
+	// disableAgeFilter();
+
 	viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
 	viewService = new viewService();
 	buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
@@ -95,6 +89,6 @@ function init(){
 }
 
 var viewService;
-var	buttonService;
+var buttonService;
 
 init();
