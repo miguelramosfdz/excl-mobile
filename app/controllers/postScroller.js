@@ -22,15 +22,16 @@ else{ //View is empty; insert no content message into placeholder
 function createPostView(post) {
 	var args = {
 		height: Ti.UI.FILL,
-		image: post.get('image')
+		image: post.get('image'),
+		top: "0"
 	};
 	var image = Ti.UI.createImageView(args);
 	
 	args = {
-		backgroundColor: 'black',
+		//backgroundColor: 'black',
 		opacity: 0.6,
 		height: Ti.UI.SIZE,
-		top: 0
+		top: "0dip"
 	};
 	var titleBar = Ti.UI.createView(args);
 	
@@ -44,6 +45,7 @@ function createPostView(post) {
 			fontSize : '25dip',
 			fontWeight : 'bold'
 		},
+		//backgroundColor: "black",
 		text: post.get('name')
 	};
 	var title = Ti.UI.createLabel(args);

@@ -306,30 +306,32 @@ function sortPostsIntoSections(hash) {
 
 		Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
 
-		//if (hashKeys[i] != genericAllAgesSectionTitle && JSON.stringify(postCollection) != "[]") {
-		if (JSON.stringify(postCollection) != "[]") {
-			args = {
-				posts : postCollection
-			};
+		if (hashKeys[i] != genericAllAgesSectionTitle && JSON.stringify(postCollection) != "[]") {
+			if (JSON.stringify(postCollection) != "[]") {
+				args = {
+					posts : postCollection
+				};
+			}
+
+			var postScroller = Alloy.createController('postScroller', args);
+			postScroller.sectionTitle.text = hashKeys[i];
+			//postScroller.sectionTitle.text = postScroller.sectionTitle.backgroundColor.toString();
+			
+			var view = postScroller.getView();
+			view.top = "0";
+
+			if (OS_IOS) {
+				view.height = "60%";
+			} else {
+				view.height = "340dip";
+			}
+
+			if (i == hashLength - 1) {
+				view.bottom = "65dip";
+			}
+
+			$.scrollView.add(view);
 		}
-		//}
-		var postScroller = Alloy.createController('postScroller', args);
-		postScroller.sectionTitle.text = hashKeys[i];
-
-		var view = postScroller.getView();
-		view.top = "0";
-
-		if (OS_IOS) {
-			view.height = "65%";
-		} else {
-			view.height = "340dip";
-		}
-
-		if (i == hashLength - 1) {
-			view.bottom = "65dip";
-		}
-
-		$.scrollView.add(view);
 	}
 	//	$.scrollView.bottom = "100dip";
 
