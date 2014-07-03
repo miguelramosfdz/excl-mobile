@@ -94,7 +94,7 @@ function createExhibitsCarousel(exhibits){
 function createExhibitTitleLabel(name){
 	var titleLabelView = Ti.UI.createView({
 		top: 0,
-		height: '20%',
+		height: Ti.UI.SIZE,
 		backgroundColor: '#000',
 		opacity: 0.6
 	});
