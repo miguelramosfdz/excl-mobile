@@ -79,7 +79,7 @@ NavigationController.prototype.open = function(controller) {
 			// close dependent window ?
 			if (this.toClose) {
 			 	// close "parent" window, do not use animation (it looks weird with animation)
-			 	(self.navGroup) ? self.navGroupWindow.close(this.toClose, {animated : false}) : this.toClose.close({animated:false});
+			 	(self.navGroup) ? self.navGroup.closeWindow(this.toClose, {animated : false}) : this.toClose.close({animated:false});
 			 	// (self.navGroup) ? self.navGroup.closeWindow(this.toClose, {animated : true}) : this.toClose.close({animated:true});
 			}
 			
