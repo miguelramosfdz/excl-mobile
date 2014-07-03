@@ -68,27 +68,57 @@ function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
 	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
-		var viewConfig = {
-			backgroundColor: "#253342",
-			width: Ti.UI.FILL,
-		 	image: '/images/700x400.png',
-		 	itemId: exhibits[i].id
-		};
-		if(exhibits[i].image) {
-			viewConfig.image = exhibits[i].image;	
+		var exhibitView;
+		if(OS_IOS){
+			exhibitView = createExhibitsImageIOS(exhibits[i]);
 		}
-		var imageView = Ti.UI.createImageView(viewConfig);
-		imageView.add(createExhibitTitleLabel(exhibits[i].name));
-		if (OS_ANDROID){
-			imageView.addEventListener("click", function(e){ onExhibitsClick(exhibits); });
+		else if (OS_ANDROID){
+			exhibitView = createExhibitsImageAndroid(exhibits[i]);
+			exhibitView.addEventListener("click", function(e){ onExhibitsClick(exhibits); });
 		}
-		$.exhibitsCarousel.addView(imageView);		
+		$.exhibitsCarousel.addView(exhibitView);		
 	}
 	if (OS_IOS){
 		//Android doesn't respond to singletap event, so the Android event listener is added above
 		$.exhibitsCarousel.addEventListener("singletap", function(e){ onExhibitsClick(exhibits); });
-	}
+	} 
 	$.exhibitsCarousel.addEventListener("scrollend", function(e){ onExhibitsScroll(e, exhibits); });
+}
+
+function createExhibitsImageIOS(exhibit){
+	var viewConfig = {
+		backgroundColor: "#253342",
+		width: Ti.UI.FILL,
+	 	image: '/images/700x400.png',
+	 	itemId: exhibit.id
+	};
+	if(exhibit.image) {
+		viewConfig.image = exhibit.image;	
+	}
+	var exhibitView = Ti.UI.createImageView(viewConfig);
+	exhibitView.add(createExhibitTitleLabel(exhibit.name));
+	return exhibitView;
+}
+
+function createExhibitsImageAndroid(exhibit){
+	
+	var itemContainer = Ti.UI.createView({
+		itemId: exhibit.id
+	});
+	var image = Ti.UI.createImageView({		
+		backgroundColor: "#253342",
+		width: Ti.UI.FILL,
+	 	image: '/images/700x400.png',
+	});
+	var clickCatcher = Ti.UI.createView({
+		itemId: exhibit.id
+	});//*/
+	image.image = exhibit.image;
+	
+	itemContainer.add(image);
+	itemContainer.add(createTitleLabel(exhibit.name, '25dip'));
+	itemContainer.add(clickCatcher);
+	return itemContainer;
 }
 
 function createExhibitTitleLabel(name){
@@ -154,10 +184,11 @@ function onExhibitsScroll(e, exhibits) {
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
+	var index = $.exhibitsCarousel.currentPage;
+	$.exhibitInfoLabel.text = exhibits[index].description;
 	
 	if ($.collapsibleInfoView.height != 0){
 		//Collapsible view is open; must update the exhibit info
-		var index = $.exhibitsCarousel.currentPage;
 		$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	}
 }
