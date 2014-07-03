@@ -67,7 +67,7 @@ function clearOrderedPostHashes() {
 function detectEvent() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
 	
-	Ti.API.info("on? " + ageFilterOn);
+	Ti.API.info("Age Filter: " + ageFilterOn);
 	
 	clearOrderedPostHashes();
 	addSpinner();
@@ -79,7 +79,7 @@ function retrieveComponentData(ageFilterOn) {
 	if (!initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 			changeTitleOfThePage(returnedData.data.component.name);
-			allPosts = returnedData.data.component.posts[0];
+			allPosts = returnedData.data.component.posts;
 			initialLoad = true;
 			checkIfAgeFilterOn(allPosts, ageFilterOn);
 			checkPostViewSpacing();
