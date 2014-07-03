@@ -124,7 +124,7 @@ function createExhibitsImageAndroid(exhibit){
 function createExhibitTitleLabel(name){
 	var titleLabelView = Ti.UI.createView({
 		top: 0,
-		height: '20%',
+		height: Ti.UI.SIZE,
 		backgroundColor: '#000',
 		opacity: 0.6
 	});
@@ -155,10 +155,6 @@ function createExpanderButton(){
 function createCollapsibleInfoView(){
 	//$.collapsibleInfoView.size = 0;
 	$.collapsibleInfoView.height = 0;
-	$.collapsibleInfoLabel.font = {
-		fontFamily : 'Arial',
-		fontSize : '12dip',
-	};
 }
 
 function onExhibitsClick(exhibits){
@@ -188,10 +184,11 @@ function onExhibitsScroll(e, exhibits) {
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
+	var index = $.exhibitsCarousel.currentPage;
+	$.exhibitInfoLabel.text = exhibits[index].description;
 	
 	if ($.collapsibleInfoView.height != 0){
 		//Collapsible view is open; must update the exhibit info
-		var index = $.exhibitsCarousel.currentPage;
 		$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	}
 }
