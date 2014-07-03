@@ -21,6 +21,7 @@ else{ //View is empty; insert no content message into placeholder
 
 function createPostView(post) {
 	var args = {
+		height: Ti.UI.FILL,
 		image: post.get('image')
 	};
 	var image = Ti.UI.createImageView(args);
