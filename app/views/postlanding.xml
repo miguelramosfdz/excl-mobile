@@ -1,6 +1,6 @@
 <Alloy>
-	<Window id="postlanding" class="container" backgroundColor='#FFFFFF'>
-		<View layout="vertical">
+	<Window id="postLanding" class="container" backgroundColor='#FFFFFF'>
+		<View id="postLandingView" layout="vertical">
 			<Widget src="navigationBar" id="navBar"/>
 			<ScrollView id="scroller">
 				<TableView id="tableView" ></TableView>

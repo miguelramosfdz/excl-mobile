@@ -219,7 +219,7 @@ function createComponentsScrollView(exhibits){
 function openComponent(e){
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
-	var controller = Alloy.createController('componentlanding', component);
+	var controller = Alloy.createController('componentLanding', component);
 	var analyticsTitle = component.getScreenName();
 	var analyticsLevel = "Component Landing";
 	controller.setAnalyticsPageTitle(analyticsTitle);

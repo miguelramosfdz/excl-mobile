@@ -63,7 +63,7 @@ function createPostView(post) {
 	
 	view.addEventListener('click', function(e) {
 		var args = post.get('raw');
-		postController = Alloy.createController('postlanding', args);
+		postController = Alloy.createController('postLanding', args);
 		postController.setAnalyticsPageTitle(post.get("name"));
 		postController.setAnalyticsPageLevel("Post Landing");
 		Alloy.Globals.navController.open(postController);

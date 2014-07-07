@@ -31,6 +31,13 @@ function createPlainRowWithHeight(rowHeight) {
 	return row;
 }
 
+function fixPageSpacing(){
+	if (OS_IOS){
+		$.tableView.bottom = "48dip";
+		Ti.API.info("Spacing fixed");
+	}
+}
+
 function setPageTitle(name) {
 	if (name === "") {
 		$.postLanding.title = "[Title]";
@@ -81,7 +88,6 @@ function displaySocialMediaButtons(json) {
 
 		row.add(commentButton);
 	}
-
 	return row;
 }
 
@@ -198,6 +204,7 @@ function addTableDataToTheView(tableData) {
 	$.tableView.bottom = "10dip";
 	// some extra margin after comments are displayed
 	$.tableView.data = tableData;
+	fixPageSpacing();
 }
 
 function creatingCommentTextHeading() {
@@ -276,6 +283,7 @@ function addCommentToView(commentText, commentDate) {
 	});
 	row.add(date);
 	tableData.push(row);
+	fixPageSpacing();
 }
 
 function displayComments(comments) {
@@ -407,6 +415,7 @@ function initializePage() {
 		displayThereAreNoCommentsToDisplayText();
 	}
 	addTableDataToTheView(tableData);
+	fixPageSpacing();
 }
 
 /*
