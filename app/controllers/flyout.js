@@ -53,12 +53,12 @@ function disableAgeFilter() {
 
 function showEditAgeOption() {
 	$.viewRowCollapsible.height = '50dip';
-	$.disableLabel.color = "#000000";
+	$.disableView.show();
 }
 
 function hideEditAgeOption() {
 	$.viewRowCollapsible.height = 0;
-	$.disableLabel.color = "#C0C0C0";
+	$.disableView.hide();
 }
 
 function toggleAgeFilter(ageFilterOn) {
