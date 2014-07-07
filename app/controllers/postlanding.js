@@ -33,9 +33,9 @@ function createPlainRowWithHeight(rowHeight) {
 
 function setPageTitle(name) {
 	if (name === "") {
-		$.postlanding.title = "[Title]";
+		$.postLanding.title = "[Title]";
 	} else {
-		$.postlanding.title = name;
+		$.postLanding.title = name;
 	}
 }
 
@@ -51,7 +51,7 @@ function displaySocialMediaButtons(json) {
 		row.add(shareTextButton);
 	}
 	if (json.image_sharing && !Alloy.Globals.navController.kioskMode) {
-		var shareImageButton = sharingImageService.initiateImageShareButton(json, $.postlanding);
+		var shareImageButton = sharingImageService.initiateImageShareButton(json, $.postLanding);
 		shareImageButton.left = "60%";
 		row.add(shareImageButton);
 	}

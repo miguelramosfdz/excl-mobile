@@ -39,7 +39,7 @@ Alloy.Models.app.on("change:customizeLearning", detectEvent);
 var ageFilterOn;
 
 function changeTitleOfThePage(name) {
-	$.componentlanding.title = name;
+	$.componentLanding.title = name;
 }
 
 function goToPostLandingPage(e) {
