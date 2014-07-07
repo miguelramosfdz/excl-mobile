@@ -39,25 +39,25 @@ function bestForAgesHandler(e) {
 
 function enableAgeFilter() {
 	ageFilterEnabled = true;
-	$.row2.backgroundColor = "#00CC00";
+	$.bestForAgesRow.backgroundColor = "#00CC00";
 	$.agesLabel.text = "Edit Filter";
 	showEditAgeOption();
 }
 
 function disableAgeFilter() {
 	ageFilterEnabled = false;
-	$.row2.backgroundColor = "#F2F2F2";
+	$.bestForAgesRow.backgroundColor = "#F2F2F2";
 	$.agesLabel.text = "Filter by Age";
 	hideEditAgeOption();
 }
 
 function showEditAgeOption() {
-	$.tableRowCollapsible.height = '30dip';
+	$.viewRowCollapsible.height = '50dip';
 	$.disableLabel.color = "#000000";
 }
 
 function hideEditAgeOption() {
-	$.tableRowCollapsible.height = 0;
+	$.viewRowCollapsible.height = 0;
 	$.disableLabel.color = "#C0C0C0";
 }
 
