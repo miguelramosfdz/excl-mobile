@@ -194,10 +194,10 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
 
-	if (checkIfArrayInArray(postAgeRange, selectedAges)) {
+	if (checkIfArrayInArray(postAgeRange, selectedAges) && selectedAges.length != 2) {
 		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToHash("0", post, hashOrderedPostsByAge);
-	} else if (checkIfAbbrevArray(postAgeRange)) {
+	} else if (checkIfAbbrevArray(postAgeRange) && selectedAges.length != 2) {
 		Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToHash("0", post, hashOrderedPostsByAge);
 	} else {
