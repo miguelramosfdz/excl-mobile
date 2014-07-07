@@ -317,11 +317,6 @@ function sortPostsIntoSections(hash) {
 
 			Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
 
-			args = {
-				posts : postCollection
-			};
-			addPostScroller(hashKeys[i], hashLength);
-
 			if (hashKeys[i] == genericAllAgesSectionTitle) {
 				if (JSON.stringify(postCollection) != "[]") {
 					args = {
