@@ -34,7 +34,6 @@ function createPlainRowWithHeight(rowHeight) {
 function fixPageSpacing(){
 	if (OS_IOS){
 		$.tableView.bottom = "48dip";
-		Ti.API.info("Spacing fixed");
 	}
 }
 
