@@ -9,15 +9,16 @@ var selectedAges;
 
 var allPosts;
 var initialLoad = false;
-var genericAllAgesSectionTitle = "For All Selected Ages";
+var genericAllAgesSectionTitle = "For Everyone in Your Group";
+var noContentMessage = "Sorry!\n\nLooks like we're still in the\nprocess of adding content here.\n\nCheck here later for new and\nexciting activities!";
 
 var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
 var viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
-var view = new viewService;
+var view = new viewService();
 var labelService = Alloy.Globals.setPathForLibDirectory('customCalls/labelService');
-var label = new labelService;
+var label = new labelService();
 var loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
-var spinner = new loadingSpinner;
+var spinner = new loadingSpinner();
 
 var analyticsPageTitle = "";
 var analyticsPageLevel = "";
@@ -70,9 +71,7 @@ function clearOrderedPostHashes() {
 
 function detectEvent() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
-
 	Ti.API.info("Age Filter On: " + ageFilterOn);
-
 	clearOrderedPostHashes();
 	addSpinner();
 	retrieveComponentData(ageFilterOn);
@@ -80,6 +79,7 @@ function detectEvent() {
 
 function retrieveComponentData(ageFilterOn) {
 	clearOrderedPostHashes();
+	addSpinner();
 	if (!initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 			changeTitleOfThePage(returnedData.data.component.name);
@@ -87,6 +87,7 @@ function retrieveComponentData(ageFilterOn) {
 			initialLoad = true;
 			checkIfAgeFilterOn(allPosts, ageFilterOn);
 			checkPostViewSpacing();
+			removeSpinner();
 		});
 	} else {
 		checkIfAgeFilterOn(allPosts);
@@ -301,41 +302,39 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 }
 
 function sortPostsIntoSections(hash) {
-
-	Ti.API.info("101");
-
 	var hashKeys = returnHashKeys(hash);
 	var hashLength = hashKeys.length;
-	if (hashLength == 0){
-		var label = label.createLabel("No Content Available");
-		var view = view.createView;
-		view.add(label);
-		$.scrollView.add(view);
-	}
-	for (var i = 0; i < hashLength; i++) {
-		//cycle through hash keys
-		var postCollection = Alloy.createCollection('post');
-		stepIntoHash(hash, hashKeys[i], postCollection);
+	if (hashLength == 0) {
+		var error = label.createLabel(noContentMessage);
+		var errorView = view.createView();
+		errorView.add(error);
+		$.scrollView.add(errorView);
+	} else {
+		for (var i = 0; i < hashLength; i++) {
+			//cycle through hash keys
+			var postCollection = Alloy.createCollection('post');
+			stepIntoHash(hash, hashKeys[i], postCollection);
 
-		Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
+			Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
 
-		args = {
-			posts : postCollection
-		};
-		addPostScroller(hashKeys[i], hashLength);
+			args = {
+				posts : postCollection
+			};
+			addPostScroller(hashKeys[i], hashLength);
 
-		if (hashKeys[i] == genericAllAgesSectionTitle) {
-			if (JSON.stringify(postCollection) != "[]") {
+			if (hashKeys[i] == genericAllAgesSectionTitle) {
+				if (JSON.stringify(postCollection) != "[]") {
+					args = {
+						posts : postCollection
+					};
+					addPostScroller(hashKeys[i], hashLength);
+				}
+			} else if (hashKeys[i] != genericAllAgesSectionTitle) {
 				args = {
 					posts : postCollection
 				};
 				addPostScroller(hashKeys[i], hashLength);
 			}
-		} else if (hashKeys[i] != genericAllAgesSectionTitle) {
-			args = {
-				posts : postCollection
-			};
-			addPostScroller(hashKeys[i], hashLength);
 		}
 	}
 }
