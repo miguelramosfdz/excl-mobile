@@ -12,6 +12,10 @@ var initialLoad = false;
 var genericAllAgesSectionTitle = "For All Selected Ages";
 
 var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
+var viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
+var view = new viewService;
+var labelService = Alloy.Globals.setPathForLibDirectory('customCalls/labelService');
+var label = new labelService;
 var loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner;
 
@@ -196,16 +200,15 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 
 	Ti.API.info("Num of ages selected: " + selectedAges.length);
 
+	/*Below is commented out to avoid bugginess but the system is required to check for:
+	 * Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
+	 * Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
+	 * Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
+	 */
+
 	if (selectedAges.length > 1) {
-
-		/*Below is commented out to avoid bugginess but the system is required to check for:
-		 * Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
-		 * Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
-		 * Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
-		 */
-
-		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
-		addItemArrayToHash("0", post, hashOrderedPostsByAge);
+		//Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
+		//addItemArrayToHash("0", post, hashOrderedPostsByAge);
 	} else if (checkIfAbbrevArray(postAgeRange)) {
 		Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToHash("0", post, hashOrderedPostsByAge);
@@ -298,8 +301,17 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 }
 
 function sortPostsIntoSections(hash) {
+
+	Ti.API.info("101");
+
 	var hashKeys = returnHashKeys(hash);
 	var hashLength = hashKeys.length;
+	if (hashLength == 0){
+		var label = label.createLabel("No Content Available");
+		var view = view.createView;
+		view.add(label);
+		$.scrollView.add(view);
+	}
 	for (var i = 0; i < hashLength; i++) {
 		//cycle through hash keys
 		var postCollection = Alloy.createCollection('post');
@@ -307,35 +319,41 @@ function sortPostsIntoSections(hash) {
 
 		Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
 
-		if (hashKeys[i] != genericAllAgesSectionTitle && JSON.stringify(postCollection) != "[]") {
+		args = {
+			posts : postCollection
+		};
+		addPostScroller(hashKeys[i], hashLength);
+
+		if (hashKeys[i] == genericAllAgesSectionTitle) {
 			if (JSON.stringify(postCollection) != "[]") {
 				args = {
 					posts : postCollection
 				};
+				addPostScroller(hashKeys[i], hashLength);
 			}
-
-			var postScroller = Alloy.createController('postScroller', args);
-			postScroller.sectionTitle.text = hashKeys[i];
-			//postScroller.sectionTitle.text = postScroller.sectionTitle.backgroundColor.toString();
-
-			var view = postScroller.getView();
-			view.top = "0";
-
-			if (OS_IOS) {
-				view.height = "60%";
-			} else {
-				view.height = "340dip";
-			}
-
-			if (i == hashLength - 1) {
-				view.bottom = "65dip";
-			}
-
-			$.scrollView.add(view);
+		} else if (hashKeys[i] != genericAllAgesSectionTitle) {
+			args = {
+				posts : postCollection
+			};
+			addPostScroller(hashKeys[i], hashLength);
 		}
 	}
-	//	$.scrollView.bottom = "100dip";
+}
 
+function addPostScroller(title, hashLength) {
+	var postScroller = Alloy.createController('postScroller', args);
+	postScroller.sectionTitle.text = title;
+	var view = postScroller.getView();
+	view.top = "0";
+	if (OS_IOS) {
+		view.height = "60%";
+	} else {
+		view.height = "340dip";
+	}
+	if (i == hashLength - 1) {
+		view.bottom = "65dip";
+	}
+	$.scrollView.add(view);
 }
 
 function stepIntoHash(hash, key, postCollection) {
