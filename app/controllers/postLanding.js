@@ -224,6 +224,14 @@ function creatingCommentTextHeading() {
 		borderWidth : '1',
 		borderColor : '#aaa',
 	});
+	row.addEventListener('click', function(e) {
+			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
+			$.submitCommentFormView.visible = true;
+			$.insertName.value = $.insertEmail.value = $.insertComment.value = "";
+			$.thankYouMessageView.visible = false;
+	});
+	
 	row.add(commentHeading);
 	tableData.push(row);
 }
