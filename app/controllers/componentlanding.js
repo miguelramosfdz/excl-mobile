@@ -199,20 +199,20 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 	if (selectedAges.length > 1) {
 
 		/*Below is commented out to avoid bugginess but the system is required to check for:
-		* Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
-		* Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
-		* Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
-		*/
+		 * Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
+		 * Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
+		 * Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
+		 */
 
-		// Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
-		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
-		// } else if (checkIfAbbrevArray(postAgeRange)) {
-		// Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
-		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
-		// } else if (checkIfArrayInArray(postAgeRange, selectedAges)) {
-		// Ti.API.info("3-Adding to zed: " + JSON.stringify(post));
-		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
-		// } else {
+		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
+		addItemArrayToHash("0", post, hashOrderedPostsByAge);
+	} else if (checkIfAbbrevArray(postAgeRange)) {
+		Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
+		addItemArrayToHash("0", post, hashOrderedPostsByAge);
+	} else if (checkIfArrayInArray(postAgeRange, selectedAges)) {
+		Ti.API.info("3-Adding to zed: " + JSON.stringify(post));
+		addItemArrayToHash("0", post, hashOrderedPostsByAge);
+	} else {
 
 		Ti.API.info("Adding to other: " + JSON.stringify(post));
 
@@ -220,8 +220,9 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
 			addItemArrayToHash(selectedAges[i], itemArray, hashOrderedPostsByAge);
 		}
-	} else {
-		//addItemArrayToHash("0", post, hashOrderedPostsByAge);
+		// } else {
+		// Ti.API.info("4-Adding to zed: " + JSON.stringify(post));
+		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
 	}
 }
 
@@ -316,7 +317,7 @@ function sortPostsIntoSections(hash) {
 			var postScroller = Alloy.createController('postScroller', args);
 			postScroller.sectionTitle.text = hashKeys[i];
 			//postScroller.sectionTitle.text = postScroller.sectionTitle.backgroundColor.toString();
-			
+
 			var view = postScroller.getView();
 			view.top = "0";
 
