@@ -230,8 +230,8 @@ function creatingCommentTextHeading() {
 			$.submitCommentFormView.visible = true;
 			$.insertName.value = $.insertEmail.value = $.insertComment.value = "";
 			$.thankYouMessageView.visible = false;
-	});
-	
+		});
+
 	row.add(commentHeading);
 	tableData.push(row);
 }

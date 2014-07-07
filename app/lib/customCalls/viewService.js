@@ -11,6 +11,11 @@ viewService.prototype.createModalInputView = function() {
 	return modal;
 };
 
+viewService.prototype.createView = function() {
+	var view = Ti.UI.createView({});
+	return view;
+};
+
 viewService.prototype.createTableView = function() {
 	var table = Ti.UI.createTableView({});
 	return table;

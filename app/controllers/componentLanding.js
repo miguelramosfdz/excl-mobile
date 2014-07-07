@@ -9,11 +9,16 @@ var selectedAges;
 
 var allPosts;
 var initialLoad = false;
-var genericAllAgesSectionTitle = "For All Selected Ages";
+var genericAllAgesSectionTitle = "For Everyone in Your Group";
+var noContentMessage = "Sorry!\n\nLooks like we're still in the\nprocess of adding content here.\n\nCheck here later for new and\nexciting activities!";
 
 var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
+var viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
+var view = new viewService();
+var labelService = Alloy.Globals.setPathForLibDirectory('customCalls/labelService');
+var label = new labelService();
 var loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
-var spinner = new loadingSpinner;
+var spinner = new loadingSpinner();
 
 var analyticsPageTitle = "";
 var analyticsPageLevel = "";
@@ -66,9 +71,7 @@ function clearOrderedPostHashes() {
 
 function detectEvent() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
-
 	Ti.API.info("Age Filter On: " + ageFilterOn);
-
 	clearOrderedPostHashes();
 	addSpinner();
 	retrieveComponentData(ageFilterOn);
@@ -76,6 +79,7 @@ function detectEvent() {
 
 function retrieveComponentData(ageFilterOn) {
 	clearOrderedPostHashes();
+	addSpinner();
 	if (!initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 			changeTitleOfThePage(returnedData.data.component.name);
@@ -83,6 +87,7 @@ function retrieveComponentData(ageFilterOn) {
 			initialLoad = true;
 			checkIfAgeFilterOn(allPosts, ageFilterOn);
 			checkPostViewSpacing();
+			removeSpinner();
 		});
 	} else {
 		checkIfAgeFilterOn(allPosts);
@@ -196,16 +201,15 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 
 	Ti.API.info("Num of ages selected: " + selectedAges.length);
 
+	/*Below is commented out to avoid bugginess but the system is required to check for:
+	 * Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
+	 * Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
+	 * Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
+	 */
+
 	if (selectedAges.length > 1) {
-
-		/*Below is commented out to avoid bugginess but the system is required to check for:
-		 * Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
-		 * Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
-		 * Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
-		 */
-
-		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
-		addItemArrayToHash("0", post, hashOrderedPostsByAge);
+		//Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
+		//addItemArrayToHash("0", post, hashOrderedPostsByAge);
 	} else if (checkIfAbbrevArray(postAgeRange)) {
 		Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToHash("0", post, hashOrderedPostsByAge);
@@ -300,42 +304,55 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 function sortPostsIntoSections(hash) {
 	var hashKeys = returnHashKeys(hash);
 	var hashLength = hashKeys.length;
-	for (var i = 0; i < hashLength; i++) {
-		//cycle through hash keys
-		var postCollection = Alloy.createCollection('post');
-		stepIntoHash(hash, hashKeys[i], postCollection);
+	if (hashLength == 0) {
+		var error = label.createLabel(noContentMessage);
+		var errorView = view.createView();
+		errorView.add(error);
+		$.scrollView.add(errorView);
+	} else {
+		for (var i = 0; i < hashLength; i++) {
+			//cycle through hash keys
+			var postCollection = Alloy.createCollection('post');
+			stepIntoHash(hash, hashKeys[i], postCollection);
 
-		Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
+			Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
 
-		if (hashKeys[i] != genericAllAgesSectionTitle && JSON.stringify(postCollection) != "[]") {
-			if (JSON.stringify(postCollection) != "[]") {
+			args = {
+				posts : postCollection
+			};
+			addPostScroller(hashKeys[i], hashLength);
+
+			if (hashKeys[i] == genericAllAgesSectionTitle) {
+				if (JSON.stringify(postCollection) != "[]") {
+					args = {
+						posts : postCollection
+					};
+					addPostScroller(hashKeys[i], hashLength);
+				}
+			} else if (hashKeys[i] != genericAllAgesSectionTitle) {
 				args = {
 					posts : postCollection
 				};
+				addPostScroller(hashKeys[i], hashLength);
 			}
-
-			var postScroller = Alloy.createController('postScroller', args);
-			postScroller.sectionTitle.text = hashKeys[i];
-			//postScroller.sectionTitle.text = postScroller.sectionTitle.backgroundColor.toString();
-
-			var view = postScroller.getView();
-			view.top = "0";
-
-			if (OS_IOS) {
-				view.height = "60%";
-			} else {
-				view.height = "340dip";
-			}
-
-			if (i == hashLength - 1) {
-				view.bottom = "65dip";
-			}
-
-			$.scrollView.add(view);
 		}
 	}
-	//	$.scrollView.bottom = "100dip";
+}
 
+function addPostScroller(title, hashLength) {
+	var postScroller = Alloy.createController('postScroller', args);
+	postScroller.sectionTitle.text = title;
+	var view = postScroller.getView();
+	view.top = "0";
+	if (OS_IOS) {
+		view.height = "60%";
+	} else {
+		view.height = "340dip";
+	}
+	if (i == hashLength - 1) {
+		view.bottom = "65dip";
+	}
+	$.scrollView.add(view);
 }
 
 function stepIntoHash(hash, key, postCollection) {
