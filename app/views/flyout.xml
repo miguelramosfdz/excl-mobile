@@ -19,7 +19,7 @@
 			</View>
 			
 			<View class="viewRowIndented" id="viewRowCollapsible" onClick="disableCustomLearn">
-				<View class="rowContainer">
+				<View class="rowContainer" id="disableView">
 					<View backgroundImage="/flyoutMenuIcons/edit.png" class="rowIcon"/>
 					<Label class="rowLabelIndented" id="disableLabel">Disable Filter</Label>		
 				</View>
