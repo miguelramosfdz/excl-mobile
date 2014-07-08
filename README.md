@@ -5,7 +5,9 @@
 1. Clone the cmh-excl-mobile repository (go to https://bitbucket.org/parivedasolutions/cmh-excl-mobile to see your clone link) from bitbucket to anywhere on your computer
 2. Open up Titanium Studio and Import the existing project into your workspace
 3. Develop!
-4. Checkin.  See pre-checkin checklist [here] (https://bitbucket.org/parivedasolutions/cmh-excl-mobile/src/a13625a97ed94af3850531053714371051a58703/docs/Checkin%20Checklist.md?at=master).
+4. Checkin.
+
+[Pre-checkin Checklist](https://bitbucket.org/parivedasolutions/cmh-excl-mobile/src/a13625a97ed94af3850531053714371051a58703/docs/Checkin%20Checklist.md?at=master)
 
 ### Lib Docs ###
 
