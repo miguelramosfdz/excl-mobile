@@ -12,3 +12,6 @@
 	overlayEnabled: "true",
 	backgroundColor: "black"
 }
+".placeholderLabel":{
+	color: "#FFFFFF"
+}

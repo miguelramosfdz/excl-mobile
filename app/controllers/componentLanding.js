@@ -157,32 +157,27 @@ function returnHashKeys(hash) {
 }
 
 function checkIfArrayInArray(arySmall, aryLarge) {
-
 	if (checkIfAbbrevArray(aryLarge)) {
 		return true;
 	}
-
+	if (JSON.stringify(arySmall) == JSON.stringify(aryLarge)) {
+		return true;
+	}
 	lengthSmall = arySmall.length;
 	lengthLarge = aryLarge.length;
 
 	if (lengthSmall > lengthLarge) {
 		var holder = arySmall;
 		arySmall = aryLarge;
-		aryLarge = arySmall;
+		aryLarge = holder;
 	}
-
-	Ti.API.info("aryLarge: " + JSON.stringify(aryLarge) + ", small: " + JSON.stringify(arySmall));
-
-	for (var i = 0; i < lengthLarge - lengthSmall; i++) {
-		var subLarge = [];
-		for (var j = i; j < i + lengthSmall; j++) {
-			subLarge.push(aryLarge[j]);
-		}
-
-		Ti.API.info("sublarge: " + JSON.stringify(subLarge) + ", small: " + JSON.stringify(arySmall));
-
-		if (arySmall == aryLarge) {
-			return true;
+	for (var i = 0; i < arySmall.length; i++) {
+		for (var j = 0; j < aryLarge.length; j++) {
+			if (aryLarge[j] == arySmall[i]) {
+				if (i == arySmall.length - 1) {
+					return true;
+				}
+			}
 		}
 	}
 	return false;
@@ -199,34 +194,18 @@ function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsB
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
 
-	Ti.API.info("Num of ages selected: " + selectedAges.length);
-
-	/*Below is commented out to avoid bugginess but the system is required to check for:
-	 * Making sure that if only a single age is selected, it is not added to For All Selected Ages (category 0)
-	 * Making sure that the post is added to category 0 when all of the selected ages are contained in the post's ages (not vice versa)
-	 * Making sure that the post is added to category 0 if it has all recommended ages (postAgeRange == 0)
-	 */
-
-	if (selectedAges.length > 1) {
-		//Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
-		//addItemArrayToHash("0", post, hashOrderedPostsByAge);
-	} else if (checkIfAbbrevArray(postAgeRange)) {
+	if (checkIfArrayInArray(postAgeRange, selectedAges) && selectedAges.length != 2) {
+		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
+		addItemArrayToHash("0", post, hashOrderedPostsByAge);
+	} else if (checkIfAbbrevArray(postAgeRange) && selectedAges.length != 2) {
 		Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToHash("0", post, hashOrderedPostsByAge);
-	} else if (checkIfArrayInArray(postAgeRange, selectedAges)) {
-		Ti.API.info("3-Adding to zed: " + JSON.stringify(post));
-		addItemArrayToHash("0", post, hashOrderedPostsByAge);
 	} else {
-
-		Ti.API.info("Adding to other: " + JSON.stringify(post));
-
+		Ti.API.info("3-Adding to other: " + JSON.stringify(post));
 		for (var i = 0; i < selectedAges.length; i++) {
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
 			addItemArrayToHash(selectedAges[i], itemArray, hashOrderedPostsByAge);
 		}
-		// } else {
-		// Ti.API.info("4-Adding to zed: " + JSON.stringify(post));
-		// addItemArrayToHash("0", post, hashOrderedPostsByAge);
 	}
 }
 
@@ -304,6 +283,7 @@ function replaceHashKeysWithFilterHeadings(oldHash) {
 function sortPostsIntoSections(hash) {
 	var hashKeys = returnHashKeys(hash);
 	var hashLength = hashKeys.length;
+	var bolEmpty;
 	if (hashLength == 0) {
 		var error = label.createLabel(noContentMessage);
 		var errorView = view.createView();
@@ -314,40 +294,63 @@ function sortPostsIntoSections(hash) {
 			//cycle through hash keys
 			var postCollection = Alloy.createCollection('post');
 			stepIntoHash(hash, hashKeys[i], postCollection);
-
 			Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
-
 			if (hashKeys[i] == genericAllAgesSectionTitle) {
 				if (JSON.stringify(postCollection) != "[]") {
 					args = {
 						posts : postCollection
 					};
-					addPostScroller(hashKeys[i], hashLength);
+					bolEmpty = "false";
+					addPostScroller(i, hashKeys[i], hashLength, postCollection, bolEmpty);
 				}
 			} else if (hashKeys[i] != genericAllAgesSectionTitle) {
-				args = {
-					posts : postCollection
-				};
-				addPostScroller(hashKeys[i], hashLength);
+				if (JSON.stringify(postCollection) != "[]") {
+					args = {
+						posts : postCollection
+					};
+					bolEmpty = "false";
+					addPostScroller(i, hashKeys[i], hashLength, postCollection, bolEmpty);
+				} else {
+					args = "";
+					bolEmpty = "true";
+					addPostScroller(i, hashKeys[i], hashLength, postCollection, bolEmpty);
+				}
 			}
 		}
 	}
 }
 
-function addPostScroller(title, hashLength) {
+function addPostScroller(i, title, hashLength, postCollection, bolEmpty) {
+	var view = createPostScroller(title, postCollection);
+	view = adjustViewHeight(view, i, hashLength, bolEmpty);
+	$.scrollView.add(view);
+}
+
+function createPostScroller(title, postCollection) {
 	var postScroller = Alloy.createController('postScroller', args);
 	postScroller.sectionTitle.text = title;
-	var view = postScroller.getView();
-	view.top = "0";
-	if (OS_IOS) {
-		view.height = "60%";
+	return postScroller.getView();
+}
+
+function adjustViewHeight(view, i, hashLength, bolEmpty) {
+	var tempView = view;
+	tempView.top = "0";
+
+	Ti.API.info("empty? " + bolEmpty);
+
+	if (bolEmpty == "false") {
+		if (OS_IOS) {
+			tempView.height = "60%";
+		} else {
+			tempView.height = "340dip";
+		}
 	} else {
-		view.height = "340dip";
+		tempView.height = "150dip";
 	}
 	if (i == hashLength - 1) {
-		view.bottom = "65dip";
+		tempView.bottom = "60dip";
 	}
-	$.scrollView.add(view);
+	return tempView;
 }
 
 function stepIntoHash(hash, key, postCollection) {
@@ -369,9 +372,6 @@ function stepIntoPostDictionaryCollection(dict, postCollection) {
 		key = returnHashKeys(dict)[i];
 		stepIntoPostDictionary(dict, key, post);
 	}
-
-	Ti.API.info("Post: " + JSON.stringify(post));
-
 	post.set({
 		raw : dict
 	});
