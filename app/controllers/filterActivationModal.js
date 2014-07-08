@@ -2,17 +2,31 @@ var args = arguments[0] || {};
 var allChecked;
 
 var filters = Alloy.Collections.filter;
+var iconService = setPathForLibDirectory('customCalls/iconService');
+var icon = new iconService();
+var viewServicePath = setPathForLibDirectory('customCalls/viewService');
+var viewService = new viewServicePath();
+
+function setPathForLibDirectory(libFile) {
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
 
 function createFilterView(filter, allChecked) {
 	var name = filter.get('name');
-	var active = filter.get('active');
-	
-	if (allChecked == "true"){
+	var active;
+
+	if (allChecked == "true") {
 		active = "true";
-	} else if (allChecked == "false"){
+	} else if (allChecked == "false") {
 		active = "false";
+	} else {
+		active = filter.get('active');
 	}
-	
 	var color = 'white';
 	if (OS_IOS) {
 		color = 'black';
@@ -27,14 +41,14 @@ function createFilterView(filter, allChecked) {
 			fontSize : '22dp',
 			fontWeight : 'bold'
 		},
-		left : '10dip',
+		left : '10%',
 		text : name
 	};
 	var label = Ti.UI.createLabel(args);
 
 	args = {
 		value : active,
-		right : '10dip'
+		right : '10%'
 	};
 	var _switch = Ti.UI.createSwitch(args);
 
@@ -43,39 +57,59 @@ function createFilterView(filter, allChecked) {
 		filter.set('active', _switch.value);
 	});
 
-	var view = Ti.UI.createView();
-	view.add(label);
-	view.add(_switch);
+	var rowView = viewService.createView();
+	rowView.add(label);
+	rowView.add(_switch);
 
-	var row = Ti.UI.createTableViewRow();
-	row.add(view);
+	var row = viewService.createTableRow("10");
+	row.add(rowView);
 
 	return row;
 }
 
-function checkAll(e) {
-	if (allChecked) {
-		allChecked = false;
-		$.toggleAll.title = "Check All";
-	} else {
-		allChecked = true;
-		$.toggleAll.title = "Uncheck All";
-	}
-	$.filters.removeAllChildren();
-	init();
-}
-
 function closeWindow(e) {
 	$.getView().close();
+	Alloy.Globals.navController.toggleMenu();
 }
 
-function init() {
+function addFilters(allChecked) {
+	var tableData = [];
 	for (var i = 0; i < filters.size(); i++) {
 		var filter = filters.at(i);
 		filter = createFilterView(filter, allChecked);
-		$.filters.add(filter);
+		tableData.push(filter);
 	};
+	$.filterTable.data = tableData;
+}
 
+function resetFilters(newAllCheckedValue) {
+	allChecked = newAllCheckedValue;
+	$.filterTable.data = [];
+	addFilters(allChecked);
+}
+
+function formatCheckAllOnButton(button) {
+	icon.setIcon(button, "checkbox_checked.png");
+	button.left = "75%";
+
+	button.addEventListener('click', function(e) {
+		resetFilters("true");
+	});
+}
+
+function formatCheckAllOffButton(button) {
+	icon.setIcon(button, "checkbox_unchecked.png");
+	button.left = "5%";
+
+	button.addEventListener('click', function(e) {
+		resetFilters("false");
+	});
+}
+
+function init() {
+	formatCheckAllOnButton($.toggleAllOn);
+	formatCheckAllOffButton($.toggleAllOff);
+	addFilters(allChecked);
 }
 
 init();

@@ -11,9 +11,6 @@ Alloy.Models.app.on('change:customizeLearning', function(e) {
 
 function disableCustomLearn(e) {
 	Alloy.Models.app.set('customizeLearning', false);
-	
-	Ti.API.info("disabled");
-	
 	closeMenu(e);
 }
 
@@ -74,7 +71,7 @@ function init() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
 	toggleAgeFilter(ageFilterOn);
 
-	Ti.API.info("custom learn: " + ageFilterOn);
+	Ti.API.info("Customized Learning: " + ageFilterOn);
 
 	//Alloy.Models.app.on("change:customizeLearning", myInit)
 

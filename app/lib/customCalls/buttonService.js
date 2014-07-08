@@ -1,4 +1,5 @@
-function buttonService(){};
+function buttonService() {
+};
 //Provides functions to deal with buttons
 
 //Parameters id and title are optional
@@ -17,6 +18,33 @@ buttonService.prototype.createButton = function(id, title) {
 	return button;
 };
 
+buttonService.prototype.createCheckbox = function() {
+	var checkbox = Ti.UI.createButton({
+		right : "5%",
+		borderColor : '#666',
+		borderWidth : 2,
+		borderRadius : 3,
+		backgroundColor : '#aaa',
+		backgroundImage : 'none',
+		color : '#fff',
+		font : {
+			fontSize : 25,
+			fontWeight : 'bold'
+		},
+		value: false
+	});
+	checkbox.addEventListener('click', function(e) {
+		if (checkbox.value) {
+			checkbox.backgroundColor = '#007690';
+			checkbox.title = '\u2713';
+		} else {
+			checkbox.backgroundColor = '#aaa';
+			checkbox.title = '';
+		}
+	});
+	return checkbox;
+};
+
 buttonService.prototype.createButtonWithCustomSize = function(title, heightAsDip, widthAsDip) {
 	title = title || "";
 	heightAsDip = heightAsDip || "40";
@@ -26,7 +54,7 @@ buttonService.prototype.createButtonWithCustomSize = function(title, heightAsDip
 		width : widthAsDip + "dip",
 		left : "0",
 		top : "0",
-		title: title
+		title : title
 	});
 	return button;
 };

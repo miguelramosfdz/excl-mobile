@@ -1,13 +1,37 @@
 
-".container" : {
-  
+".container": {
+	modal: "true",
+	layout: "vertical"
 }
 
 ".title": {
-	color : '#FFFFFF',
-	font : {
-		fontFamily : 'Helvetica Neue',
-		fontSize : '22dp',
-		fontWeight : 'bold'
-	}
+	color: '#FFFFFF',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '22dp',
+		fontWeight: 'bold'
+	},
+	left: "10dip"
+}
+
+".titleBar": {
+	height: "35dip",
+	backgroundColor: "black"
+}
+".hint":{
+	textAlign: "left"
+}
+".closeButton":{
+	right: "5%"
+}
+".toggleButton":{
+	height: "25dip",
+	width: "25dip",
+	borderColor: "white",
+	borderWidth: "3",
+	borderRadius: "5"
+}
+".horizontalView":{
+	layout: "horizontal",
+	height: "35dip"
 }
