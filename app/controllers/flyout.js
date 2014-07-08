@@ -1,4 +1,5 @@
 var args = arguments[0] || {};
+var APICalls = require("customCalls/apiCalls");
 
 var ageFilterOn;
 
@@ -12,7 +13,7 @@ Alloy.Models.app.on('change:customizeLearning', function(e) {
 function disableCustomLearn(e) {
 	Alloy.Models.app.set('customizeLearning', false);
 	
-	Ti.API.info("disabled");
+	APICalls.info("disabled");
 	
 	closeMenu(e);
 }
@@ -74,7 +75,7 @@ function init() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
 	toggleAgeFilter(ageFilterOn);
 
-	Ti.API.info("custom learn: " + ageFilterOn);
+	APICalls.info("custom learn: " + ageFilterOn);
 
 	//Alloy.Models.app.on("change:customizeLearning", myInit)
 

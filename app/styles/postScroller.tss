@@ -10,7 +10,8 @@
 ".scroller":{
 	showPagingControl: "true",
 	overlayEnabled: "true",
-	backgroundColor: "black"
+	backgroundColor: "black",
+	pagingControlTimeout: 0
 }
 ".placeholderLabel":{
 	color: "#FFFFFF"
