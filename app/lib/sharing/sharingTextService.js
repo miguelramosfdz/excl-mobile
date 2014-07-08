@@ -1,11 +1,20 @@
 function sharingTextService(){
-	buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
+	buttonService = setPathForLibDirectory('customCalls/buttonService');
 	buttonService = new buttonService();
-	iconService = Alloy.Globals.setPathForLibDirectory('customCalls/iconService');
+	iconService = setPathForLibDirectory('customCalls/iconService');
 	iconService = new iconService();
-	intentService = Alloy.Globals.setPathForLibDirectory('customCalls/intentService');
+	intentService = setPathForLibDirectory('customCalls/intentService');
 	intentService = new intentService();
 }
+
+function setPathForLibDirectory(libFile){
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
 
 sharingTextService.prototype.initiateTextShareButton = function(json) {
 	var shareTextButton = buttonService.createButton('shareTextButton', 'Text');
