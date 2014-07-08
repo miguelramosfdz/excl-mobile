@@ -52,7 +52,7 @@ function populateWindow(json){
 		for (var j = 0; j < exhibit.components.length; j++) {
 			component = exhibit.components[j];
 			var componentModel = Alloy.createModel('component');
-			componentModel.set({ 'id' : component.id, 'name': component.name, 'exhibit': exhibit.name });
+			componentModel.set({ 'id' : component.id, 'name': component.name, 'exhibit': exhibit.name, "orderNo": exhibit.order_number });
 			components.add(componentModel);
 		}
 	}
@@ -66,9 +66,16 @@ function populateWindow(json){
 
 function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
+	
+	exhibits.sort(function(a,b){
+		return a.order_number > b.order_number;
+	});
+	
+	//exhibits.order_number.sort();
 	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
 		var exhibitView;
+
 		if(OS_IOS){
 			exhibitView = createExhibitsImageIOS(exhibits[i]);
 		}
