@@ -16,10 +16,17 @@ Alloy.Globals.navController = new NavigationController();
 var AnalyticsController = require('analyticService/analyticService');
 Alloy.Globals.analyticsController = new AnalyticsController();
 
+
+// TODO  DELETE THESE AFTER THE 3 INSTANCES ARE FUNCTIONAL
 var dreamhostersAPI = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81";
 var backupAPI = "http://tvt.redhale.com/wordpress/wp-json/v01/excl/museum/81";
 
-Alloy.Globals.rootWebServiceUrl = dreamhostersAPI;
+// TODO MAKE THESE # INSTANCES FUNCTIONAL
+var devWordpressEnvironment = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81";
+var qaWordpressEnvironment = '';
+var prodWordpressEnvironment = '';
+
+Alloy.Globals.rootWebServiceUrl = devWordpressEnvironment;
 
 Alloy.Globals.setPathForLibDirectory = function(libFile){
 	if ( typeof Titanium == 'undefined') {
