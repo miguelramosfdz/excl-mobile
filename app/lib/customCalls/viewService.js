@@ -29,4 +29,9 @@ viewService.prototype.createTableRow = function (heightAsPercent){
 	return row;
 };
 
+viewService.prototype.createTableSection = function(){
+	var table = Ti.UI.createTableViewSection({});
+	return table;
+};
+
 module.exports = viewService;
