@@ -1,4 +1,5 @@
 var args = arguments[0] || {};
+var APICalls = require("customCalls/apiCalls");
 
 var ageFilterOn;
 
@@ -11,6 +12,7 @@ Alloy.Models.app.on('change:customizeLearning', function(e) {
 
 function disableCustomLearn(e) {
 	Alloy.Models.app.set('customizeLearning', false);
+	APICalls.info("disabled");
 	closeMenu(e);
 }
 
