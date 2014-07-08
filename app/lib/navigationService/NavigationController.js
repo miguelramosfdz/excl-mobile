@@ -1,14 +1,17 @@
 // NavigationController
 // This version works for Android and iOS for Titanium 3.2.0. 
 
+var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
+
 function NavigationController() {
 	this.windowStack = [];
 	this.kioskMode = false;
 	this.Page = null;
 	this.lockedPage = null;
-	this.analyticsController = Alloy.Globals.analyticsController;
+	this.alloy = require(rootPath + "customCalls/alloyService");
+	this.analyticsController = this.alloy.Globals.analyticsController;
 	
-	this.menu = require("navigationService/flyoutService");
+	this.menu = require(rootPath + "navigationService/flyoutService");
 	/*
 	this.flyoutMenu = Alloy.createController('flyout').getView();
 	this.flyoutMenu.zIndex = 1;//*/
