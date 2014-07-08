@@ -76,8 +76,13 @@ function createExhibitsCarousel(exhibits){
 			exhibitView = createExhibitsImageAndroid(exhibits[i]);
 			exhibitView.addEventListener("click", function(e){ onExhibitsClick(exhibits); });
 		}
-		$.exhibitsCarousel.addView(exhibitView);		
+		$.exhibitsCarousel.addView(exhibitView);	
+		
+		// Change the current page to force the arrows to appear
+		$.exhibitsCarousel.currentPage = i;	
 	}
+	// Change the current page back to 0
+	$.exhibitsCarousel.currentPage = 0;
 	if (OS_IOS){
 		//Android doesn't respond to singletap event, so the Android event listener is added above
 		$.exhibitsCarousel.addEventListener("singletap", function(e){ onExhibitsClick(exhibits); });
