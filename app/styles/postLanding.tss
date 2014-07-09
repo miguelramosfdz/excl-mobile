@@ -24,12 +24,21 @@
 
 "#whiteCommentBox":{
 	backgroundColor: 'white',
-	top: '15%',
-	height: '70%',
-	left: '10%',
-	width: '80%',
+	//top: '15%',
+	//height: '70%',
+	height:'90%',
+	//left: '10%',
+	//width: '80%',
+	width:'90%',
 	opacity: '1.0',
 	visible: false,
+	backgroundGradient: {
+        type: 'linear',
+        startPoint: { x: '50%', y: '0%' },
+        endPoint: { x: '50%', y: '100%' },
+        colors: [ 	{ color: '#EEEEEE', offset: 0.0}, 
+        			{ color: '#FFFFFF', offset: 1.0 }],
+    }
 	// zOrder: 2
 }
 
@@ -38,7 +47,7 @@
 	color: 'black',
 	font: {
 		fontFamily: 'Helvetica Neue',
-		fontSize: '20dp',
+		fontSize: '21dp',
 		fontWeight: 'bold'
 	},
 	top: '4%',
@@ -52,7 +61,7 @@
 	opacity: '1.0',
 	font: {
 		fontFamily: 'Helvetica Neue',
-		fontSize: '13dp',
+		fontSize: '18dp',
 		fontWeight: 'normal'
 	},
 	color: 'black',
@@ -85,7 +94,7 @@
 	opacity: '1.0',
 	font: {
 		fontFamily: 'Helvetica Neue',
-		fontSize: '13dp',
+		fontSize: '18dp',
 		fontWeight: 'normal'
 	},
 	color: 'black',
@@ -119,14 +128,14 @@
 	opacity: '1.0',
 	font: {
 		fontFamily: 'Helvetica Neue',
-		fontSize: '13dp',
+		fontSize: '18dp',
 		fontWeight: 'normal'
 	},
 	color: 'black',
 	top: '52%',
 	left: '7%',
 	width: '85%',
-	height: '30%',
+	height: '20%',
 	// backgroundColor: '#f2f2f2',
 	// zOrder: 2,
 	borderWidth: '1',
@@ -140,19 +149,50 @@
 	opacity: '1.0',
 	font: {
 		fontFamily: 'Helvetica Neue',
-		fontSize: '13dp',
+		fontSize: '16dp',
 		fontWeight: 'bold'
 	},
-	top: '87%',
+	borderRadius:'5',
+	bottom: '5%',
 	left: '7%',
-	width: '85%',
+	width: '40%',
 	height: '10%',
 	color: 'black',
-	backgroundColor: '#a6a6a6',
-	// borderRadius: 5,
 	borderWidth: '1',
-	borderColor: 'black',
+	borderColor: '#2D6C1E',
+	backgroundGradient: {
+	    type: 'linear',
+	    startPoint: { x: '50%', y: '0%' },
+	    endPoint: { x: '50%', y: '100%' },
+	    colors: [ 	{ color: '#2D6C1E', offset: 0.0}, 
+	    			{ color: '#C0D860', offset: 1.0 }],
+   }
 	// zOrder: 2
+}
+
+"#cancelCommentButton":{
+	title: 'Cancel',
+	opacity: '1.0',
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '16dp',
+		fontWeight: 'bold'
+	},
+	borderRadius:'5',
+	bottom: '5%',
+	right: '7%',
+	width: '40%',
+	height: '10%',
+	color: 'black',
+	borderWidth: '1',
+	borderColor: '#F20000',
+	backgroundGradient: {
+	    type: 'linear',
+	    startPoint: { x: '50%', y: '0%' },
+	    endPoint: { x: '50%', y: '100%' },
+	    colors: [ 	{ color: '#F20000', offset: 0.0}, 
+	    			{ color: '#FF9999', offset: 1.0 }],
+   }
 }
 
 ".thankYouMessageComment":{
@@ -172,7 +212,7 @@
 	// zOrder: 2,
 }
 
-"#closeCommentBoxButton":{
+/*"#closeCommentBoxButton":{
 	color: 'red',
 	top: '1%',
 	// right: '5dip',
@@ -184,4 +224,4 @@
 		fontWeight: 'bold'
 	},
 	// zOrder: 3
-}
+}*/

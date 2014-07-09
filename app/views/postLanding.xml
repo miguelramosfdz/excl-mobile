@@ -1,13 +1,11 @@
 <Alloy>
 	<Window id="postLanding" class="container" backgroundColor='#FFFFFF'>
+
 		<View id="postLandingView" layout="vertical">
+
 			<Widget src="navigationBar" id="navBar"/>
 			<ScrollView id="scroller">
 				<TableView id="tableView" ></TableView>
-				<!-- <View id="seeMoreCommentsView">
-				<TableView id="seeMoreCommentsTableView" >
-				</TableView>
-				</View> -->
 				<View id="addNewCommentContainer"></View>
 				<View id="whiteCommentBox">
 					<View id="submitCommentFormView">
@@ -17,6 +15,7 @@
 						<Label id="insertEmailDisclaimer">Email is optional - Won't be shared publicly</Label>
 						<TextArea id="insertComment"/>
 						<Button id="submitButton" onClick="verifyAndValidataData" />
+						<Button id="cancelCommentButton" />
 					</View>
 					<View id="thankYouMessageView">
 						<Label class="thankYouMessageComment" top="35%">Thank you.</Label>
@@ -24,9 +23,9 @@
 						<Label class="thankYouMessageComment" top="50%">Your comment will be visible upon approval.</Label>
 					</View>
 					<Label id="submitYourCommentLabel">Submit your comment</Label>
-					<Label id="closeCommentBoxButton">X</Label>
 				</View>
 			</ScrollView>
+
 		</View>
 	</Window>
 </Alloy>
