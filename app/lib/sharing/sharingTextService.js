@@ -1,4 +1,13 @@
-function setPathForLibDirectory(libFile){
+function sharingTextService(){
+	buttonService = sharingTextService.prototype.setPathForLibDirectory('customCalls/buttonService');
+	buttonService = new buttonService();
+	iconService = sharingTextService.prototype.setPathForLibDirectory('customCalls/iconService');
+	iconService = new iconService();
+	intentService = sharingTextService.prototype.setPathForLibDirectory('customCalls/intentService');
+	intentService = new intentService();
+}
+
+sharingTextService.prototype.setPathForLibDirectory = function(libFile){
 	if ( typeof Titanium == 'undefined') {
 		lib = require("../../lib/" + libFile);
 	} else {
@@ -6,15 +15,6 @@ function setPathForLibDirectory(libFile){
 	}
 	return lib;
 };
-
-function sharingTextService(){
-	buttonService = setPathForLibDirectory('customCalls/buttonService');
-	buttonService = new buttonService();
-	iconService = setPathForLibDirectory('customCalls/iconService');
-	iconService = new iconService();
-	intentService = setPathForLibDirectory('customCalls/intentService');
-	intentService = new intentService();
-}
 
 sharingTextService.prototype.initiateTextShareButton = function(json) {
 	var shareTextButton = buttonService.createButton('shareTextButton', 'Text');

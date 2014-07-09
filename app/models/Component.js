@@ -4,6 +4,7 @@ exports.definition = {
 		    "id": "integer",
 		    "name": "text",
 		    "exhibit": "text",
+		    "compOrderNo": "order_number"
 		},
 		adapter: {
 			type: "sql",
