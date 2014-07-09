@@ -197,8 +197,6 @@ NavigationController.prototype.reset = function(){
 	this.lockedPage = this.Page;
 };
 
-
-
 // Return true if in kiosk mode and false otherwise
 NavigationController.prototype.toggleMenu = function(){
 	this.menu.toggleMenu();

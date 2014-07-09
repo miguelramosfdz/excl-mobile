@@ -3,7 +3,9 @@ var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
 function AdminMode() {
 	var kiosk = require(rootPath +'adminResources/kioskMode');
 	this.kioskMode = new kiosk();
-	Ti.API.info("========\r\n\r\n"+this.kioskMode);
+	
+	var wordpressEnvironment = require(rootPath + 'adminResources/wordpressEnvironmentMode');
+	this.wordpressEnvironmentMode = new wordpressEnvironment();
 }
 
 AdminMode.prototype.isInKioskMode = function(){
@@ -54,7 +56,10 @@ function handleAdminModeDialog(self) {
 			self.kioskMode.updateKioskMode();
 	    } else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
 			Alloy.Globals.navController.open(Alloy.createController('finterns'));
-    	} else {
+    	} else if (e.text == "wordpress" || e.source.androidView.value == "wordpress") {
+    		self.wordpressEnvironmentMode.changeWordpressEnvironment();
+    	}
+    	else {
 	    	var errorMsg = Ti.UI.createAlertDialog({
 			    title: 'incorrect code',
 			    buttonNames: ['OK']
