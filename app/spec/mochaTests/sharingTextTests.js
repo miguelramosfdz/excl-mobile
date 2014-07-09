@@ -20,7 +20,7 @@ describe('sharingTextService', function(){
 	});
 	
 	describe("setPathForLibDirectory", function(){ //Don't think I can test the other branch, since the purpose of this function is to accommodate unit testing
-		it("should properly set the path for a desired library file and return the correct library", function(){
+		it("should return the correct library for unit testing", function(){
 			var dataToSend = "customCalls/apiCalls";
 			var expectedData = require("../../lib/customCalls/apiCalls");
 			
@@ -120,5 +120,23 @@ describe('sharingTextService', function(){
 			assert.equal(dataToSend.backgroundImage, expectedData.backgroundImage);
 		});
 	});
+	
+	/*
+	describe("initiateIntentText", function(){
+		it("should set the button to enabled", function(){
+			var dataToSendPostTags = "";
+			OS_ANDROID = true;
+			var dataToSendButton = [];
+			
+			var fakeIntentService = {
+				sendIntentTextAndroid: function(){}
+			};
+			var sendIntentTextAndroidSpy = sinon.spy(fakeIntentService, "sendIntentTextAndroid");
+			
+			sharingTextService.initiateIntentText(dataToSendPostTags, dataToSendButton);
+			assert.equal(dataToSendButton.enabled, true);
+		});
+	});
+	*/
 });
 
