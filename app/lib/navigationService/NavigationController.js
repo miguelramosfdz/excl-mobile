@@ -18,6 +18,18 @@ function NavigationController() {
 	this.flyoutMenu.zIndex = 1;//*/
 }
 
+NavigationController.prototype.restart = function(){
+		for (var i = this.windowStack.length - 1; i>=0 ; i--) {
+			// set dependent window
+			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
+       	}      	
+        // start chain reaction, close first window
+		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
+	
+		var newHomePage = Alloy.createController("index");
+		this.open(newHomePage);	
+};
+
 NavigationController.prototype.enterKioskMode = function(){
 		var window = this.windowStack[this.windowStack.length - 1];
 	    this.setLocked();				//
@@ -196,8 +208,6 @@ NavigationController.prototype.setLocked = function(){
 NavigationController.prototype.reset = function(){
 	this.lockedPage = this.Page;
 };
-
-
 
 // Return true if in kiosk mode and false otherwise
 NavigationController.prototype.toggleMenu = function(){

@@ -46,7 +46,7 @@
 				</View>
 			</View>
 			
-			<View class="viewRow">
+			<View class="viewRow" onClick="tutorialHandler">
 				<View class="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/tutorial.png" class="rowIcon"/>
 					<Label id="tutorialLabel" color="#C0C0C0" class="rowLabel">Tutorial</Label>

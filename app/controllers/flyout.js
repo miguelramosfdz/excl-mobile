@@ -117,6 +117,11 @@ function toggleAgeFilter(ageFilterOn) {
 	}
 }
 
+function tutorialHandler(e) {
+	closeMenu(e);
+	Alloy.Globals.navController.open(Alloy.createController("tutorial"));
+}
+
 function init() {
 	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
 	ageFilterOn = Alloy.Models.app.get("customizeLearningEnabled");

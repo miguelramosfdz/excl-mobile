@@ -77,7 +77,15 @@ function displaySocialMediaButtons(json) {
 			$.thankYouMessageView.visible = false;
 		});
 
-		$.closeCommentBoxButton.addEventListener('click', function(e) {
+		/*$.closeCommentBoxButton.addEventListener('click', function(e) {
+			$.insertName.blur();
+			$.insertEmail.blur();
+			$.insertComment.blur();
+			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
+		});*/
+		
+		$.cancelCommentButton.addEventListener('click', function(e) {
 			$.insertName.blur();
 			$.insertEmail.blur();
 			$.insertComment.blur();
@@ -219,7 +227,7 @@ function creatingCommentTextHeading() {
 			fontSize : '16dp',
 			fontWeight : 'bold',
 		},
-		text : "Comments",
+		text : "Add Comment",
 		textAlign : 'center',
 		borderWidth : '1',
 		borderColor : '#aaa',
@@ -231,7 +239,7 @@ function creatingCommentTextHeading() {
 			$.insertName.value = $.insertEmail.value = $.insertComment.value = "";
 			$.thankYouMessageView.visible = false;
 		});
-
+	row.bottom = '10%';
 	row.add(commentHeading);
 	tableData.push(row);
 }
