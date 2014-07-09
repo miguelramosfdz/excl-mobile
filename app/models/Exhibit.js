@@ -3,7 +3,7 @@ exports.definition = {
 		columns: {
 		    "id": "integer",
 		    "name": "text",
-		    "orderNo": "order_number"
+		    "exhibOrderNo": "order_number"
 		},
 		adapter: {
 			type: "sql",
