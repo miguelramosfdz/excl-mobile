@@ -16,6 +16,7 @@
 	showPagingControl: true,
 	overlayEnabled: true,
 	pagingControlAlpha: "0.5",
+	pagingControlTimeout: 0
 }
 
 "#exhibitsCarousel[platform=android]": {

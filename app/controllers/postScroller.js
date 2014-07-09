@@ -12,8 +12,11 @@ if (posts) {
 		var post = posts.at(i);
 		post = createPostView(post);
 		$.scroller.addView(post);
+		$.scroller.currentPage = i;		// Change to current page to froce android arrows to appear
 	};
 	$.scroller.removeView($.placeholder);
+	$.scroller.currentPage = 0;			// Set current page back to the initial page
+	
 } else {//View is empty; insert no content message into placeholder
 	var filepath = OS_ANDROID ? '/images/' : '/images/';
 	//Android requires starting slash

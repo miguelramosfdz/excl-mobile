@@ -1,23 +1,15 @@
 <Alloy>
-	<Window class="container" modal="true" layout="vertical">
-		<View id="titleBar" height="35dip" backgroundColor="black">
-			<Label class="title" left="10dip">
-				Customize Learning
-			</Label>
-			
-			<Button onClick="closeWindow" right="10dip">
-				Done
-			</Button>
+	<Window class="container">
+		<View id="titleBar" class="titleBar">
+			<Label class="title">Customize Learning</Label>
+			<Button onClick="closeWindow" class="closeButton">Done</Button>
 		</View>
-		
-		<Label id="hint" textAlign="center">
-			Input the ages of the people in your group to filter the component content by age.
-		</Label>
-		<Button id="toggleAll" onClick="checkAll" right="10dip">Uncheck All</Button>
-		<TableView>
-			<TableViewSection id="filters"/>
-		</TableView>
+		<Label id="hint" class="hint" >Check off the ages of your group members to filter the component's content by age.</Label>
+		<View class="horizontalView">
+			<Button id="toggleAllOn" class="toggleButton"></Button>
+			<Button id="toggleAllOff" class="toggleButton"></Button>
+		</View>
+		<TableView id="filterTable" class="filterTable"/>
 	</Window>
 </Alloy>
-
 <!--jly-->

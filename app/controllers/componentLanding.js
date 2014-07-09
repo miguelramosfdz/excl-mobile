@@ -1,10 +1,15 @@
+/*
+ * TODO
+ * Refactor...
+ * --Move all non-UI to separate file
+ */
 var args = arguments[0] || {};
 var component = args;
 var componentID = component.get('id');
 var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
-var hashOrderedPostsBySection = {};
-var hashOrderedPostsByAge = {};
+var dictOrderedPostsBySection = {};
+var dictOrderedPostsByAge = {};
 var selectedAges;
 
 var allPosts;
@@ -63,22 +68,22 @@ function checkPostViewSpacing() {
 	}
 }
 
-function clearOrderedPostHashes() {
-	hashOrderedPostsBySection = {};
-	hashOrderedPostsByAge = {};
+function clearOrderedPostDictes() {
+	dictOrderedPostsBySection = {};
+	dictOrderedPostsByAge = {};
 	$.scrollView.removeAllChildren();
 }
 
 function detectEvent() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
 	Ti.API.info("Age Filter On: " + ageFilterOn);
-	clearOrderedPostHashes();
+	clearOrderedPostDictes();
 	addSpinner();
 	retrieveComponentData(ageFilterOn);
 }
 
 function retrieveComponentData(ageFilterOn) {
-	clearOrderedPostHashes();
+	clearOrderedPostDictes();
 	addSpinner();
 	if (!initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
@@ -107,50 +112,47 @@ function removeSpinner() {
 function checkIfAgeFilterOn(allPosts) {
 	if (ageFilterOn == true) {
 		organizeByAge(allPosts);
-		Ti.API.info("All sections: " + JSON.stringify(returnHashKeys(hashOrderedPostsByAge)));
 	} else if (ageFilterOn == false) {
 		organizeBySection(allPosts);
-		Ti.API.info("All sections: " + JSON.stringify(returnHashKeys(hashOrderedPostsBySection)));
 	}
 	removeSpinner();
 }
 
 function organizeBySection(allPosts) {
-	hashOrderedPostsBySection = {};
+	dictOrderedPostsBySection = {};
 	for (var i = 0; i < allPosts.length; i++) {
-		compileHashOfSections(allPosts[i], hashOrderedPostsBySection);
+		compileDictOfSections(allPosts[i], dictOrderedPostsBySection);
 	}
-	sortPostsIntoSections(hashOrderedPostsBySection);
-	Ti.API.info("Organized Content: " + JSON.stringify(hashOrderedPostsBySection));
-	Ti.API.info("Finished Organizing by Section");
+	sortPostsIntoSections(dictOrderedPostsBySection);
+
+	Ti.API.info("Finished Organizing by Section: " + JSON.stringify(dictOrderedPostsBySection));
 	checkPostViewSpacing();
 }
 
-function compileHashOfSections(post, hash) {
+function compileDictOfSections(post, dict) {
 	if (post.section) {
-		addItemArrayToHash(post.section, post, hash);
+		addItemArrayToDict(post.section, post, dict);
 	}
 }
 
 function organizeByAge(allPosts) {
-	hashOrderedPostsByAge = {};
-	selectedAges = parseFilterHashIntoArray(JSON.stringify(Alloy.Collections.filter));
+	dictOrderedPostsByAge = {};
+	selectedAges = parseFilterDictIntoArray(JSON.stringify(Alloy.Collections.filter));
 	Ti.API.info("Age Filter: " + JSON.stringify(selectedAges));
 
 	for (var i = 0; i < allPosts.length; i++) {
-		compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, allPosts[i]);
+		compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsByAge, allPosts[i]);
 	}
-	hashOrderedPostsByAge = replaceHashKeysWithFilterHeadings(hashOrderedPostsByAge);
-	sortPostsIntoSections(hashOrderedPostsByAge);
+	dictOrderedPostsByAge = replaceDictKeysWithFilterHeadings(dictOrderedPostsByAge);
+	sortPostsIntoSections(dictOrderedPostsByAge);
 
-	Ti.API.info("Organized Content: " + JSON.stringify(hashOrderedPostsByAge));
-	Ti.API.info("Finished Filtering by Age");
+	Ti.API.info("Finished Filtering by Age: " + JSON.stringify(dictOrderedPostsByAge));
 	checkPostViewSpacing();
 }
 
-function returnHashKeys(hash) {
+function returnDictKeys(dict) {
 	var listKeys = [];
-	for (key in hash) {
+	for (key in dict) {
 		listKeys.push(key);
 	}
 	return listKeys;
@@ -190,31 +192,31 @@ function checkIfAbbrevArray(ary) {
 	return false;
 }
 
-function compileHashOfSelectedAgesToPostAgeRange(selectedAges, hashOrderedPostsByAge, post) {
+function compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
 
 	if (checkIfArrayInArray(postAgeRange, selectedAges) && selectedAges.length != 2) {
 		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
-		addItemArrayToHash("0", post, hashOrderedPostsByAge);
+		addItemArrayToDict("0", post, dictOrderedPostsByAge);
 	} else if (checkIfAbbrevArray(postAgeRange) && selectedAges.length != 2) {
 		Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
-		addItemArrayToHash("0", post, hashOrderedPostsByAge);
+		addItemArrayToDict("0", post, dictOrderedPostsByAge);
 	} else {
 		Ti.API.info("3-Adding to other: " + JSON.stringify(post));
 		for (var i = 0; i < selectedAges.length; i++) {
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
-			addItemArrayToHash(selectedAges[i], itemArray, hashOrderedPostsByAge);
+			addItemArrayToDict(selectedAges[i], itemArray, dictOrderedPostsByAge);
 		}
 	}
 }
 
-function addItemArrayToHash(key, itemArray, hash) {
+function addItemArrayToDict(key, itemArray, dict) {
 	if (JSON.stringify(itemArray) != ["0"]) {
-		if (hash[key]) {
-			hash[key] = hash[key].concat(itemArray);
+		if (dict[key]) {
+			dict[key] = dict[key].concat(itemArray);
 		} else {
-			hash[key] = [].concat(itemArray);
+			dict[key] = [].concat(itemArray);
 		}
 	} else {
 		Ti.API.info("Empty Array prevented: " + JSON.stringify(itemArray));
@@ -267,62 +269,64 @@ function replaceStringWithFilterHeading(st) {
 	return newSt;
 }
 
-function replaceHashKeysWithFilterHeadings(oldHash) {
-	var oldKeys = returnHashKeys(oldHash);
+function replaceDictKeysWithFilterHeadings(oldDict) {
+	var oldKeys = returnDictKeys(oldDict);
 	var newKeys = [];
-	var newHash = {};
+	var newDict = {};
 	for (var i = 0; i < oldKeys.length; i++) {
 		newKeys.push(replaceStringWithFilterHeading(oldKeys[i]));
 	}
 	for (var i = 0; i < oldKeys.length; i++) {
-		newHash[newKeys[i]] = oldHash[oldKeys[i]];
+		newDict[newKeys[i]] = oldDict[oldKeys[i]];
 	}
-	return newHash;
+	return newDict;
 }
 
-function sortPostsIntoSections(hash) {
-	var hashKeys = returnHashKeys(hash);
-	var hashLength = hashKeys.length;
+function sortPostsIntoSections(dict) {
+	var dictKeys = returnDictKeys(dict);
+	var dictLength = dictKeys.length;
 	var bolEmpty;
-	if (hashLength == 0) {
+	if (dictLength == 0) {
 		var error = label.createLabel(noContentMessage);
 		var errorView = view.createView();
 		errorView.add(error);
 		$.scrollView.add(errorView);
 	} else {
-		for (var i = 0; i < hashLength; i++) {
-			//cycle through hash keys
+		for (var i = 0; i < dictLength; i++) {
+			//cycle through dict keys
 			var postCollection = Alloy.createCollection('post');
-			stepIntoHash(hash, hashKeys[i], postCollection);
-			Ti.API.info("key: " + JSON.stringify(hashKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
-			if (hashKeys[i] == genericAllAgesSectionTitle) {
+			stepIntoDict(dict, dictKeys[i], postCollection);
+
+			Ti.API.info("section: " + JSON.stringify(dictKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
+
+			if (dictKeys[i] == genericAllAgesSectionTitle) {
 				if (JSON.stringify(postCollection) != "[]") {
 					args = {
 						posts : postCollection
 					};
 					bolEmpty = "false";
-					addPostScroller(i, hashKeys[i], hashLength, postCollection, bolEmpty);
+					addPostScroller(i, dictKeys[i], dictLength, postCollection, bolEmpty);
 				}
-			} else if (hashKeys[i] != genericAllAgesSectionTitle) {
+			} else if (dictKeys[i] != genericAllAgesSectionTitle) {
 				if (JSON.stringify(postCollection) != "[]") {
 					args = {
 						posts : postCollection
 					};
 					bolEmpty = "false";
-					addPostScroller(i, hashKeys[i], hashLength, postCollection, bolEmpty);
+					addPostScroller(i, dictKeys[i], dictLength, postCollection, bolEmpty);
 				} else {
 					args = "";
 					bolEmpty = "true";
-					addPostScroller(i, hashKeys[i], hashLength, postCollection, bolEmpty);
+					addPostScroller(i, dictKeys[i], dictLength, postCollection, bolEmpty);
 				}
 			}
 		}
 	}
 }
 
-function addPostScroller(i, title, hashLength, postCollection, bolEmpty) {
+function addPostScroller(i, title, dictLength, postCollection, bolEmpty) {
 	var view = createPostScroller(title, postCollection);
-	view = adjustViewHeight(view, i, hashLength, bolEmpty);
+	view = adjustViewHeight(view, i, dictLength, bolEmpty);
 	$.scrollView.add(view);
 }
 
@@ -332,12 +336,9 @@ function createPostScroller(title, postCollection) {
 	return postScroller.getView();
 }
 
-function adjustViewHeight(view, i, hashLength, bolEmpty) {
+function adjustViewHeight(view, i, dictLength, bolEmpty) {
 	var tempView = view;
 	tempView.top = "0";
-
-	Ti.API.info("empty? " + bolEmpty);
-
 	if (bolEmpty == "false") {
 		if (OS_IOS) {
 			tempView.height = "60%";
@@ -347,15 +348,15 @@ function adjustViewHeight(view, i, hashLength, bolEmpty) {
 	} else {
 		tempView.height = "150dip";
 	}
-	if (i == hashLength - 1) {
+	if (i == dictLength - 1) {
 		tempView.bottom = "60dip";
 	}
 	return tempView;
 }
 
-function stepIntoHash(hash, key, postCollection) {
+function stepIntoDict(dict, key, postCollection) {
 	//This level is a list of dictionaries
-	var dictList = hash[key];
+	var dictList = dict[key];
 	for (var i = 0; i < dictList.length; i++) {
 		//send single dictionary
 		dict = dictList[i];
@@ -365,40 +366,31 @@ function stepIntoHash(hash, key, postCollection) {
 
 function stepIntoPostDictionaryCollection(dict, postCollection) {
 	//This level is a single dictionary
-	var length = returnHashKeys(dict).length;
+	var length = returnDictKeys(dict).length;
 	var post = Alloy.createModel('post');
-	for (var i = 0; i < length; i++) {
-		//send single key
-		key = returnHashKeys(dict)[i];
-		stepIntoPostDictionary(dict, key, post);
-	}
 	post.set({
-		raw : dict
+		name : retrieveValue(dict, "name"),
+		image: retrieveValue(dict, "image"),
+		raw: dict
 	});
 	postCollection.add(post);
 }
 
-function stepIntoPostDictionary(dict, key, post) {
-	//This level is a key >>> examine key-value pair
-	if (key == "name") {
-		post.set({
-			name : dict[key]
-		});
-	}
-	if (key == "image") {
-		post.set({
-			image : dict[key]
-		});
+function retrieveValue(dict, key) {
+	if (dict[key]) {
+		return dict[key];
+	} else {
+		return "";
 	}
 }
 
-function parseFilterHashIntoArray(ary) {
+function parseFilterDictIntoArray(ary) {
 	var newAry = ["0"];
 	ary = JSON.parse(ary);
 	for (var i = 0; i < ary.length; i++) {
-		var hash = ary[i];
-		if (hash["active"] == true) {
-			newAry.push(hash["name"]);
+		var dict = ary[i];
+		if (dict["active"] == true) {
+			newAry.push(dict["name"]);
 		}
 	}
 	return newAry;

@@ -1,13 +1,13 @@
 function sharingTextService(){
-	buttonService = setPathForLibDirectory('customCalls/buttonService');
+	buttonService = sharingTextService.prototype.setPathForLibDirectory('customCalls/buttonService');
 	buttonService = new buttonService();
-	iconService = setPathForLibDirectory('customCalls/iconService');
+	iconService = sharingTextService.prototype.setPathForLibDirectory('customCalls/iconService');
 	iconService = new iconService();
-	intentService = setPathForLibDirectory('customCalls/intentService');
+	intentService = sharingTextService.prototype.setPathForLibDirectory('customCalls/intentService');
 	intentService = new intentService();
 }
 
-function setPathForLibDirectory(libFile){
+sharingTextService.prototype.setPathForLibDirectory = function(libFile){
 	if ( typeof Titanium == 'undefined') {
 		lib = require("../../lib/" + libFile);
 	} else {
