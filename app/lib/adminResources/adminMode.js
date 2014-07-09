@@ -24,7 +24,7 @@ AdminMode.prototype.addAdminModeListener = function(element) {
 	if (OS_IOS) {
 		element.addEventListener('longpress', handleAdminModeEntry);
 	} else if (OS_ANDROID) {
-		element.addEventListener('longclick', handlAdminModeEntry);	
+		element.addEventListener('longclick', handleAdminModeEntry);	
 	}
 };
 
