@@ -1,5 +1,4 @@
 var args = arguments[0] || {};
-var genericAllAgesSectionTitle = "For Everyone in Your Group";
 // expects:
 // posts - backbone.js collection of backbone.js model of post type
 
@@ -21,7 +20,7 @@ if (posts) {
 	var filepath = OS_ANDROID ? '/images/' : '/images/';
 	//Android requires starting slash
 	//$.placeholderImage.image = filepath + 'No_content_for_age.png';
-	$.placeholderLabel.text = 'Content for this age can be found in\n"' + genericAllAgesSectionTitle + '" above.';
+	$.placeholderLabel.text = "Sorry, but we don't have any content specific for this age yet. Try a different age!";
 }
 
 function createPostView(post) {

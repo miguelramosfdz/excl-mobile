@@ -48,7 +48,9 @@ function createFilterView(filter, allChecked) {
 
 	args = {
 		value : active,
-		right : '10%'
+		right : '10%',
+		titleOn : " ",
+		titleOff : " "
 	};
 	var _switch = Ti.UI.createSwitch(args);
 
@@ -61,7 +63,7 @@ function createFilterView(filter, allChecked) {
 	rowView.add(label);
 	rowView.add(_switch);
 
-	var row = viewService.createTableRow("10");
+	var row = viewService.createTableRow("35dip");
 	row.add(rowView);
 
 	return row;
@@ -90,7 +92,7 @@ function resetFilters(newAllCheckedValue) {
 
 function formatCheckAllOnButton(button) {
 	icon.setIcon(button, "checkbox_checked.png");
-	button.left = "75%";
+	button.left = "70%";
 
 	button.addEventListener('click', function(e) {
 		resetFilters("true");
@@ -99,16 +101,31 @@ function formatCheckAllOnButton(button) {
 
 function formatCheckAllOffButton(button) {
 	icon.setIcon(button, "checkbox_unchecked.png");
-	button.left = "5%";
+	button.left = "7%";
 
 	button.addEventListener('click', function(e) {
 		resetFilters("false");
 	});
 }
 
+function setTableBackgroundColor(){
+	if (OS_ANDROID) {
+		$.filterTable.backgroundColor = "black";
+	}
+}
+
+function setTableHeight(){
+	if(OS_ANDROID) {
+		$.filterTable.height = Ti.UI.FILL;
+	} else {
+		$.filterTable.bottom = "48dip";
+	}
+}
+
 function init() {
 	formatCheckAllOnButton($.toggleAllOn);
 	formatCheckAllOffButton($.toggleAllOff);
+	setTableBackgroundColor();
 	addFilters(allChecked);
 }
 
