@@ -1,4 +1,18 @@
 
-".container" : {
-  
+".container": {
+	layout: "vertical"
+}
+
+".headingText":{
+	color: "white"
+}
+
+".scroller":{
+	showPagingControl: "true",
+	overlayEnabled: "true",
+	backgroundColor: "black",
+	pagingControlTimeout: 0
+}
+".placeholderLabel":{
+	color: "#FFFFFF"
 }

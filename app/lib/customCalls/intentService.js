@@ -14,6 +14,8 @@ intentService.prototype.sendIntentTextAndroid = function(postTags){
 intentService.prototype.sendIntentTextiOS = function(postTags){
 	//Use TiSocial.Framework module to share text
 	var Social = require('dk.napp.social');
+
+	
 	if (Social.isActivityViewSupported()) {
 		Social.activityView({
 			text : postTags

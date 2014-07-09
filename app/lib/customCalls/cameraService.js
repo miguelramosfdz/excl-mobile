@@ -1,7 +1,16 @@
+function setPathForLibDirectory(libFile){
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
+
 function cameraService(){
-	intentService = Alloy.Globals.setPathForLibDirectory('customCalls/intentService');
+	intentService = setPathForLibDirectory('customCalls/intentService');
 	intentService = new intentService();
-	loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
+	loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 	loadingSpinner = new loadingSpinner();
 };
 

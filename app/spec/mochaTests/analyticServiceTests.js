@@ -40,6 +40,8 @@ describe('Analytics Service', function(){
 				path: "Screen Name",
 				customDimension: customDimensionObject
 			};
+			
+			properties = "Screen Name"; // For our current version of the Google Analytics plugin - remove this line when we upgrade
 
 			serviceWithStub.trackScreen("Screen Name", "Page Level", false);
 			assert(JSON.stringify(trackScreenSpy.args[0][0]) == JSON.stringify(properties), "\n\tExpected:\t" + JSON.stringify(properties) + "\n\tActual:\t\t" + JSON.stringify(trackScreenSpy.args[0][0]));

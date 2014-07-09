@@ -5,26 +5,35 @@
 	left: "0%",
 	top: "50dip"
 },
-"#menuTable":{
+"#menuContainer":{
 	separatorStyle: 'NONE',
 	separatorColor: 'transparent',
 	backgroundColor: '#F2F2F2',
 	width: "50%",
+	layout: "vertical"
 	//left: "50%"
 },
-".tableRow":{
-	height: '50dp'
+
+
+// Delete if unneeded
+".viewRow":{
+	height: '50dp',
+	//layout: 'horizontal'
 },
-".tableRowCollapsible":{
-	height: '0'
-}
-"#rowContainer":{
-	height: '30dp',
-	layout: 'horizontal'
-},
-"#rowContainerIndented":{
-	height: '30dp',
+
+".rowContainer": {
 	layout: 'horizontal',
+	height: Ti.UI.SIZE
+}
+
+"#viewRowCollapsible":{
+	height: '0'
+},
+
+"#bestForAgesRow": {
+	height: '50dp',
+}
+".viewRowIndented":{
 	left: '10%'
 }
 ".rowIcon":{
@@ -44,7 +53,6 @@
 ".clearPageProtecterView": {
 	left: 0,
 	width: "50%",
-	opacity: 0
 }
 
 ".rowLabel":{

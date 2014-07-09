@@ -14,7 +14,7 @@
 }
 
 ".headingRow": {
-	backgroundColor: "#253342",
+	backgroundColor: "#3a4754",
 	width: Ti.UI.FILL,
 	height: '50dip'
 }

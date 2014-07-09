@@ -52,7 +52,7 @@ function populateWindow(json){
 		for (var j = 0; j < exhibit.components.length; j++) {
 			component = exhibit.components[j];
 			var componentModel = Alloy.createModel('component');
-			componentModel.set({ 'id' : component.id, 'name': component.name, 'exhibit': exhibit.name });
+			componentModel.set({ 'id' : component.id, 'name': component.name, 'exhibit': exhibit.name, "orderNo": exhibit.order_number });
 			components.add(componentModel);
 		}
 	}
@@ -66,9 +66,16 @@ function populateWindow(json){
 
 function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
+	
+	exhibits.sort(function(a,b){
+		return a.order_number > b.order_number;
+	});
+	
+	//exhibits.order_number.sort();
 	for(i=0; i<exhibits.length; i++){
 		exhibitText[i] = exhibits[i].description;
 		var exhibitView;
+
 		if(OS_IOS){
 			exhibitView = createExhibitsImageIOS(exhibits[i]);
 		}
@@ -76,8 +83,13 @@ function createExhibitsCarousel(exhibits){
 			exhibitView = createExhibitsImageAndroid(exhibits[i]);
 			exhibitView.addEventListener("click", function(e){ onExhibitsClick(exhibits); });
 		}
-		$.exhibitsCarousel.addView(exhibitView);		
+		$.exhibitsCarousel.addView(exhibitView);	
+		
+		// Change the current page to force the arrows to appear
+		$.exhibitsCarousel.currentPage = i;	
 	}
+	// Change the current page back to 0
+	$.exhibitsCarousel.currentPage = 0;
 	if (OS_IOS){
 		//Android doesn't respond to singletap event, so the Android event listener is added above
 		$.exhibitsCarousel.addEventListener("singletap", function(e){ onExhibitsClick(exhibits); });
@@ -219,7 +231,7 @@ function createComponentsScrollView(exhibits){
 function openComponent(e){
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
-	var controller = Alloy.createController('componentlanding', component);
+	var controller = Alloy.createController('componentLanding', component);
 	var analyticsTitle = component.getScreenName();
 	var analyticsLevel = "Component Landing";
 	controller.setAnalyticsPageTitle(analyticsTitle);

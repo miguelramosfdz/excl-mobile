@@ -11,6 +11,11 @@ viewService.prototype.createModalInputView = function() {
 	return modal;
 };
 
+viewService.prototype.createView = function() {
+	var view = Ti.UI.createView({});
+	return view;
+};
+
 viewService.prototype.createTableView = function() {
 	var table = Ti.UI.createTableView({});
 	return table;
@@ -22,6 +27,11 @@ viewService.prototype.createTableRow = function (heightAsPercent){
 		height: heightAsPercent + "%"
 	});
 	return row;
+};
+
+viewService.prototype.createTableSection = function(){
+	var table = Ti.UI.createTableViewSection({});
+	return table;
 };
 
 module.exports = viewService;

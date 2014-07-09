@@ -1,33 +1,35 @@
 // NavigationController
 // This version works for Android and iOS for Titanium 3.2.0. 
 
+var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
+
 function NavigationController() {
 	this.windowStack = [];
 	this.kioskMode = false;
 	this.Page = null;
 	this.lockedPage = null;
-	this.analyticsController = Alloy.Globals.analyticsController;
+	this.alloy = require(rootPath + "customCalls/alloyService");
+	this.analyticsController = this.alloy.Globals.analyticsController;
 	
-	this.menu = require("navigationService/flyoutService");
+	this.menu = require(rootPath + "navigationService/flyoutService");
 	/*
 	this.flyoutMenu = Alloy.createController('flyout').getView();
 	this.flyoutMenu.zIndex = 1;//*/
 }
 
+NavigationController.prototype.addEventListeners = function(win){
+	self = this;
+	win.addEventListener("close", function(e){
+		self.menu.closeMenuWithoutAnimation();
+	});	
+};
+
 // Open new window and add it to window stack
 NavigationController.prototype.open = function(controller) {
 	
 	windowToOpen = controller.getView();
-	
-	self = this;
-	windowToOpen.addEventListener("focus", function(e){	
-		e.source.add(self.menu.getMenu());
-	});
-	
-	windowToOpen.addEventListener("blur", function(e){
-		self.menu.closeMenuWithoutAnimation();
-		e.source.remove(self.menu.getMenu());
-	});	
+	windowToOpen.add(this.menu.getMenu());
+	this.addEventListeners(windowToOpen);
 	
 	windowToOpen.onEnterKioskMode = function(window){};
 	windowToOpen.onExitKioskMode = function(window){};

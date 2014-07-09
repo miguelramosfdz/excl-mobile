@@ -2,7 +2,8 @@ exports.definition = {
 	config: {
 		columns: {
 		    "id": "integer",
-		    "name": "text"
+		    "name": "text",
+		    "orderNo": "order_number"
 		},
 		adapter: {
 			type: "sql",

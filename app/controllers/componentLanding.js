@@ -1,0 +1,399 @@
+/*
+ * TODO
+ * Refactor...
+ * --Move all non-UI to separate file
+ */
+var args = arguments[0] || {};
+var component = args;
+var componentID = component.get('id');
+var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
+
+var dictOrderedPostsBySection = {};
+var dictOrderedPostsByAge = {};
+var selectedAges;
+
+var allPosts;
+var initialLoad = false;
+var genericAllAgesSectionTitle = "For Everyone in Your Group";
+var noContentMessage = "Sorry!\n\nLooks like we're still in the\nprocess of adding content here.\n\nCheck here later for new and\nexciting activities!";
+
+var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
+var viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
+var view = new viewService();
+var labelService = Alloy.Globals.setPathForLibDirectory('customCalls/labelService');
+var label = new labelService();
+var loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
+var spinner = new loadingSpinner();
+
+var analyticsPageTitle = "";
+var analyticsPageLevel = "";
+
+var setAnalyticsPageTitle = function(title) {
+	analyticsPageTitle = title;
+};
+var getAnalyticsPageTitle = function() {
+	return analyticsPageTitle;
+};
+var setAnalyticsPageLevel = function(level) {
+	analyticsPageLevel = level;
+};
+var getAnalyticsPageLevel = function() {
+	return analyticsPageLevel;
+};
+exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
+exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
+exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
+exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
+
+Alloy.Models.app.on("change:customizeLearning", detectEvent);
+var ageFilterOn;
+
+function changeTitleOfThePage(name) {
+	$.componentLanding.title = name;
+}
+
+function goToPostLandingPage(e) {
+	var post = fetchPostById(e.source.itemId);
+	var analyticsTitle = component.getScreenName() + '/' + post.name;
+	var analyticsLevel = "Post Landing";
+	var controller = Alloy.createController('postLanding', post);
+	controller.setAnalyticsPageTitle(analyticsTitle);
+	controller.setAnalyticsPageLevel(analyticsLevel);
+	Alloy.Globals.navController.open(controller);
+}
+
+function checkPostViewSpacing() {
+	if (OS_IOS) {
+		$.scrollView.bottom = "48dip";
+	}
+}
+
+function clearOrderedPostDictes() {
+	dictOrderedPostsBySection = {};
+	dictOrderedPostsByAge = {};
+	$.scrollView.removeAllChildren();
+}
+
+function detectEvent() {
+	ageFilterOn = Alloy.Models.app.get("customizeLearning");
+	Ti.API.info("Age Filter On: " + ageFilterOn);
+	clearOrderedPostDictes();
+	addSpinner();
+	retrieveComponentData(ageFilterOn);
+}
+
+function retrieveComponentData(ageFilterOn) {
+	clearOrderedPostDictes();
+	addSpinner();
+	if (!initialLoad) {
+		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
+			changeTitleOfThePage(returnedData.data.component.name);
+			allPosts = returnedData.data.component.posts;
+			initialLoad = true;
+			checkIfAgeFilterOn(allPosts, ageFilterOn);
+			checkPostViewSpacing();
+			removeSpinner();
+		});
+	} else {
+		checkIfAgeFilterOn(allPosts);
+		checkPostViewSpacing();
+	}
+}
+
+function addSpinner() {
+	spinner.addTo($.topBar);
+	spinner.show();
+}
+
+function removeSpinner() {
+	spinner.hide();
+}
+
+function checkIfAgeFilterOn(allPosts) {
+	if (ageFilterOn == true) {
+		organizeByAge(allPosts);
+	} else if (ageFilterOn == false) {
+		organizeBySection(allPosts);
+	}
+	removeSpinner();
+}
+
+function organizeBySection(allPosts) {
+	dictOrderedPostsBySection = {};
+	for (var i = 0; i < allPosts.length; i++) {
+		compileDictOfSections(allPosts[i], dictOrderedPostsBySection);
+	}
+	sortPostsIntoSections(dictOrderedPostsBySection);
+
+	Ti.API.info("Finished Organizing by Section: " + JSON.stringify(dictOrderedPostsBySection));
+	checkPostViewSpacing();
+}
+
+function compileDictOfSections(post, dict) {
+	if (post.section) {
+		addItemArrayToDict(post.section, post, dict);
+	}
+}
+
+function organizeByAge(allPosts) {
+	dictOrderedPostsByAge = {};
+	selectedAges = parseFilterDictIntoArray(JSON.stringify(Alloy.Collections.filter));
+	Ti.API.info("Age Filter: " + JSON.stringify(selectedAges));
+
+	for (var i = 0; i < allPosts.length; i++) {
+		compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsByAge, allPosts[i]);
+	}
+	dictOrderedPostsByAge = replaceDictKeysWithFilterHeadings(dictOrderedPostsByAge);
+	sortPostsIntoSections(dictOrderedPostsByAge);
+
+	Ti.API.info("Finished Filtering by Age: " + JSON.stringify(dictOrderedPostsByAge));
+	checkPostViewSpacing();
+}
+
+function returnDictKeys(dict) {
+	var listKeys = [];
+	for (key in dict) {
+		listKeys.push(key);
+	}
+	return listKeys;
+}
+
+function checkIfArrayInArray(arySmall, aryLarge) {
+	if (checkIfAbbrevArray(aryLarge)) {
+		return true;
+	}
+	if (JSON.stringify(arySmall) == JSON.stringify(aryLarge)) {
+		return true;
+	}
+	lengthSmall = arySmall.length;
+	lengthLarge = aryLarge.length;
+
+	if (lengthSmall > lengthLarge) {
+		var holder = arySmall;
+		arySmall = aryLarge;
+		aryLarge = holder;
+	}
+	for (var i = 0; i < arySmall.length; i++) {
+		for (var j = 0; j < aryLarge.length; j++) {
+			if (aryLarge[j] == arySmall[i]) {
+				if (i == arySmall.length - 1) {
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+function checkIfAbbrevArray(ary) {
+	if (ary.length == 1 && ary[0] == "0") {
+		return true;
+	}
+	return false;
+}
+
+function compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsByAge, post) {
+	var postAgeRange = repairEmptyAgeRange(post.age_range);
+	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
+
+	if (checkIfArrayInArray(postAgeRange, selectedAges) && selectedAges.length != 2) {
+		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
+		addItemArrayToDict("0", post, dictOrderedPostsByAge);
+	} else if (checkIfAbbrevArray(postAgeRange) && selectedAges.length != 2) {
+		Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
+		addItemArrayToDict("0", post, dictOrderedPostsByAge);
+	} else {
+		Ti.API.info("3-Adding to other: " + JSON.stringify(post));
+		for (var i = 0; i < selectedAges.length; i++) {
+			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
+			addItemArrayToDict(selectedAges[i], itemArray, dictOrderedPostsByAge);
+		}
+	}
+}
+
+function addItemArrayToDict(key, itemArray, dict) {
+	if (JSON.stringify(itemArray) != ["0"]) {
+		if (dict[key]) {
+			dict[key] = dict[key].concat(itemArray);
+		} else {
+			dict[key] = [].concat(itemArray);
+		}
+	} else {
+		Ti.API.info("Empty Array prevented: " + JSON.stringify(itemArray));
+	}
+}
+
+function createPostArray(postAgeRange, selectedAge, post) {
+	var itemArray = [];
+	for (var i = 0; i < postAgeRange.length; i++) {
+		if (postAgeRange[i] == selectedAge) {
+			itemArray.push(post);
+		}
+	}
+	return itemArray;
+}
+
+function repairEmptyAgeRange(ageRange) {
+	if (ageRange == "a:0:{}") {
+		return "0";
+	} else {
+		return ageRange;
+	}
+}
+
+function parseStringIntoArray(st, deliniator) {
+	var output;
+	if (deliniator.length >= String(st).length) {
+		return st.split();
+	} else {
+		for (var i = 0; i < st.length - deliniator.length + 1; i++) {
+			if (st.substring(i, i + deliniator.length) == deliniator) {
+				return st.split(deliniator);
+			}
+		}
+		return st.split();
+	}
+}
+
+function replaceStringWithFilterHeading(st) {
+	var newSt = "";
+	if (st == "0") {
+		newSt = genericAllAgesSectionTitle;
+	} else if (st.toLowerCase() == "adult") {
+		newSt = "For " + st + "s";
+	} else if (!Alloy.Globals.isNumber(st[0])) {
+		newSt = "For " + st;
+	} else if (Alloy.Globals.isNumber(st[0])) {
+		newSt = "For my " + st + " year old";
+	}
+	return newSt;
+}
+
+function replaceDictKeysWithFilterHeadings(oldDict) {
+	var oldKeys = returnDictKeys(oldDict);
+	var newKeys = [];
+	var newDict = {};
+	for (var i = 0; i < oldKeys.length; i++) {
+		newKeys.push(replaceStringWithFilterHeading(oldKeys[i]));
+	}
+	for (var i = 0; i < oldKeys.length; i++) {
+		newDict[newKeys[i]] = oldDict[oldKeys[i]];
+	}
+	return newDict;
+}
+
+function sortPostsIntoSections(dict) {
+	var dictKeys = returnDictKeys(dict);
+	var dictLength = dictKeys.length;
+	var bolEmpty;
+	if (dictLength == 0) {
+		var error = label.createLabel(noContentMessage);
+		var errorView = view.createView();
+		errorView.add(error);
+		$.scrollView.add(errorView);
+	} else {
+		for (var i = 0; i < dictLength; i++) {
+			//cycle through dict keys
+			var postCollection = Alloy.createCollection('post');
+			stepIntoDict(dict, dictKeys[i], postCollection);
+
+			Ti.API.info("section: " + JSON.stringify(dictKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
+
+			if (dictKeys[i] == genericAllAgesSectionTitle) {
+				if (JSON.stringify(postCollection) != "[]") {
+					args = {
+						posts : postCollection
+					};
+					bolEmpty = "false";
+					addPostScroller(i, dictKeys[i], dictLength, postCollection, bolEmpty);
+				}
+			} else if (dictKeys[i] != genericAllAgesSectionTitle) {
+				if (JSON.stringify(postCollection) != "[]") {
+					args = {
+						posts : postCollection
+					};
+					bolEmpty = "false";
+					addPostScroller(i, dictKeys[i], dictLength, postCollection, bolEmpty);
+				} else {
+					args = "";
+					bolEmpty = "true";
+					addPostScroller(i, dictKeys[i], dictLength, postCollection, bolEmpty);
+				}
+			}
+		}
+	}
+}
+
+function addPostScroller(i, title, dictLength, postCollection, bolEmpty) {
+	var view = createPostScroller(title, postCollection);
+	view = adjustViewHeight(view, i, dictLength, bolEmpty);
+	$.scrollView.add(view);
+}
+
+function createPostScroller(title, postCollection) {
+	var postScroller = Alloy.createController('postScroller', args);
+	postScroller.sectionTitle.text = title;
+	return postScroller.getView();
+}
+
+function adjustViewHeight(view, i, dictLength, bolEmpty) {
+	var tempView = view;
+	tempView.top = "0";
+	if (bolEmpty == "false") {
+		if (OS_IOS) {
+			tempView.height = "60%";
+		} else {
+			tempView.height = "340dip";
+		}
+	} else {
+		tempView.height = "150dip";
+	}
+	if (i == dictLength - 1) {
+		tempView.bottom = "60dip";
+	}
+	return tempView;
+}
+
+function stepIntoDict(dict, key, postCollection) {
+	//This level is a list of dictionaries
+	var dictList = dict[key];
+	for (var i = 0; i < dictList.length; i++) {
+		//send single dictionary
+		dict = dictList[i];
+		stepIntoPostDictionaryCollection(dict, postCollection);
+	}
+}
+
+function stepIntoPostDictionaryCollection(dict, postCollection) {
+	//This level is a single dictionary
+	var length = returnDictKeys(dict).length;
+	var post = Alloy.createModel('post');
+	post.set({
+		name : retrieveValue(dict, "name"),
+		image: retrieveValue(dict, "image"),
+		raw: dict
+	});
+	postCollection.add(post);
+}
+
+function retrieveValue(dict, key) {
+	if (dict[key]) {
+		return dict[key];
+	} else {
+		return "";
+	}
+}
+
+function parseFilterDictIntoArray(ary) {
+	var newAry = ["0"];
+	ary = JSON.parse(ary);
+	for (var i = 0; i < ary.length; i++) {
+		var dict = ary[i];
+		if (dict["active"] == true) {
+			newAry.push(dict["name"]);
+		}
+	}
+	return newAry;
+}
+
+detectEvent();

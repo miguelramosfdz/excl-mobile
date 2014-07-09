@@ -1,15 +1,15 @@
 <Alloy>
-	<View class="container" layout="vertical">
+	<View class="container">
 		<View class="headingRow">
-			<Label id="sectionTitle" class="headingText" color="white">section title</Label>
+			<Label id="sectionTitle" class="headingText">
+				section title
+			</Label>
 		</View>
-		
-		<ScrollableView id="scroller" showPagingControl="true" overlayEnabled="true">
+		<ScrollableView id="scroller" class="scroller">
 			<View id="placeholder">
 				<ImageView id="placeholderImage"/>
+				<Label id="placeholderLabel" class="placeholderLabel"/>
 			</View>
 		</ScrollableView>
 	</View>
 </Alloy>
-
-<!--jly-->

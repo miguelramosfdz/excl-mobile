@@ -1,4 +1,5 @@
 var args = arguments[0] || {};
+var APICalls = require("customCalls/apiCalls");
 
 var ageFilterOn;
 
@@ -11,9 +12,7 @@ Alloy.Models.app.on('change:customizeLearning', function(e) {
 
 function disableCustomLearn(e) {
 	Alloy.Models.app.set('customizeLearning', false);
-	
-	Ti.API.info("disabled");
-	
+	APICalls.info("disabled");
 	closeMenu(e);
 }
 
@@ -39,26 +38,26 @@ function bestForAgesHandler(e) {
 
 function enableAgeFilter() {
 	ageFilterEnabled = true;
-	$.row2.backgroundColor = "#00CC00";
+	$.bestForAgesRow.backgroundColor = "#00CC00";
 	$.agesLabel.text = "Edit Filter";
 	showEditAgeOption();
 }
 
 function disableAgeFilter() {
 	ageFilterEnabled = false;
-	$.row2.backgroundColor = "#F2F2F2";
+	$.bestForAgesRow.backgroundColor = "#F2F2F2";
 	$.agesLabel.text = "Filter by Age";
 	hideEditAgeOption();
 }
 
 function showEditAgeOption() {
-	$.tableRowCollapsible.height = '30dip';
-	$.disableLabel.color = "#000000";
+	$.viewRowCollapsible.height = '50dip';
+	$.disableView.show();
 }
 
 function hideEditAgeOption() {
-	$.tableRowCollapsible.height = 0;
-	$.disableLabel.color = "#C0C0C0";
+	$.viewRowCollapsible.height = 0;
+	$.disableView.hide();
 }
 
 function toggleAgeFilter(ageFilterOn) {
@@ -74,7 +73,7 @@ function init() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
 	toggleAgeFilter(ageFilterOn);
 
-	Ti.API.info("custom learn: " + ageFilterOn);
+	Ti.API.info("Customized Learning: " + ageFilterOn);
 
 	//Alloy.Models.app.on("change:customizeLearning", myInit)
 
