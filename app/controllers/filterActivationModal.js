@@ -20,13 +20,13 @@ function createFilterView(filter, allChecked) {
 	var name = filter.get('name');
 	var active;
 
-	if (allChecked == "true") {
-		active = "true";
-	} else if (allChecked == "false") {
-		active = "false";
-	} else {
-		active = filter.get('active');
+	if (allChecked == "enable") {
+		filter.set('active', "true");
+	} else if (allChecked == "disable") {
+		filter.set('active', "false");
 	}
+	active = filter.get('active');
+
 	var color = 'white';
 	if (OS_IOS) {
 		color = 'black';
@@ -55,7 +55,7 @@ function createFilterView(filter, allChecked) {
 	var _switch = Ti.UI.createSwitch(args);
 
 	_switch.addEventListener('change', function(e) {
-		//allChecked = "";
+		allChecked = "none";
 		filter.set('active', _switch.value);
 	});
 
@@ -95,7 +95,7 @@ function formatCheckAllOnButton(button) {
 	button.left = "70%";
 
 	button.addEventListener('click', function(e) {
-		resetFilters("true");
+		resetFilters("enable");
 	});
 }
 
@@ -104,18 +104,18 @@ function formatCheckAllOffButton(button) {
 	button.left = "7%";
 
 	button.addEventListener('click', function(e) {
-		resetFilters("false");
+		resetFilters("disable");
 	});
 }
 
-function setTableBackgroundColor(){
+function setTableBackgroundColor() {
 	if (OS_ANDROID) {
 		$.filterTable.backgroundColor = "black";
 	}
 }
 
-function setTableHeight(){
-	if(OS_ANDROID) {
+function setTableHeight() {
+	if (OS_ANDROID) {
 		$.filterTable.height = Ti.UI.FILL;
 	} else {
 		$.filterTable.bottom = "48dip";

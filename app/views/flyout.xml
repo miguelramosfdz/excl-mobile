@@ -2,7 +2,7 @@
 	<View id="menuView">
 		<!-- <View id="menuTopBar"/> -->
 		<View class="clearPageProtecterView" onClick="closeMenu"/>
-		<View id="menuContainer" onLoad="init">
+		<View id="menuContainer" >
 			
 			<View class="viewRow" onClick="openExhibitPage">
 				<View class="rowContainer">
@@ -11,17 +11,17 @@
 				</View>
 			</View>
 			
-			<View id="bestForAgesRow" class="viewRow" onClick="setCustomLearn">
+			<View id="customLearnRow" class="viewRow" onClick="rowFilterEventListener">
 				<View class="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/ages.png" class="rowIcon"/>
 					<Label id="agesLabel" class="rowLabel">Filter by Age</Label>	
 				</View>
 			</View>
 			
-			<View class="viewRowIndented" id="viewRowCollapsible" onClick="toggleCustomLearning">
+			<View class="viewRowIndented" id="viewRowCollapsible" onClick="setCustomLearn">
 				<View class="rowContainer" id="toggleView">
 					<View backgroundImage="/flyoutMenuIcons/edit.png" class="rowIcon"/>
-					<Label class="rowLabelIndented" id="toggleLabel">Disable Filter</Label>		
+					<Label class="rowLabelIndented" id="toggleLabel">Edit Filter</Label>		
 				</View>
 			</View>
 			
