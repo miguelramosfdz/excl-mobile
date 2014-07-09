@@ -6,7 +6,7 @@ function menu(e){
 	Alloy.Globals.navController.toggleMenu(true);	
 }
 
-Alloy.Globals.navController.addKioskModeListener($.flyoutBtn);
+Alloy.Globals.adminMode.addAdminModeListener($.flyoutBtn);
 
 exports.hideBackBtn = function() {
 	$.backBtn.visible = false;

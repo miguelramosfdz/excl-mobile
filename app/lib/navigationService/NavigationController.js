@@ -5,17 +5,34 @@ var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
 
 function NavigationController() {
 	this.windowStack = [];
-	this.kioskMode = false;
+	//this.kioskMode = false;
 	this.Page = null;
 	this.lockedPage = null;
 	this.alloy = require(rootPath + "customCalls/alloyService");
 	this.analyticsController = this.alloy.Globals.analyticsController;
 	
 	this.menu = require(rootPath + "navigationService/flyoutService");
+	//this.kioskModeHandler = require(rootPath + "adminResources/kioskMode");
 	/*
 	this.flyoutMenu = Alloy.createController('flyout').getView();
 	this.flyoutMenu.zIndex = 1;//*/
 }
+
+NavigationController.prototype.enterKioskMode = function(){
+		var window = this.windowStack[this.windowStack.length - 1];
+	    this.setLocked();				//
+ 		this.menu.closeMenu();			// Change to func
+		this.reset();
+ 		
+		window.onEnterKioskMode(window);	
+};
+
+NavigationController.prototype.exitKioskMode = function(){
+		
+		var window = this.windowStack[this.windowStack.length - 1];
+		this.reset();
+		window.onExitKioskMode(window);	
+};
 
 NavigationController.prototype.addEventListeners = function(win){
 	self = this;
@@ -180,109 +197,17 @@ NavigationController.prototype.reset = function(){
 	this.lockedPage = this.Page;
 };
 
+
+
 // Return true if in kiosk mode and false otherwise
-NavigationController.prototype.isInKioskMode = function() {
-	return this.kioskMode;
-};
-
-
-// Handles updateing kiosk mode status.
-// Used in addKioskModeListener()
-function updateKioskMode(self) {
-	
-	// Create confirmation dialog
-	var confirm = Ti.UI.createAlertDialog({
-	    title: '',
-	    buttonNames: ['OK']
-	});
-	
-	// Get top window to access call back functions
-	var window = self.windowStack[self.windowStack.length - 1];
-	
-	// Deactivate kiosk mode if active or vice versa
-	if (self.kioskMode === false) {
-    	self.kioskMode = true;
-    	self.setLocked();
-    	confirm.title = 'Activated Kiosk Mode';
-    	self.menu.closeMenu();
-		window.onEnterKioskMode(window);	
-	} else {
-		self.kioskMode = false;
-		self.reset();
-	    confirm.title = 'Deactivated Kiosk Mode';
-		window.onExitKioskMode(window);	
-	}
-	confirm.show();
-	setTimeout(function(){confirm.hide();}, 2000);
-}
-
-// Handles kiosk mode dialog
-// Used in addKioskModeListener()
-function handleKioskModeDialog(self) {	
-	var textfield = Ti.UI.createTextField({
-		passwordMask:true,
-	    height:"35dip",
-	    top:"100dip",
-	    left:"30dip",
-	    width:"250dip",
-	    borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
-	});
-	var dialog = Ti.UI.createAlertDialog({
-	    title: 'Enter admin code',
-	    androidView: textfield,
-	    buttonNames: ['OK']
-	});
-	
-	if (OS_IOS) {
-		dialog.style = Ti.UI.iPhone.AlertDialogStyle.SECURE_TEXT_INPUT;
-	}
-	
-	dialog.addEventListener('click', function(e) {
-	    if (e.text == "friend" || e.source.androidView.value == "friend") {
-			updateKioskMode(self);
-	    } else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
-			Alloy.Globals.navController.open(Alloy.createController('finterns'));
-    	} else {
-	    	var errorMsg = Ti.UI.createAlertDialog({
-			    title: 'incorrect code',
-			    buttonNames: ['OK']
-			});
-			errorMsg.show();
-			setTimeout(function(){errorMsg.hide();}, 5000);
-	    }
-	});
-	dialog.show();
-	setTimeout(function(){dialog.hide();}, 9000);
-}
-
-// Add kiosk mode listener to passed in element. Will activate on three 
-// long clicks if done withing three seconds. 
-NavigationController.prototype.addKioskModeListener = function(element) {
-	var count = 0;
-	var self = this;
-	var handleKioskModeEntry = function(e){
-		count += 100;
-		if (count === 100) {
-			setTimeout(function(){count = 0;}, 3000);
-		} else if (count === 300) {
-			handleKioskModeDialog(self);
-		}
-	};
-	if (OS_IOS) {
-		element.addEventListener('longpress', handleKioskModeEntry);
-	} else if (OS_ANDROID) {
-		element.addEventListener('longclick', handleKioskModeEntry);	
-	}
-};
-
 NavigationController.prototype.toggleMenu = function(){
 	this.menu.toggleMenu();
 };
 
 NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
 	//if (!window || !window.analyticsPageTitle || !window.analyticsPageLevel) {return false;}
-	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel, this.isInKioskMode());
-	var kioskModeString = (this.isInKioskMode()) ? "KioskModeOn" : "KioskModeOff";
+	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel, Alloy.Globals.adminMode.isInKioskMode());
+	var kioskModeString = (Alloy.Globals.adminMode.isInKioskMode()) ? "KioskModeOn" : "KioskModeOff";
 	Alloy.Globals.analyticsController.trackEvent(kioskModeString, window.analyticsPageLevel, window.analyticsPageTitle, 1);
 };
 
