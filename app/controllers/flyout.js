@@ -68,7 +68,8 @@ function toggleAgeFilter(ageFilterOn) {
 	}
 }
 
-function tutorialHandler() {
+function tutorialHandler(e) {
+	closeMenu(e);
 	Alloy.Globals.navController.open(Alloy.createController("tutorial"));
 }
 
