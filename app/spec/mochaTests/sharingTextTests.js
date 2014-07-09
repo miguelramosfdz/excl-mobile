@@ -19,13 +19,105 @@ describe('sharingTextService', function(){
 		});
 	});
 	
-	describe("setPathForLibDirectory", function(){
+	describe("setPathForLibDirectory", function(){ //Don't think I can test the other branch, since the purpose of this function is to accommodate unit testing
 		it("should properly set the path for a desired library file and return the correct library", function(){
 			var dataToSend = "customCalls/apiCalls";
 			var expectedData = require("../../lib/customCalls/apiCalls");
 			
 			var returnedData = sharingTextService.setPathForLibDirectory(dataToSend);
 			assert.equal(returnedData, expectedData);
+		});
+	});
+	
+	describe("setIconReady", function(){
+		it("should set the enabled property of the button to true for Android", function(){
+			var dataToSend = [];
+			var expectedData = [];
+			OS_ANDROID = true;
+			expectedData.enabled = true;
+			
+			sharingTextService.setIconReady(dataToSend);
+			assert.equal(dataToSend.enabled, expectedData.enabled);
+		});
+		
+		it("should set the enabled property of the button to true for iOS", function(){
+			var dataToSend = [];
+			var expectedData = [];
+			OS_ANDROID = false;
+			OS_IOS = true;
+			expectedData.enabled = true;
+			
+			sharingTextService.setIconReady(dataToSend);
+			assert.equal(dataToSend.enabled, expectedData.enabled);
+		});
+		
+		it("should set the correct Android ready button", function(){
+			var dataToSend = [];
+			OS_ANDROID = true;
+			
+			var expectedData = [];
+			expectedData.backgroundImage = "/images/icons_android/share_ready.png";
+			
+			sharingTextService.setIconReady(dataToSend);
+			assert.equal(dataToSend.backgroundImage, expectedData.backgroundImage);
+		});
+		
+		it("should set the correct iOS ready button", function(){
+			var dataToSend = [];
+			OS_ANDROID = false;
+			OS_IOS = true;
+			
+			var expectedData = [];
+			expectedData.backgroundImage = "images/icons_ios/share_ready.png";
+			
+			sharingTextService.setIconReady(dataToSend);
+			assert.equal(dataToSend.backgroundImage, expectedData.backgroundImage);
+		});
+	});
+
+	describe("setIconBusy", function(){
+		it("should set the enabled property of the button to false for Android", function(){
+			var dataToSend = [];
+			var expectedData = [];
+			OS_ANDROID = true;
+			expectedData.enabled = false;
+			
+			sharingTextService.setIconBusy(dataToSend);
+			assert.equal(dataToSend.enabled, expectedData.enabled);
+		});
+		
+		it("should set the enabled property of the button to false for iOS", function(){
+			var dataToSend = [];
+			var expectedData = [];
+			OS_ANDROID = false;
+			OS_IOS = true;
+			expectedData.enabled = false;
+			
+			sharingTextService.setIconBusy(dataToSend);
+			assert.equal(dataToSend.enabled, expectedData.enabled);
+		});
+		
+		it("should set the correct Android busy button", function(){
+			var dataToSend = [];
+			OS_ANDROID = true;
+			
+			var expectedData = [];
+			expectedData.backgroundImage = "/images/icons_android/share_busy.png";
+			
+			sharingTextService.setIconBusy(dataToSend);
+			assert.equal(dataToSend.backgroundImage, expectedData.backgroundImage);
+		});
+		
+		it("should set the correct iOS busy button", function(){
+			var dataToSend = [];
+			OS_ANDROID = false;
+			OS_IOS = true;
+			
+			var expectedData = [];
+			expectedData.backgroundImage = "images/icons_ios/share_busy.png";
+			
+			sharingTextService.setIconBusy(dataToSend);
+			assert.equal(dataToSend.backgroundImage, expectedData.backgroundImage);
 		});
 	});
 });
