@@ -13,17 +13,17 @@ var dictOrderedPostsByAge = {};
 var selectedAges;
 
 var allPosts;
-var initialLoad = false;
+var initialLoad = true;
 var genericAllAgesSectionTitle = "For Everyone in Your Group";
 var noContentMessage = "Sorry!\n\nLooks like we're still in the\nprocess of adding content here.\n\nCheck here later for new and\nexciting activities!";
 var noFiltersSelected = "Please select a filter to see your sorted content!";
 
-var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
-var viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
+var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var viewService = setPathForLibDirectory('customCalls/viewService');
 var view = new viewService();
-var labelService = Alloy.Globals.setPathForLibDirectory('customCalls/labelService');
+var labelService = setPathForLibDirectory('customCalls/labelService');
 var label = new labelService();
-var loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
+var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
 
 var analyticsPageTitle = "";
@@ -46,8 +46,19 @@ exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
 exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
 exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
-Alloy.Models.app.on("change:customizeLearning", detectEvent);
+Alloy.Models.app.on("change:customizeLearningEnabled", detectEventEnabled);
+Alloy.Models.app.on("change:customizeLearningSet", detectEventSet);
 var ageFilterOn;
+var ageFilterSet;
+
+function setPathForLibDirectory(libFile) {
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
 
 function changeTitleOfThePage(name) {
 	$.componentLanding.title = name;
@@ -69,35 +80,44 @@ function checkPostViewSpacing() {
 	}
 }
 
-function clearOrderedPostDictes() {
+function clearOrderedPostDicts() {
 	dictOrderedPostsBySection = {};
 	dictOrderedPostsByAge = {};
 	$.scrollView.removeAllChildren();
 }
 
-function detectEvent() {
-	ageFilterOn = Alloy.Models.app.get("customizeLearning");
+function detectEventEnabled() {
+	ageFilterOn = Alloy.Models.app.get("customizeLearningEnabled");
 	Ti.API.info("Age Filter On: " + ageFilterOn);
-	clearOrderedPostDictes();
+	clearOrderedPostDicts();
 	addSpinner();
-	retrieveComponentData(ageFilterOn);
+	retrieveComponentData();
 }
 
-function retrieveComponentData(ageFilterOn) {
-	clearOrderedPostDictes();
-	addSpinner();
-	if (!initialLoad) {
+function detectEventSet() {
+	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
+	Ti.API.info("Age Filter Set: " + ageFilterSet);
+	if (ageFilterSet) {
+		Alloy.Models.app.set("customizeLearningEnabled", true);
+	}
+	detectEventEnabled();
+}
+
+function retrieveComponentData() {
+	clearOrderedPostDicts();
+	if (initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 			changeTitleOfThePage(returnedData.data.component.name);
 			allPosts = returnedData.data.component.posts;
-			initialLoad = true;
-			checkIfAgeFilterOn(allPosts, ageFilterOn);
+			initialLoad = false;
+			checkIfAgeFilterOn(allPosts);
 			checkPostViewSpacing();
 			removeSpinner();
 		});
 	} else {
 		checkIfAgeFilterOn(allPosts);
 		checkPostViewSpacing();
+		removeSpinner();
 	}
 }
 
@@ -111,9 +131,9 @@ function removeSpinner() {
 }
 
 function checkIfAgeFilterOn(allPosts) {
-	if (ageFilterOn == true) {
+	if (ageFilterOn) {
 		organizeByAge(allPosts);
-	} else if (ageFilterOn == false) {
+	} else {
 		organizeBySection(allPosts);
 	}
 	removeSpinner();
@@ -185,10 +205,10 @@ function checkIfArrayInArray(arySmall, aryLarge) {
 	if (lengthSmall > lengthLarge) {
 		return false;
 	}
-	
+
 	for (var i = 0; i < lengthSmall; i++) {
 		for (var j = 0; j < lengthLarge; j++) {
-		//	Ti.API.info("hold-find: " + copySmall[i] + "(" + i + ") -" + aryLarge[j] + "(" + j + ")");
+			//	Ti.API.info("hold-find: " + copySmall[i] + "(" + i + ") -" + aryLarge[j] + "(" + j + ")");
 			if (aryLarge[j] == copySmall[i]) {
 				if (i == lengthSmall - 1) {
 					return true;
@@ -228,7 +248,6 @@ function compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsB
 			addItemArrayToDict(selectedAges[i], itemArray, dictOrderedPostsByAge);
 		}
 	}
-	Ti.API.info("Age Filter: " + selectedAges);
 }
 
 function addItemArrayToDict(key, itemArray, dict) {
@@ -422,4 +441,4 @@ function parseFilterDictIntoArray(ary) {
 	return newAry;
 }
 
-detectEvent();
+detectEventSet();

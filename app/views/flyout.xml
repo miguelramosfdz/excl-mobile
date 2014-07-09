@@ -11,17 +11,17 @@
 				</View>
 			</View>
 			
-			<View id="bestForAgesRow" class="viewRow" onClick="bestForAgesHandler">
+			<View id="bestForAgesRow" class="viewRow" onClick="setCustomLearn">
 				<View class="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/ages.png" class="rowIcon"/>
 					<Label id="agesLabel" class="rowLabel">Filter by Age</Label>	
 				</View>
 			</View>
 			
-			<View class="viewRowIndented" id="viewRowCollapsible" onClick="disableCustomLearn">
-				<View class="rowContainer" id="disableView">
+			<View class="viewRowIndented" id="viewRowCollapsible" onClick="toggleCustomLearning">
+				<View class="rowContainer" id="toggleView">
 					<View backgroundImage="/flyoutMenuIcons/edit.png" class="rowIcon"/>
-					<Label class="rowLabelIndented" id="disableLabel">Disable Filter</Label>		
+					<Label class="rowLabelIndented" id="toggleLabel">Disable Filter</Label>		
 				</View>
 			</View>
 			

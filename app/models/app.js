@@ -1,7 +1,8 @@
 exports.definition = {
 	config: {
 		defaults: {
-			customizeLearning: false
+			customizeLearningEnabled: false,
+			customizeLearningSet: false
 		},
 		adapter: {
 			type: "properties",
@@ -32,7 +33,7 @@ exports.definition = {
 						
 						for(var i = 0; i < filters.size(); ++i) {
 							filters.at(i).on('change:active', function(e) {
-								Alloy.Models.app.trigger('change:customizeLearning');
+								Alloy.Models.app.trigger('change:customizeLearningEnabled');
 							});
 						};
 						Alloy.Collections.filter.ready = true;

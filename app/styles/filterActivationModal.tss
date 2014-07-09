@@ -2,8 +2,11 @@
 ".container": {
 	modal: "true",
 	layout: "vertical",
-	//height: "Ti.UI.SIZE"
-	width: "90%"
+	top: "5%",
+	width: "90%",
+	borderColor: "#FFFFFF",
+	borderRadius: "20",
+	borderWidth: "3dip"
 }
 
 ".title": {
@@ -24,7 +27,7 @@
 ".hint":{
 	textAlign: "left",
 	backgroundColor: "black",
-	left: "5dip"
+	left: "10dip"
 }
 ".closeButton":{
 	right: "5%"
@@ -34,7 +37,7 @@
 	width: "30dip",
 	borderColor: "white",
 	borderWidth: "3",
-	borderRadius: "5"
+	borderRadius: "10"
 }
 ".horizontalView":{
 	layout: "horizontal",

@@ -1,19 +1,66 @@
 var args = arguments[0] || {};
-var APICalls = require("customCalls/apiCalls");
+var APICalls = setPathForLibDirectory("customCalls/apiCalls");
 
 var ageFilterOn;
+var ageFilterSet;
+var viewService = setPathForLibDirectory('customCalls/viewService');
+viewService = new viewService();
+var buttonService = setPathForLibDirectory('customCalls/buttonService');
+buttonService = new buttonService();
 
-Alloy.Models.app.on('change:customizeLearning', function(e) {
-	var customizeLearning = Alloy.Models.app.get('customizeLearning');
+Alloy.Models.app.on('change:customizeLearningSet', activateFiltersWithSet);
+Alloy.Models.app.on('change:customizeLearningEnabled', activateFiltersWithEnable);
+
+function setPathForLibDirectory(libFile) {
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
+
+function activateFiltersWithSet() {
+	ageFilterSet = Alloy.Models.app.get('customizeLearningSet');
+	if (ageFilterSet) {
+		activateFiltersWithEnable();
+	} else {
+		//This spot is for a reset function that will "reset filtering to startup conditions". This does not seem relevant.
+	}
+}
+
+function activateFiltersWithEnable() {
+	ageFilterOn = Alloy.Models.app.get('customizeLearningEnabled');
+	if (ageFilterSet && ageFilterOn && !ageFilterEnabled) {
+		enableAgeFilter();
+	} else if (!ageFilterSet && ageFilterOn && ageFilterEnabled) {
+		disableAgeFilter();
+	}
+}
+
+function toggleCustomLearning() {
+	if (ageFilterOn) {
+		Alloy.Models.app.set('customizeLearningEnabled', false);
+		APICalls.info("Customized Learning Disabled");
+		formatRowEnable();
+	} else {
+		Alloy.Models.app.set('customizeLearningEnabled', true);
+		APICalls.info("Customized Learning Enabled");
+		formatRowDisable();
+	}
+	closeMenu();
+}
+
+function formatRowEnable(){
+	$.customLearnRow.title = "Turn Filtering On";
+	$.customLearnRow.backgroundColor = "00CC00";
+	$.customLearnRow.addEventListener('click', )
+}
+
+function formatRowDisable(){
+	$.customLearnRow.title = "Turn Filtering Off";
+	$.customLearnRow.backgroundColor = "000099";
 	
-	if(customizeLearning && !ageFilterEnabled) enableAgeFilter();
-	else if(!customizeLearning && ageFilterEnabled) disableAgeFilter();
-});	// jly
-
-function disableCustomLearn(e) {
-	Alloy.Models.app.set('customizeLearning', false);
-	APICalls.info("disabled");
-	closeMenu(e);
 }
 
 function closeMenu(e) {
@@ -24,11 +71,12 @@ function openExhibitPage(e) {
 	Alloy.Globals.navController.home();
 }
 
-function bestForAgesHandler(e) {
+function setCustomLearn(e) {
 	var ready = Alloy.Collections.filter.ready;
 
 	if (ready) {
-		Alloy.Models.app.set('customizeLearning', true);
+		Alloy.Models.app.set('customizeLearningSet', true);
+		Alloy.Models.app.set('customizeLearningEnabled', true);
 		Alloy.createController('filterActivationModal').getView().open();
 	} else {
 		Alloy.Models.app.retrieveFilters();
@@ -38,20 +86,21 @@ function bestForAgesHandler(e) {
 
 function enableAgeFilter() {
 	ageFilterEnabled = true;
-	$.bestForAgesRow.backgroundColor = "#00CC00";
+	$.viewRowCollapsible.backgroundColor = "#00CC00";
+	$.viewRowCollapsible.text = "Disable Filter";
 	$.agesLabel.text = "Edit Filter";
 	showEditAgeOption();
 }
 
 function disableAgeFilter() {
 	ageFilterEnabled = false;
-	$.bestForAgesRow.backgroundColor = "#F2F2F2";
-	$.agesLabel.text = "Filter by Age";
+	$.viewRowCollapsible.backgroundColor = "#F2F2F2";
+	$.viewRowCollapsible.text = "Enable Filter";
 	hideEditAgeOption();
 }
 
 function showEditAgeOption() {
-	$.viewRowCollapsible.height = '50dip';
+	$.viewRowCollapsible.height = "50dip";
 	$.disableView.show();
 }
 
@@ -69,25 +118,11 @@ function toggleAgeFilter(ageFilterOn) {
 }
 
 function init() {
-
-	ageFilterOn = Alloy.Models.app.get("customizeLearning");
-	toggleAgeFilter(ageFilterOn);
-
-	Ti.API.info("Customized Learning: " + ageFilterOn);
-
-	//Alloy.Models.app.on("change:customizeLearning", myInit)
-
-	// detectAgeFilterSet(filterAgeSet);
-	// detectAgeFilterOn(filterAgeOn);
-	// disableAgeFilter();
-
-	viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
-	viewService = new viewService();
-	buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
-	buttonService = new buttonService();
+	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
+	ageFilterOn = Alloy.Models.app.get("customizeLearningEnabled");
+	$.customLearnRow.addEventListener("click", function(e){
+		customLearn();
+	});
 }
-
-var viewService;
-var buttonService;
 
 init();

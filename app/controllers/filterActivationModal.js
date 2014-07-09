@@ -41,21 +41,21 @@ function createFilterView(filter, allChecked) {
 			fontSize : '22dp',
 			fontWeight : 'bold'
 		},
-		left : '10%',
+		left : '20%',
 		text : name
 	};
 	var label = Ti.UI.createLabel(args);
 
 	args = {
 		value : active,
-		right : '10%',
+		right : '15%',
 		titleOn : " ",
 		titleOff : " "
 	};
 	var _switch = Ti.UI.createSwitch(args);
 
 	_switch.addEventListener('change', function(e) {
-		allChecked = "";
+		//allChecked = "";
 		filter.set('active', _switch.value);
 	});
 
