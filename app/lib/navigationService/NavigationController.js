@@ -50,6 +50,7 @@ NavigationController.prototype.addEventListeners = function(win){
 	self = this;
 	win.addEventListener("close", function(e){
 		self.menu.closeMenuWithoutAnimation();
+		//alert("menu Closed");
 	});	
 };
 
@@ -164,6 +165,8 @@ NavigationController.prototype.open = function(controller) {
 NavigationController.prototype.close = function(numWindows) {
 	this.menu.closeMenuWithoutAnimation();
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
+		
+		addMenuToNextScreen(this.windowStack, this.menu);
 		if (numWindows > 1) {
 			// setup chain reaction by setting up the flags on all the windows
 			var i = this.windowStack.length - 1;
@@ -220,6 +223,11 @@ NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
 	var kioskModeString = (Alloy.Globals.adminMode.isInKioskMode()) ? "KioskModeOn" : "KioskModeOff";
 	Alloy.Globals.analyticsController.trackEvent(kioskModeString, window.analyticsPageLevel, window.analyticsPageTitle, 1);
 };
+
+function addMenuToNextScreen(windowStack, menu){	
+	windowStack[windowStack.length-2].remove(menu.getMenu());
+	windowStack[windowStack.length-2].add(menu.getMenu());
+}
 
 module.exports = NavigationController;
 
