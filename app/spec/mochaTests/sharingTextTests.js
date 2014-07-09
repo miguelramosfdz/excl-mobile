@@ -18,4 +18,15 @@ describe('sharingTextService', function(){
 			assert.equal(returnedData, expectedData);
 		});
 	});
+	
+	describe("setPathForLibDirectory", function(){
+		it("should properly set the path for a desired library file and return the correct library", function(){
+			var dataToSend = "customCalls/apiCalls";
+			var expectedData = require("../../lib/customCalls/apiCalls");
+			
+			var returnedData = sharingTextService.setPathForLibDirectory(dataToSend);
+			assert.equal(returnedData, expectedData);
+		});
+	});
 });
+
