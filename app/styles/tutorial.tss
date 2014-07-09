@@ -36,7 +36,8 @@
 }
 "#flyoutMenuArrow": {
 	top: "37dip",
-	right: "30dip"
+	right: "30dip",
+	height: "110dip"
 }
 "#flyoutMenuText": {
 	top: "150dip",
