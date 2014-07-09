@@ -159,29 +159,40 @@ function returnDictKeys(dict) {
 }
 
 function checkIfArrayInArray(arySmall, aryLarge) {
+	
+	arySmall = arySmall.splice(1);
+	
+	Ti.API.info("small: " + JSON.stringify(arySmall) + ", large: " + JSON.stringify(aryLarge));
+	
 	if (checkIfAbbrevArray(aryLarge)) {
+		Ti.API.info("101");
 		return true;
 	}
 	if (JSON.stringify(arySmall) == JSON.stringify(aryLarge)) {
+		Ti.API.info("102");
 		return true;
 	}
 	lengthSmall = arySmall.length;
 	lengthLarge = aryLarge.length;
 
 	if (lengthSmall > lengthLarge) {
-		var holder = arySmall;
-		arySmall = aryLarge;
-		aryLarge = holder;
+		
+		Ti.API.info("103");
+		
+		return false;
 	}
+	
 	for (var i = 0; i < arySmall.length; i++) {
 		for (var j = 0; j < aryLarge.length; j++) {
 			if (aryLarge[j] == arySmall[i]) {
 				if (i == arySmall.length - 1) {
+					Ti.API.info("104");
 					return true;
 				}
 			}
 		}
 	}
+	Ti.API.info("105");
 	return false;
 }
 
@@ -196,7 +207,10 @@ function compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsB
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
 
-	if (checkIfArrayInArray(postAgeRange, selectedAges) && selectedAges.length != 2) {
+	if (checkIfArrayInArray(selectedAges, postAgeRange) && selectedAges.length != 2) {
+		
+		Ti.API.info("selectedAges: " + selectedAges.length);
+		
 		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToDict("0", post, dictOrderedPostsByAge);
 	} else if (checkIfAbbrevArray(postAgeRange) && selectedAges.length != 2) {
@@ -209,6 +223,7 @@ function compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsB
 			addItemArrayToDict(selectedAges[i], itemArray, dictOrderedPostsByAge);
 		}
 	}
+	Ti.API.info("Age Filter: " + selectedAges);
 }
 
 function addItemArrayToDict(key, itemArray, dict) {

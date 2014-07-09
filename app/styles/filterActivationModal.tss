@@ -1,7 +1,9 @@
 
 ".container": {
 	modal: "true",
-	layout: "vertical"
+	layout: "vertical",
+	//height: "Ti.UI.SIZE"
+	width: "90%"
 }
 
 ".title": {
@@ -11,7 +13,8 @@
 		fontSize: '22dp',
 		fontWeight: 'bold'
 	},
-	left: "10dip"
+	left: "10dip",
+	height: Ti.UI.FILL
 }
 
 ".titleBar": {
@@ -19,19 +22,24 @@
 	backgroundColor: "black"
 }
 ".hint":{
-	textAlign: "left"
+	textAlign: "left",
+	backgroundColor: "black",
+	left: "5dip"
 }
 ".closeButton":{
 	right: "5%"
 }
 ".toggleButton":{
-	height: "25dip",
-	width: "25dip",
+	height: "30dip",
+	width: "30dip",
 	borderColor: "white",
 	borderWidth: "3",
 	borderRadius: "5"
 }
 ".horizontalView":{
 	layout: "horizontal",
-	height: "35dip"
+	height: "35dip",
+	backgroundColor: "black"
+}
+".filterTable":{
 }
