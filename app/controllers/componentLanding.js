@@ -16,6 +16,7 @@ var allPosts;
 var initialLoad = false;
 var genericAllAgesSectionTitle = "For Everyone in Your Group";
 var noContentMessage = "Sorry!\n\nLooks like we're still in the\nprocess of adding content here.\n\nCheck here later for new and\nexciting activities!";
+var noFiltersSelected = "Please select a filter to see your sorted content!";
 
 var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
 var viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
@@ -159,40 +160,45 @@ function returnDictKeys(dict) {
 }
 
 function checkIfArrayInArray(arySmall, aryLarge) {
-	
-	arySmall = arySmall.splice(1);
-	
-	Ti.API.info("small: " + JSON.stringify(arySmall) + ", large: " + JSON.stringify(aryLarge));
-	
-	if (checkIfAbbrevArray(aryLarge)) {
-		Ti.API.info("101");
-		return true;
-	}
-	if (JSON.stringify(arySmall) == JSON.stringify(aryLarge)) {
-		Ti.API.info("102");
-		return true;
-	}
-	lengthSmall = arySmall.length;
-	lengthLarge = aryLarge.length;
+	var escapeLoop = false;
+	var lengthSmall = arySmall.length;
+	var lengthLarge = aryLarge.length;
+	var copySmall = [];
 
+	if (lengthSmall == 1) {
+		return false;
+	} else {
+		for (var i = 1; i < lengthSmall; i++) {
+			copySmall.push(arySmall[i]);
+		}
+	}
+	lengthSmall = copySmall.length;
+
+	//Ti.API.info("small: " + JSON.stringify(copySmall) + ", large: " + JSON.stringify(aryLarge));
+
+	if (checkIfAbbrevArray(aryLarge)) {
+		return true;
+	}
+	if (JSON.stringify(copySmall) == JSON.stringify(aryLarge)) {
+		return true;
+	}
 	if (lengthSmall > lengthLarge) {
-		
-		Ti.API.info("103");
-		
 		return false;
 	}
 	
-	for (var i = 0; i < arySmall.length; i++) {
-		for (var j = 0; j < aryLarge.length; j++) {
-			if (aryLarge[j] == arySmall[i]) {
-				if (i == arySmall.length - 1) {
-					Ti.API.info("104");
+	for (var i = 0; i < lengthSmall; i++) {
+		for (var j = 0; j < lengthLarge; j++) {
+		//	Ti.API.info("hold-find: " + copySmall[i] + "(" + i + ") -" + aryLarge[j] + "(" + j + ")");
+			if (aryLarge[j] == copySmall[i]) {
+				if (i == lengthSmall - 1) {
 					return true;
 				}
+				break;
+			} else if (j == lengthLarge - 1) {
+				return false;
 			}
 		}
 	}
-	Ti.API.info("105");
 	return false;
 }
 
@@ -206,11 +212,10 @@ function checkIfAbbrevArray(ary) {
 function compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
-
 	if (checkIfArrayInArray(selectedAges, postAgeRange) && selectedAges.length != 2) {
-		
+
 		Ti.API.info("selectedAges: " + selectedAges.length);
-		
+
 		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToDict("0", post, dictOrderedPostsByAge);
 	} else if (checkIfAbbrevArray(postAgeRange) && selectedAges.length != 2) {
@@ -301,8 +306,14 @@ function sortPostsIntoSections(dict) {
 	var dictKeys = returnDictKeys(dict);
 	var dictLength = dictKeys.length;
 	var bolEmpty;
+
 	if (dictLength == 0) {
 		var error = label.createLabel(noContentMessage);
+		var errorView = view.createView();
+		errorView.add(error);
+		$.scrollView.add(errorView);
+	} else if (dictLength == 1 && dict[genericAllAgesSectionTitle] == "") {
+		var error = label.createLabel(noFiltersSelected);
 		var errorView = view.createView();
 		errorView.add(error);
 		$.scrollView.add(errorView);
@@ -385,8 +396,8 @@ function stepIntoPostDictionaryCollection(dict, postCollection) {
 	var post = Alloy.createModel('post');
 	post.set({
 		name : retrieveValue(dict, "name"),
-		image: retrieveValue(dict, "image"),
-		raw: dict
+		image : retrieveValue(dict, "image"),
+		raw : dict
 	});
 	postCollection.add(post);
 }

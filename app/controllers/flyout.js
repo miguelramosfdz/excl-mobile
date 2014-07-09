@@ -68,6 +68,10 @@ function toggleAgeFilter(ageFilterOn) {
 	}
 }
 
+function tutorialHandler() {
+	Alloy.Globals.navController.open(Alloy.createController("tutorial"));
+}
+
 function init() {
 
 	ageFilterOn = Alloy.Models.app.get("customizeLearning");
