@@ -9,7 +9,7 @@
 			<Button id="toggleAllOn" class="toggleButton"></Button>
 			<Button id="toggleAllOff" class="toggleButton"></Button>
 		</View>
-		<TableView id="filterTable"></TableView>
+		<TableView id="filterTable" class="filterTable"/>
 	</Window>
 </Alloy>
 <!--jly-->
