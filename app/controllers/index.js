@@ -172,16 +172,27 @@ function createCollapsibleInfoView(){
 
 function onExhibitsClick(exhibits){
 	if ($.collapsibleInfoView.height == 0){
+		var pageIndex = $.exhibitsCarousel.currentPage;
+	    $.navBar.setPageTitle(exhibits[pageIndex].name);
 		$.exhibitSelectLabel.text = "Select An Activity Below!";
-		//Collapsible view is closed; toggle it open
-		var index = $.exhibitsCarousel.currentPage;
-		$.collapsibleInfoLabel.text = exhibits[index].long_description;
-		$.collapsibleInfoView.height = Ti.UI.SIZE;
+		$.collapsibleInfoLabel.text = exhibits[pageIndex].long_description;
+		// $.collapsibleInfoView.height = Ti.UI.SIZE;
+		$.collapsibleInfoView.animate({
+			height: '150dip',
+			duration: 300,
+			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+		});
 		toggleExpanderExpanded();
 	}
 	else{
+		$.navBar.setPageTitle("Choose an Exhibit");
 		$.exhibitSelectLabel.text = "Click Image To Select!";
-		$.collapsibleInfoView.height = 0;
+		// $.collapsibleInfoView.height = 0;
+		$.collapsibleInfoView.animate({
+			height: 0,
+			duration: 300,
+			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+		});
 		toggleExpanderCollapsed();
 	}
 }
@@ -195,6 +206,7 @@ function toggleExpanderCollapsed(){
 }
 
 function onExhibitsScroll(e, exhibits) {
+	$.navBar.setPageTitle("Choose an Exhibit");
 	$.collapsibleInfoView.height = $.collapsibleInfoView.height; //Fixes bug on iOS where components wouldn't scroll if collapsible info collapsed
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
