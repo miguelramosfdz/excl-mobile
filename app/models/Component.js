@@ -2,9 +2,9 @@ exports.definition = {
 	config: {
 		columns: {
 		    "id": "integer",
+		    "component_order": "integer",
 		    "name": "text",
-		    "exhibit": "text",
-		    "compOrderNo": "order_number"
+		    "exhibit": "text"
 		},
 		adapter: {
 			type: "sql",
