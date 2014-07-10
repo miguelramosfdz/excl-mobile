@@ -7,7 +7,7 @@
 			<Label id="pageTitle" class="pageTitleStyle">Children's Museum of Houston</Label>
 		</View>
 		<View id="flyoutBtn" class="menuButtonStyle coloredGrey" onClick="menu">
-			<ImageView class="flyoutIcon" image="/images/drawer.png" platform="android"></ImageView>
+			<ImageView class="flyoutIcon" image="/images/icons_android/drawer.png" platform="android"></ImageView>
 			<ImageView class="flyoutIcon" image="/images/icons_ios/drawer.png" platform="ios"></ImageView>
 		</View>
 	</View>
