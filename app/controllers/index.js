@@ -46,7 +46,6 @@ function initializeWithJSON(json, controller) {
 }
 
 function populateWindow(json){
-	$.navBar.setPageTitle("Choose an Exhibit");
 	var components = Alloy.Collections.instance('component');
 	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
 		var exhibit = json.data.museum.exhibits[i];
@@ -71,7 +70,6 @@ function populateWindow(json){
 function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
 	
-
 	exhibits.sort(function(a,b){
 		return a.exhibit_order > b.exhibit_order;
 	});
@@ -143,7 +141,7 @@ function createExhibitTitleLabel(name){
 		top: 0,
 		height: Ti.UI.SIZE,
 		backgroundColor: '#000',
-		opacity: 0.8
+		opacity: 0.6
 	});
 	var label = Ti.UI.createLabel({
 		top: 0,
@@ -281,7 +279,7 @@ function createLabeledPicView(item, type){
 function createTitleLabel(name, type){
 	var titleLabel = Ti.UI.createView({
 		backgroundColor: 'black',
-		opacity: 0.8,
+		opacity: 0.6,
 		height: '15%',
 		top: 0
 	});
@@ -292,7 +290,6 @@ function createTitleLabel(name, type){
 		top: 0,
 		left: 10,
 		color: 'white',
-		opacity: 1,
 		font: {
 			fontFamily: 'Arial',
 			fontSize: type,
