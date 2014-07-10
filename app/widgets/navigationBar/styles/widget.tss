@@ -4,14 +4,22 @@
 
 ".flyoutIcon":{
 	width: "25dip",
-	height: "25dip",
-	right: "2%"
+	height: "25dip"
 }
 
 ".backIcon":{
 	width: "25dip",
-	height: "25dip",
-	left: "2%"
+	height: "25dip"
+}
+
+".flyoutView":{
+	width: "10%",
+	right: "0"
+}
+
+".backView":{
+	width: "10%",
+	left: "0"
 }
 
 //iPhone
