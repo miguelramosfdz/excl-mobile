@@ -89,16 +89,16 @@ function clearOrderedPostDicts() {
 function detectEventEnabled() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearningEnabled");
 	//Ti.API.info("Filter Status 2: " + JSON.stringify(Alloy.Collections.filter));
-	//Ti.API.info("Filter Detected (Comp): set: " + ageFilterSet + ", on: " + ageFilterOn);
+	Ti.API.info("Filter Detected (Comp): set: " + ageFilterSet + ", on: " + ageFilterOn);
 	clearOrderedPostDicts();
 	retrieveComponentData();
 }
 
 function detectEventSet() {
 	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
-	if (ageFilterSet) {
-		Alloy.Models.app.set("customizeLearningEnabled", true);
-	}
+	// if (ageFilterSet) {
+		// Alloy.Models.app.set("customizeLearningEnabled", true);
+	// }
 	detectEventEnabled();
 }
 

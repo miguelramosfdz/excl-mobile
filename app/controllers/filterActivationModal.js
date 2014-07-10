@@ -130,16 +130,18 @@ function setTableBackgroundColor() {
 }
 
 function setTableHeight() {
-	if (OS_ANDROID) {
-		$.filterTable.height = Ti.UI.FILL;
+	if (Ti.Platform.osname=='ipad') {
+		$.container.height = "20dip";
+		$.container.height = "20dip";
+	} else if (Ti.Platform.osname =="iphone"){
+		$.filterTable.bottom = "48dip";
 	} else {
-		//$.filterTable.bottom = "48dip";
-		$.container.bottom = "20%";
+		$.filterTable.height = Ti.UI.FILL;
 	}
 }
 
 function init() {
-	$.container.backgroundSelectedColor="transparent";
+	//$.container.opacity="0.1";
 	formatCheckAllOnButton($.toggleAllOn);
 	formatCheckAllOffButton($.toggleAllOff);
 	setTableBackgroundColor();
