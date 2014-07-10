@@ -113,7 +113,7 @@ function rowFilterEventListener() {
 	}
 	ageFilterSet = Alloy.Models.app.get('customizeLearningSet');
 	ageFilterOn = Alloy.Models.app.get('customizeLearningEnabled');
-	Ti.API.info("Filter Fired (fly): set: " + ageFilterSet + ", on: " + ageFilterOn);
+	//Ti.API.info("Filter Fired (fly): set: " + ageFilterSet + ", on: " + ageFilterOn);
 }
 
 function tutorialHandler(e) {
