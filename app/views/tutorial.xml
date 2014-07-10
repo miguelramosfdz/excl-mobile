@@ -3,6 +3,7 @@
 		<View class="fullScreenOverlay" autoStyle="true" />
 		<Label id="flyoutMenuText" class="fullScreenOverlayText">Menu and options here!</Label>
 		<ImageView id="flyoutMenuArrow" image="/images/tutorial/long-arrow.png"></ImageView>
+		<ImageView id="flyoutMenuArrow2" image="/images/tutorial/long-arrow.png"></ImageView>
 		<Button id="gotItButton" onClick="tutorialGotIt" class="tutorialButton">Got it!</Button>
 	</Window>
 </Alloy>
