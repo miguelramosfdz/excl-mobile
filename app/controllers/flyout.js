@@ -61,12 +61,10 @@ function openExhibitPage(e) {
 
 function setCustomLearn(e) {
 	var ready = Alloy.Collections.filter.ready;
-
 	if (ready) {
 		Alloy.Models.app.set('customizeLearningSet', true);
 		Alloy.createController('filterActivationModal').getView().open();
 		enableAgeFilter();
-		showEditAgeOption();
 	} else {
 		Alloy.Models.app.retrieveFilters();
 		alert('Attempting to retrieve filters.  Try again in a moment.');
@@ -74,42 +72,15 @@ function setCustomLearn(e) {
 }
 
 function enableAgeFilter() {
-	Alloy.Models.app.set("customizeLearningEnabled", true);
-	formatRowDisable();
+	$.agesLabel.text = "Turn Filter Off";
+	$.customLearnRow.backgroundColor = "C0C0C0";
 	showEditAgeOption();
 }
 
 function disableAgeFilter() {
-	Alloy.Models.app.set("customizeLearningEnabled", false);
-	formatRowEnable();
-	hideEditAgeOption();
-}
-
-function formatRowEnable() {
 	$.agesLabel.text = "Turn Filter On";
 	$.customLearnRow.backgroundColor = "F2F2F2";
-}
-
-function formatRowDisable() {
-	$.agesLabel.text = "Turn Filter Off";
-	$.customLearnRow.backgroundColor = "C0C0C0";
-}
-
-function rowFilterEventListener() {
-	
-	Ti.API.info("event fired: set: " + ageFilterSet + ", on: " + ageFilterOn);
-	
-	if (ageFilterSet && ageFilterOn) {
-		disableAgeFilter();
-		closeMenu();
-	} else if (ageFilterSet && !ageFilterOn) {
-		enableAgeFilter();
-		closeMenu();
-	} else if (!ageFilterSet && !ageFilterOn) {
-		setCustomLearn();
-	} else {
-		Ti.API.info("Unrecognized filter set/enable combination");
-	}
+	hideEditAgeOption();
 }
 
 function showEditAgeOption() {
@@ -122,7 +93,45 @@ function hideEditAgeOption() {
 	$.toggleView.hide();
 }
 
+function rowFilterEventListener() {
+	if (ageFilterSet && ageFilterOn) {
+		Ti.API.info("Filter disabled");
+		Alloy.Models.app.set("customizeLearningEnabled", false);
+		disableAgeFilter();
+		closeMenu();
+	} else if (ageFilterSet && !ageFilterOn) {
+		Ti.API.info("Filter enabled");
+		Alloy.Models.app.set("customizeLearningEnabled", true);
+		enableAgeFilter();
+		closeMenu();
+	} else if (!ageFilterSet && !ageFilterOn) {
+		Ti.API.info("Custom Learning Set");
+		Alloy.Models.app.set("customizeLearningEnabled", true);
+		setCustomLearn();
+	} else {
+		Ti.API.info("Unrecognized filter set/enable combination");
+	}
+	ageFilterSet = Alloy.Models.app.get('customizeLearningSet');
+	ageFilterOn = Alloy.Models.app.get('customizeLearningEnabled');
+	Ti.API.info("Filter Fired (fly): set: " + ageFilterSet + ", on: " + ageFilterOn);
+}
+
 function tutorialHandler(e) {
 	closeMenu(e);
 	Alloy.Globals.navController.open(Alloy.createController("tutorial"));
 }
+
+function detectFilterConditions() {
+	if (ageFilterSet && ageFilterOn) {
+		disableAgeFilter();
+	} else if (ageFilterSet && !ageFilterOn) {
+		enableAgeFilter();
+	} else if (!ageFilterSet && !ageFilterOn) {
+		//setCustomLearn();
+	} else {
+		Ti.API.info("Unrecognized filter set/enable combination");
+	}
+	Ti.API.info("Filter StartUp (fly): set: " + ageFilterSet + ", on: " + ageFilterOn);
+}
+
+detectFilterConditions();

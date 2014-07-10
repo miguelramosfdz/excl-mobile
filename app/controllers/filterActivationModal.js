@@ -6,6 +6,17 @@ var iconService = setPathForLibDirectory('customCalls/iconService');
 var icon = new iconService();
 var viewServicePath = setPathForLibDirectory('customCalls/viewService');
 var viewService = new viewServicePath();
+var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
+var spinner = new loadingSpinner();
+
+function addSpinner() {
+	spinner.addTo($.filterTable);
+	spinner.show();
+}
+
+function removeSpinner() {
+	spinner.hide();
+}
 
 function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
@@ -25,6 +36,7 @@ function createFilterView(filter, allChecked) {
 	} else if (allChecked == "disable") {
 		filter.set('active', "false");
 	}
+	Alloy.Models.app.trigger('change:active');
 	active = filter.get('active');
 
 	var color = 'white';
@@ -76,12 +88,15 @@ function closeWindow(e) {
 
 function addFilters(allChecked) {
 	var tableData = [];
+	addSpinner();
 	for (var i = 0; i < filters.size(); i++) {
 		var filter = filters.at(i);
 		filter = createFilterView(filter, allChecked);
 		tableData.push(filter);
 	};
+	removeSpinner();
 	$.filterTable.data = tableData;
+	//Ti.API.info("Filter Status 1: " + JSON.stringify(Alloy.Collections.filter));
 }
 
 function resetFilters(newAllCheckedValue) {

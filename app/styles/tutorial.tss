@@ -37,13 +37,29 @@
 "#flyoutMenuArrow": {
 	top: "37dip",
 	right: "30dip",
-	height: "110dip"
+	//height: "110dip"
+	height: "70dip"
 }
+
+"#ComponentsArrow": {
+	transform: Alloy.Globals.rotate180,
+	height: "70dip"
+}
+
 "#flyoutMenuText": {
-	top: "150dip",
+	//top: "150dip",
+	top: "105dip",
 	right: "75dip",
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_RIGHT
 }
+
+"#ComponentsText": {
+	top: "220dip",
+	right: "75dip",
+	textAlign: Titanium.UI.TEXT_AlIGNMENT_RIGHT
+}
+
 "#gotItButton": {
-	bottom: "150dip"
+	//bottom: "150dip"
+	bottom: "50dip"
 }
