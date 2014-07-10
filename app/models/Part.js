@@ -2,11 +2,13 @@ exports.definition = {
 	config: {
 		columns: {
 		    "id": "integer",
+		    "part_order": "integer",
 		    "name": "text",
 		    "type": "text",
 		    "video": "text",
 		    "image": "text",
 		    "body": "text"
+		    
 		},
 		adapter: {
 			type: "sql",

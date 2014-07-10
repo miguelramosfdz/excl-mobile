@@ -2,12 +2,7 @@
 	backgroundColor: "#232226"
 }
 
-".flyoutIcon":{
-	width: "25dip",
-	height: "25dip"
-}
-
-".backIcon":{
+".icon":{
 	width: "25dip",
 	height: "25dip"
 }
