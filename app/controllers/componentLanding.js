@@ -96,9 +96,9 @@ function detectEventEnabled() {
 
 function detectEventSet() {
 	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
-	if (ageFilterSet) {
-		Alloy.Models.app.set("customizeLearningEnabled", true);
-	}
+	// if (ageFilterSet) {
+		// Alloy.Models.app.set("customizeLearningEnabled", true);
+	// }
 	detectEventEnabled();
 }
 
