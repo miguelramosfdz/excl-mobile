@@ -41,7 +41,7 @@
 	height: "70dip"
 }
 
-"#flyoutMenuArrow2": {
+"#ComponentsArrow": {
 	transform: Alloy.Globals.rotate180,
 	height: "70dip"
 }
@@ -53,7 +53,7 @@
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_RIGHT
 }
 
-"#flyoutMenuText2": {
+"#ComponentsText": {
 	top: "220dip",
 	right: "75dip",
 	textAlign: Titanium.UI.TEXT_AlIGNMENT_RIGHT
