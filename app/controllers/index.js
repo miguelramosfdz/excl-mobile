@@ -172,6 +172,7 @@ function createCollapsibleInfoView(){
 
 function onExhibitsClick(exhibits){
 	if ($.collapsibleInfoView.height == 0){
+		$.exhibitSelectLabel.text = "Select An Activity Below!";
 		//Collapsible view is closed; toggle it open
 		var index = $.exhibitsCarousel.currentPage;
 		$.collapsibleInfoLabel.text = exhibits[index].long_description;
@@ -179,6 +180,7 @@ function onExhibitsClick(exhibits){
 		toggleExpanderExpanded();
 	}
 	else{
+		$.exhibitSelectLabel.text = "Click Image To Select!";
 		$.collapsibleInfoView.height = 0;
 		toggleExpanderCollapsed();
 	}
@@ -201,9 +203,11 @@ function onExhibitsScroll(e, exhibits) {
 	$.exhibitInfoLabel.text = exhibits[index].description;
 	
 	if ($.collapsibleInfoView.height != 0){
-		//Collapsible view is open; must update the exhibit info
-		$.collapsibleInfoLabel.text = exhibits[index].long_description;
+		$.collapsibleInfoView.height = 0;
+		$.exhibitSelectLabel.text = "Click Image To Select!";
 	}
+	
+	$.collapsibleInfoLabel.text = exhibits[index].long_description;
 }
 
 function createComponentsScrollView(exhibits){
