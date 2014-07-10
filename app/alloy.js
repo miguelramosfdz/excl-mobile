@@ -44,6 +44,8 @@ Alloy.Globals.isNumber = function(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
+Alloy.Globals.rotate180 = Ti.UI.create2DMatrix().rotate(-180);
+
 // do not remove: initialization of global backbone models
 Alloy.Models.app = Alloy.Models.instance('app');
 Alloy.Collections.filter = Alloy.Collections.instance('filter');
