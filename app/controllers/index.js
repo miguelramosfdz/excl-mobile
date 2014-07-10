@@ -55,6 +55,7 @@ function populateWindow(json){
 			componentModel.set({ 'id' : component.id,
 								 'name': component.name, 
 								 'exhibit': exhibit.name, 
+								 'component_order': component.component_order,
 								 'exhibit_order': exhibit.exhibit_order });
 			components.add(componentModel);
 		}
@@ -226,21 +227,37 @@ function onExhibitsScroll(e, exhibits) {
 
 function createComponentsScrollView(exhibits){
 	currExhibitId = exhibits[0].id;
+	
+	
+	
 	for (var i=0; i<exhibits.length; i++){
 		componentsInExhibit[exhibits[i].id] = Ti.UI.createView({
 			layout: 'horizontal',
 			horizontalWrap: false,
 			width: Ti.UI.SIZE
 		});
+		
+		exhibits[i].components.sort(function(a,b){
+	 		return a.component_order > b.component_order;
+		 });
+		
 		for(var j=0; j<exhibits[i].components.length; j++){
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
+			
 			component.left = 3;
 			// component.right = 3;
 			component.width = '300dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
+			
+/*
+			 component.sort(function(a,b){
+				return a.component_order > b.component_order;
+			 });*/
+
 			componentsInExhibit[exhibits[i].id].add(component);
-		}			
+		}	
+				
 		$.componentScrollView.add(componentsInExhibit[exhibits[i].id]);
 		componentsInExhibit[exhibits[i].id].width = 0;
 	}
