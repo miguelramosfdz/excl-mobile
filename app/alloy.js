@@ -16,6 +16,9 @@ Alloy.Globals.navController = new NavigationController();
 var AnalyticsController = require('analyticService/analyticService');
 Alloy.Globals.analyticsController = new AnalyticsController();
 
+var AdminMode = require('adminResources/adminMode');
+Alloy.Globals.adminMode = new AdminMode();
+
 
 // TODO  DELETE THESE AFTER THE 3 INSTANCES ARE FUNCTIONAL
 var dreamhostersAPI = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81";

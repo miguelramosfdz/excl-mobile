@@ -13,16 +13,17 @@ var dictOrderedPostsByAge = {};
 var selectedAges;
 
 var allPosts;
-var initialLoad = false;
+var initialLoad = true;
 var genericAllAgesSectionTitle = "For Everyone in Your Group";
 var noContentMessage = "Sorry!\n\nLooks like we're still in the\nprocess of adding content here.\n\nCheck here later for new and\nexciting activities!";
+var noFiltersSelected = "Please select a filter to see your sorted content!";
 
-var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
-var viewService = Alloy.Globals.setPathForLibDirectory('customCalls/viewService');
+var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var viewService = setPathForLibDirectory('customCalls/viewService');
 var view = new viewService();
-var labelService = Alloy.Globals.setPathForLibDirectory('customCalls/labelService');
+var labelService = setPathForLibDirectory('customCalls/labelService');
 var label = new labelService();
-var loadingSpinner = Alloy.Globals.setPathForLibDirectory('loadingSpinner/loadingSpinner');
+var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
 
 var analyticsPageTitle = "";
@@ -45,8 +46,19 @@ exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
 exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
 exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
-Alloy.Models.app.on("change:customizeLearning", detectEvent);
+Alloy.Models.app.on("change:customizeLearningEnabled", detectEventEnabled);
+Alloy.Models.app.on("change:customizeLearningSet", detectEventSet);
 var ageFilterOn;
+var ageFilterSet;
+
+function setPathForLibDirectory(libFile) {
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
 
 function changeTitleOfThePage(name) {
 	$.componentLanding.title = name;
@@ -68,35 +80,44 @@ function checkPostViewSpacing() {
 	}
 }
 
-function clearOrderedPostDictes() {
+function clearOrderedPostDicts() {
 	dictOrderedPostsBySection = {};
 	dictOrderedPostsByAge = {};
 	$.scrollView.removeAllChildren();
 }
 
-function detectEvent() {
-	ageFilterOn = Alloy.Models.app.get("customizeLearning");
+function detectEventEnabled() {
+	ageFilterOn = Alloy.Models.app.get("customizeLearningEnabled");
 	Ti.API.info("Age Filter On: " + ageFilterOn);
-	clearOrderedPostDictes();
+	clearOrderedPostDicts();
 	addSpinner();
-	retrieveComponentData(ageFilterOn);
+	retrieveComponentData();
 }
 
-function retrieveComponentData(ageFilterOn) {
-	clearOrderedPostDictes();
-	addSpinner();
-	if (!initialLoad) {
+function detectEventSet() {
+	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
+	Ti.API.info("Age Filter Set: " + ageFilterSet);
+	if (ageFilterSet) {
+		Alloy.Models.app.set("customizeLearningEnabled", true);
+	}
+	detectEventEnabled();
+}
+
+function retrieveComponentData() {
+	clearOrderedPostDicts();
+	if (initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 			changeTitleOfThePage(returnedData.data.component.name);
 			allPosts = returnedData.data.component.posts;
-			initialLoad = true;
-			checkIfAgeFilterOn(allPosts, ageFilterOn);
+			initialLoad = false;
+			checkIfAgeFilterOn(allPosts);
 			checkPostViewSpacing();
 			removeSpinner();
 		});
 	} else {
 		checkIfAgeFilterOn(allPosts);
 		checkPostViewSpacing();
+		removeSpinner();
 	}
 }
 
@@ -110,9 +131,9 @@ function removeSpinner() {
 }
 
 function checkIfAgeFilterOn(allPosts) {
-	if (ageFilterOn == true) {
+	if (ageFilterOn) {
 		organizeByAge(allPosts);
-	} else if (ageFilterOn == false) {
+	} else {
 		organizeBySection(allPosts);
 	}
 	removeSpinner();
@@ -159,26 +180,42 @@ function returnDictKeys(dict) {
 }
 
 function checkIfArrayInArray(arySmall, aryLarge) {
+	var escapeLoop = false;
+	var lengthSmall = arySmall.length;
+	var lengthLarge = aryLarge.length;
+	var copySmall = [];
+
+	if (lengthSmall == 1) {
+		return false;
+	} else {
+		for (var i = 1; i < lengthSmall; i++) {
+			copySmall.push(arySmall[i]);
+		}
+	}
+	lengthSmall = copySmall.length;
+
+	//Ti.API.info("small: " + JSON.stringify(copySmall) + ", large: " + JSON.stringify(aryLarge));
+
 	if (checkIfAbbrevArray(aryLarge)) {
 		return true;
 	}
-	if (JSON.stringify(arySmall) == JSON.stringify(aryLarge)) {
+	if (JSON.stringify(copySmall) == JSON.stringify(aryLarge)) {
 		return true;
 	}
-	lengthSmall = arySmall.length;
-	lengthLarge = aryLarge.length;
-
 	if (lengthSmall > lengthLarge) {
-		var holder = arySmall;
-		arySmall = aryLarge;
-		aryLarge = holder;
+		return false;
 	}
-	for (var i = 0; i < arySmall.length; i++) {
-		for (var j = 0; j < aryLarge.length; j++) {
-			if (aryLarge[j] == arySmall[i]) {
-				if (i == arySmall.length - 1) {
+
+	for (var i = 0; i < lengthSmall; i++) {
+		for (var j = 0; j < lengthLarge; j++) {
+			//	Ti.API.info("hold-find: " + copySmall[i] + "(" + i + ") -" + aryLarge[j] + "(" + j + ")");
+			if (aryLarge[j] == copySmall[i]) {
+				if (i == lengthSmall - 1) {
 					return true;
 				}
+				break;
+			} else if (j == lengthLarge - 1) {
+				return false;
 			}
 		}
 	}
@@ -195,8 +232,10 @@ function checkIfAbbrevArray(ary) {
 function compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsByAge, post) {
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
+	if (checkIfArrayInArray(selectedAges, postAgeRange) && selectedAges.length != 2) {
 
-	if (checkIfArrayInArray(postAgeRange, selectedAges) && selectedAges.length != 2) {
+		Ti.API.info("selectedAges: " + selectedAges.length);
+
 		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToDict("0", post, dictOrderedPostsByAge);
 	} else if (checkIfAbbrevArray(postAgeRange) && selectedAges.length != 2) {
@@ -286,8 +325,14 @@ function sortPostsIntoSections(dict) {
 	var dictKeys = returnDictKeys(dict);
 	var dictLength = dictKeys.length;
 	var bolEmpty;
+
 	if (dictLength == 0) {
 		var error = label.createLabel(noContentMessage);
+		var errorView = view.createView();
+		errorView.add(error);
+		$.scrollView.add(errorView);
+	} else if (dictLength == 1 && dict[genericAllAgesSectionTitle] == "") {
+		var error = label.createLabel(noFiltersSelected);
 		var errorView = view.createView();
 		errorView.add(error);
 		$.scrollView.add(errorView);
@@ -370,8 +415,8 @@ function stepIntoPostDictionaryCollection(dict, postCollection) {
 	var post = Alloy.createModel('post');
 	post.set({
 		name : retrieveValue(dict, "name"),
-		image: retrieveValue(dict, "image"),
-		raw: dict
+		image : retrieveValue(dict, "image"),
+		raw : dict
 	});
 	postCollection.add(post);
 }
@@ -396,4 +441,4 @@ function parseFilterDictIntoArray(ary) {
 	return newAry;
 }
 
-detectEvent();
+detectEventSet();

@@ -20,13 +20,13 @@ function createFilterView(filter, allChecked) {
 	var name = filter.get('name');
 	var active;
 
-	if (allChecked == "true") {
-		active = "true";
-	} else if (allChecked == "false") {
-		active = "false";
-	} else {
-		active = filter.get('active');
+	if (allChecked == "enable") {
+		filter.set('active', "true");
+	} else if (allChecked == "disable") {
+		filter.set('active', "false");
 	}
+	active = filter.get('active');
+
 	var color = 'white';
 	if (OS_IOS) {
 		color = 'black';
@@ -41,19 +41,21 @@ function createFilterView(filter, allChecked) {
 			fontSize : '22dp',
 			fontWeight : 'bold'
 		},
-		left : '10%',
+		left : '20%',
 		text : name
 	};
 	var label = Ti.UI.createLabel(args);
 
 	args = {
 		value : active,
-		right : '10%'
+		right : '15%',
+		titleOn : " ",
+		titleOff : " "
 	};
 	var _switch = Ti.UI.createSwitch(args);
 
 	_switch.addEventListener('change', function(e) {
-		allChecked = "";
+		allChecked = "none";
 		filter.set('active', _switch.value);
 	});
 
@@ -61,7 +63,7 @@ function createFilterView(filter, allChecked) {
 	rowView.add(label);
 	rowView.add(_switch);
 
-	var row = viewService.createTableRow("10");
+	var row = viewService.createTableRow("35dip");
 	row.add(rowView);
 
 	return row;
@@ -90,25 +92,40 @@ function resetFilters(newAllCheckedValue) {
 
 function formatCheckAllOnButton(button) {
 	icon.setIcon(button, "checkbox_checked.png");
-	button.left = "75%";
+	button.left = "70%";
 
 	button.addEventListener('click', function(e) {
-		resetFilters("true");
+		resetFilters("enable");
 	});
 }
 
 function formatCheckAllOffButton(button) {
 	icon.setIcon(button, "checkbox_unchecked.png");
-	button.left = "5%";
+	button.left = "7%";
 
 	button.addEventListener('click', function(e) {
-		resetFilters("false");
+		resetFilters("disable");
 	});
+}
+
+function setTableBackgroundColor() {
+	if (OS_ANDROID) {
+		$.filterTable.backgroundColor = "black";
+	}
+}
+
+function setTableHeight() {
+	if (OS_ANDROID) {
+		$.filterTable.height = Ti.UI.FILL;
+	} else {
+		$.filterTable.bottom = "48dip";
+	}
 }
 
 function init() {
 	formatCheckAllOnButton($.toggleAllOn);
 	formatCheckAllOffButton($.toggleAllOff);
+	setTableBackgroundColor();
 	addFilters(allChecked);
 }
 
