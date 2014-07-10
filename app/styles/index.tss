@@ -15,8 +15,9 @@
 	height: Ti.UI.SIZE,
 	showPagingControl: true,
 	overlayEnabled: true,
-	pagingControlAlpha: "0.5",
-	pagingControlTimeout: 0
+	pagingControlAlpha: "0.8",
+	pagingControlTimeout: 0,
+	pagingControlHeight: "25dip"
 }
 
 "#exhibitsCarousel[platform=android]": {

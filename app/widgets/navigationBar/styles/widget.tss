@@ -27,7 +27,7 @@
 ".pageTitleStyle[platform=ios formFactor=handheld]":{
 	color: "#FFF",
 	font: {
-		fontSize: '13.8dip',
+		fontSize: '22dip',
 		fontWeight: 'bold',
 		fontFamily: 'Helvetica Neue'
 	},
@@ -39,7 +39,7 @@
 ".pageTitleStyle[platform=ios formFactor=tablet]":{
 	color: "#FFF",
 	font: {
-		fontSize: '18dip',
+		fontSize: '22dip',
 		fontWeight: 'bold',
 		fontFamily: 'Helvetica Neue'
 	},
@@ -51,7 +51,7 @@
 ".pageTitleStyle[platform=android]":{
 	color: "#FFF",
 	font: {
-		fontSize: '18dip',
+		fontSize: '22dip',
 		fontWeight: 'bold',
 		fontFamily: 'Helvetica Neue'
 	},

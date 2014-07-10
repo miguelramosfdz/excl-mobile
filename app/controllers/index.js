@@ -139,7 +139,7 @@ function createExhibitTitleLabel(name){
 		top: 0,
 		height: Ti.UI.SIZE,
 		backgroundColor: '#000',
-		opacity: 0.6
+		opacity: 0.8
 	});
 	var label = Ti.UI.createLabel({
 		top: 0,
@@ -272,6 +272,7 @@ function createTitleLabel(name, type){
 		top: 0,
 		left: 10,
 		color: 'white',
+		opacity: 1,
 		font: {
 			fontFamily: 'Arial',
 			fontSize: type,
