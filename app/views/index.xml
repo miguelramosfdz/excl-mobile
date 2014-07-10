@@ -1,7 +1,6 @@
 <Alloy>
 	<Window class="container">
 		<View id="mainView">
-			
 			<ScrollView id="exhibitInfoScrollView" scrollType="vertical" layout="vertical" contentWidth="100%">
 				<Widget src="navigationBar" id="navBar"/>
 				<ScrollableView id="exhibitsCarousel">

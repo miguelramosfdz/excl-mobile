@@ -46,6 +46,7 @@ function initializeWithJSON(json, controller) {
 }
 
 function populateWindow(json){
+	$.navBar.setPageTitle("Choose an Exhibit");
 	var components = Alloy.Collections.instance('component');
 	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
 		var exhibit = json.data.museum.exhibits[i];
@@ -260,7 +261,7 @@ function createLabeledPicView(item, type){
 function createTitleLabel(name, type){
 	var titleLabel = Ti.UI.createView({
 		backgroundColor: 'black',
-		opacity: 0.6,
+		opacity: 0.8,
 		height: '15%',
 		top: 0
 	});
