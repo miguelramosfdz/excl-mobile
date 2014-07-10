@@ -2,25 +2,16 @@
 	backgroundColor: "#253342"
 }
 
-".backButtonStyle":{
-	left: '0%',
-	font: {
-		fontSize: "14",
-		fontWeight: 'normal',
-		fontFamily: 'Helvetica Neue'
-	},
-	width: '10%' 
-}
-
-".menuButtonStyle": {
-	right: '0%',
-	width: '10%'
-}
-
 ".flyoutIcon":{
 	width: "25dip",
-	height: "20dip",
+	height: "25dip",
 	right: "2%"
+}
+
+".backIcon":{
+	width: "25dip",
+	height: "25dip",
+	left: "2%"
 }
 
 //iPhone

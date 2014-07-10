@@ -133,11 +133,13 @@ function setTableHeight() {
 	if (OS_ANDROID) {
 		$.filterTable.height = Ti.UI.FILL;
 	} else {
-		$.filterTable.bottom = "48dip";
+		//$.filterTable.bottom = "48dip";
+		$.container.bottom = "20%";
 	}
 }
 
 function init() {
+	$.container.backgroundSelectedColor="transparent";
 	formatCheckAllOnButton($.toggleAllOn);
 	formatCheckAllOffButton($.toggleAllOff);
 	setTableBackgroundColor();
