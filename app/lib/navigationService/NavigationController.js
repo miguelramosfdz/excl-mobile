@@ -21,10 +21,15 @@ function NavigationController() {
 NavigationController.prototype.restart = function(){
 		for (var i = this.windowStack.length - 1; i>=0 ; i--) {
 			// set dependent window
-			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
+			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i]});
+			Ti.API.info("----------\n\r"+i+"\n\r");
        	}      	
         // start chain reaction, close first window
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
+	
+	
+		
+		Ti.API.info("----------\n\r"+i+"\n\r");
 	
 		var newHomePage = Alloy.createController("index");
 		this.open(newHomePage);	
