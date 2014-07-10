@@ -48,8 +48,8 @@ exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 Alloy.Models.app.on("change:customizeLearningEnabled", detectEventEnabled);
 Alloy.Models.app.on("change:customizeLearningSet", detectEventSet);
-var ageFilterOn;
-var ageFilterSet;
+var ageFilterOn = Alloy.Models.app.get("customizeLearningEnabled");
+var ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
 
 function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
@@ -88,15 +88,14 @@ function clearOrderedPostDicts() {
 
 function detectEventEnabled() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearningEnabled");
-	Ti.API.info("Age Filter On: " + ageFilterOn);
+	//Ti.API.info("Filter Status 2: " + JSON.stringify(Alloy.Collections.filter));
+	//Ti.API.info("Filter Detected (Comp): set: " + ageFilterSet + ", on: " + ageFilterOn);
 	clearOrderedPostDicts();
-	addSpinner();
 	retrieveComponentData();
 }
 
 function detectEventSet() {
 	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
-	Ti.API.info("Age Filter Set: " + ageFilterSet);
 	if (ageFilterSet) {
 		Alloy.Models.app.set("customizeLearningEnabled", true);
 	}
@@ -132,8 +131,10 @@ function removeSpinner() {
 
 function checkIfAgeFilterOn(allPosts) {
 	if (ageFilterOn) {
+		Ti.API.info("Filtering content");
 		organizeByAge(allPosts);
 	} else {
+		Ti.API.info("Organizing content by section");
 		organizeBySection(allPosts);
 	}
 	removeSpinner();
@@ -146,7 +147,7 @@ function organizeBySection(allPosts) {
 	}
 	sortPostsIntoSections(dictOrderedPostsBySection);
 
-	Ti.API.info("Finished Organizing by Section: " + JSON.stringify(dictOrderedPostsBySection));
+	Ti.API.info("Finished Organizing by Section");
 	checkPostViewSpacing();
 }
 
@@ -167,7 +168,7 @@ function organizeByAge(allPosts) {
 	dictOrderedPostsByAge = replaceDictKeysWithFilterHeadings(dictOrderedPostsByAge);
 	sortPostsIntoSections(dictOrderedPostsByAge);
 
-	Ti.API.info("Finished Filtering by Age: " + JSON.stringify(dictOrderedPostsByAge));
+	Ti.API.info("Finished Filtering by Age");
 	checkPostViewSpacing();
 }
 
@@ -180,7 +181,6 @@ function returnDictKeys(dict) {
 }
 
 function checkIfArrayInArray(arySmall, aryLarge) {
-	var escapeLoop = false;
 	var lengthSmall = arySmall.length;
 	var lengthLarge = aryLarge.length;
 	var copySmall = [];
@@ -193,9 +193,7 @@ function checkIfArrayInArray(arySmall, aryLarge) {
 		}
 	}
 	lengthSmall = copySmall.length;
-
 	//Ti.API.info("small: " + JSON.stringify(copySmall) + ", large: " + JSON.stringify(aryLarge));
-
 	if (checkIfAbbrevArray(aryLarge)) {
 		return true;
 	}
@@ -233,16 +231,13 @@ function compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsB
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
 	if (checkIfArrayInArray(selectedAges, postAgeRange) && selectedAges.length != 2) {
-
-		Ti.API.info("selectedAges: " + selectedAges.length);
-
-		Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
+		//Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToDict("0", post, dictOrderedPostsByAge);
 	} else if (checkIfAbbrevArray(postAgeRange) && selectedAges.length != 2) {
-		Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
+		//Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToDict("0", post, dictOrderedPostsByAge);
 	} else {
-		Ti.API.info("3-Adding to other: " + JSON.stringify(post));
+		//Ti.API.info("3-Adding to other: " + JSON.stringify(post));
 		for (var i = 0; i < selectedAges.length; i++) {
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
 			addItemArrayToDict(selectedAges[i], itemArray, dictOrderedPostsByAge);
@@ -434,7 +429,8 @@ function parseFilterDictIntoArray(ary) {
 	ary = JSON.parse(ary);
 	for (var i = 0; i < ary.length; i++) {
 		var dict = ary[i];
-		if (dict["active"] == true) {
+		//Ti.API.info("Active: " + dict["name"] + " is " + dict["active"]);
+		if (dict["active"]=="true") {
 			newAry.push(dict["name"]);
 		}
 	}

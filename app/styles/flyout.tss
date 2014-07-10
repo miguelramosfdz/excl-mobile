@@ -30,7 +30,8 @@
 },
 
 ".viewRowIndented":{
-	left: '10%'
+	left: '10%',
+	height: "0"
 }
 ".rowIcon":{
 	left: '10%',
