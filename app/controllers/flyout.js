@@ -116,6 +116,11 @@ function rowFilterEventListener() {
 	//Ti.API.info("Filter Fired (fly): set: " + ageFilterSet + ", on: " + ageFilterOn);
 }
 
+function tutorialToggler(e) {
+	closeMenu(e);
+	Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
+}
+
 function tutorialHandler(e) {
 	closeMenu(e);
 	Alloy.Globals.navController.open(Alloy.createController("exhibitTutorialPage"));
