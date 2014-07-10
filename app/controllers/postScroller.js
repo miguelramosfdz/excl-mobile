@@ -16,10 +16,7 @@ if (posts) {
 	$.scroller.removeView($.placeholder);
 	$.scroller.currentPage = 0;			// Set current page back to the initial page
 	
-} else {//View is empty; insert no content message into placeholder
-	var filepath = OS_ANDROID ? '/images/' : '/images/';
-	//Android requires starting slash
-	//$.placeholderImage.image = filepath + 'No_content_for_age.png';
+} else {
 	$.placeholderLabel.text = "Sorry, but we don't have any content specific for this age yet. Try a different age!";
 }
 
