@@ -168,8 +168,6 @@ NavigationController.prototype.close = function(numWindows) {
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		
 		removeMenuFromWindow(this.windowStack, this.menu);
-		addMenuToNextWindow(this.windowStack, this.menu);
-		
 		if (numWindows > 1) {
 			// setup chain reaction by setting up the flags on all the windows
 			var i = this.windowStack.length - 1;
@@ -183,6 +181,7 @@ NavigationController.prototype.close = function(numWindows) {
 		} else {
 			(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
 		}
+		addMenuToNextWindow(this.windowStack, this.menu);
 		this.analyticsTrackWindowScreen(this.windowStack[this.windowStack.length - 2]);
 	} else {
 		this.analyticsTrackWindowScreen(this.windowStack[0]);
@@ -203,7 +202,8 @@ NavigationController.prototype.home = function() {
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
 		this.analyticsTrackWindowScreen(this.windowStack[0]);
 	}
-	addMenuToNextWindow(this.windowStack, this.menu);
+	addMenuToHomeWindow(this.windowStack, this.menu);
+	//addMenuToNextWindow(this.windowStack, this.menu);
 };
 
 // Lock  page to current top of stack
@@ -227,6 +227,12 @@ NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
 	var kioskModeString = (Alloy.Globals.adminMode.isInKioskMode()) ? "KioskModeOn" : "KioskModeOff";
 	Alloy.Globals.analyticsController.trackEvent(kioskModeString, window.analyticsPageLevel, window.analyticsPageTitle, 1);
 };
+
+function addMenuToHomeWindow(windowStack, menu){
+	if(windowStack.length>0){	
+		windowStack[0].add(menu.getMenu());
+	}
+}
 
 function addMenuToNextWindow(windowStack, menu){
 	if(windowStack.length>1){	
