@@ -118,7 +118,7 @@ function rowFilterEventListener() {
 
 function tutorialHandler(e) {
 	closeMenu(e);
-	Alloy.Globals.navController.open(Alloy.createController("tutorial"));
+	Alloy.Globals.navController.open(Alloy.createController("exhibitTutorialPage"));
 }
 
 function detectFilterConditions() {
