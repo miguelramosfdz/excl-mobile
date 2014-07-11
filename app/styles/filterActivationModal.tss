@@ -9,7 +9,8 @@
 }
 
 ".win": {
-	navBarHidden:true
+	navBarHidden:true,
+	fullscreen: true
 }
 
 ".title": {
