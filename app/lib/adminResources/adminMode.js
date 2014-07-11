@@ -3,9 +3,6 @@ var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
 function AdminMode() {
 	var kiosk = require(rootPath +'adminResources/kioskMode');
 	this.kioskMode = new kiosk();
-	
-	var wordpressEnvironment = require(rootPath + 'adminResources/wordpressEnvironmentMode');
-	this.wordpressEnvironmentMode = new wordpressEnvironment();
 }
 
 AdminMode.prototype.isInKioskMode = function(){
@@ -54,10 +51,13 @@ function handleAdminModeDialog(self) {
 	dialog.addEventListener('click', function(e) {
 	    if (e.text == "friend" || e.source.androidView.value == "friend") {
 			self.kioskMode.updateKioskMode();
-	    } else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
+	    } 
+	    else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
 			Alloy.Globals.navController.open(Alloy.createController('finterns'));
-    	} else if (e.text == "wordpress" || e.source.androidView.value == "wordpress") {
-    		self.wordpressEnvironmentMode.changeWordpressEnvironment();
+    	} 
+    	else if (e.text == "wordpress" || e.source.androidView.value == "wordpress") {
+    		var options = Alloy.createController("wordpressEnvironmentOptionsModal");
+    		Alloy.Globals.navController.open(options);
     	}
     	else {
 	    	var errorMsg = Ti.UI.createAlertDialog({
