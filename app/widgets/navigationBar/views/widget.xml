@@ -5,7 +5,7 @@
 			<ImageView class="icon" image="/images/icons_ios/back_arrow.png" platform="ios"></ImageView>
 		</View>
 		<View class="coloredWhite pageTitleStyle">
-			<Label id="pageTitle" class="pageTitleStyle">Children's Museum of Houston</Label>
+			<Label id="pageTitle" class="pageTitleStyle">Children's Museum</Label>
 		</View>
 		<View id="flyoutBtn" onClick="menu" class="flyoutView">
 			<ImageView class="icon" image="/images/icons_android/drawer.png" platform="android"></ImageView>
