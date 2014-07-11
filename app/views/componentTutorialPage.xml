@@ -1,0 +1,11 @@
+<Alloy>
+	<Window class="fullScreenWindow" autoStyle="true">
+		<View class="fullScreenOverlay" autoStyle="true" />
+		<!-- <Label id="flyoutMenuText" class="fullScreenOverlayText">Menu and options here!</Label>
+		<Label id="ComponentsText" class="fullScreenOverlayText">Stations in Exhibit!</Label>
+		<ImageView id="flyoutMenuArrow" image="/images/tutorial/long-arrow.png"></ImageView>
+		<ImageView id="ComponentsArrow" image="/images/tutorial/long-arrow.png"></ImageView> -->
+		<Button id="ExitButton" onClick="tutorialExit" class="tutorialButton">Exit</Button>
+		<Button id="NextButton" onClick="tutorialExit" class="tutorialButton">Next</Button>
+	</Window>
+</Alloy>

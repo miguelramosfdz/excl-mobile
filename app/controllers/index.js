@@ -24,6 +24,16 @@ function getAnalyticsPageTitle () { return analyticsPageTitle; }
 function setAnalyticsPageLevel (level) { analyticsPageLevel = level; }
 function getAnalyticsPageLevel () { return analyticsPageLevel; }
 
+// Ti.API.info($.mainView.height);
+// Ti.API.info($.exhibitInfoScrollView.height);
+// Ti.API.info($.exhibitInfoView.height);
+
+// var bottomMarginForExhibitInfoView = $.headingRow.height.substring(0, $.headingRow.height.indexOf("dip"));
+// bottomMarginForExhibitInfoView += 20;
+// bottomMarginForExhibitInfoView = bottomMarginForExhibitInfoView.toString() + "dip";
+// $.exhibitInfoView.bottom = $.headingRow.height;
+
+
 $.navBar.hideBackBtn();
 retrieveJson(url, initializeWithJSON, this);
 
@@ -182,7 +192,7 @@ function onExhibitsClick(exhibits){
 		$.collapsibleInfoView.animate({
 			height: '150dip',
 			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+			// curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 		});
 		toggleExpanderExpanded();
 	}
@@ -192,7 +202,7 @@ function onExhibitsClick(exhibits){
 		$.collapsibleInfoView.animate({
 			height: 0,
 			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+			// curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 		});
 		toggleExpanderCollapsed();
 	}
