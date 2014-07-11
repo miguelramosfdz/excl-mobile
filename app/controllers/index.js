@@ -24,16 +24,6 @@ function getAnalyticsPageTitle () { return analyticsPageTitle; }
 function setAnalyticsPageLevel (level) { analyticsPageLevel = level; }
 function getAnalyticsPageLevel () { return analyticsPageLevel; }
 
-// Ti.API.info($.mainView.height);
-// Ti.API.info($.exhibitInfoScrollView.height);
-// Ti.API.info($.exhibitInfoView.height);
-
-// var bottomMarginForExhibitInfoView = $.headingRow.height.substring(0, $.headingRow.height.indexOf("dip"));
-// bottomMarginForExhibitInfoView += 20;
-// bottomMarginForExhibitInfoView = bottomMarginForExhibitInfoView.toString() + "dip";
-// $.exhibitInfoView.bottom = $.headingRow.height;
-
-
 $.navBar.hideBackBtn();
 retrieveJson(url, initializeWithJSON, this);
 
@@ -71,9 +61,8 @@ function populateWindow(json){
 		}
 	}
 	createExhibitsCarousel(json.data.museum.exhibits);
-	createHeadingRow(json.data.museum.exhibits);
-	createExpanderButton();
-	createCollapsibleInfoView();
+	createexhibitSelect(json.data.museum.exhibits);
+	createcollapsibleComponentView();
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
 }
@@ -170,22 +159,16 @@ function createExhibitTitleLabel(name){
 	return titleLabelView;
 }
 
-function createHeadingRow(exhibits){
-	$.headingRow.addEventListener('click', function(e){ onExhibitsClick(exhibits); });
+function createexhibitSelect(exhibits){
+	$.exhibitSelect.addEventListener('click', function(e){ onExhibitsClick(exhibits); });
 }
 
-function createExpanderButton(){
-	// iconService.setIcon($.expanderButton, 'expander_expand.png');
-}
-
-function createCollapsibleInfoView(){
-	//$.collapsibleInfoView.size = 0;
-	$.collapsibleInfoView.height = 0;
+function createcollapsibleComponentView(){
+	$.collapsibleComponentView.height = 0;
 }
 
 function onExhibitsClick(exhibits){
-	
-	if ($.collapsibleInfoView.height == 0){
+	if ($.collapsibleComponentView.height == 0){
 		var pageIndex = $.exhibitsCarousel.currentPage;
 		$.exhibitSelectLabel.text = "Go Back";
 		$.collapsibleInfoLabel.text = exhibits[pageIndex].long_description;
@@ -195,7 +178,7 @@ function onExhibitsClick(exhibits){
 	        duration: 300
 	    }); 
 		
-		$.collapsibleInfoView.animate({
+		$.collapsibleComponentView.animate({
 			height: '150dip',
 			duration: 300,
 			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
@@ -208,7 +191,7 @@ function onExhibitsClick(exhibits){
 	        duration: 300
 	    }); 
 		
-		$.collapsibleInfoView.animate({
+		$.collapsibleComponentView.animate({
 			height: 0,
 			duration: 300,
 			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
@@ -223,7 +206,7 @@ function onExhibitsScroll(e, exhibits) {
 	var index = $.exhibitsCarousel.currentPage;
 	$.exhibitInfoLabel.text = exhibits[index].description;
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
-	$.collapsibleInfoView.height = 0;
+	$.collapsibleComponentView.height = 0;
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
 	$.exhibitInfoView.animate({
         opacity: 1,
