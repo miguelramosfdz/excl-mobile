@@ -217,19 +217,18 @@ function onExhibitsClick(exhibits){
 }
 
 function onExhibitsScroll(e, exhibits) {
-	$.collapsibleInfoView.height = $.collapsibleInfoView.height; //Fixes bug on iOS where components wouldn't scroll if collapsible info collapsed
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
 	var index = $.exhibitsCarousel.currentPage;
 	$.exhibitInfoLabel.text = exhibits[index].description;
-	
-	if ($.collapsibleInfoView.height != 0){
-		$.collapsibleInfoView.height = 0;
-		$.exhibitSelectLabel.text = "Explore This Exhibit!";
-	}
-	
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
+	$.collapsibleInfoView.height = 0;
+	$.exhibitSelectLabel.text = "Explore This Exhibit!";
+	$.exhibitInfoView.animate({
+        opacity: 1,
+        duration: 300
+    }); 
 }
 
 function createComponentsScrollView(exhibits){
@@ -250,12 +249,10 @@ function createComponentsScrollView(exhibits){
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
 			
 			component.left = 3;
-			// component.right = 3;
 			component.width = '300dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
-			
-/*
+			 /*
 			 component.sort(function(a,b){
 				return a.component_order > b.component_order;
 			 });*/
@@ -289,7 +286,7 @@ function createLabeledPicView(item, type){
 	});
 	var clickCatcher = Ti.UI.createView({
 		itemId: item.id
-	});//*/
+	});
 	image.image = item.image;
 	
 	itemContainer.add(image);
