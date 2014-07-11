@@ -217,29 +217,21 @@ function onExhibitsClick(exhibits){
 }
 
 function onExhibitsScroll(e, exhibits) {
-	$.collapsibleInfoView.height = $.collapsibleInfoView.height; //Fixes bug on iOS where components wouldn't scroll if collapsible info collapsed
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
 	var index = $.exhibitsCarousel.currentPage;
 	$.exhibitInfoLabel.text = exhibits[index].description;
-	
+	$.collapsibleInfoLabel.text = exhibits[index].long_description;
+	$.collapsibleInfoView.height = 0;
+	$.exhibitSelectLabel.text = "Explore This Exhibit!";
 	$.exhibitInfoView.animate({
         opacity: 1,
         duration: 300
     }); 
-	
-	if ($.collapsibleInfoView.height != 0){
-		$.collapsibleInfoView.height = 0;
-		$.exhibitSelectLabel.text = "Explore This Exhibit!";
-	}
-	
-	$.collapsibleInfoLabel.text = exhibits[index].long_description;
 }
 
 function createComponentsScrollView(exhibits){
-	currExhibitId = exhibits[0].id;
-	
 	for (var i=0; i<exhibits.length; i++){
 		componentsInExhibit[exhibits[i].id] = Ti.UI.createView({
 			layout: 'horizontal',
@@ -258,8 +250,7 @@ function createComponentsScrollView(exhibits){
 			component.width = '300dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
-			
-/*
+			 /*
 			 component.sort(function(a,b){
 				return a.component_order > b.component_order;
 			 });*/
@@ -270,7 +261,7 @@ function createComponentsScrollView(exhibits){
 		$.componentScrollView.add(componentsInExhibit[exhibits[i].id]);
 		componentsInExhibit[exhibits[i].id].width = 0;
 	}
-	componentsInExhibit[currExhibitId].width = Ti.UI.SIZE;
+	componentsInExhibit[exhibits[0].id].width = Ti.UI.SIZE;
 }
 
 function openComponent(e){
@@ -329,6 +320,4 @@ function createTitleLabel(name, type){
 
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
-	//$.infoRow.add($.exhibitInfoLabel);
-	//$.exhibitInfoScrollView.add($.infoRow);
 } 
