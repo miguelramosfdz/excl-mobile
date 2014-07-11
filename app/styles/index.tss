@@ -136,7 +136,8 @@
 }
 
 "#exhibitInfoView":{
-	height: "150dip"
+	// height: "150dip"
+	// height: "Ti.UI.FILL"
 }
 
 "#exhibitInfoScrollView": {
