@@ -127,7 +127,7 @@ function createExhibitsImageAndroid(exhibit){
 	});
 	var clickCatcher = Ti.UI.createView({
 		itemId: exhibit.id
-	});//*/
+	});
 	image.image = exhibit.image;
 	
 	itemContainer.add(image);
@@ -164,11 +164,13 @@ function createexhibitSelect(exhibits){
 }
 
 function createcollapsibleComponentView(){
+	$.collapsibleComponentView.hidden == true;
 	$.collapsibleComponentView.height = 0;
 }
 
 function onExhibitsClick(exhibits){
-	if ($.collapsibleComponentView.height == 0){
+	if ($.collapsibleComponentView.hidden == true){
+		$.collapsibleComponentView.hidden = false;
 		var pageIndex = $.exhibitsCarousel.currentPage;
 		$.exhibitSelectLabel.text = "Go Back";
 		$.collapsibleInfoLabel.text = exhibits[pageIndex].long_description;
@@ -177,14 +179,22 @@ function onExhibitsClick(exhibits){
 	        opacity: 0,
 	        duration: 300
 	    }); 
-		
-		$.collapsibleComponentView.animate({
+	    
+	    var slideOut = Ti.UI.createAnimation({
 			height: '150dip',
 			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
-		});
+			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN
+	    });
+		
+		$.collapsibleComponentView.animate(slideOut);
+		// $.collapsibleComponentView.animate({
+			// height: '150dip',
+			// duration: 300,
+			// curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+		// });
 	}
 	else{
+		$.collapsibleComponentView.hidden = true;
 		$.exhibitSelectLabel.text = "Explore This Exhibit!";
 		$.exhibitInfoView.animate({
 	        opacity: 1,
@@ -194,7 +204,7 @@ function onExhibitsClick(exhibits){
 		$.collapsibleComponentView.animate({
 			height: 0,
 			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+			curve: Titanium.UI.ANIMATION_CURVE_EASE_OUT
 		});
 	}
 }
@@ -206,12 +216,18 @@ function onExhibitsScroll(e, exhibits) {
 	var index = $.exhibitsCarousel.currentPage;
 	$.exhibitInfoLabel.text = exhibits[index].description;
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
-	$.collapsibleComponentView.height = 0;
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
 	$.exhibitInfoView.animate({
         opacity: 1,
         duration: 300
     }); 
+    
+	$.collapsibleComponentView.animate({
+		height: 0,
+		duration: 300,
+		curve: Titanium.UI.ANIMATION_CURVE_EASE_OUT
+	});
+	$.collapsibleComponentView.hidden = true;
 }
 
 function createComponentsScrollView(exhibits){
@@ -239,7 +255,6 @@ function createComponentsScrollView(exhibits){
 			 component.sort(function(a,b){
 				return a.component_order > b.component_order;
 			 });*/
-
 			componentsInExhibit[exhibits[i].id].add(component);
 		}	
 				
@@ -305,6 +320,4 @@ function createTitleLabel(name, type){
 
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
-	//$.infoRow.add($.exhibitInfoLabel);
-	//$.exhibitInfoScrollView.add($.infoRow);
 } 
