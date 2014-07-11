@@ -224,6 +224,11 @@ function onExhibitsScroll(e, exhibits) {
 	var index = $.exhibitsCarousel.currentPage;
 	$.exhibitInfoLabel.text = exhibits[index].description;
 	
+	$.exhibitInfoView.animate({
+        opacity: 1,
+        duration: 300
+    }); 
+	
 	if ($.collapsibleInfoView.height != 0){
 		$.collapsibleInfoView.height = 0;
 		$.exhibitSelectLabel.text = "Explore This Exhibit!";
@@ -250,7 +255,6 @@ function createComponentsScrollView(exhibits){
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
 			
 			component.left = 3;
-			// component.right = 3;
 			component.width = '300dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
@@ -289,7 +293,7 @@ function createLabeledPicView(item, type){
 	});
 	var clickCatcher = Ti.UI.createView({
 		itemId: item.id
-	});//*/
+	});
 	image.image = item.image;
 	
 	itemContainer.add(image);
