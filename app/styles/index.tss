@@ -64,7 +64,16 @@
 	borderRadius: "20dip",
 	backgroundColor: "#253342",
 	width: Ti.UI.FILL,
-	height: '50dip'
+	height: '50dip',
+	borderWidth: '1',
+	backgroundGradient: {
+	    type: 'linear',
+	    startPoint: { x: '50%', y: '0%' },
+	    endPoint: { x: '50%', y: '100%' },
+	    colors: [ 	{ color: '#B3363E', offset: 0.0}, 
+	    			{ color: '#8F2C2C', offset: 1.0 }],
+   }
+	
 }
 
 ".headingText": {
