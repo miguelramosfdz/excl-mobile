@@ -1,4 +1,6 @@
-var post_content = arguments[0] || {};
+var post = arguments[0] || {};
+var post_content = post.get('rawJson');
+
 var tableData = [];
 var analyticsPageTitle = "";
 var analyticsPageLevel = "";
