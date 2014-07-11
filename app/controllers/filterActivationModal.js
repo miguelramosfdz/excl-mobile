@@ -133,7 +133,7 @@ function setSizeOfWindow() {
 		$.container.modal = false;
 		$.filterTable.bottom = "48dip";
 		$.filterTable.height = Ti.UI.FILL;
-	} else if (Ti.Platform.osname == "ipad"){
+	} else if (Ti.Platform.osname == "ipad") {
 		$.container.modal = false;
 		$.filterTable.height = Ti.UI.SIZE;
 		$.container.height = Ti.UI.SIZE;
@@ -143,8 +143,8 @@ function setSizeOfWindow() {
 	}
 }
 
-function addViewBehindModalInIOS(){
-	if (OS_IOS){
+function addViewBehindModalInIOS() {
+	if (OS_IOS) {
 		Ti.API.info("Triggered view addition");
 		var view = viewService.createView();
 		view.add($.container);
@@ -153,11 +153,24 @@ function addViewBehindModalInIOS(){
 	}
 }
 
+function formatCloseButtonColor() {
+	if (OS_ANDROID) {
+		$.close.color = "white";
+		$.close.backgroundColor = "#303030";
+		$.close.borderColor = "white";
+		$.close.borderRadius = "3";
+		$.close.borderWidth = "1";
+	} else {
+		$.close.color = "#00FFFF";
+	}
+}
+
 function init() {
 	Alloy.Globals.navController.toggleMenu();
 	setSizeOfWindow();
 	addViewBehindModalInIOS();
 	setTableBackgroundColor();
+	formatCloseButtonColor();
 	formatCheckAllOnButton($.toggleAllOn);
 	formatCheckAllOffButton($.toggleAllOff);
 	addFilters(allChecked);
