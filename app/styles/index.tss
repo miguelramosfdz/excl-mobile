@@ -6,7 +6,8 @@
 }
 
 "#mainView": {
-	layout: 'vertical'
+	layout: "vertical",
+	bottom: "20dip"
 }
 
 "#exhibitsCarousel": {
@@ -58,26 +59,13 @@
 	}
 }
 
-".headingRow": {
+"#exhibitSelect": {
+	bottom: "0",
 	borderRadius: "20dip",
 	backgroundColor: "#253342",
 	width: Ti.UI.FILL,
 	height: '50dip'
 }
-
-".headingText": {
-	color: 'white',
-	font: {
-		fontFamily: 'Helvetica Neue',
-		fontSize: '22dip',
-		fontWeight: 'bold'
-	},
-	textAlign: 'center'
-}
-
-// "#expanderButton": {
-	// left: "88%"
-// }
 
 ".headingText": {
 	color: 'white',
@@ -101,6 +89,11 @@
 	horizontalWrap: false,
 	top: "3dip",
 	bottom: "3dip",
+}
+
+"#exhibitInfoView": {
+	layout: "vertical",
+	bottom: "50dip"
 }
 
 "#exhibitInfoLabel": {
@@ -137,5 +130,8 @@
 }
 
 "#exhibitInfoScrollView": {
+	scrollType: "vertical",
+	layout: "vertical",
+	contentWidth: "100%",
 	contentHeight: Ti.UI.SIZE
 }

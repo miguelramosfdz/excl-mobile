@@ -74,9 +74,8 @@ function populateWindow(json) {
 		}
 	}
 	createExhibitsCarousel(json.data.museum.exhibits);
-	createHeadingRow(json.data.museum.exhibits);
-	createExpanderButton();
-	createCollapsibleInfoView();
+	createexhibitSelect(json.data.museum.exhibits);
+	createcollapsibleComponentView();
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
 }
@@ -95,9 +94,9 @@ function createExhibitsCarousel(exhibits) {
 		var exhibitView;
 
 		if (OS_IOS) {
-			exhibitView = createExhibitsImageIOS(exhibits[i], (i+1 + " of " + exhibits.length));
+			exhibitView = createExhibitsImageIOS(exhibits[i], (i + 1 + " of " + exhibits.length));
 		} else if (OS_ANDROID) {
-			exhibitView = createExhibitsImageAndroid(exhibits[i], (i+1 + " of " + exhibits.length));
+			exhibitView = createExhibitsImageAndroid(exhibits[i], (i + 1 + " of " + exhibits.length));
 			exhibitView.addEventListener("click", function(e) {
 				onExhibitsClick(exhibits);
 			});
@@ -180,10 +179,11 @@ function createExhibitTitleLabel(name, pageXofYtext) {
 
 	if (pageXofYtext) {
 		var pageXofYtextLabel = Ti.UI.createLabel({
-			text : pageXofYtext,
 			top : "10%",
 			right : "3%",
+			text : pageXofYtext,
 			color : 'white',
+			horizontalWrap : false,
 			font : {
 				fontFamily : 'Arial',
 				fontSize : '18dip',
@@ -196,24 +196,60 @@ function createExhibitTitleLabel(name, pageXofYtext) {
 	return titleLabelView;
 }
 
-function createHeadingRow(exhibits) {
-	$.headingRow.addEventListener('click', function(e) {
+function createTitleLabel(name, type, pageXofYtext) {
+	var titleLabel = Ti.UI.createView({
+		backgroundColor : 'black',
+		opacity : 0.6,
+		height : '15%',
+		top : 0
+	});
+	//$.addClass(exhibitImages[i], "exhibitTitleShadow");
+
+	var label = Ti.UI.createLabel({
+		text : name,
+		top : 0,
+		left : 10,
+		color : 'white',
+		font : {
+			fontFamily : 'Arial',
+			fontSize : type,
+			fontWeight : 'bold'
+		}
+	});
+	//$.addClass(label, "myLabel");
+	titleLabel.add(label);
+
+	if (pageXofYtext) {
+		var pageXofYtextLabel = Ti.UI.createLabel({
+			top : "10%",
+			right : "3%",
+			text : pageXofYtext,
+			color : 'white',
+			horizontalWrap : false,
+			font : {
+				fontFamily : 'Arial',
+				fontSize : '18dip',
+				fontWeight : 'normal'
+			}
+		});
+		titleLabel.add(pageXofYtextLabel);
+	}
+
+	return titleLabel;
+}
+
+function createexhibitSelect(exhibits) {
+	$.exhibitSelect.addEventListener('click', function(e) {
 		onExhibitsClick(exhibits);
 	});
 }
 
-function createExpanderButton() {
-	// iconService.setIcon($.expanderButton, 'expander_expand.png');
-}
-
-function createCollapsibleInfoView() {
-	//$.collapsibleInfoView.size = 0;
-	$.collapsibleInfoView.height = 0;
+function createcollapsibleComponentView() {
+	$.collapsibleComponentView.height = 0;
 }
 
 function onExhibitsClick(exhibits) {
-
-	if ($.collapsibleInfoView.height == 0) {
+	if ($.collapsibleComponentView.height == 0) {
 		var pageIndex = $.exhibitsCarousel.currentPage;
 		$.exhibitSelectLabel.text = "Go Back";
 		$.collapsibleInfoLabel.text = exhibits[pageIndex].long_description;
@@ -223,7 +259,7 @@ function onExhibitsClick(exhibits) {
 			duration : 300
 		});
 
-		$.collapsibleInfoView.animate({
+		$.collapsibleComponentView.animate({
 			height : '150dip',
 			duration : 300,
 			curve : Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
@@ -235,7 +271,7 @@ function onExhibitsClick(exhibits) {
 			duration : 300
 		});
 
-		$.collapsibleInfoView.animate({
+		$.collapsibleComponentView.animate({
 			height : 0,
 			duration : 300,
 			curve : Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
@@ -244,20 +280,18 @@ function onExhibitsClick(exhibits) {
 }
 
 function onExhibitsScroll(e, exhibits) {
-	$.collapsibleInfoView.height = $.collapsibleInfoView.height;
-	//Fixes bug on iOS where components wouldn't scroll if collapsible info collapsed
 	componentsInExhibit[currExhibitId].width = 0;
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
 	var index = $.exhibitsCarousel.currentPage;
 	$.exhibitInfoLabel.text = exhibits[index].description;
-
-	if ($.collapsibleInfoView.height != 0) {
-		$.collapsibleInfoView.height = 0;
-		$.exhibitSelectLabel.text = "Explore This Exhibit!";
-	}
-
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
+	$.collapsibleComponentView.height = 0;
+	$.exhibitSelectLabel.text = "Explore This Exhibit!";
+	$.exhibitInfoView.animate({
+		opacity : 1,
+		duration : 300
+	});
 }
 
 function createComponentsScrollView(exhibits) {
@@ -278,11 +312,9 @@ function createComponentsScrollView(exhibits) {
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
 
 			component.left = 3;
-			// component.right = 3;
 			component.width = '300dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
-
 			/*
 			 component.sort(function(a,b){
 			 return a.component_order > b.component_order;
@@ -318,55 +350,12 @@ function createLabeledPicView(item, type) {
 	var clickCatcher = Ti.UI.createView({
 		itemId : item.id
 	});
-	//*/
 	image.image = item.image;
 
 	itemContainer.add(image);
 	itemContainer.add(createTitleLabel(item.name, type));
 	itemContainer.add(clickCatcher);
 	return itemContainer;
-}
-
-function createTitleLabel(name, type, pageXofYtext) {
-	var titleLabel = Ti.UI.createView({
-		backgroundColor : 'black',
-		opacity : 0.6,
-		height : '15%',
-		top : 0
-	});
-	//$.addClass(exhibitImages[i], "exhibitTitleShadow");
-
-	var label = Ti.UI.createLabel({
-		text : name,
-		top : 0,
-		left : 10,
-		color : 'white',
-		font : {
-			fontFamily : 'Arial',
-			fontSize : type,
-			fontWeight : 'bold'
-		}
-	});
-	//$.addClass(label, "myLabel");
-	titleLabel.add(label);
-
-	if (pageXofYtext) {
-		var pageXofYtextLabel = Ti.UI.createLabel({
-			text : pageXofYtext,
-			top : "10%",
-			right : "3%",
-			color : 'white',
-			font : {
-				fontFamily : 'Arial',
-				fontSize : '18dip',
-				fontWeight : 'normal'
-			}
-		});
-		//$.addClass(label, "myLabel");
-		titleLabel.add(pageXofYtextLabel);
-	}
-
-	return titleLabel;
 }
 
 function setExhibitText(text) {

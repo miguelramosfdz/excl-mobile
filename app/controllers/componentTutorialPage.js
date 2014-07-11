@@ -7,8 +7,8 @@ function tutorialExit() {
 	Alloy.Globals.navController.home();
 }
 
-function goToComponentTutorial() {
+function goToPageTutorial() {
 	//closeMenu(e);
 	Alloy.Globals.navController.home();
-	Alloy.Globals.navController.open(Alloy.createController("componentTutorialPage"));
+	Alloy.Globals.navController.open(Alloy.createController("postTutorialPage"));
 }
