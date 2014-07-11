@@ -1,13 +1,13 @@
 
 ".container": {
-	// layout: 'vertical',
 	navBarHidden: true,
 	fullscreen: true,
 	backgroundColor: "#FFF"
 }
 
 "#mainView": {
-	layout: 'vertical'
+	layout: "vertical",
+	bottom: "20dip"
 }
 
 "#exhibitsCarousel": {
@@ -25,10 +25,6 @@
 	// This is an android hack
 	// This should probably be calculated based on ... something
 	height: '220dip'
-}
-
-"#collapsibleInfoView": {
-	bottom: "50dip"
 }
 
 "#collapsibleInfoLabel": {
@@ -63,24 +59,21 @@
 	}
 }
 
-".headingRow": {
+"#exhibitSelect": {
+	bottom: "0",
+	borderRadius: "20dip",
 	backgroundColor: "#253342",
 	width: Ti.UI.FILL,
-	height: '50dip'
-}
-
-".headingText": {
-	color: 'white',
-	font: {
-		fontFamily: 'Helvetica Neue',
-		fontSize: '22dip',
-		fontWeight: 'bold'
-	},
-	textAlign: 'center'
-}
-
-"#expanderButton": {
-	left: "88%"
+	height: '50dip',
+	borderWidth: '1',
+	backgroundGradient: {
+	    type: 'linear',
+	    startPoint: { x: '50%', y: '0%' },
+	    endPoint: { x: '50%', y: '100%' },
+	    colors: [ 	{ color: '#B3363E', offset: 0.0}, 
+	    			{ color: '#8F2C2C', offset: 1.0 }],
+   }
+	
 }
 
 ".headingText": {
@@ -105,6 +98,11 @@
 	horizontalWrap: false,
 	top: "3dip",
 	bottom: "3dip",
+}
+
+"#exhibitInfoView": {
+	layout: "vertical",
+	bottom: "50dip"
 }
 
 "#exhibitInfoLabel": {
@@ -140,11 +138,9 @@
 	}
 }
 
-"#exhibitInfoView":{
-	// height: "150dip"
-	// height: "Ti.UI.FILL"
-}
-
 "#exhibitInfoScrollView": {
+	scrollType: "vertical",
+	layout: "vertical",
+	contentWidth: "100%",
 	contentHeight: Ti.UI.SIZE
 }

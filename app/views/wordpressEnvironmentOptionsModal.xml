@@ -1,0 +1,12 @@
+<Alloy>
+	<Window class="container">
+		<View class="verticalContainer">
+			<Label class="title">Choose your Wordpress Environment</Label>		
+			<Button class="environmentOption" onClick="enterProductionMode">Production Mode</Button>		
+			<Button class="environmentOption" onClick="enterQualityAssuranceMode">Quality Assurance Mode</Button>
+			<Button class="environmentOption" onClick="enterDevelopmentMode">Development Mode</Button>
+			<Button class="environmentOption" onClick="enterDevelopmentTwoMode">Development 2 Mode</Button>
+			<Button onClick="cancel" >Cancel</Button>
+		</View>
+	</Window>
+</Alloy>
