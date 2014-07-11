@@ -4,8 +4,16 @@ function sharingTextService(){
 	iconService = sharingTextService.prototype.setPathForLibDirectory('customCalls/iconService');
 	iconService = new iconService();
 	intentService = sharingTextService.prototype.setPathForLibDirectory('customCalls/intentService');
-	intentService = new intentService();
+	this.setIntentService( new intentService() );
 }
+
+sharingTextService.prototype.setIntentService = function(service){
+	intentService = service;
+};
+
+sharingTextService.prototype.getIntentService = function(){
+	return intentService;
+};
 
 sharingTextService.prototype.setPathForLibDirectory = function(libFile){
 	if ( typeof Titanium == 'undefined') {
@@ -18,12 +26,12 @@ sharingTextService.prototype.setPathForLibDirectory = function(libFile){
 
 sharingTextService.prototype.initiateTextShareButton = function(json) {
 	var shareTextButton = buttonService.createButton('shareTextButton', 'Text');
-	sharingTextService.prototype.setIconReady(shareTextButton);
+	this.setIconReady(shareTextButton);
 
 	shareTextButton.addEventListener('click', function(e) {
-		sharingTextService.prototype.setIconBusy(shareTextButton);
-		postTags = sharingTextService.prototype.getPostTags(json);
-		sharingTextService.prototype.initiateIntentText(postTags, shareTextButton);
+		this.setIconBusy(shareTextButton);
+		postTags = this.getPostTags(json);
+		this.initiateIntentText(postTags, shareTextButton);
 	});
 	
 	buttonService.eraseButtonTitleIfBackgroundPresent(shareTextButton);
