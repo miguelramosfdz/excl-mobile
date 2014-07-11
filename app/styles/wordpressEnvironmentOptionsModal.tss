@@ -1,0 +1,12 @@
+
+".container" : {
+  
+}
+
+".verticalContainer": {
+	layout: "vertical"
+}
+
+".environmentOption": {
+	width: "70%"
+}
