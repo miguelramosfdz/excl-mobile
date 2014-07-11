@@ -121,7 +121,6 @@ describe('sharingTextService', function(){
 		});
 	});
 	
-	/*
 	describe("initiateIntentText", function(){
 		it("should set the button to enabled", function(){
 			var dataToSendPostTags = "";
@@ -129,14 +128,58 @@ describe('sharingTextService', function(){
 			var dataToSendButton = [];
 			
 			var fakeIntentService = {
-				sendIntentTextAndroid: function(){}
+				sendIntentTextAndroid: function(){},
+				sendIntentTextiOS: function(){}
 			};
-			var sendIntentTextAndroidSpy = sinon.spy(fakeIntentService, "sendIntentTextAndroid");
-			
+			sharingTextService.setIntentService(fakeIntentService);
 			sharingTextService.initiateIntentText(dataToSendPostTags, dataToSendButton);
 			assert.equal(dataToSendButton.enabled, true);
 		});
+		
+		it("should call sendIntentTextAndroid if OS_ANDROID", function(){
+			var dataToSendPostTags = "";
+			OS_ANDROID = true;
+			var dataToSendButton = [];
+			
+			var fakeIntentService = {
+				sendIntentTextAndroid: function(){},
+				sendIntentTextiOS: function(){}
+			};
+			var sendIntentTextAndroidSpy = sinon.spy(fakeIntentService, 'sendIntentTextAndroid');
+			var sendIntentTextiOSSpy = sinon.spy(fakeIntentService, 'sendIntentTextiOS');
+			sharingTextService.setIntentService(fakeIntentService);
+			sharingTextService.initiateIntentText(dataToSendPostTags, dataToSendButton);
+			assert(sendIntentTextAndroidSpy.calledOnce);
+			assert.equal(sendIntentTextiOSSpy.called, false);
+		});
+		
+		it("should call sendIntentTextiOS if OS_IOS", function(){
+			var dataToSendPostTags = "";
+			OS_ANDROID = false;
+			OS_IOS = true;
+			var dataToSendButton = [];
+			
+			var fakeIntentService = {
+				sendIntentTextAndroid: function(){},
+				sendIntentTextiOS: function(){}
+			};
+			var sendIntentTextAndroidSpy = sinon.spy(fakeIntentService, 'sendIntentTextAndroid');
+			var sendIntentTextiOSSpy = sinon.spy(fakeIntentService, 'sendIntentTextiOS');
+			sharingTextService.setIntentService(fakeIntentService);
+			sharingTextService.initiateIntentText(dataToSendPostTags, dataToSendButton);
+			assert(sendIntentTextiOSSpy.calledOnce);
+			assert.equal(sendIntentTextAndroidSpy.called, false);
+		});
 	});
-	*/
+	
+	describe("setIntentService", function(){
+		it("should set and get the intent service properly", function(){
+			fakeIntentService = sinon.spy();
+			sharingTextService.setIntentService(fakeIntentService);
+			assert.equal(fakeIntentService, sharingTextService.getIntentService());
+		});
+	});
+
+	
 });
 

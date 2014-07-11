@@ -1,12 +1,15 @@
-
 ".container": {
-	modal: "true",
 	layout: "vertical",
 	top: "5%",
 	width: "90%",
 	borderColor: "#FFFFFF",
 	borderRadius: "20",
-	borderWidth: "3dip"
+	borderWidth: "3dip",
+	backgroundColor: "#000000",
+}
+
+".win": {
+	navBarHidden:true
 }
 
 ".title": {
@@ -27,7 +30,8 @@
 ".hint":{
 	textAlign: "left",
 	backgroundColor: "black",
-	left: "10dip"
+	left: "10dip",
+	width: "90%"
 }
 ".closeButton":{
 	right: "5%"
@@ -41,8 +45,6 @@
 }
 ".horizontalView":{
 	layout: "horizontal",
-	height: "35dip",
+	height: "40dip",
 	backgroundColor: "black"
-}
-".filterTable":{
 }
