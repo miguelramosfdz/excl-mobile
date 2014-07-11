@@ -11,7 +11,9 @@ function closeMenu(e) {
 function tutorialHandler(e) {
 	Alloy.Globals.navController.close();
 	closeMenu(e);
-	Alloy.Globals.navController.open(Alloy.createController("exhibitTutorialPage"));
+	var tutorialController = Alloy.createController("exhibitTutorialPage");
+	var tutorialView = tutorialController.getView();
+	Alloy.Globals.navController.Page.add(tutorialView);
 }
 
 function CloseToggler() {
