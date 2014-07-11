@@ -232,6 +232,8 @@ function onExhibitsScroll(e, exhibits) {
 }
 
 function createComponentsScrollView(exhibits){
+	currExhibitId = exhibits[0].id;
+	
 	for (var i=0; i<exhibits.length; i++){
 		componentsInExhibit[exhibits[i].id] = Ti.UI.createView({
 			layout: 'horizontal',
@@ -261,7 +263,7 @@ function createComponentsScrollView(exhibits){
 		$.componentScrollView.add(componentsInExhibit[exhibits[i].id]);
 		componentsInExhibit[exhibits[i].id].width = 0;
 	}
-	componentsInExhibit[exhibits[0].id].width = Ti.UI.SIZE;
+	componentsInExhibit[currExhibitId].width = Ti.UI.SIZE;
 }
 
 function openComponent(e){
@@ -320,4 +322,6 @@ function createTitleLabel(name, type){
 
 function setExhibitText(text){
 	$.exhibitInfoLabel.text = text;
+	//$.infoRow.add($.exhibitInfoLabel);
+	//$.exhibitInfoScrollView.add($.infoRow);
 } 
