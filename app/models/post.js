@@ -3,7 +3,7 @@ exports.definition = {
 		defaults: {
 			name: "post name",
 			image: "/700x300.png",
-			raw: {}
+			rawJson: {}
 		},
 		adapter: {
 			type: "properties",
