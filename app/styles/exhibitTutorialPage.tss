@@ -59,7 +59,7 @@
 	textAlign: Titanium.UI.TEXT_AlIGNMENT_RIGHT
 }
 
-"#gotItButton": {
+"#ExitButton": {
 	//bottom: "150dip"
-	bottom: "50dip"
+	bottom: "20dip"
 }

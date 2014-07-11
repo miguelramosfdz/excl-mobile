@@ -1,26 +1,20 @@
 "#navBar": {
-	backgroundColor: "#253342"
+	backgroundColor: "#232226"
 }
 
-".backButtonStyle":{
-	left: '0%',
-	font: {
-		fontSize: "14",
-		fontWeight: 'normal',
-		fontFamily: 'Helvetica Neue'
-	},
-	width: '10%' 
-}
-
-".menuButtonStyle": {
-	right: '0%',
-	width: '10%'
-}
-
-".flyoutIcon":{
+".icon":{
 	width: "25dip",
-	height: "20dip",
-	right: "2%"
+	height: "25dip"
+}
+
+".flyoutView":{
+	width: "10%",
+	right: "0"
+}
+
+".backView":{
+	width: "10%",
+	left: "0"
 }
 
 //iPhone

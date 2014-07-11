@@ -21,7 +21,7 @@ function NavigationController() {
 NavigationController.prototype.restart = function(){
 		for (var i = this.windowStack.length - 1; i>=0 ; i--) {
 			// set dependent window
-			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
+			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i]});
        	}      	
         // start chain reaction, close first window
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
@@ -59,6 +59,7 @@ NavigationController.prototype.open = function(controller) {
 	
 	windowToOpen = controller.getView();
 	windowToOpen.add(this.menu.getMenu());
+	removeMenuFromWindow(this.windowStack, this.menu);
 	this.addEventListeners(windowToOpen);
 	
 	windowToOpen.onEnterKioskMode = function(window){};
@@ -166,7 +167,7 @@ NavigationController.prototype.close = function(numWindows) {
 	this.menu.closeMenuWithoutAnimation();
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		
-		addMenuToNextScreen(this.windowStack, this.menu);
+		removeMenuFromWindow(this.windowStack, this.menu);
 		if (numWindows > 1) {
 			// setup chain reaction by setting up the flags on all the windows
 			var i = this.windowStack.length - 1;
@@ -180,6 +181,7 @@ NavigationController.prototype.close = function(numWindows) {
 		} else {
 			(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1]) : this.windowStack[this.windowStack.length - 1].close();
 		}
+		addMenuToNextWindow(this.windowStack, this.menu);
 		this.analyticsTrackWindowScreen(this.windowStack[this.windowStack.length - 2]);
 	} else {
 		this.analyticsTrackWindowScreen(this.windowStack[0]);
@@ -188,7 +190,7 @@ NavigationController.prototype.close = function(numWindows) {
 
 // go back to the initial window of the NavigationController
 NavigationController.prototype.home = function() {
-	
+	removeMenuFromWindow(this.windowStack, this.menu);
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		// setup chain reaction by setting up the flags on all the windows
 		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedPage; i--) {
@@ -200,6 +202,8 @@ NavigationController.prototype.home = function() {
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
 		this.analyticsTrackWindowScreen(this.windowStack[0]);
 	}
+	addMenuToHomeWindow(this.windowStack, this.menu);
+	//addMenuToNextWindow(this.windowStack, this.menu);
 };
 
 // Lock  page to current top of stack
@@ -224,9 +228,22 @@ NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
 	Alloy.Globals.analyticsController.trackEvent(kioskModeString, window.analyticsPageLevel, window.analyticsPageTitle, 1);
 };
 
-function addMenuToNextScreen(windowStack, menu){	
-	windowStack[windowStack.length-2].remove(menu.getMenu());
-	windowStack[windowStack.length-2].add(menu.getMenu());
+function addMenuToHomeWindow(windowStack, menu){
+	if(windowStack.length>0){	
+		windowStack[0].add(menu.getMenu());
+	}
+}
+
+function addMenuToNextWindow(windowStack, menu){
+	if(windowStack.length>1){	
+		windowStack[windowStack.length-2].add(menu.getMenu());
+	}
+}
+
+function removeMenuFromWindow(windowStack, menu){
+	if(windowStack.length>0){
+		windowStack[windowStack.length-1].remove(menu.getMenu());
+	}
 }
 
 module.exports = NavigationController;

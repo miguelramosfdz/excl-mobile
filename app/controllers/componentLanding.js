@@ -61,7 +61,7 @@ function setPathForLibDirectory(libFile) {
 };
 
 function changeTitleOfThePage(name) {
-	$.componentLanding.title = name;
+	$.container.title = name;
 }
 
 function goToPostLandingPage(e) {
@@ -96,14 +96,15 @@ function detectEventEnabled() {
 
 function detectEventSet() {
 	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
-	if (ageFilterSet) {
-		Alloy.Models.app.set("customizeLearningEnabled", true);
-	}
+	// if (ageFilterSet) {
+		// Alloy.Models.app.set("customizeLearningEnabled", true);
+	// }
 	detectEventEnabled();
 }
 
 function retrieveComponentData() {
 	clearOrderedPostDicts();
+	addSpinner();
 	if (initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 			changeTitleOfThePage(returnedData.data.component.name);
@@ -111,17 +112,16 @@ function retrieveComponentData() {
 			initialLoad = false;
 			checkIfAgeFilterOn(allPosts);
 			checkPostViewSpacing();
-			removeSpinner();
 		});
 	} else {
 		checkIfAgeFilterOn(allPosts);
 		checkPostViewSpacing();
-		removeSpinner();
 	}
+	removeSpinner();
 }
 
 function addSpinner() {
-	spinner.addTo($.topBar);
+	spinner.addTo($.container);
 	spinner.show();
 }
 
@@ -137,7 +137,6 @@ function checkIfAgeFilterOn(allPosts) {
 		Ti.API.info("Organizing content by section");
 		organizeBySection(allPosts);
 	}
-	removeSpinner();
 }
 
 function organizeBySection(allPosts) {
@@ -411,7 +410,7 @@ function stepIntoPostDictionaryCollection(dict, postCollection) {
 	post.set({
 		name : retrieveValue(dict, "name"),
 		image : retrieveValue(dict, "image"),
-		raw : dict
+		rawJson : dict
 	});
 	postCollection.add(post);
 }

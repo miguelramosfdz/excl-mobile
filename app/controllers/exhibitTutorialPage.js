@@ -1,8 +1,8 @@
 var args = arguments[0] || {};
 
-function tutorialGotIt() {
+function tutorialExit() {
 	// var newView = Ti.UI.createView();
 	// $.overlayView.add(newView);
 	// $.addClass(newView, "fullScreenOverlay");
-	$.getView().close();
+	Alloy.Globals.navController.home();
 }

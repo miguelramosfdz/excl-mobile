@@ -10,7 +10,7 @@ var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
 
 function addSpinner() {
-	spinner.addTo($.filterTable);
+	spinner.addTo($.win);
 	spinner.show();
 }
 
@@ -83,7 +83,6 @@ function createFilterView(filter, allChecked) {
 
 function closeWindow(e) {
 	$.getView().close();
-	Alloy.Globals.navController.toggleMenu();
 }
 
 function addFilters(allChecked) {
@@ -94,7 +93,6 @@ function addFilters(allChecked) {
 		filter = createFilterView(filter, allChecked);
 		tableData.push(filter);
 	};
-	removeSpinner();
 	$.filterTable.data = tableData;
 	//Ti.API.info("Filter Status 1: " + JSON.stringify(Alloy.Collections.filter));
 }
@@ -103,6 +101,7 @@ function resetFilters(newAllCheckedValue) {
 	allChecked = newAllCheckedValue;
 	$.filterTable.data = [];
 	addFilters(allChecked);
+	removeSpinner();
 }
 
 function formatCheckAllOnButton(button) {
@@ -129,19 +128,40 @@ function setTableBackgroundColor() {
 	}
 }
 
-function setTableHeight() {
-	if (OS_ANDROID) {
-		$.filterTable.height = Ti.UI.FILL;
-	} else {
+function setSizeOfWindow() {
+	if (Ti.Platform.osname == "iphone") {
+		$.container.modal = false;
 		$.filterTable.bottom = "48dip";
+		$.filterTable.height = Ti.UI.FILL;
+	} else if (Ti.Platform.osname == "ipad"){
+		$.container.modal = false;
+		$.filterTable.height = Ti.UI.SIZE;
+		$.container.height = Ti.UI.SIZE;
+	} else {
+		$.win.modal = true;
+		$.filterTable.height = Ti.UI.FILL;
+	}
+}
+
+function addViewBehindModalInIOS(){
+	if (OS_IOS){
+		Ti.API.info("Triggered view addition");
+		var view = viewService.createView();
+		view.add($.container);
+		$.win.remove($.container);
+		$.win.add(view);
 	}
 }
 
 function init() {
+	Alloy.Globals.navController.toggleMenu();
+	setSizeOfWindow();
+	addViewBehindModalInIOS();
+	setTableBackgroundColor();
 	formatCheckAllOnButton($.toggleAllOn);
 	formatCheckAllOffButton($.toggleAllOff);
-	setTableBackgroundColor();
 	addFilters(allChecked);
+	removeSpinner();
 }
 
 init();

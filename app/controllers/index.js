@@ -46,14 +46,17 @@ function initializeWithJSON(json, controller) {
 }
 
 function populateWindow(json){
-	$.navBar.setPageTitle("Choose an Exhibit");
 	var components = Alloy.Collections.instance('component');
 	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
 		var exhibit = json.data.museum.exhibits[i];
 		for (var j = 0; j < exhibit.components.length; j++) {
 			component = exhibit.components[j];
 			var componentModel = Alloy.createModel('component');
-			componentModel.set({ 'id' : component.id, 'name': component.name, 'exhibit': exhibit.name, "orderNo": exhibit.order_number });
+			componentModel.set({ 'id' : component.id,
+								 'name': component.name, 
+								 'exhibit': exhibit.name, 
+								 'component_order': component.component_order,
+								 'exhibit_order': exhibit.exhibit_order });
 			components.add(componentModel);
 		}
 	}
@@ -69,7 +72,7 @@ function createExhibitsCarousel(exhibits){
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
 	
 	exhibits.sort(function(a,b){
-		return a.order_number > b.order_number;
+		return a.exhibit_order > b.exhibit_order;
 	});
 	
 	//exhibits.order_number.sort();
@@ -139,7 +142,7 @@ function createExhibitTitleLabel(name){
 		top: 0,
 		height: Ti.UI.SIZE,
 		backgroundColor: '#000',
-		opacity: 0.8
+		opacity: 0.6
 	});
 	var label = Ti.UI.createLabel({
 		top: 0,
@@ -172,14 +175,25 @@ function createCollapsibleInfoView(){
 
 function onExhibitsClick(exhibits){
 	if ($.collapsibleInfoView.height == 0){
-		//Collapsible view is closed; toggle it open
-		var index = $.exhibitsCarousel.currentPage;
-		$.collapsibleInfoLabel.text = exhibits[index].long_description;
-		$.collapsibleInfoView.height = Ti.UI.SIZE;
+		var pageIndex = $.exhibitsCarousel.currentPage;
+		$.exhibitSelectLabel.text = "Select An Activity Below!";
+		$.collapsibleInfoLabel.text = exhibits[pageIndex].long_description;
+		// $.collapsibleInfoView.height = Ti.UI.SIZE;
+		$.collapsibleInfoView.animate({
+			height: '150dip',
+			duration: 300,
+			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+		});
 		toggleExpanderExpanded();
 	}
 	else{
-		$.collapsibleInfoView.height = 0;
+		$.exhibitSelectLabel.text = "Click Image To Select!";
+		// $.collapsibleInfoView.height = 0;
+		$.collapsibleInfoView.animate({
+			height: 0,
+			duration: 300,
+			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+		});
 		toggleExpanderCollapsed();
 	}
 }
@@ -201,28 +215,46 @@ function onExhibitsScroll(e, exhibits) {
 	$.exhibitInfoLabel.text = exhibits[index].description;
 	
 	if ($.collapsibleInfoView.height != 0){
-		//Collapsible view is open; must update the exhibit info
-		$.collapsibleInfoLabel.text = exhibits[index].long_description;
+		$.collapsibleInfoView.height = 0;
+		$.exhibitSelectLabel.text = "Click Image To Select!";
 	}
+	
+	$.collapsibleInfoLabel.text = exhibits[index].long_description;
 }
 
 function createComponentsScrollView(exhibits){
 	currExhibitId = exhibits[0].id;
+	
+	
+	
 	for (var i=0; i<exhibits.length; i++){
 		componentsInExhibit[exhibits[i].id] = Ti.UI.createView({
 			layout: 'horizontal',
 			horizontalWrap: false,
 			width: Ti.UI.SIZE
 		});
+		
+		exhibits[i].components.sort(function(a,b){
+	 		return a.component_order > b.component_order;
+		 });
+		
 		for(var j=0; j<exhibits[i].components.length; j++){
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
+			
 			component.left = 3;
 			// component.right = 3;
 			component.width = '300dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
+			
+/*
+			 component.sort(function(a,b){
+				return a.component_order > b.component_order;
+			 });*/
+
 			componentsInExhibit[exhibits[i].id].add(component);
-		}			
+		}	
+				
 		$.componentScrollView.add(componentsInExhibit[exhibits[i].id]);
 		componentsInExhibit[exhibits[i].id].width = 0;
 	}
@@ -261,7 +293,7 @@ function createLabeledPicView(item, type){
 function createTitleLabel(name, type){
 	var titleLabel = Ti.UI.createView({
 		backgroundColor: 'black',
-		opacity: 0.8,
+		opacity: 0.6,
 		height: '15%',
 		top: 0
 	});
@@ -272,7 +304,6 @@ function createTitleLabel(name, type){
 		top: 0,
 		left: 10,
 		color: 'white',
-		opacity: 1,
 		font: {
 			fontFamily: 'Arial',
 			fontSize: type,

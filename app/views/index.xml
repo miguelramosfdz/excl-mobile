@@ -7,14 +7,14 @@
 					<View id="placeholder" height='180dip'></View>
 				</ScrollableView>
 				<View id = "headingRow" class="headingRow">
-					<Label class="headingText">Featured Activities</Label>
+					<Label id="exhibitSelectLabel" class="headingText">Click Image To Select!</Label>
 					<Button id="expanderButton"></Button>
 				</View>
 				<View id="collapsibleInfoView">
-					<Label id="collapsibleInfoLabel"></Label>
+					<ScrollView id="componentScrollView"></ScrollView>
 				</View>
-				<ScrollView id="componentScrollView"></ScrollView>
 				<View id="exhibitInfoView" layout='vertical'>
+					<Label id="collapsibleInfoLabel"></Label>
 					<Label id="exhibitInfoLabel"></Label>
 				</View>
 			</ScrollView>

@@ -1,14 +1,15 @@
 <Alloy>
 	<View id="navBar" class="windowHeader">
-		<View id="backBtn" class="backButtonStyle coloredGrey" onClick="back">
-			<ImageView image="/images/dark/appbar.arrow.left.png"></ImageView>
+		<View id="backBtn" onClick="back" class="backView">
+			<ImageView class="icon" image="/images/icons_android/back_arrow.png" platform="android"></ImageView>
+			<ImageView class="icon" image="/images/icons_ios/back_arrow.png" platform="ios"></ImageView>
 		</View>
 		<View class="coloredWhite pageTitleStyle">
-			<Label id="pageTitle" class="pageTitleStyle">Children's Museum of Houston</Label>
+			<Label id="pageTitle" class="pageTitleStyle">Children's Museum</Label>
 		</View>
-		<View id="flyoutBtn" class="menuButtonStyle coloredGrey" onClick="menu">
-			<ImageView class="flyoutIcon" image="/images/icons_android/drawer.png" platform="android"></ImageView>
-			<ImageView class="flyoutIcon" image="/images/icons_ios/drawer.png" platform="ios"></ImageView>
+		<View id="flyoutBtn" onClick="menu" class="flyoutView">
+			<ImageView class="icon" image="/images/icons_android/drawer.png" platform="android"></ImageView>
+			<ImageView class="icon" image="/images/icons_ios/drawer.png" platform="ios"></ImageView>
 		</View>
 	</View>
 </Alloy>

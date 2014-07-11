@@ -113,12 +113,17 @@ function rowFilterEventListener() {
 	}
 	ageFilterSet = Alloy.Models.app.get('customizeLearningSet');
 	ageFilterOn = Alloy.Models.app.get('customizeLearningEnabled');
-	Ti.API.info("Filter Fired (fly): set: " + ageFilterSet + ", on: " + ageFilterOn);
+	//Ti.API.info("Filter Fired (fly): set: " + ageFilterSet + ", on: " + ageFilterOn);
+}
+
+function tutorialToggler(e) {
+	closeMenu(e);
+	Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
 }
 
 function tutorialHandler(e) {
 	closeMenu(e);
-	Alloy.Globals.navController.open(Alloy.createController("tutorial"));
+	Alloy.Globals.navController.open(Alloy.createController("exhibitTutorialPage"));
 }
 
 function detectFilterConditions() {
