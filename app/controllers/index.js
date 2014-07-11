@@ -24,6 +24,16 @@ function getAnalyticsPageTitle () { return analyticsPageTitle; }
 function setAnalyticsPageLevel (level) { analyticsPageLevel = level; }
 function getAnalyticsPageLevel () { return analyticsPageLevel; }
 
+// Ti.API.info($.mainView.height);
+// Ti.API.info($.exhibitInfoScrollView.height);
+// Ti.API.info($.exhibitInfoView.height);
+
+// var bottomMarginForExhibitInfoView = $.headingRow.height.substring(0, $.headingRow.height.indexOf("dip"));
+// bottomMarginForExhibitInfoView += 20;
+// bottomMarginForExhibitInfoView = bottomMarginForExhibitInfoView.toString() + "dip";
+// $.exhibitInfoView.bottom = $.headingRow.height;
+
+
 $.navBar.hideBackBtn();
 retrieveJson(url, initializeWithJSON, this);
 
@@ -165,7 +175,7 @@ function createHeadingRow(exhibits){
 }
 
 function createExpanderButton(){
-	iconService.setIcon($.expanderButton, 'expander_expand.png');
+	// iconService.setIcon($.expanderButton, 'expander_expand.png');
 }
 
 function createCollapsibleInfoView(){
@@ -174,36 +184,36 @@ function createCollapsibleInfoView(){
 }
 
 function onExhibitsClick(exhibits){
+	
 	if ($.collapsibleInfoView.height == 0){
 		var pageIndex = $.exhibitsCarousel.currentPage;
-		$.exhibitSelectLabel.text = "Select An Activity Below!";
+		$.exhibitSelectLabel.text = "Go Back";
 		$.collapsibleInfoLabel.text = exhibits[pageIndex].long_description;
-		// $.collapsibleInfoView.height = Ti.UI.SIZE;
+		
+		$.exhibitInfoView.animate({
+	        opacity: 0,
+	        duration: 300
+	    }); 
+		
 		$.collapsibleInfoView.animate({
 			height: '150dip',
 			duration: 300,
 			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 		});
-		toggleExpanderExpanded();
 	}
 	else{
-		$.exhibitSelectLabel.text = "Click Image To Select!";
-		// $.collapsibleInfoView.height = 0;
+		$.exhibitSelectLabel.text = "Explore This Exhibit!";
+		$.exhibitInfoView.animate({
+	        opacity: 1,
+	        duration: 300
+	    }); 
+		
 		$.collapsibleInfoView.animate({
 			height: 0,
 			duration: 300,
 			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 		});
-		toggleExpanderCollapsed();
 	}
-}
-
-function toggleExpanderExpanded(){
-	iconService.setIcon($.expanderButton, 'expander_collapse.png');
-}
-
-function toggleExpanderCollapsed(){
-	iconService.setIcon($.expanderButton, 'expander_expand.png');
 }
 
 function onExhibitsScroll(e, exhibits) {
@@ -216,7 +226,7 @@ function onExhibitsScroll(e, exhibits) {
 	
 	if ($.collapsibleInfoView.height != 0){
 		$.collapsibleInfoView.height = 0;
-		$.exhibitSelectLabel.text = "Click Image To Select!";
+		$.exhibitSelectLabel.text = "Explore This Exhibit!";
 	}
 	
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
@@ -224,8 +234,6 @@ function onExhibitsScroll(e, exhibits) {
 
 function createComponentsScrollView(exhibits){
 	currExhibitId = exhibits[0].id;
-	
-	
 	
 	for (var i=0; i<exhibits.length; i++){
 		componentsInExhibit[exhibits[i].id] = Ti.UI.createView({
