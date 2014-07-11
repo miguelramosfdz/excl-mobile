@@ -1,5 +1,6 @@
 
 ".container": {
+	// layout: 'vertical',
 	navBarHidden: true,
 	fullscreen: true,
 	backgroundColor: "#FFF"
@@ -24,6 +25,10 @@
 	// This is an android hack
 	// This should probably be calculated based on ... something
 	height: '220dip'
+}
+
+"#collapsibleInfoView": {
+	bottom: "50dip"
 }
 
 "#collapsibleInfoLabel": {

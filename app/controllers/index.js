@@ -192,7 +192,7 @@ function onExhibitsClick(exhibits){
 		$.collapsibleInfoView.animate({
 			height: '150dip',
 			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+			// curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 		});
 		toggleExpanderExpanded();
 	}
@@ -202,7 +202,7 @@ function onExhibitsClick(exhibits){
 		$.collapsibleInfoView.animate({
 			height: 0,
 			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+			// curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 		});
 		toggleExpanderCollapsed();
 	}

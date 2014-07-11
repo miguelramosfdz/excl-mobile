@@ -6,14 +6,14 @@
 				<ScrollableView id="exhibitsCarousel">
 					<View id="placeholder" height='180dip'></View>
 				</ScrollableView>
-				<View id="collapsibleInfoView">
-					<ScrollView id="componentScrollView"></ScrollView>
-				</View>
 				<View id="exhibitInfoView" layout='vertical' bottom="50dip">
 					<Label id="collapsibleInfoLabel"></Label>
 					<Label id="exhibitInfoLabel"></Label>
 				</View>
 			</ScrollView>
+		</View>
+		<View id="collapsibleInfoView">
+			<ScrollView id="componentScrollView"></ScrollView>
 		</View>
 		<View id="headingRow" class="headingRow" bottom="0">
 			<Label id="exhibitSelectLabel" class="headingText">Click Image To Select!</Label>
