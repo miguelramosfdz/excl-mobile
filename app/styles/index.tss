@@ -1,6 +1,5 @@
 
 ".container": {
-	// layout: 'vertical',
 	navBarHidden: true,
 	fullscreen: true,
 	backgroundColor: "#FFF"
@@ -25,10 +24,6 @@
 	// This is an android hack
 	// This should probably be calculated based on ... something
 	height: '220dip'
-}
-
-"#collapsibleInfoView": {
-	bottom: "50dip"
 }
 
 "#collapsibleInfoLabel": {
@@ -64,6 +59,7 @@
 }
 
 ".headingRow": {
+	borderRadius: "20dip",
 	backgroundColor: "#253342",
 	width: Ti.UI.FILL,
 	height: '50dip'
@@ -79,9 +75,9 @@
 	textAlign: 'center'
 }
 
-"#expanderButton": {
-	left: "88%"
-}
+// "#expanderButton": {
+	// left: "88%"
+// }
 
 ".headingText": {
 	color: 'white',
@@ -138,11 +134,6 @@
 	font: {
 		fontSize: '20dip'
 	}
-}
-
-"#exhibitInfoView":{
-	// height: "150dip"
-	// height: "Ti.UI.FILL"
 }
 
 "#exhibitInfoScrollView": {
