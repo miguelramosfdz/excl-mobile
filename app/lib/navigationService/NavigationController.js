@@ -5,17 +5,11 @@ var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
 
 function NavigationController() {
 	this.windowStack = [];
-	//this.kioskMode = false;
 	this.Page = null;
 	this.lockedPage = null;
 	this.alloy = require(rootPath + "customCalls/alloyService");
 	this.analyticsController = this.alloy.Globals.analyticsController;
-	
 	this.menu = require(rootPath + "navigationService/flyoutService");
-	//this.kioskModeHandler = require(rootPath + "adminResources/kioskMode");
-	/*
-	this.flyoutMenu = Alloy.createController('flyout').getView();
-	this.flyoutMenu.zIndex = 1;//*/
 }
 
 NavigationController.prototype.restart = function(){
@@ -32,71 +26,104 @@ NavigationController.prototype.restart = function(){
 
 NavigationController.prototype.enterKioskMode = function(){
 		var window = this.windowStack[this.windowStack.length - 1];
-	    this.setLocked();				//
- 		this.menu.closeMenu();			// Change to func
+	    this.setLocked();
+ 		this.menu.closeMenu();
 		this.reset();
  		
 		window.onEnterKioskMode(window);	
 };
 
 NavigationController.prototype.exitKioskMode = function(){
-		
 		var window = this.windowStack[this.windowStack.length - 1];
 		this.reset();
 		window.onExitKioskMode(window);	
 };
 
-NavigationController.prototype.addEventListeners = function(win){
-	self = this;
-	win.addEventListener("close", function(e){
-		self.menu.closeMenuWithoutAnimation();
-		//alert("menu Closed");
-	});	
+NavigationController.prototype.open = function(controller) {
+	var windowToOpen = this.getWindowFromController(controller);
+	return this.openWindow(windowToOpen);
 };
 
-// Open new window and add it to window stack
-NavigationController.prototype.open = function(controller) {
-	
-	windowToOpen = controller.getView();
+NavigationController.prototype.getWindowFromController = function(controller) {
+	var		windowToOpen = controller.getView();
+			windowToOpen = this.attachControllerInfoToView(controller, windowToOpen);
+	return	windowToOpen;
+};
+
+NavigationController.prototype.attachControllerInfoToView = function(controller, windowToOpen) {
+	windowToOpen.onEnterKioskMode	= _.isFunction(controller.onEnterKioskMode) ? controller.onEnterKioskMode : function(windowToOpen){};
+	windowToOpen.onExitKioskMode	= _.isFunction(controller.onExitKioskMode) ? controller.onExitKioskMode : function(windowToOpen){};
+	windowToOpen.analyticsPageTitle	= _.isFunction(controller.getAnalyticsPageTitle) ? controller.getAnalyticsPageTitle() : "[Unnamed Screen]";
+	windowToOpen.analyticsPageLevel	= _.isFunction(controller.getAnalyticsPageLevel) ? controller.getAnalyticsPageLevel() : "[Unnamed Level]";
+	return windowToOpen;
+};
+
+NavigationController.prototype.openWindow = function(windowToOpen) {
+	this.prepWindowsWithFlyout(windowToOpen);
+	this.addCloseEventListenersToWindow(windowToOpen);
+	this.analyticsTrackWindowScreen(windowToOpen);
+	if (this.windowStack.length === 0) {
+		this.openHomeScreen(windowToOpen);
+	} else {
+		this.openNewScreen(windowToOpen);
+	}
+	this.windowStack.push(windowToOpen);
+
+	return windowToOpen;
+};
+
+NavigationController.prototype.prepWindowsWithFlyout = function(windowToOpen) {
 	windowToOpen.add(this.menu.getMenu());
 	removeMenuFromWindow(this.windowStack, this.menu);
-	this.addEventListeners(windowToOpen);
-	
-	windowToOpen.onEnterKioskMode = function(window){};
-	windowToOpen.onExitKioskMode = function(window){};
-	
-	// Add onEnterKioskMode and/or onExitKioskMode functionality if defined
-	if (controller && controller.onEnterKioskMode && typeof(controller.onEnterKioskMode) === 'function') {
-		windowToOpen.onEnterKioskMode = controller.onEnterKioskMode;
+};
+
+NavigationController.prototype.openHomeScreen = function(windowToOpen) {
+	this.Page = windowToOpen;
+	this.lockedPage = this.Page;
+	windowToOpen.analyticsPageTitle = "Home";
+	windowToOpen.analyticsPageLevel = "Exhibit Landing";
+	if (OS_ANDROID) {
+		//hack - setting this property ensures the window is "heavyweight" (associated with an Android activity)
+		windowToOpen.navBarHidden = windowToOpen.navBarHidden || false;
+		windowToOpen.exitOnClose = true;
+		windowToOpen.open({animated : false});
+	} else {
+		// changed this from Ti.UI.iPhone.createNavigationGroup because it has been deprecated
+		// since Ti 3.2.0
+		if (!this.navGroup) {
+			this.navGroup = Ti.UI.iOS.createNavigationWindow({
+				window : windowToOpen
+			});
+		}
+		this.navGroup.open({animated : false});
 	}
-	if (controller && controller.onExitKioskMode && typeof(controller.onExitKioskMode) === 'function') {
-		windowToOpen.onExitKioskMode = controller.onExitKioskMode;
+};
+
+NavigationController.prototype.openNewScreen = function(windowToOpen) {
+	if (OS_ANDROID) {
+		//hack - setting this property ensures the window is "heavyweight" (associated with an Android activity)
+		windowToOpen.navBarHidden = windowToOpen.navBarHidden || false;
+		windowToOpen.open({animated : false});
+	} else if (OS_IOS) {
+		this.navGroup.openWindow(windowToOpen, {animated : false});
 	}
-	
-	// Store the window's title on it from the controller
-	if (controller && controller.getAnalyticsPageTitle && typeof(controller.getAnalyticsPageTitle) === 'function') {
-		windowToOpen.analyticsPageTitle = controller.getAnalyticsPageTitle();
-	}
-	if (controller && controller.getAnalyticsPageLevel && typeof(controller.getAnalyticsPageLevel) === 'function') {
-		windowToOpen.analyticsPageLevel = controller.getAnalyticsPageLevel();
-	}
+};
+
+NavigationController.prototype.addCloseEventListenersToWindow = function(windowToOpen){
+	var self = this; // for use in callbacks
+	windowToOpen.addEventListener("close", function(e){
+		self.menu.closeMenuWithoutAnimation();
+	});
 	
 	// Capture Android back button
 	if (OS_ANDROID) {
-		var self = this;
 		windowToOpen.addEventListener("android:back", function(e){
 			if(self.windowStack[self.windowStack.length-1] != self.lockedPage) {
 				self.close(1);
 			}
 		});
 	}
-	
-	//add the window to the stack of windows managed by the controller
-	this.windowStack.push(windowToOpen);
 
-	//grab a copy of the current nav controller for use in the callback
-	var self = this;
-	
 	var lastPushed = windowToOpen;
 	windowToOpen.addEventListener('close', function() {
 		if (self.windowStack.length > 1) // don't pop the last Window, which is the base one
@@ -130,36 +157,6 @@ NavigationController.prototype.open = function(controller) {
 	windowToOpen.addEventListener('set.to.open', function(dict) {
 		this.toOpen = dict.win;
 	});
-
-	//hack - setting this property ensures the window is "heavyweight" (associated with an Android activity)
-	windowToOpen.navBarHidden = windowToOpen.navBarHidden || false;
-
-	//This is the first window
-	if (this.windowStack.length === 1) {
-		this.Page = windowToOpen;
-		this.lockedPage = this.Page;
-		windowToOpen.analyticsPageTitle = "Home";
-		windowToOpen.analyticsPageLevel = "Exhibit Landing";
-		if (OS_ANDROID) {
-			windowToOpen.exitOnClose = true;
-			windowToOpen.open({animated : false});
-		} else {
-			// changed this from Ti.UI.iPhone.createNavigationGroup because it has been deprecated
-			// since Ti 3.2.0
-			this.navGroup = Ti.UI.iOS.createNavigationWindow({
-				window : windowToOpen
-			});
-			this.navGroup.open({animated : false});
-		}
-	} else {// All subsequent windows
-		if (OS_ANDROID) {
-			windowToOpen.open({animated : false});
-		} else {
-			this.navGroup.openWindow(windowToOpen, {animated : false});
-		}
-	}
-	this.analyticsTrackWindowScreen(windowToOpen);
-	return windowToOpen;
 };
 
 // Note: without a parameter, close automatically closes 1 window
@@ -206,7 +203,7 @@ NavigationController.prototype.home = function() {
 	//addMenuToNextWindow(this.windowStack, this.menu);
 };
 
-// Lock  page to current top of stack
+// Lock page to current top of stack
 NavigationController.prototype.setLocked = function(){
 	this.lockedPage = this.windowStack[this.windowStack.length - 1];
 };
@@ -222,7 +219,7 @@ NavigationController.prototype.toggleMenu = function(){
 };
 
 NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
-	//if (!window || !window.analyticsPageTitle || !window.analyticsPageLevel) {return false;}
+	Ti.API.debug("Tracking screen " + window.analyticsPageTitle + " as a " + window.analyticsPageLevel + " level");
 	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel, Alloy.Globals.adminMode.isInKioskMode());
 	var kioskModeString = (Alloy.Globals.adminMode.isInKioskMode()) ? "KioskModeOn" : "KioskModeOff";
 	Alloy.Globals.analyticsController.trackEvent(kioskModeString, window.analyticsPageLevel, window.analyticsPageTitle, 1);

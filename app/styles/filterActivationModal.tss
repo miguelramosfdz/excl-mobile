@@ -2,7 +2,7 @@
 	layout: "vertical",
 	top: "5%",
 	width: "90%",
-	borderColor: "#FFFFFF",
+	borderColor: "#000000",
 	borderRadius: "20",
 	borderWidth: "3dip",
 	backgroundColor: "#000000",
@@ -31,7 +31,7 @@
 	textAlign: "left",
 	backgroundColor: "black",
 	left: "10dip",
-	width: "90%"
+	width: "98%"
 }
 ".closeButton":{
 	right: "5%"
