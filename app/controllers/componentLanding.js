@@ -410,7 +410,7 @@ function stepIntoPostDictionaryCollection(dict, postCollection) {
 	post.set({
 		name : retrieveValue(dict, "name"),
 		image : retrieveValue(dict, "image"),
-		raw : dict
+		rawJson : dict
 	});
 	postCollection.add(post);
 }
