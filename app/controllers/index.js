@@ -74,7 +74,7 @@ function populateWindow(json) {
 		}
 	}
 	createExhibitsCarousel(json.data.museum.exhibits);
-	createexhibitSelect(json.data.museum.exhibits);
+	createExhibitSelect(json.data.museum.exhibits);
 	createcollapsibleComponentView();
 	createComponentsScrollView(json.data.museum.exhibits);
 	setExhibitText(exhibitText[0]);
@@ -365,6 +365,10 @@ function createLabeledPicView(item, type) {
 	itemContainer.add(createTitleLabel(item.name, type));
 	itemContainer.add(clickCatcher);
 	return itemContainer;
+}
+
+function createExhibitSelect(exhibits){
+	$.exhibitSelect.addEventListener('click', function(e){ onExhibitsClick(exhibits); });
 }
 
 function setExhibitText(text) {
