@@ -180,6 +180,7 @@ describe('sharingTextService', function(){
 		});
 	});
 
+/*
 	describe("initiateTextShareButton", function(){
 		it("should call createButton", function(){
 			var dataToSend = [];
@@ -207,6 +208,7 @@ describe('sharingTextService', function(){
 			assert(createButtonSpy.calledOnce);
 		});
 	});
+	*/
 	
 });
 
