@@ -132,31 +132,20 @@ function languageHandler(e) {
 	var languageOptionsTwoLetterCode = ['en', 'es', 'gz'];
 	if (OS_IOS){
 		languageOptionsFullWord.push('Cancel');
-		languageOptionsTwoLetterCode.push('CANCEL');
 	}
-	
+	languageOptionsTwoLetterCode.push('CANCEL');
 	var languageDialog = Titanium.UI.createOptionDialog({
 		options : languageOptionsFullWord,	
+		cancel : languageOptionsFullWord.length
 	});
-	if (OS_IOS){
-		languageDialog.cancel = 3;
-	}
-	
+
 	languageDialog.addEventListener("click", function(e){
-		if (OS_ANDROID){
-			var currentLanguage = languageOptionsTwoLetterCode[languageDialog.index];
-		}
-		else if (OS_IOS){
-			var currentLanguage = languageOptionsTwoLetterCode[e.index];
-		}
+		var currentLanguage = languageOptionsTwoLetterCode[e.index];
 		
 		if (currentLanguage != 'CANCEL'){
 			Alloy.Globals.currentLanguage = currentLanguage;
+			alert("Current Language: " + Alloy.Globals.currentLanguage);
 		}
-		else{
-			alert("Cancel was selected");
-		}
-		
 	});
 	languageDialog.show();
 
