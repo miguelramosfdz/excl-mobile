@@ -13,7 +13,7 @@ function goToPostTutorial() {
 	//Alloy.Globals.navController.home();
 	//Alloy.Globals.navController.open(Alloy.createController("postTutorialPage"));
 	$.componentTutorialPage.hide();
-	var tutorialController = Alloy.createController("postTutorialPage");
+	var tutorialController = Alloy.createController("postLandingTutorial");
 	var tutorialView = tutorialController.getView();
 	Alloy.Globals.navController.Page.add(tutorialView);
 }
