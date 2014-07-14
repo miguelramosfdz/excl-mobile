@@ -255,7 +255,7 @@ function onExhibitsClick(exhibits){
 	    }); 
 	    
 	    var slideOut = Ti.UI.createAnimation({
-			height: '159dip',
+			height: '210dip',
 			duration: 300,
 			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 	    });
@@ -264,7 +264,7 @@ function onExhibitsClick(exhibits){
 			$.exhibitInfoView.height = 0;
 		},300);
 
-		$.collapsibleComponentView.height = '159dip';
+		$.collapsibleComponentView.height = '210dip';
 		$.collapsibleComponentView.animate(slideOut);
 	} else {
 		$.collapsibleComponentView.hidden = true;
