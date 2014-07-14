@@ -193,7 +193,7 @@ NavigationController.prototype.home = function() {
 		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedPage; i--) {
 			// set dependent window
 			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i - 1]});
-       	}      	
+       	}
        	
         // start chain reaction, close first window
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
