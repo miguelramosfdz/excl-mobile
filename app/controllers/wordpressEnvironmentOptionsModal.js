@@ -63,6 +63,10 @@ function enterOtherMode(self) {
 	    androidView: textfield,
 	    buttonNames: ['OK']
 	});
+
+	if (OS_IOS) {
+		dialog.style = Ti.UI.iPhone.AlertDialogStyle.PLAIN_TEXT_INPUT;
+	}
 	
 	dialog.addEventListener('click', function(e) {
 	    if (e.text || e.source.androidView.value) {
@@ -85,9 +89,8 @@ function enterOtherMode(self) {
 }
 
 function handleUrl(url){
-	Alloy.Globals.setRootWebServiceUrl(url); //"http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81"); //url);
-	var client = networkCalls.network( url, onSuccess, onFail);//"http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81", onSuccess, onFail);
-	Ti.API.info("---000---\r\n"+url);
+	Alloy.Globals.setRootWebServiceUrl(url); 
+	var client = networkCalls.network( url, onSuccess, onFail);
 	if (client) {
 		client.open("GET", url);
 		client.send();
