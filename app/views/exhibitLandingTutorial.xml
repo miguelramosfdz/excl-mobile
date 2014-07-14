@@ -5,7 +5,7 @@
 		<Label id="ComponentsText" class="fullScreenOverlayText">Stations in Exhibit!</Label>
 		<ImageView id="flyoutMenuArrow" image="/images/tutorial/long-arrow.png"></ImageView>
 		<ImageView id="ComponentsArrow" image="/images/tutorial/long-arrow.png"></ImageView>
-		<Button id="ExitButton" onClick="tutorialExit" class="tutorialButton">Exit</Button>
-		<Button id="NextButton" onClick="goToComponentTutorial" class="tutorialButton">Next</Button>
+		<Button id="ExitButton" onClick="tutorialExit" class="tutorialButton">End tutorials</Button>
+		<Button id="NextButton" onClick="gotIt" class="tutorialButton">Got it!</Button>
 	</View>
 </Alloy>

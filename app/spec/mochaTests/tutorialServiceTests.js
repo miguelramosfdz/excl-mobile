@@ -12,7 +12,7 @@ describe('Tutorial Service', function(){
 				toggleMenu: function(){}
 			};
 			var toggleMenuSpy = sinon.spy(fakeNavController, "toggleMenu");
-			tutorialService = new TutorialService();
+			//tutorialService = new TutorialService();
 		});
 		it("should close the menu if it's open", function() {
 			

@@ -50,6 +50,7 @@ NavigationController.prototype.exitKioskMode = function(){
 NavigationController.prototype.open = function(controller) {
 	var windowToOpen = this.getWindowFromController(controller);
 	try {
+		this.closeMenu();
 		return this.openWindow(windowToOpen);
 	} catch(e) {
 		return false;
@@ -97,7 +98,7 @@ NavigationController.prototype.openTutorialOnWindow = function(windowToOpen) {
 	if (tutorialControllerName !== false) {
 		var controller = Alloy.createController(tutorialControllerName);
 		var tutorialView = controller.getView();
-		Alloy.Globals.navController.Page.add(tutorialView);
+		windowToOpen.add(tutorialView);
 	}
 };
 
@@ -124,6 +125,7 @@ NavigationController.prototype.openHomeScreen = function(windowToOpen) {
 };
 
 NavigationController.prototype.openNewScreen = function(windowToOpen) {
+	this.Page = windowToOpen;
 	if (OS_ANDROID) {
 		//hack - setting this property ensures the window is "heavyweight" (associated with an Android activity)
 		windowToOpen.navBarHidden = windowToOpen.navBarHidden || false;
@@ -237,9 +239,12 @@ NavigationController.prototype.reset = function(){
 	this.lockedPage = this.Page;
 };
 
-// Return true if in kiosk mode and false otherwise
 NavigationController.prototype.toggleMenu = function(){
 	this.menu.toggleMenu();
+};
+
+NavigationController.prototype.closeMenu = function() {
+	this.menu.closeMenu();
 };
 
 NavigationController.prototype.analyticsTrackWindowScreen = function(window) {

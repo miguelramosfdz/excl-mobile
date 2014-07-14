@@ -52,7 +52,7 @@ function toggleCustomLearning() {
 }
 
 function closeMenu(e) {
-	return Alloy.Globals.navController.toggleMenu();
+	return Alloy.Globals.navController.closeMenu();
 }
 
 function openExhibitPage(e) {
@@ -118,13 +118,7 @@ function rowFilterEventListener() {
 
 function tutorialToggler(e) {
 	closeMenu(e);
-	Alloy.Globals.navController.home();
 	Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
-}
-
-function tutorialHandler(e) {
-	closeMenu(e);
-	Alloy.Globals.navController.open(Alloy.createController("exhibitTutorialPage"));
 }
 
 function languageHandler(e) {

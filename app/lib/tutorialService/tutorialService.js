@@ -29,6 +29,11 @@ TutorialService.prototype.setNavService = function(navService) {
 };
 
 TutorialService.prototype.initializePagesToShowTutorial = function() {
+	// TODO: only set pages if they're not already set
+	this.setAllPagesTo(true);
+};
+
+TutorialService.prototype.resetTutorialMode = function() {
 	this.setAllPagesTo(true);
 };
 

@@ -44,7 +44,6 @@ var flyoutService = {
 		return visible;
 	},
 	toggleMenu: function(){
-	
 		if(visible)
 			return this.closeMenu();
 		else
