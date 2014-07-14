@@ -6,6 +6,9 @@ var analyticsPageTitle = "";
 var analyticsPageLevel = "";
 var dataRetriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
 
+var imageFilePathAndroid = "/images/icons_android/";
+var imageFilePathIOS = "/images/icons_ios/";
+
 var setAnalyticsPageTitle = function(title) {
 	analyticsPageTitle = title;
 };
@@ -33,8 +36,8 @@ function createPlainRowWithHeight(rowHeight) {
 	return row;
 }
 
-function fixPageSpacing(){
-	if (OS_IOS){
+function fixPageSpacing() {
+	if (OS_IOS) {
 		$.tableView.bottom = "48dip";
 	}
 }
@@ -71,7 +74,9 @@ function displaySocialMediaButtons(json) {
 			top : "0",
 			backgroundImage : "/images/icons_android/comment.png"
 		});
+		setCommentIconReady (commentButton);
 		commentButton.addEventListener('click', function(e) {
+			setCommentIconBusy(commentButton);
 			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
 			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
 			$.submitCommentFormView.visible = true;
@@ -80,24 +85,44 @@ function displaySocialMediaButtons(json) {
 		});
 
 		/*$.closeCommentBoxButton.addEventListener('click', function(e) {
-			$.insertName.blur();
-			$.insertEmail.blur();
-			$.insertComment.blur();
-			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
-			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
-		});*/
-		
+		 $.insertName.blur();
+		 $.insertEmail.blur();
+		 $.insertComment.blur();
+		 $.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+		 $.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
+		 });*/
+
 		$.cancelCommentButton.addEventListener('click', function(e) {
+			setCommentIconReady (commentButton);
 			$.insertName.blur();
 			$.insertEmail.blur();
 			$.insertComment.blur();
 			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
 			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
+			$.scroller.scrollTo(0,0);
 		});
 
 		row.add(commentButton);
 	}
 	return row;
+}
+
+function setCommentIconReady(button) {
+	buttonIcon = "comment_ready.png";
+	if (OS_IOS) {
+		button.backgroundImage = imageFilePathIOS + buttonIcon;
+	} else if (OS_ANDROID) {
+		button.backgroundImage = imageFilePathAndroid + buttonIcon;
+	}
+}
+
+function setCommentIconBusy(button) {
+	buttonIcon = "comment_busy.png";
+	if (OS_IOS) {
+		button.backgroundImage = imageFilePathIOS + buttonIcon;
+	} else if (OS_ANDROID) {
+		button.backgroundImage = imageFilePathAndroid + buttonIcon;
+	}
 }
 
 function getImageRowFromPart(part) {
@@ -235,12 +260,12 @@ function creatingCommentTextHeading() {
 		borderColor : '#aaa',
 	});
 	row.addEventListener('click', function(e) {
-			$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
-			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
-			$.submitCommentFormView.visible = true;
-			$.insertName.value = $.insertEmail.value = $.insertComment.value = "";
-			$.thankYouMessageView.visible = false;
-		});
+		$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
+		$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
+		$.submitCommentFormView.visible = true;
+		$.insertName.value = $.insertEmail.value = $.insertComment.value = "";
+		$.thankYouMessageView.visible = false;
+	});
 	row.bottom = '10%';
 	row.add(commentHeading);
 	tableData.push(row);
@@ -387,7 +412,7 @@ function verifyAndValidataData() {
 	Ti.API.info($.insertName.value);
 	Ti.API.info($.insertEmail.value);
 	Ti.API.info($.insertComment.value);
-	
+
 	// Email validations?			<=======
 
 	if (!$.insertComment.value) {
@@ -395,17 +420,19 @@ function verifyAndValidataData() {
 	} else {
 		var url = Alloy.Globals.rootWebServiceUrl + "/posts/" + post_content.id + "/comments";
 
-		var jsonToSend = ({
+		var jsonToSend = ( {
 			"name" : $.insertName.value,
 			"email" : $.insertEmail.value,
 			"comment_body" : $.insertComment.value
 		});
-		
+
 		dataRetriever.sendJsonToUrl(url, jsonToSend, function(returnedData) {
 			$.submitCommentFormView.visible = false;
 			$.thankYouMessageView.visible = true;
 		});
+		setCommentIconReady(commentButton);
 	}
+	$.scroller.scrollTo(0,0);
 }
 
 function initializePage() {
