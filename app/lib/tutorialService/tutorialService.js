@@ -29,6 +29,14 @@ TutorialService.prototype.setNavService = function(navService) {
 };
 
 TutorialService.prototype.initializePagesToShowTutorial = function() {
+	var storage = this.getStorageService();
+	if (!storage.getProperty("tutorialInitialized")) {
+		this.setAllPagesTo(true);
+		storage.setProperty("tutorialInitialized", true);
+	}
+};
+
+TutorialService.prototype.resetTutorialMode = function() {
 	this.setAllPagesTo(true);
 };
 

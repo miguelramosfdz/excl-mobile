@@ -36,6 +36,11 @@ KioskMode.prototype.updateKioskMode = function(){
 	setTimeout(function(){confirm.hide();}, 2000);
 };
 
+KioskMode.prototype.exitKioskMode = function(){
+		this.kioskMode = false;
+    	Alloy.Globals.navController.exitKioskMode();
+};
+
 
 /*
 // Handles kiosk mode dialog

@@ -1,18 +1,14 @@
 var args = arguments[0] || {};
 
-function tutorialExit() {
-	// var newView = Ti.UI.createView();
-	// $.overlayView.add(newView);
-	// $.addClass(newView, "fullScreenOverlay");
+var TutorialService = require('tutorialService/tutorialService');
+var tutorialService = new TutorialService();
+
+function tutorialExit(e) {
+	tutorialService.endTutorialMode();
 	$.postTutorialPage.hide();
-	Alloy.Globals.navController.home();
 }
 
-function closeMenu(e) {
-	return Alloy.Globals.navController.toggleMenu();
+function gotIt(e) {
+	tutorialService.gotIt("postLandingTutorial");
+	$.postTutorialPage.hide();
 }
-
-// function goToComponentTutorial(e) {
-	// Alloy.Globals.navController.home();
-	// Alloy.Globals.navController.open(Alloy.createController("componentTutorialPage"));
-// }
