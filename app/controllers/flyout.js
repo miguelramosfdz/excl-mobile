@@ -128,27 +128,20 @@ function tutorialHandler(e) {
 }
 
 function languageHandler(e) {
-	//var win = viewService.createModalInputView();
-	
-	/*languageChoices = [];
-	languageChoices[0] = "English";
-	languageChoices[1] = "Spanish";
-	languageChoices[2] = "Korean";
-	var languagePicker = Ti.UI.createPicker({
-		selectionIndicator: true
-	});
-	languagePicker.add(languageChoices);
-	win.add(languagePicker);
-	*/
-	
-	var languageOptionsFullWord = ['English', 'Spanish', 'Gizoogle', 'Cancel'];
+	var languageOptionsFullWord = ['English', 'Spanish', 'Gizoogle'];
 	var languageOptionsTwoLetterCode = ['en', 'es', 'gz'];
-	languageOptionsTwoLetterCode.push('cancel');
+	if (OS_IOS){
+		languageOptionsFullWord.push('Cancel');
+		languageOptionsTwoLetterCode.push('CANCEL');
+	}
+	
 	var languageDialog = Titanium.UI.createOptionDialog({
-		//title : 'Choose a language',
-		options : languageOptionsFullWord,
-		cancel : 3
+		options : languageOptionsFullWord,	
 	});
+	if (OS_IOS){
+		languageDialog.cancel = 3;
+	}
+	
 	languageDialog.addEventListener("click", function(e){
 		if (OS_ANDROID){
 			var currentLanguage = languageOptionsTwoLetterCode[languageDialog.index];
@@ -157,7 +150,7 @@ function languageHandler(e) {
 			var currentLanguage = languageOptionsTwoLetterCode[e.index];
 		}
 		
-		if (currentLanguage != 'cancel'){
+		if (currentLanguage != 'CANCEL'){
 			Alloy.Globals.currentLanguage = currentLanguage;
 		}
 		else{
