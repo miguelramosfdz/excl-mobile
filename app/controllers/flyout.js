@@ -118,6 +118,7 @@ function rowFilterEventListener() {
 
 function tutorialToggler(e) {
 	closeMenu(e);
+	Alloy.Globals.navController.home();
 	Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
 }
 

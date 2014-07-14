@@ -9,7 +9,7 @@ function closeMenu(e) {
 }
 
 function tutorialHandler(e) {
-	Alloy.Globals.navController.close();
+	Alloy.Globals.navController.home();
 	closeMenu(e);
 	var tutorialController = Alloy.createController("exhibitTutorialPage");
 	var tutorialView = tutorialController.getView();
