@@ -9,9 +9,9 @@ function closeMenu(e) {
 }
 
 function tutorialHandler(e) {
-	Alloy.Globals.navController.close();
+	Alloy.Globals.navController.home();
 	closeMenu(e);
-	var tutorialController = Alloy.createController("exhibitTutorialPage");
+	var tutorialController = Alloy.createController("exhibitLandingTutorial");
 	var tutorialView = tutorialController.getView();
 	Alloy.Globals.navController.Page.add(tutorialView);
 }

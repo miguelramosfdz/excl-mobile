@@ -118,12 +118,39 @@ function rowFilterEventListener() {
 
 function tutorialToggler(e) {
 	closeMenu(e);
+	Alloy.Globals.navController.home();
 	Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
 }
 
 function tutorialHandler(e) {
 	closeMenu(e);
 	Alloy.Globals.navController.open(Alloy.createController("exhibitTutorialPage"));
+}
+
+function languageHandler(e) {
+	var languageOptionsFullWord = ['English', 'Spanish', 'Gizoogle'];
+	var languageOptionsTwoLetterCode = ['en', 'es', 'gz'];
+	if (OS_IOS){
+		languageOptionsFullWord.push('Cancel');
+	}
+	languageOptionsTwoLetterCode.push('CANCEL');
+	var languageDialog = Titanium.UI.createOptionDialog({
+		options : languageOptionsFullWord,	
+		cancel : languageOptionsFullWord.length
+	});
+
+	languageDialog.addEventListener("click", function(e){
+		var currentLanguage = languageOptionsTwoLetterCode[e.index];
+		
+		if (currentLanguage != 'CANCEL'){
+			Alloy.Globals.currentLanguage = currentLanguage;
+			alert("Current Language: " + Alloy.Globals.currentLanguage);
+		}
+	});
+	languageDialog.show();
+
+	closeMenu(e);
+	
 }
 
 function detectFilterConditions() {

@@ -12,6 +12,14 @@ function NavigationController() {
 	this.menu = require(rootPath + "navigationService/flyoutService");
 }
 
+NavigationController.prototype.getTutorialService = function() {
+	if (!this.tutorialService) {
+		var TutorialService = require(rootPath + "tutorialService/tutorialService");
+		this.tutorialService = new TutorialService();
+	}
+	return this.tutorialService;
+};
+
 NavigationController.prototype.restart = function(){
 		for (var i = this.windowStack.length - 1; i>=0 ; i--) {
 			// set dependent window
@@ -72,6 +80,8 @@ NavigationController.prototype.openWindow = function(windowToOpen) {
 		this.openNewScreen(windowToOpen);
 	}
 	this.windowStack.push(windowToOpen);
+	
+	this.openTutorialOnWindow(windowToOpen);
 
 	return windowToOpen;
 };
@@ -79,6 +89,16 @@ NavigationController.prototype.openWindow = function(windowToOpen) {
 NavigationController.prototype.prepWindowsWithFlyout = function(windowToOpen) {
 	windowToOpen.add(this.menu.getMenu());
 	removeMenuFromWindow(this.windowStack, this.menu);
+};
+
+NavigationController.prototype.openTutorialOnWindow = function(windowToOpen) {
+	var tutorialService = this.getTutorialService();
+	var tutorialControllerName = tutorialService.checkTutorialForPage(windowToOpen);
+	if (tutorialControllerName !== false) {
+		var controller = Alloy.createController(tutorialControllerName);
+		var tutorialView = controller.getView();
+		Alloy.Globals.navController.Page.add(tutorialView);
+	}
 };
 
 NavigationController.prototype.openHomeScreen = function(windowToOpen) {
