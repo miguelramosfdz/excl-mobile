@@ -180,6 +180,33 @@ describe('sharingTextService', function(){
 		});
 	});
 
+	describe("initiateTextShareButton", function(){
+		it("should call createButton", function(){
+			var dataToSend = [];
+			OS_ANDROID = true;
+			
+			var fakeButtonService = {
+				createButton: function(){ return []; },
+				eraseButtonTitleIfBackgroundPresent: function(){},
+				setButtonEnabled: function(){}
+			};
+			var createButtonSpy = sinon.spy(fakeButtonService, 'createButton');
+			sharingTextService.setButtonService(fakeButtonService);
+			
+			var fakeIntentService = {
+				sendIntentTextAndroid: function(){},
+				sendIntentTextiOS: function(){}
+			};
+			var sendIntentTextAndroidSpy = sinon.spy(fakeIntentService, 'sendIntentTextAndroid');
+			sharingTextService.setIntentService(fakeIntentService);
+			
+			var setClickListenerStub = sinon.stub();
+				
+			sharingTextService.initiateTextShareButton(dataToSend);
+			
+			assert(createButtonSpy.calledOnce);
+		});
+	});
 	
 });
 

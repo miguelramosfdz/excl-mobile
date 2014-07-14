@@ -1,4 +1,3 @@
-
 ".container": {
 	navBarHidden: true,
 	fullscreen: true,
@@ -96,13 +95,25 @@
 	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
 	showHorizontalScrollIndicator: true,
 	width: '100%',
-	height: '153dip',
+	height: '159dip',
 	contentHeight: 'auto',
 	contentWidth: 'auto',
 	scrollType: 'horizontal',
 	horizontalWrap: false,
 	top: "3dip",
 	bottom: "3dip",
+}
+
+".headingLabel":{
+	// bottom: '5dip',
+	// top: '5dip',
+	color: "#232226",
+	height: "50dip",
+	font: {
+		fontFamily: 'Helvetica Neue',
+		fontSize: '22dip',
+		fontWeight: 'bold'
+	},
 }
 
 "#exhibitInfoView": {
