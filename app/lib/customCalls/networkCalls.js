@@ -36,15 +36,21 @@ function createNetworkErrorDialog(e){
 
 var networkCalls = {
 
-	network : function(url, onSuccess) {
+	network : function(url, onSuccess, onFail) {
+		
+		if(!onFail){
+			onFail = function(e) {
+				createNetworkErrorDialog(e);
+			};
+		}
+		
+		
 		var client = Ti.Network.createHTTPClient({
 			onload : function() {
 				var json = parseCalls.parse(this.responseText);
 				onSuccess(json);
 			},
-			onerror : function(e) {
-				createNetworkErrorDialog(e);
-			}
+			onerror : onFail
 		});
 
 		return client;

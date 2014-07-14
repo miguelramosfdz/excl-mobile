@@ -1,4 +1,25 @@
 var args = arguments[0] || {};
+var networkCalls = setPathForLibDirectory('customCalls/networkCalls');
+
+var onSuccess = function(){
+	Alloy.Globals.navController.restart();
+	alert("Entered new Wordpress environment"); 
+};
+
+var onFail = function(){
+	alert("invalid url");
+	Alloy.Globals.setRootWebServiceFromUrls("prod");		// Reset to default url
+};
+
+
+function setPathForLibDirectory(libFile) {
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+}
 
 function cancel(e){
 	Alloy.Globals.navController.close();
@@ -31,7 +52,6 @@ function enterQualityAssuranceMode(e){
 function enterOtherMode(self) {
 		
 	var textfield = Ti.UI.createTextField({
-		passwordMask:true,
 	    height:"35dip",
 	    top:"100dip",
 	    left:"30dip",
@@ -44,15 +64,13 @@ function enterOtherMode(self) {
 	    buttonNames: ['OK']
 	});
 	
-	if (OS_IOS) {
-		dialog.style = Ti.UI.iPhone.AlertDialogStyle.SECURE_TEXT_INPUT;
-	}
-	
 	dialog.addEventListener('click', function(e) {
-	    if (e.text != "") {  	
-			Alloy.Globals.setRootWebServiceUrl(e.text);
-			Alloy.Globals.navController.restart();
-			alert("Entered Wordpress Environment: "+e.text);  	
+	    if (e.text || e.source.androidView.value) {
+	    	if(OS_IOS){  	
+				handleUrl(e.text);
+	    	}else if( OS_ANDROID){
+				handleUrl(e.source.androidView.value);
+	    	}
 	    }
     	else {
 	    	var errorMsg = Ti.UI.createAlertDialog({
@@ -64,5 +82,18 @@ function enterOtherMode(self) {
 	    }
 	});
 	dialog.show();
-	setTimeout(function(){dialog.hide();}, 9000);
 }
+
+function handleUrl(url){
+	Alloy.Globals.setRootWebServiceUrl(url); //"http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81"); //url);
+	var client = networkCalls.network( url, onSuccess, onFail);//"http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81", onSuccess, onFail);
+	Ti.API.info("---000---\r\n"+url);
+	if (client) {
+		client.open("GET", url);
+		client.send();
+	}else{
+		alert("could not connect to host");
+		Alloy.Globals.setRootWebServiceFromUrls("prod");		// Reset to default url
+	}
+}
+
