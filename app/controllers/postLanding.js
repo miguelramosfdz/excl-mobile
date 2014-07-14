@@ -426,8 +426,9 @@ function initializePage() {
 	}
 
 	creatingCommentTextHeading();
-	if (post_content.comments != false) {
-		displayComments(post_content.comments);
+	var comments = post.getAllComments();
+	if (comments != false) {
+		displayComments(comments);
 	} else {
 		displayThereAreNoCommentsToDisplayText();
 	}

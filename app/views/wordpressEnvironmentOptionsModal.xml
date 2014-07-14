@@ -2,10 +2,11 @@
 	<Window class="container">
 		<View class="verticalContainer">
 			<Label class="title">Choose your Wordpress Environment</Label>		
-			<Button class="environmentOption" onClick="enterProductionMode">Production Mode</Button>		
-			<Button class="environmentOption" onClick="enterQualityAssuranceMode">Quality Assurance Mode</Button>
-			<Button class="environmentOption" onClick="enterDevelopmentMode">Development Mode</Button>
-			<Button class="environmentOption" onClick="enterDevelopmentTwoMode">Development 2 Mode</Button>
+			<Button class="environmentOption" onClick="enterProductionMode">Production</Button>		
+			<Button class="environmentOption" onClick="enterQualityAssuranceMode">Quality Assurance</Button>
+			<Button class="environmentOption" onClick="enterDevelopmentMode">Development</Button>
+			<Button class="environmentOption" onClick="enterDevelopmentTwoMode">Development 2</Button>
+			<Button class="environmentOption" onClick="enterOtherMode">Other</Button>
 			<Button onClick="cancel" >Cancel</Button>
 		</View>
 	</Window>
