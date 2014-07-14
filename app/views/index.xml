@@ -6,7 +6,10 @@
 				<ScrollableView id="exhibitsCarousel">
 					<View id="placeholder" height='180dip'></View>
 				</ScrollableView>
-				<View id="collapsibleComponentView">
+				<View id="collapsibleComponentView" layout="vertical">
+					<View height="50dip">
+						<Label class="headingLabel">Select an activity!</Label>
+					</View>
 					<ScrollView id="componentScrollView"></ScrollView>
 				</View>
 				<View id="exhibitInfoView">

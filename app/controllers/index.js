@@ -255,7 +255,7 @@ function onExhibitsClick(exhibits){
 	    }); 
 	    
 	    var slideOut = Ti.UI.createAnimation({
-			height: '150dip',
+			height: '200dip',
 			duration: 300,
 			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN
 	    });
