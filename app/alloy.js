@@ -25,11 +25,24 @@ var dreamhostersAPI = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/
 var backupAPI = "http://tvt.redhale.com/wordpress/wp-json/v01/excl/museum/81";
 
 // TODO MAKE THESE # INSTANCES FUNCTIONAL
-var devWordpressEnvironment = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81";
-var qaWordpressEnvironment = '';
-var prodWordpressEnvironment = '';
+var rootWebServiceUrls = {
+	"dev": 		"http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81",
+	"devTwo": 	"http://excl.dreamhosters.com/dev2/wp-json/v01/excl/museum/81",
+	"qa": 		"http://excl.dreamhosters.com/qa/wp-json/v01/excl/museum/81",
+	"prod": 	"http://excl.dreamhosters.com/prod/wp-json/v01/excl/museum/81"
+};
 
-Alloy.Globals.rootWebServiceUrl = devWordpressEnvironment;
+Alloy.Globals.setRootWebServiceFromUrls = function(key){
+	if( rootWebServiceUrls[key] )
+		Alloy.Globals.rootWebServiceUrl = rootWebServiceUrls[key];
+};
+
+Alloy.Globals.setRootWebServiceUrl = function(url){
+	if( url )
+		Alloy.Globals.rootWebServiceUrl = url;
+};
+
+Alloy.Globals.rootWebServiceUrl = rootWebServiceUrls["dev"];
 
 Alloy.Globals.setPathForLibDirectory = function(libFile){
 	if ( typeof Titanium == 'undefined') {

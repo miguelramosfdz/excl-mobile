@@ -19,7 +19,7 @@ NavigationController.prototype.restart = function(){
        	}      	
         // start chain reaction, close first window
 		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
-	
+
 		var newHomePage = Alloy.createController("index");
 		this.open(newHomePage);	
 };
@@ -41,7 +41,11 @@ NavigationController.prototype.exitKioskMode = function(){
 
 NavigationController.prototype.open = function(controller) {
 	var windowToOpen = this.getWindowFromController(controller);
-	return this.openWindow(windowToOpen);
+	try {
+		return this.openWindow(windowToOpen);
+	} catch(e) {
+		return false;
+	}
 };
 
 NavigationController.prototype.getWindowFromController = function(controller) {

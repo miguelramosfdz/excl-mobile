@@ -1,23 +1,24 @@
 <Alloy>
 	<Window class="container">
-		<View id="mainView" bottom="20dip">
+		<View id="mainView">
 			<Widget id="navBar" src="navigationBar"/>
-			<ScrollView id="exhibitInfoScrollView" scrollType="vertical" layout="vertical" contentWidth="100%">
+			<ScrollView id="exhibitInfoScrollView">
 				<ScrollableView id="exhibitsCarousel">
 					<View id="placeholder" height='180dip'></View>
 				</ScrollableView>
-				<View id="collapsibleInfoView">
+				<View id="collapsibleComponentView">
 					<ScrollView id="componentScrollView"></ScrollView>
 				</View>
-				<View id="exhibitInfoView" layout='vertical' bottom="50dip">
+				<View id="exhibitInfoView">
 					<Label id="collapsibleInfoLabel"></Label>
 					<Label id="exhibitInfoLabel"></Label>
 				</View>
 			</ScrollView>
 		</View>
-		<View id="headingRow" class="headingRow" bottom="0">
-			<Label id="exhibitSelectLabel" class="headingText">Explore This Exhibit!</Label>
-			<!-- <Button id="expanderButton"></Button> -->
+		<View id="bottomButtonContainer">
+			<View id="exhibitSelect">
+				<Label id="exhibitSelectLabel" class="headingText">Explore This Exhibit!</Label>
+			</View>
 		</View>
 	</Window>
 </Alloy>
