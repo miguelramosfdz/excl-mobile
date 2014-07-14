@@ -14,7 +14,9 @@ function parseJson(responseText) {
 
 function fetchDataFromUrl(url, onSuccess) {
 	var client = networkCalls.network(url, onSuccess);
-
+	url += "?language="; //Append language query to url
+	url += Alloy.Globals.currentLanguage;
+	alert("URL: " + url);
 	if (client) {
 		client.open("GET", url);
 		client.send();

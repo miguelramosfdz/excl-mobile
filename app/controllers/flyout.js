@@ -134,9 +134,10 @@ function languageHandler(e) {
 		languageOptionsFullWord.push('Cancel');
 	}
 	languageOptionsTwoLetterCode.push('CANCEL');
+	cancelIndex = OS_IOS? (languageOptionsFullWord.length - 1) : languageOptionsFullWord.length;
 	var languageDialog = Titanium.UI.createOptionDialog({
 		options : languageOptionsFullWord,	
-		cancel : languageOptionsFullWord.length
+		cancel : cancelIndex
 	});
 
 	languageDialog.addEventListener("click", function(e){
@@ -144,7 +145,6 @@ function languageHandler(e) {
 		
 		if (currentLanguage != 'CANCEL'){
 			Alloy.Globals.currentLanguage = currentLanguage;
-			alert("Current Language: " + Alloy.Globals.currentLanguage);
 		}
 	});
 	languageDialog.show();
