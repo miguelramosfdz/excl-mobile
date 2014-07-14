@@ -244,7 +244,6 @@ function createcollapsibleComponentView(){
 
 function onExhibitsClick(exhibits){
 	if ($.collapsibleComponentView.hidden == true){
-		Ti.API.log("slideOut");
 		$.collapsibleComponentView.hidden = false;
 		var pageIndex = $.exhibitsCarousel.currentPage;
 		$.exhibitSelectLabel.text = "Go Back";
@@ -260,17 +259,25 @@ function onExhibitsClick(exhibits){
 			duration: 300,
 			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 	    });
-		
+			    
+		setTimeout(function() {
+			$.exhibitInfoView.height = 0;
+		},300);
+
 		$.collapsibleComponentView.height = '159dip';
 		$.collapsibleComponentView.animate(slideOut);
 	} else {
-		Ti.API.log("slideIn");
 		$.collapsibleComponentView.hidden = true;
 		$.exhibitSelectLabel.text = "Explore This Exhibit!";
 		$.exhibitInfoView.animate({
 			opacity : 1,
 			duration : 300
 		});
+		
+		$.exhibitInfoView.height = Ti.UI.SIZE;
+		setTimeout(function() {
+			$.exhibitInfoView.height = Ti.UI.SIZE;
+		},300);
 
 		var slideIn = Ti.UI.createAnimation({
 			height: '0dip',
@@ -289,14 +296,19 @@ function onExhibitsScroll(e, exhibits) {
 	$.exhibitInfoLabel.text = exhibits[index].description;
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
+	
+	setTimeout(function() {
+		$.exhibitInfoView.height = Ti.UI.SIZE;
+	},150);
+	
 	$.exhibitInfoView.animate({
         opacity: 1,
-        duration: 300
+        duration: 150
     }); 
     
 	$.collapsibleComponentView.animate({
 		height: 0,
-		duration: 300,
+		duration: 150,
 		curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 	});
 	$.collapsibleComponentView.hidden = true;

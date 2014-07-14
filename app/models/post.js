@@ -3,7 +3,7 @@ exports.definition = {
 		defaults: {
 			name: "post name",
 			image: "/700x300.png",
-			rawJson: {}
+			//rawJson: {}
 		},
 		adapter: {
 			type: "properties",
@@ -13,6 +13,11 @@ exports.definition = {
 	extendModel: function(Model) {
 		_.extend(Model.prototype, {
 			// extended functions and properties go here
+			rawJson: {},
+			
+			getAllComments: function(){
+				return this.get('rawJson').comments;
+			},
 		});
 
 		return Model;
