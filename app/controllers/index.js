@@ -238,12 +238,13 @@ function createTitleLabel(name, type, pageXofYtext) {
 }
 
 function createcollapsibleComponentView(){
-	$.collapsibleComponentView.hidden == true;
+	$.collapsibleComponentView.hidden = true;
 	$.collapsibleComponentView.height = 0;
 }
 
 function onExhibitsClick(exhibits){
 	if ($.collapsibleComponentView.hidden == true){
+		Ti.API.log("slideOut");
 		$.collapsibleComponentView.hidden = false;
 		var pageIndex = $.exhibitsCarousel.currentPage;
 		$.exhibitSelectLabel.text = "Go Back";
@@ -255,19 +256,15 @@ function onExhibitsClick(exhibits){
 	    }); 
 	    
 	    var slideOut = Ti.UI.createAnimation({
-			height: '150dip',
+			height: '159dip',
 			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN
+			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 	    });
 		
+		$.collapsibleComponentView.height = '159dip';
 		$.collapsibleComponentView.animate(slideOut);
-		// $.collapsibleComponentView.animate({
-			// height: '150dip',
-			// duration: 300,
-			// curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
-		// });
-	}
-	else{
+	} else {
+		Ti.API.log("slideIn");
 		$.collapsibleComponentView.hidden = true;
 		$.exhibitSelectLabel.text = "Explore This Exhibit!";
 		$.exhibitInfoView.animate({
@@ -275,11 +272,12 @@ function onExhibitsClick(exhibits){
 			duration : 300
 		});
 
-		$.collapsibleComponentView.animate({
-			height: 0,
+		var slideIn = Ti.UI.createAnimation({
+			height: '0dip',
 			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_OUT
-		});
+			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+	    });
+		$.collapsibleComponentView.animate(slideIn);
 	}
 }
 
@@ -299,7 +297,7 @@ function onExhibitsScroll(e, exhibits) {
 	$.collapsibleComponentView.animate({
 		height: 0,
 		duration: 300,
-		curve: Titanium.UI.ANIMATION_CURVE_EASE_OUT
+		curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 	});
 	$.collapsibleComponentView.hidden = true;
 }
