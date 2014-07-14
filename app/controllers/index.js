@@ -19,6 +19,14 @@ var analyticsPageTitle = "Home";
 var analyticsPageLevel = "Exhibit Landing";
 var expanderButton;
 
+var reload = function(){
+	var controller = Alloy.createController("index");
+	return controller;
+};
+
+$.navBar.hideBackBtn();
+retrieveJson(url, initializeWithJSON, this);
+
 function setAnalyticsPageTitle(title) {
 	analyticsPageTitle = title;
 }
@@ -34,9 +42,6 @@ function setAnalyticsPageLevel(level) {
 function getAnalyticsPageLevel() {
 	return analyticsPageLevel;
 }
-
-$.navBar.hideBackBtn();
-retrieveJson(url, initializeWithJSON, this);
 
 function retrieveJson(jsonURL, callback, controller) {
 	spinner.addTo($.exhibitsCarousel);
@@ -55,6 +60,11 @@ function initializeWithJSON(json, controller) {
 	Alloy.Globals.navController.open(controller);
 	populateWindow(json);
 }
+
+function reloadWithJSON(json, controller){
+	populateWindow(json);
+}
+
 
 function populateWindow(json) {
 	var components = Alloy.Collections.instance('component');
@@ -80,10 +90,14 @@ function populateWindow(json) {
 	setExhibitText(exhibitText[0]);
 }
 
+function clearAll(){
+	
+}
+
 function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.removeView($.placeholder);
 	// This is an android hack
-
+	
 	/*exhibits.sort(function(a, b) {
 		return a.exhibit_order > b.exhibit_order;
 	});*/
@@ -384,3 +398,5 @@ function createExhibitSelect(exhibits){
 function setExhibitText(text) {
 	$.exhibitInfoLabel.text = text;
 } 
+
+exports.reload = reload;

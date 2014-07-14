@@ -13,22 +13,15 @@ function NavigationController() {
 }
 
 NavigationController.prototype.restart = function(){
-		for (var i = this.windowStack.length - 1; i>=0 ; i--) {
-			// set dependent window
-			this.windowStack[i].fireEvent('set.to.close', {win: this.windowStack[i]});
-       	}      	
-        // start chain reaction, close first window
-		(this.navGroup) ? this.navGroup.closeWindow(this.windowStack[this.windowStack.length - 1], {animated : false}) : this.windowStack[this.windowStack.length - 1].close({animated : false});
-
-		var newHomePage = Alloy.createController("index");
-		this.open(newHomePage);	
+		this.home();
+		this.windowStack.pop();
+		Alloy.createController("index");
 };
 
 NavigationController.prototype.enterKioskMode = function(){
 		var window = this.windowStack[this.windowStack.length - 1];
 	    this.setLocked();
  		this.menu.closeMenu();
-		this.reset();
  		
 		window.onEnterKioskMode(window);	
 };
@@ -42,7 +35,9 @@ NavigationController.prototype.exitKioskMode = function(){
 NavigationController.prototype.open = function(controller) {
 	var windowToOpen = this.getWindowFromController(controller);
 	try {
-		return this.openWindow(windowToOpen);
+		var win = this.openWindow(windowToOpen);
+		
+		return win;
 	} catch(e) {
 		return false;
 	}
@@ -59,6 +54,7 @@ NavigationController.prototype.attachControllerInfoToView = function(controller,
 	windowToOpen.onExitKioskMode	= _.isFunction(controller.onExitKioskMode) ? controller.onExitKioskMode : function(windowToOpen){};
 	windowToOpen.analyticsPageTitle	= _.isFunction(controller.getAnalyticsPageTitle) ? controller.getAnalyticsPageTitle() : "[Unnamed Screen]";
 	windowToOpen.analyticsPageLevel	= _.isFunction(controller.getAnalyticsPageLevel) ? controller.getAnalyticsPageLevel() : "[Unnamed Level]";
+	windowToOpen.reload 			= _.isFunction(controller.reload) ? controller.reload : function(){};
 	return windowToOpen;
 };
 
@@ -130,15 +126,15 @@ NavigationController.prototype.addCloseEventListenersToWindow = function(windowT
 
 	var lastPushed = windowToOpen;
 	windowToOpen.addEventListener('close', function() {
-		if (self.windowStack.length > 1) // don't pop the last Window, which is the base one
+		if (self.windowStack.length > 0) // don't pop the last Window, which is the base one
 		{
 			var popped = self.windowStack.pop();
 
 			// Last window should NOT have been popped. Push it back on the stack!
-			if (lastPushed != popped)
+			/*if (lastPushed != popped)
 			{
 				self.windowStack.push(popped);
-			}
+			}//*/
 
 			// close dependent window ?
 			if (this.toClose) {
@@ -220,6 +216,11 @@ NavigationController.prototype.reset = function(){
 // Return true if in kiosk mode and false otherwise
 NavigationController.prototype.toggleMenu = function(){
 	this.menu.toggleMenu();
+};
+
+// Return true if in kiosk mode and false otherwise
+NavigationController.prototype.closeMenuWithoutAnimation = function(){
+	this.menu.closeMenuWithoutAnimation();
 };
 
 NavigationController.prototype.analyticsTrackWindowScreen = function(window) {

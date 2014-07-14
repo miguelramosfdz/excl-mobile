@@ -27,7 +27,6 @@ AdminMode.prototype.addAdminModeListener = function(element) {
 	}
 };
 
-
 function handleAdminModeDialog(self) {
 		
 	var textfield = Ti.UI.createTextField({
@@ -38,6 +37,7 @@ function handleAdminModeDialog(self) {
 	    width:"250dip",
 	    borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
 	});
+	
 	var dialog = Ti.UI.createAlertDialog({
 	    title: 'Enter admin code',
 	    androidView: textfield,
@@ -57,6 +57,8 @@ function handleAdminModeDialog(self) {
     	} 
     	else if (e.text == "wordpress" || e.source.androidView.value == "wordpress") {
     		var options = Alloy.createController("wordpressEnvironmentOptionsModal");
+    		self.kioskMode.exitKioskMode();
+    		Alloy.Globals.navController.closeMenuWithoutAnimation();
     		Alloy.Globals.navController.open(options);
     	}
     	else {
@@ -71,6 +73,5 @@ function handleAdminModeDialog(self) {
 	dialog.show();
 	setTimeout(function(){dialog.hide();}, 9000);
 }
-
 
 module.exports = AdminMode;
