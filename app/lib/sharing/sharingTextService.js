@@ -26,12 +26,12 @@ sharingTextService.prototype.setPathForLibDirectory = function(libFile){
 
 sharingTextService.prototype.initiateTextShareButton = function(json) {
 	var shareTextButton = buttonService.createButton('shareTextButton', 'Text');
-	this.setIconReady(shareTextButton);
+	sharingTextService.prototype.setIconReady(shareTextButton);
 
 	shareTextButton.addEventListener('click', function(e) {
-		this.setIconBusy(shareTextButton);
-		postTags = this.getPostTags(json);
-		this.initiateIntentText(postTags, shareTextButton);
+		sharingTextService.prototype.setIconBusy(shareTextButton);
+		postTags = sharingTextService.prototype.getPostTags(json);
+		sharingTextService.prototype.initiateIntentText(postTags, shareTextButton);
 	});
 	
 	buttonService.eraseButtonTitleIfBackgroundPresent(shareTextButton);
