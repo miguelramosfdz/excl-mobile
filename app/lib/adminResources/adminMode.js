@@ -58,7 +58,7 @@ function handleAdminModeDialog(self) {
     	else if (e.text == "wordpress" || e.source.androidView.value == "wordpress") {
     		var options = Alloy.createController("wordpressEnvironmentOptionsModal");
     		self.kioskMode.exitKioskMode();
-    		Alloy.Globals.navController.closeMenuWithoutAnimation();
+    		Alloy.Globals.navController.closeMenu();
     		Alloy.Globals.navController.open(options);
     	}
     	else {

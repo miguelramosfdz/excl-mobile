@@ -1,0 +1,12 @@
+<Alloy>
+	<View id="componentTutorialPage" class="fullScreenWindow" autoStyle="true">
+		<View class="fullScreenOverlay" autoStyle="true" />
+		<!-- <Label id="flyoutMenuText" class="fullScreenOverlayText">Menu and options here!</Label>
+		<Label id="ComponentsText" class="fullScreenOverlayText">Stations in Exhibit!</Label>
+		<ImageView id="flyoutMenuArrow" image="/images/tutorial/long-arrow.png"></ImageView>
+		<ImageView id="ComponentsArrow" image="/images/tutorial/long-arrow.png"></ImageView> -->
+		<Label id="flyoutMenuText" class="fullScreenOverlayText">Component Tutorial!</Label>
+		<Button id="ExitButton" onClick="tutorialExit" class="tutorialButton">End tutorials</Button>
+		<Button id="NextButton" onClick="gotIt" class="tutorialButton">Got it!</Button>
+	</View>
+</Alloy>

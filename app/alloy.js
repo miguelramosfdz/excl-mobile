@@ -64,3 +64,4 @@ Alloy.Models.app = Alloy.Models.instance('app');
 Alloy.Collections.filter = Alloy.Collections.instance('filter');
 Alloy.Models.app.retrieveFilters();
 
+Alloy.Globals.currentLanguage = 'en';
