@@ -60,11 +60,10 @@
 }
 
 "#exhibitSelect": {
-	bottom: "0",
 	borderRadius: "20dip",
 	backgroundColor: "#253342",
-	width: Ti.UI.FILL,
-	height: '50dip',
+	width: "70%",
+	left: "15%",
 	borderWidth: '1',
 	backgroundGradient: {
 	    type: 'linear',
@@ -74,6 +73,12 @@
 	    			{ color: '#8F2C2C', offset: 1.0 }],
    }
 	
+}
+
+"#bottomButtonContainer":{
+	height: '50dip',
+	bottom: '0',
+	backgroundColor: 'white'
 }
 
 ".headingText": {
