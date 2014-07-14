@@ -49,15 +49,4 @@ sharingImageService.prototype.getPostTags = function(json) {
 	return postTags;
 };
 
-//Not used at the moment, since we were forced to call the intent functions from within takePicture
-sharingImageService.prototype.initiateIntentImage = function(postTags, imageFilePath, shareImageButton) {
-	//Choose appropriate intent creator
-	if (OS_ANDROID) {
-		intentService.sendIntentImageAndroid(postTags, imageFilePath);
-	} else if (OS_IOS) {
-		intentService.sendIntentImageiOS(postTags, imageFilePath);
-	}
-	sharingImageService.prototype.setIconReady(shareImageButton);
-};
-
 module.exports = sharingImageService;
