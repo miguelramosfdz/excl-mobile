@@ -96,7 +96,11 @@
 	//pagingControlTimeout : 0, // Set to less than or equal to 0 to disable timeout, to keep controls displayed.
 	showHorizontalScrollIndicator: true,
 	width: '100%',
+<<<<<<< HEAD
 	height: '200dip',
+=======
+	height: '153dip',
+>>>>>>> e359fe7c4d0995c672b89d28170eedd845d71678
 	contentHeight: 'auto',
 	contentWidth: 'auto',
 	scrollType: 'horizontal',

@@ -84,9 +84,9 @@ function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.removeView($.placeholder);
 	// This is an android hack
 
-	exhibits.sort(function(a, b) {
+	/*exhibits.sort(function(a, b) {
 		return a.exhibit_order > b.exhibit_order;
-	});
+	});*/
 
 	//exhibits.order_number.sort();
 	for ( i = 0; i < exhibits.length; i++) {
@@ -238,7 +238,7 @@ function createTitleLabel(name, type, pageXofYtext) {
 }
 
 function createcollapsibleComponentView(){
-	$.collapsibleComponentView.hidden == true;
+	$.collapsibleComponentView.hidden = true;
 	$.collapsibleComponentView.height = 0;
 }
 
@@ -255,19 +255,18 @@ function onExhibitsClick(exhibits){
 	    }); 
 	    
 	    var slideOut = Ti.UI.createAnimation({
-			height: '200dip',
+			height: '159dip',
 			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN
+			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 	    });
 			    
 		setTimeout(function() {
 			$.exhibitInfoView.height = 0;
 		},300);
 
-		
+		$.collapsibleComponentView.height = '159dip';
 		$.collapsibleComponentView.animate(slideOut);
-	}
-	else{
+	} else {
 		$.collapsibleComponentView.hidden = true;
 		$.exhibitSelectLabel.text = "Explore This Exhibit!";
 		$.exhibitInfoView.animate({
@@ -275,15 +274,17 @@ function onExhibitsClick(exhibits){
 			duration : 300
 		});
 		
+		$.exhibitInfoView.height = Ti.UI.SIZE;
 		setTimeout(function() {
-			$.exhibitInfoView.height = 'auto';
+			$.exhibitInfoView.height = Ti.UI.SIZE;
 		},300);
 
-		$.collapsibleComponentView.animate({
-			height: 0,
+		var slideIn = Ti.UI.createAnimation({
+			height: '0dip',
 			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_OUT
-		});
+			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+	    });
+		$.collapsibleComponentView.animate(slideIn);
 	}
 }
 
@@ -297,7 +298,7 @@ function onExhibitsScroll(e, exhibits) {
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
 	
 	setTimeout(function() {
-		$.exhibitInfoView.height = 'auto';
+		$.exhibitInfoView.height = Ti.UI.SIZE;
 	},150);
 	
 	$.exhibitInfoView.animate({
@@ -308,7 +309,7 @@ function onExhibitsScroll(e, exhibits) {
 	$.collapsibleComponentView.animate({
 		height: 0,
 		duration: 150,
-		curve: Titanium.UI.ANIMATION_CURVE_EASE_OUT
+		curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 	});
 	$.collapsibleComponentView.hidden = true;
 }
@@ -323,9 +324,9 @@ function createComponentsScrollView(exhibits) {
 			width : Ti.UI.SIZE
 		});
 
-		exhibits[i].components.sort(function(a, b) {
+		/*exhibits[i].components.sort(function(a, b) {
 			return a.component_order > b.component_order;
-		});
+		});*/
 
 		for (var j = 0; j < exhibits[i].components.length; j++) {
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
