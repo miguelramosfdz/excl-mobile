@@ -141,11 +141,33 @@ function languageHandler(e) {
 	win.add(languagePicker);
 	*/
 	
+	var languageOptionsFullWord = ['English', 'Spanish', 'Gizoogle', 'Cancel'];
+	var languageOptionsTwoLetterCode = ['en', 'es', 'gz'];
+	languageOptionsTwoLetterCode.push('cancel');
 	var languageDialog = Titanium.UI.createOptionDialog({
-		title : 'Choose a language',
-		options : ['English', 'Spanish', 'Korean']
+		//title : 'Choose a language',
+		options : languageOptionsFullWord,
+		cancel : 3
+	});
+	languageDialog.addEventListener("click", function(e){
+		if (OS_ANDROID){
+			var currentLanguage = languageOptionsTwoLetterCode[languageDialog.index];
+		}
+		else if (OS_IOS){
+			var currentLanguage = languageOptionsTwoLetterCode[e.index];
+		}
+		
+		if (currentLanguage != 'cancel'){
+			Alloy.Globals.currentLanguage = currentLanguage;
+		}
+		else{
+			alert("Cancel was selected");
+		}
+		
 	});
 	languageDialog.show();
+
+	closeMenu(e);
 	
 }
 
