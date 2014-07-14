@@ -54,10 +54,10 @@
 				</View>
 			</View>
 			
-			<View class="viewRow">
+			<View class="viewRow" onClick="languageHandler">
 				<View class="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/settingsGear.png" class="rowIcon"/>
-					<Label id="settingsLabel" color="#C0C0C0" class="rowLabel">Settings</Label>
+					<Label id="settingsLabel" class="rowLabel">Language</Label>
 				</View>
 			</View>
 		</View>
