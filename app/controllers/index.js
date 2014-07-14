@@ -84,9 +84,9 @@ function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.removeView($.placeholder);
 	// This is an android hack
 
-	exhibits.sort(function(a, b) {
+	/*exhibits.sort(function(a, b) {
 		return a.exhibit_order > b.exhibit_order;
-	});
+	});*/
 
 	//exhibits.order_number.sort();
 	for ( i = 0; i < exhibits.length; i++) {
@@ -314,9 +314,9 @@ function createComponentsScrollView(exhibits) {
 			width : Ti.UI.SIZE
 		});
 
-		exhibits[i].components.sort(function(a, b) {
+		/*exhibits[i].components.sort(function(a, b) {
 			return a.component_order > b.component_order;
-		});
+		});*/
 
 		for (var j = 0; j < exhibits[i].components.length; j++) {
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
