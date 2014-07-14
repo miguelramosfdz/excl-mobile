@@ -18,6 +18,10 @@ function closeMenu(e) {
 }
 
 function goToComponentTutorial(e) {
+	$.exhibitTutorialPage.hide();
 	Alloy.Globals.navController.home();
-	Alloy.Globals.navController.open(Alloy.createController("componentTutorialPage"));
+	//Alloy.Globals.navController.open(Alloy.createController("componentTutorialPage"));
+	var tutorialController = Alloy.createController("componentTutorialPage");
+	var tutorialView = tutorialController.getView();
+	Alloy.Globals.navController.Page.add(tutorialView);
 }
