@@ -137,7 +137,8 @@ function languageHandler(e) {
 	cancelIndex = OS_IOS? (languageOptionsFullWord.length - 1) : languageOptionsFullWord.length;
 	var languageDialog = Titanium.UI.createOptionDialog({
 		options : languageOptionsFullWord,	
-		cancel : cancelIndex
+		cancel : cancelIndex,
+		selectedIndex : languageOptionsTwoLetterCode.indexOf(Alloy.Globals.currentLanguage)
 	});
 
 	languageDialog.addEventListener("click", function(e){
@@ -145,6 +146,10 @@ function languageHandler(e) {
 		
 		if (currentLanguage != 'CANCEL'){
 			Alloy.Globals.currentLanguage = currentLanguage;
+			if (currentLanguage != 'en'){
+				currentLanguageFullWord = languageOptionsFullWord[languageOptionsTwoLetterCode.indexOf(currentLanguage)];
+				alert("We'll display " + currentLanguageFullWord + " content where we can. Anything not translated will appear in English.");
+			}
 		}
 	});
 	languageDialog.show();
