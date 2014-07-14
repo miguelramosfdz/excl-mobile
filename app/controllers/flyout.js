@@ -118,12 +118,35 @@ function rowFilterEventListener() {
 
 function tutorialToggler(e) {
 	closeMenu(e);
+	Alloy.Globals.navController.home();
 	Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
 }
 
 function tutorialHandler(e) {
 	closeMenu(e);
 	Alloy.Globals.navController.open(Alloy.createController("exhibitTutorialPage"));
+}
+
+function languageHandler(e) {
+	//var win = viewService.createModalInputView();
+	
+	/*languageChoices = [];
+	languageChoices[0] = "English";
+	languageChoices[1] = "Spanish";
+	languageChoices[2] = "Korean";
+	var languagePicker = Ti.UI.createPicker({
+		selectionIndicator: true
+	});
+	languagePicker.add(languageChoices);
+	win.add(languagePicker);
+	*/
+	
+	var languageDialog = Titanium.UI.createOptionDialog({
+		title : 'Choose a language',
+		options : ['English', 'Spanish', 'Korean']
+	});
+	languageDialog.show();
+	
 }
 
 function detectFilterConditions() {

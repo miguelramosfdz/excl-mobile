@@ -4,6 +4,7 @@ function tutorialExit() {
 	// var newView = Ti.UI.createView();
 	// $.overlayView.add(newView);
 	// $.addClass(newView, "fullScreenOverlay");
+	$.postTutorialPage.hide();
 	Alloy.Globals.navController.home();
 }
 
