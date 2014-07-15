@@ -117,9 +117,11 @@ function createExhibitsCarousel(exhibits) {
 		$.exhibitsCarousel.addView(exhibitView);
 
 		// Change the current page to force the arrows to appear
-		$.exhibitsCarousel.currentPage = i;
+		if (i <= 1) {
+			$.exhibitsCarousel.currentPage = i;
+		}
 	}
-	
+
 	// Change the current page back to 0
 	$.exhibitsCarousel.currentPage = 0;
 	if (OS_IOS) {
@@ -307,7 +309,7 @@ function onExhibitsScroll(e, exhibits) {
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
 	var index = $.exhibitsCarousel.currentPage;
-	$.exhibitInfoLabel.text = exhibits[index].description;	
+	$.exhibitInfoLabel.text = exhibits[index].description;
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
 
