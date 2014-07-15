@@ -1,6 +1,5 @@
 <Alloy>
 	<View id="menuView">
-		<!-- <View id="menuTopBar"/> -->
 		<View class="clearPageProtecterView" onClick="closeMenu"/>
 		<View id="menuContainer" >
 			

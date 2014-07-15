@@ -4,10 +4,10 @@ var time = 0;
 
 var flyoutService = {
 	getMenu: function(){
+		Ti.API.info("Getting the menu");
 		if(!flyoutMenu){
 			flyoutMenu = Alloy.createController('flyout').getView();
 			flyoutMenu.zindex = 1;
-			this.closeMenuWithoutAnimation();
 			time = 100;
 		}
 		return flyoutMenu;
@@ -17,7 +17,7 @@ var flyoutService = {
 			left: "0%",
 			curve : Ti.UI.ANIMATION_CURVE_EASE_OUT,
 			duration: time
-		};	
+		};
 	},
 	getCloseAnimation: function(){
 		return {
