@@ -16,7 +16,7 @@ var allPosts;
 var initialLoad = true;
 var genericAllAgesSectionTitle = "For Everyone in Your Group";
 var noContentMessage = "Sorry!\n\nLooks like we're still in the\nprocess of adding content here.\n\nCheck here later for new and\nexciting activities!";
-var noFiltersSelected = "Please select a filter to see your sorted content!";
+var noFiltersSelected = "Please select an age filter to see your sorted content!";
 
 var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
 var viewService = setPathForLibDirectory('customCalls/viewService');
@@ -158,6 +158,7 @@ function compileDictOfSections(post, dict) {
 
 function organizeByAge(allPosts) {
 	dictOrderedPostsByAge = {};
+	//Ti.API.info("Filter Status 3: " + JSON.stringify(Alloy.Collections.filter));
 	selectedAges = parseFilterDictIntoArray(JSON.stringify(Alloy.Collections.filter));
 	Ti.API.info("Age Filter: " + JSON.stringify(selectedAges));
 
@@ -327,6 +328,7 @@ function sortPostsIntoSections(dict) {
 		$.scrollView.add(errorView);
 	} else if (dictLength == 1 && dict[genericAllAgesSectionTitle] == "") {
 		var error = label.createLabel(noFiltersSelected);
+		error.top = "0";
 		var errorView = view.createView();
 		errorView.add(error);
 		$.scrollView.add(errorView);
@@ -335,9 +337,7 @@ function sortPostsIntoSections(dict) {
 			//cycle through dict keys
 			var postCollection = Alloy.createCollection('post');
 			stepIntoDict(dict, dictKeys[i], postCollection);
-
-			Ti.API.info("section: " + JSON.stringify(dictKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
-
+			//Ti.API.info("section: " + JSON.stringify(dictKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
 			if (dictKeys[i] == genericAllAgesSectionTitle) {
 				if (JSON.stringify(postCollection) != "[]") {
 					args = {
@@ -428,11 +428,12 @@ function parseFilterDictIntoArray(ary) {
 	ary = JSON.parse(ary);
 	for (var i = 0; i < ary.length; i++) {
 		var dict = ary[i];
-		//Ti.API.info("Active: " + dict["name"] + " is " + dict["active"]);
-		if (dict["active"]=="true") {
+	//	Ti.API.info("Active: " + dict["name"] + " is " + dict["active"]);
+		if (dict["active"].toString()=="true") {
 			newAry.push(dict["name"]);
 		}
 	}
+	//Ti.API.info("Returning: " + JSON.stringify(newAry));
 	return newAry;
 }
 
