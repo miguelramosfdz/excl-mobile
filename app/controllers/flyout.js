@@ -52,7 +52,7 @@ function toggleCustomLearning() {
 }
 
 function closeMenu(e) {
-	return Alloy.Globals.navController.closeMenu();
+	return Alloy.Globals.navController.toggleMenu();
 }
 
 function openExhibitPage(e) {
@@ -121,6 +121,7 @@ function tutorialToggler(e) {
 	Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
 }
 
+/*
 function languageHandler(e) {
 	var languageOptionsFullWord = ['English', 'Spanish', 'Gizoogle'];
 	var languageOptionsTwoLetterCode = ['en', 'es', 'gz'];
@@ -148,9 +149,19 @@ function languageHandler(e) {
 	});
 	languageDialog.show();
 
-	closeMenu(e);
-	
+	closeMenu(e);	
 }
+*/
+
+
+function languageHandler(e){
+	var languageService = setPathForLibDirectory('languageService/languageService');
+	languageService = new languageService();
+	languageService.displayDialog();
+	
+	closeMenu(e);
+}
+
 
 function detectFilterConditions() {
 	if (ageFilterSet && ageFilterOn) {
