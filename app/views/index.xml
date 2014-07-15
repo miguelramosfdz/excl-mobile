@@ -14,7 +14,6 @@
 				</View>
 				<View id="exhibitInfoView">
 					<Label id="collapsibleInfoLabel"></Label>
-					<Label id="exhibitInfoLabel"></Label>
 				</View>
 			</ScrollView>
 		</View>

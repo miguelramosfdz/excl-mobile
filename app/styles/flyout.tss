@@ -22,7 +22,7 @@
 
 ".rowContainer": {
 	layout: 'horizontal',
-	height: Ti.UI.SIZE
+	height: Ti.UI.FILL
 }
 
 "#viewRowCollapsible":{
@@ -63,4 +63,13 @@
 		fontSize: "15dip"
 	},
 	color: "#000"
+},
+
+".rowSwitch[platform=android]": {
+	top: "-8dip",
+	left: "5dip"
+},
+
+".rowSwitch[platform=ios]": {
+	right: "5dip"
 }

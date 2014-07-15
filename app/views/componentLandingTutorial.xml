@@ -6,7 +6,7 @@
 		<ImageView id="flyoutMenuArrow" image="/images/tutorial/long-arrow.png"></ImageView>
 		<ImageView id="ComponentsArrow" image="/images/tutorial/long-arrow.png"></ImageView> -->
 		<Label id="flyoutMenuText" class="fullScreenOverlayText">Component Tutorial!</Label>
-		<Button id="ExitButton" onClick="tutorialExit" class="tutorialButton">End tutorials</Button>
-		<Button id="NextButton" onClick="gotIt" class="tutorialButton">Got it!</Button>
+		<Button id="ExitButton" onClick="tutorialExit" class="tutorialButton">End Tutorial</Button>
+		<Button id="NextButton" onClick="gotIt" class="GotItButton">Got it!</Button>
 	</View>
 </Alloy>
