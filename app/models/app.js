@@ -12,7 +12,7 @@ exports.definition = {
 	extendModel: function(Model) {
 		_.extend(Model.prototype, {
 			// extended functions and properties go here
-			retrieveFilters: function() {
+			retrieveMuseumData: function() {
 				var retriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
 				var url = dreamhostersAPI;
 	
@@ -37,6 +37,8 @@ exports.definition = {
 							});
 						};
 						Alloy.Collections.filter.ready = true;
+						
+						Alloy.Globals.languageOptions = response.data.museum.lang_options;
 					}
 				});
 			}
