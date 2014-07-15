@@ -65,13 +65,26 @@
 	left: "15%",
 	borderWidth: '1',
 	backgroundGradient: {
-	    type: 'linear',
-	    startPoint: { x: '50%', y: '0%' },
-	    endPoint: { x: '50%', y: '100%' },
-	    colors: [ 	{ color: '#B3363E', offset: 0.0}, 
-	    			{ color: '#8F2C2C', offset: 1.0 }],
-   }
-	
+		type: 'linear',
+		startPoint: {
+			x: '50%',
+			y: '0%'
+		},
+		endPoint: {
+			x: '50%',
+			y: '100%'
+		},
+		colors: [
+			{
+				color: '#B3363E',
+				offset: 0.0
+			},
+			{
+				color: '#8F2C2C',
+				offset: 1.0
+			}
+		]
+	}
 }
 
 "#bottomButtonContainer":{
@@ -101,7 +114,7 @@
 	scrollType: 'horizontal',
 	horizontalWrap: false,
 	top: "3dip",
-	bottom: "3dip",
+	bottom: "3dip"
 }
 
 ".headingLabel":{
@@ -113,7 +126,7 @@
 		fontFamily: 'Helvetica Neue',
 		fontSize: '22dip',
 		fontWeight: 'bold'
-	},
+	}
 }
 
 "#exhibitInfoView": {

@@ -146,7 +146,7 @@ function createExhibitsImageIOS(exhibit, pageXofYtext) {
 	var viewConfig = {
 		backgroundColor : "#253342",
 		width : Ti.UI.FILL,
-		image: '/images/700x400.png',
+		image : '/images/700x400.png',
 		itemId : exhibit.id
 	};
 	if (exhibit.exhibit_image) {
@@ -319,11 +319,7 @@ function onExhibitsScroll(e, exhibits) {
 	$.exhibitInfoLabel.text = exhibits[index].description;
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
-
-	setTimeout(function() {
-		$.exhibitInfoView.height = Ti.UI.SIZE;
-	}, 150);
-
+	$.exhibitInfoView.height = Ti.UI.SIZE;
 	$.exhibitInfoView.animate({
 		opacity : 1,
 		duration : 150
