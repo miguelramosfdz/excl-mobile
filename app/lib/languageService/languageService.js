@@ -6,6 +6,7 @@ languageService.prototype.getLanguageOptionsFourLetterCodeFromJSON = function(){
 	var languageOptionsFourLetter = new Array();
 	languageOptionsFourLetter = this.cloneLanguageOptions();
 	Ti.API.info("Language options: " + languageOptionsFourLetter.toString());
+	languageOptionsFourLetter = ["en_US", "es_ES", "fr_FR"];
 	return languageOptionsFourLetter;
 };
 
