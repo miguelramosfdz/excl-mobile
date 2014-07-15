@@ -139,11 +139,11 @@ function createExhibitsImageIOS(exhibit, pageXofYtext) {
 	var viewConfig = {
 		backgroundColor : "#253342",
 		width : Ti.UI.FILL,
-		image : '/images/700x400.png',
+		image: '/images/700x400.png',
 		itemId : exhibit.id
 	};
-	if (exhibit.image) {
-		viewConfig.image = exhibit.image;
+	if (exhibit.exhibit_image) {
+		viewConfig.image = exhibit.exhibit_image;
 	}
 	var exhibitView = Ti.UI.createImageView(viewConfig);
 	exhibitView.add(createExhibitTitleLabel(exhibit.name, pageXofYtext));
