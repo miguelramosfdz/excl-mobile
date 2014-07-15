@@ -316,7 +316,6 @@ function onExhibitsScroll(e, exhibits) {
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
 	var index = $.exhibitsCarousel.currentPage;
-	$.exhibitInfoLabel.text = exhibits[index].description;
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
 	$.exhibitInfoView.height = Ti.UI.SIZE;
@@ -403,7 +402,7 @@ function createExhibitSelect(exhibits) {
 }
 
 function setExhibitText(text) {
-	$.exhibitInfoLabel.text = text;
+	$.collapsibleInfoLabel.text = text;
 }
 
 exports.reload = reload;
