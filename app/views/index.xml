@@ -2,10 +2,10 @@
 	<Window class="container">
 		<View id="mainView">
 			<Widget id="navBar" src="navigationBar"/>
+			<ScrollableView id="exhibitsCarousel">
+				<View id="placeholder" height='180dip'></View>
+			</ScrollableView>
 			<ScrollView id="exhibitInfoScrollView">
-				<ScrollableView id="exhibitsCarousel">
-					<View id="placeholder" height='180dip'></View>
-				</ScrollableView>
 				<View id="collapsibleComponentView" layout="vertical">
 					<View height="50dip">
 						<Label class="headingLabel">Select an activity!</Label>

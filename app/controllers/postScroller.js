@@ -17,7 +17,7 @@ if (posts) {
 	$.scroller.currentPage = 0;			// Set current page back to the initial page
 	
 } else {
-	$.placeholderLabel.text = "Sorry, but we don't have any content specific for this age yet. Try a different age!";
+	$.placeholderLabel.text = "There's no content specific for this age. Check above or change your filter!";
 }
 
 function createPostView(post) {

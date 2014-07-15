@@ -15,7 +15,7 @@ function NavigationController() {
 NavigationController.prototype.restart = function(){
 		this.home();
 		this.windowStack.pop();
-		Alloy.createController("index");
+		this.open(Alloy.createController("index"));
 };
 
 NavigationController.prototype.enterKioskMode = function(){
@@ -188,6 +188,7 @@ NavigationController.prototype.close = function(numWindows) {
 // go back to the initial window of the NavigationController
 NavigationController.prototype.home = function() {
 	removeMenuFromWindow(this.windowStack, this.menu);
+	this.closeMenuWithoutAnimation();
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
 		// setup chain reaction by setting up the flags on all the windows
 		for (var i = this.windowStack.length - 1; this.windowStack[i-1] != this.lockedPage; i--) {
@@ -213,20 +214,22 @@ NavigationController.prototype.reset = function(){
 	this.lockedPage = this.Page;
 };
 
-// Return true if in kiosk mode and false otherwise
 NavigationController.prototype.toggleMenu = function(){
 	this.menu.toggleMenu();
 };
 
-// Return true if in kiosk mode and false otherwise
 NavigationController.prototype.closeMenuWithoutAnimation = function(){
 	this.menu.closeMenuWithoutAnimation();
 };
 
+NavigationController.prototype.closeMenu = function() {
+	this.menu.closeMenu();
+};
+
 NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
 	Ti.API.debug("Tracking screen " + window.analyticsPageTitle + " as a " + window.analyticsPageLevel + " level");
-	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel, Alloy.Globals.adminMode.isInKioskMode());
-	var kioskModeString = (Alloy.Globals.adminMode.isInKioskMode()) ? "KioskModeOn" : "KioskModeOff";
+	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel, Alloy.Globals.adminModeController.isInKioskMode());
+	var kioskModeString = (Alloy.Globals.adminModeController.isInKioskMode()) ? "KioskModeOn" : "KioskModeOff";
 	Alloy.Globals.analyticsController.trackEvent(kioskModeString, window.analyticsPageLevel, window.analyticsPageTitle, 1);
 };
 
