@@ -24,8 +24,15 @@ var reload = function() {
 	return controller;
 };
 
+function fixIpadSpacing() {
+	if (Titanium.Platform.osname == 'ipad') {
+		$.bottomButtonContainer.bottom = "48dip";
+	}
+}
+
 $.navBar.hideBackBtn();
 retrieveJson(url, initializeWithJSON, this);
+fixIpadSpacing();
 
 function setAnalyticsPageTitle(title) {
 	analyticsPageTitle = title;
