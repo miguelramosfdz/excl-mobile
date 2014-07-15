@@ -50,7 +50,7 @@ var flyoutService = {
 			return this.openMenu();
 	},
 	isEnabled: function(){
-		return !Alloy.Globals.adminMode.isInKioskMode();
+		return !Alloy.Globals.adminModeController.isInKioskMode();
 	}
 };
 

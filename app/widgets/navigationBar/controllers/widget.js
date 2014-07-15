@@ -7,7 +7,7 @@ function menu(e){
 }
 
 
-Alloy.Globals.adminMode.addAdminModeListener($.flyoutBtn);
+Alloy.Globals.adminModeController.addAdminModeListener($.flyoutBtn);
 
 exports.hideBackBtn = function() {
 	$.backBtn.visible = false;

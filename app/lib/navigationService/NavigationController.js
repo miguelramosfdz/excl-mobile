@@ -228,8 +228,8 @@ NavigationController.prototype.closeMenu = function() {
 
 NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
 	Ti.API.debug("Tracking screen " + window.analyticsPageTitle + " as a " + window.analyticsPageLevel + " level");
-	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel, Alloy.Globals.adminMode.isInKioskMode());
-	var kioskModeString = (Alloy.Globals.adminMode.isInKioskMode()) ? "KioskModeOn" : "KioskModeOff";
+	Alloy.Globals.analyticsController.trackScreen(window.analyticsPageTitle, window.analyticsPageLevel, Alloy.Globals.adminModeController.isInKioskMode());
+	var kioskModeString = (Alloy.Globals.adminModeController.isInKioskMode()) ? "KioskModeOn" : "KioskModeOff";
 	Alloy.Globals.analyticsController.trackEvent(kioskModeString, window.analyticsPageLevel, window.analyticsPageTitle, 1);
 };
 

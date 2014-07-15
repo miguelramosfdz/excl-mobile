@@ -1,15 +1,15 @@
 var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
 
-function AdminMode() {
-	var kiosk = require(rootPath +'adminResources/kioskMode');
+function ModeController() {
+	var kiosk = require(rootPath +'adminModeService/kioskMode');
 	this.kioskMode = new kiosk();
-}
+};
 
-AdminMode.prototype.isInKioskMode = function(){
+ModeController.prototype.isInKioskMode = function(){
 	return this.kioskMode.isInKioskMode();
 };
 
-AdminMode.prototype.addAdminModeListener = function(element) {
+ModeController.prototype.addAdminModeListener = function(element) {
 	var count = 0;
 	var self = this;
 	var handleAdminModeEntry = function(e){
@@ -28,7 +28,6 @@ AdminMode.prototype.addAdminModeListener = function(element) {
 };
 
 function handleAdminModeDialog(self) {
-		
 	var textfield = Ti.UI.createTextField({
 		passwordMask:true,
 	    height:"35dip",
@@ -74,4 +73,4 @@ function handleAdminModeDialog(self) {
 	setTimeout(function(){dialog.hide();}, 9000);
 }
 
-module.exports = AdminMode;
+module.exports = ModeController;
