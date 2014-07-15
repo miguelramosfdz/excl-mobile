@@ -34,19 +34,19 @@ function enterProductionMode(e){
 function enterDevelopmentMode(e){
 	Alloy.Globals.setRootWebServiceFromUrls("dev");
 	Alloy.Globals.navController.restart();
-	alert("Entered Production Wordpress Environment");
+	alert("Entered Development Wordpress Environment");
 }
 
 function enterDevelopmentTwoMode(e){
 	Alloy.Globals.setRootWebServiceFromUrls("devTwo");
 	Alloy.Globals.navController.restart();
-	alert("Entered Production Wordpress Environment");
+	alert("Entered Development Wordpress Environment");
 }
 
 function enterQualityAssuranceMode(e){
 	Alloy.Globals.setRootWebServiceFromUrls("qa");
 	Alloy.Globals.navController.restart();
-	alert("Entered Production Wordpress Environment");
+	alert("Entered Quality Assurance Wordpress Environment");
 }
 
 function enterOtherMode(self) {
