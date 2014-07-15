@@ -3,7 +3,8 @@ exports.definition = {
 		defaults: {
 			customizeLearningEnabled: false,
 			customizeLearningSet: false,
-			currentLanguage: "en_US"
+			currentLanguage: "en_US",
+			tutorialOn: true
 		},
 		adapter: {
 			type: "properties",

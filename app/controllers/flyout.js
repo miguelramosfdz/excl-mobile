@@ -7,7 +7,11 @@ var viewService = setPathForLibDirectory('customCalls/viewService');
 viewService = new viewService();
 var buttonService = setPathForLibDirectory('customCalls/buttonService');
 buttonService = new buttonService();
+var TutorialService = setPathForLibDirectory('tutorialService/tutorialService');
+var tutorialService = new TutorialService();
+var tutorialOn = Alloy.Models.app.get("tutorialOn");
 
+Alloy.Models.app.on('change:tutorialOn', updateTutorialUI);
 Alloy.Models.app.on('change:customizeLearningSet', activateFiltersWithSet);
 Alloy.Models.app.on('change:customizeLearningEnabled', activateFiltersWithEnable);
 
@@ -133,8 +137,59 @@ function rowFilterEventListener() {
 function tutorialToggler(e) {
 	//closeMenu(e);
 	//Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
-	Alloy.createController('tutorialToggler').getView().open();
+	//Alloy.createController('tutorialToggler').getView().open();
 	//closeMenu(e);
+	if (!tutorialOn) {
+		tutorialService.resetTutorialMode();
+		tutorialOn = true;
+		Alloy.Models.app.set("tutorialOn", true);
+		Alloy.Models.app.trigger("change:tutorialOn");
+		var dialog = Ti.UI.createAlertDialog({
+		    cancel: 1,
+		    buttonNames: ['Yes', 'No'],
+		    message: 'Tutorial mode activated! Would you like to start at the beginning?',
+		    title: 'Tutorial Mode'
+		});
+		var style;
+		if (Ti.Platform.name === 'iPhone OS'){
+		  style = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
+		}
+		else {
+		  style = Ti.UI.ActivityIndicatorStyle.DARK;
+		}
+		var activityIndicator = Ti.UI.createActivityIndicator({
+		  color: 'green',
+		  font: {fontFamily:'Helvetica Neue', fontSize:26, fontWeight:'bold'},
+		  message: 'Loading...',
+		  style:style,
+		  top:10,
+		  left:10,
+		  height:Ti.UI.SIZE,
+		  width:Ti.UI.SIZE
+		});
+		dialog.addEventListener('click', function(e){
+			if (e.index !== e.source.cancel){
+				Alloy.Globals.navController.restart();
+			}
+			$.getView().add(activityIndicator);
+			activityIndicator.show();
+		});
+		dialog.show();
+	} else {
+		tutorialService.endTutorialMode();
+		tutorialOn = false;
+		Alloy.Models.app.set("tutorialOn", false);
+		Alloy.Models.app.trigger("change:tutorialOn");
+	}
+	updateTutorialUI();
+}
+
+function updateTutorialUI() {
+	if (Alloy.Models.app.get("tutorialOn")) {
+		$.tutorialLabel.text = "Tutorial is On";
+	} else {
+		$.tutorialLabel.text = "Tutorial is Off";
+	}
 }
 
 function languageHandler(e){
