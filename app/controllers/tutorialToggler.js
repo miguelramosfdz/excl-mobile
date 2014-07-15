@@ -15,5 +15,6 @@ function tutorialHandler(e) {
 }
 
 function CloseToggler() {
-	Alloy.Globals.navController.close();
+	//Alloy.Globals.navController.close();
+	$.tutorialToggler.close();
 }
