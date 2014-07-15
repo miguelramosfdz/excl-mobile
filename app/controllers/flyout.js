@@ -11,6 +11,20 @@ buttonService = new buttonService();
 Alloy.Models.app.on('change:customizeLearningSet', activateFiltersWithSet);
 Alloy.Models.app.on('change:customizeLearningEnabled', activateFiltersWithEnable);
 
+setMuseumJSON();
+
+function setMuseumJSON(){
+	var retriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
+	var url = Alloy.Globals.rootWebServiceUrl;
+
+	retriever.fetchDataFromUrl(url, function(response) {
+		if(response) {
+			Ti.API.info("Museum JSON: " + response.toString());
+			Alloy.Globals.museumJSON = response;
+		}
+	});
+};
+
 function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
 		lib = require("../../lib/" + libFile);
@@ -122,39 +136,6 @@ function tutorialToggler(e) {
 	Alloy.createController('tutorialToggler').getView().open();
 	closeMenu(e);
 }
-
-/*
-function languageHandler(e) {
-	var languageOptionsFullWord = ['English', 'Spanish', 'Gizoogle'];
-	var languageOptionsTwoLetterCode = ['en', 'es', 'gz'];
-	if (OS_IOS){
-		languageOptionsFullWord.push('Cancel');
-	}
-	languageOptionsTwoLetterCode.push('CANCEL');
-	cancelIndex = OS_IOS? (languageOptionsFullWord.length - 1) : languageOptionsFullWord.length;
-	var languageDialog = Titanium.UI.createOptionDialog({
-		options : languageOptionsFullWord,	
-		cancel : cancelIndex,
-		selectedIndex : languageOptionsTwoLetterCode.indexOf(Alloy.Globals.currentLanguage)
-	});
-
-	languageDialog.addEventListener("click", function(e){
-		var currentLanguage = languageOptionsTwoLetterCode[e.index];
-		
-		if (currentLanguage != 'CANCEL'){
-			Alloy.Globals.currentLanguage = currentLanguage;
-			if (currentLanguage != 'en'){
-				currentLanguageFullWord = languageOptionsFullWord[languageOptionsTwoLetterCode.indexOf(currentLanguage)];
-				alert("We'll display " + currentLanguageFullWord + " content where we can. Anything not translated will appear in English.");
-			}
-		}
-	});
-	languageDialog.show();
-
-	closeMenu(e);	
-}
-*/
-
 
 function languageHandler(e){
 	var languageService = setPathForLibDirectory('languageService/languageService');

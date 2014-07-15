@@ -2,7 +2,8 @@ exports.definition = {
 	config: {
 		defaults: {
 			customizeLearningEnabled: false,
-			customizeLearningSet: false
+			customizeLearningSet: false,
+			currentLanguage: "en_US"
 		},
 		adapter: {
 			type: "properties",
