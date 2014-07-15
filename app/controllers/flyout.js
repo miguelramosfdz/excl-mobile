@@ -120,7 +120,7 @@ function tutorialToggler(e) {
 	//closeMenu(e);
 	//Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
 	Alloy.createController('tutorialToggler').getView().open();
-	closeMenu(e);
+	//closeMenu(e);
 }
 
 /*
