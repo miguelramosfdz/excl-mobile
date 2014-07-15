@@ -117,10 +117,9 @@ function rowFilterEventListener() {
 }
 
 function tutorialToggler(e) {
-	Ti.API.info("Tutorial toggler before close menu");
-	closeMenu(e);
-	Ti.API.info("Tutorial toggler after close menu");
+	//closeMenu(e);
 	Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
+	closeMenu(e);
 }
 
 /*
