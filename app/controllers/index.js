@@ -19,7 +19,7 @@ var analyticsPageTitle = "Home";
 var analyticsPageLevel = "Exhibit Landing";
 var expanderButton;
 
-var reload = function(){
+var reload = function() {
 	var controller = Alloy.createController("index");
 	return controller;
 };
@@ -61,10 +61,9 @@ function initializeWithJSON(json, controller) {
 	populateWindow(json);
 }
 
-function reloadWithJSON(json, controller){
+function reloadWithJSON(json, controller) {
 	populateWindow(json);
 }
-
 
 function populateWindow(json) {
 	var components = Alloy.Collections.instance('component');
@@ -90,16 +89,16 @@ function populateWindow(json) {
 	setExhibitText(exhibitText[0]);
 }
 
-function clearAll(){
-	
+function clearAll() {
+
 }
 
 function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.removeView($.placeholder);
 	// This is an android hack
-	
+
 	/*exhibits.sort(function(a, b) {
-		return a.exhibit_order > b.exhibit_order;
+	return a.exhibit_order > b.exhibit_order;
 	});*/
 
 	//exhibits.order_number.sort();
@@ -251,32 +250,32 @@ function createTitleLabel(name, type, pageXofYtext) {
 	return titleLabel;
 }
 
-function createcollapsibleComponentView(){
+function createcollapsibleComponentView() {
 	$.collapsibleComponentView.hidden = true;
 	$.collapsibleComponentView.height = 0;
 }
 
-function onExhibitsClick(exhibits){
-	if ($.collapsibleComponentView.hidden == true){
+function onExhibitsClick(exhibits) {
+	if ($.collapsibleComponentView.hidden == true) {
 		$.collapsibleComponentView.hidden = false;
 		var pageIndex = $.exhibitsCarousel.currentPage;
 		$.exhibitSelectLabel.text = "Go Back";
 		$.collapsibleInfoLabel.text = exhibits[pageIndex].long_description;
 
 		$.exhibitInfoView.animate({
-	        opacity: 0,
-	        duration: 300
-	    }); 
-	    
-	    var slideOut = Ti.UI.createAnimation({
-			height: '210dip',
-			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
-	    });
-			    
+			opacity : 0,
+			duration : 300
+		});
+
+		var slideOut = Ti.UI.createAnimation({
+			height : '210dip',
+			duration : 300,
+			curve : Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+		});
+
 		setTimeout(function() {
 			$.exhibitInfoView.height = 0;
-		},300);
+		}, 300);
 
 		$.collapsibleComponentView.height = '210dip';
 		$.collapsibleComponentView.animate(slideOut);
@@ -287,17 +286,17 @@ function onExhibitsClick(exhibits){
 			opacity : 1,
 			duration : 300
 		});
-		
+
 		$.exhibitInfoView.height = Ti.UI.SIZE;
 		setTimeout(function() {
 			$.exhibitInfoView.height = Ti.UI.SIZE;
-		},300);
+		}, 300);
 
 		var slideIn = Ti.UI.createAnimation({
-			height: '0dip',
-			duration: 300,
-			curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
-	    });
+			height : '0dip',
+			duration : 300,
+			curve : Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+		});
 		$.collapsibleComponentView.animate(slideIn);
 	}
 }
@@ -310,20 +309,20 @@ function onExhibitsScroll(e, exhibits) {
 	$.exhibitInfoLabel.text = exhibits[index].description;
 	$.collapsibleInfoLabel.text = exhibits[index].long_description;
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
-	
+
 	setTimeout(function() {
 		$.exhibitInfoView.height = Ti.UI.SIZE;
-	},150);
-	
+	}, 150);
+
 	$.exhibitInfoView.animate({
-        opacity: 1,
-        duration: 150
-    }); 
-    
+		opacity : 1,
+		duration : 150
+	});
+
 	$.collapsibleComponentView.animate({
-		height: 0,
-		duration: 150,
-		curve: Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
+		height : 0,
+		duration : 150,
+		curve : Titanium.UI.ANIMATION_CURVE_EASE_IN_OUT
 	});
 	$.collapsibleComponentView.hidden = true;
 }
@@ -339,8 +338,8 @@ function createComponentsScrollView(exhibits) {
 		});
 
 		/*exhibits[i].components.sort(function(a, b) {
-			return a.component_order > b.component_order;
-		});*/
+		 return a.component_order > b.component_order;
+		 });*/
 
 		for (var j = 0; j < exhibits[i].components.length; j++) {
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
@@ -391,12 +390,14 @@ function createLabeledPicView(item, type) {
 	return itemContainer;
 }
 
-function createExhibitSelect(exhibits){
-	$.exhibitSelect.addEventListener('click', function(e){ onExhibitsClick(exhibits); });
+function createExhibitSelect(exhibits) {
+	$.exhibitSelect.addEventListener('click', function(e) {
+		onExhibitsClick(exhibits);
+	});
 }
 
 function setExhibitText(text) {
 	$.exhibitInfoLabel.text = text;
-} 
+}
 
-exports.reload = reload;
+exports.reload = reload; 
