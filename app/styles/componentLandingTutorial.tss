@@ -21,6 +21,20 @@
 		fontSize: "24dp"
 	}
 }
+".GotItButton": {
+	backgroundColor: "green",
+	width: "200dip",
+	height: "50dip",
+	borderColor: "white",
+	borderRadius: "7dip",
+	borderWidth: "1dip",
+	color: "#fff",
+	font: {
+		textStyle: Titanium.UI.TEXT_STYLE_HEADLINE,
+		fontSize: "24dp"
+	}
+}
+
 ".tutorialButton": {
 	backgroundColor: "#ED1C24",
 	width: "200dip",
@@ -34,6 +48,7 @@
 		fontSize: "24dp"
 	}
 }
+
 "#flyoutMenuArrow": {
 	top: "37dip",
 	right: "30dip",
