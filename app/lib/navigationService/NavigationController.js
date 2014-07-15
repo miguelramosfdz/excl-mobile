@@ -10,12 +10,15 @@ function NavigationController() {
 	this.alloy = require(rootPath + "customCalls/alloyService");
 	this.analyticsController = this.alloy.Globals.analyticsController;
 	this.menu = require(rootPath + "navigationService/flyoutService");
+	var TutorialController = require(rootPath + "tutorialService/tutorialService");
+	this.tutorialController = new TutorialController();
+	this.waitForWindowsToClose = false;
 }
 
 NavigationController.prototype.restart = function(){
 		this.home();
 		this.windowStack.pop();
-		this.open(Alloy.createController("index"));
+		Alloy.createController("index");
 };
 
 NavigationController.prototype.enterKioskMode = function(){
@@ -36,7 +39,6 @@ NavigationController.prototype.open = function(controller) {
 	var windowToOpen = this.getWindowFromController(controller);
 	try {
 		var win = this.openWindow(windowToOpen);
-		
 		return win;
 	} catch(e) {
 		return false;
@@ -67,6 +69,7 @@ NavigationController.prototype.openWindow = function(windowToOpen) {
 	} else {
 		this.openNewScreen(windowToOpen);
 	}
+	this.openTutorial(windowToOpen);
 	this.windowStack.push(windowToOpen);
 
 	return windowToOpen;
@@ -111,9 +114,6 @@ NavigationController.prototype.openNewScreen = function(windowToOpen) {
 
 NavigationController.prototype.addCloseEventListenersToWindow = function(windowToOpen){
 	var self = this; // for use in callbacks
-	windowToOpen.addEventListener("close", function(e){
-		self.menu.closeMenuWithoutAnimation();
-	});
 	
 	// Capture Android back button
 	if (OS_ANDROID) {
@@ -126,15 +126,12 @@ NavigationController.prototype.addCloseEventListenersToWindow = function(windowT
 
 	var lastPushed = windowToOpen;
 	windowToOpen.addEventListener('close', function() {
+		Ti.API.info("In the close event listener for window: ", windowToOpen.toString());
+		self.menu.closeMenuWithoutAnimation();
 		if (self.windowStack.length > 0) // don't pop the last Window, which is the base one
 		{
+			Ti.API.info("close event listener: window stack greater than 0");
 			var popped = self.windowStack.pop();
-
-			// Last window should NOT have been popped. Push it back on the stack!
-			/*if (lastPushed != popped)
-			{
-				self.windowStack.push(popped);
-			}//*/
 
 			// close dependent window ?
 			if (this.toClose) {
@@ -148,6 +145,7 @@ NavigationController.prototype.addCloseEventListenersToWindow = function(windowT
 			 	self.open(this.toOpen, {animated : false});
 			}
 		} // end if windowStack.length > 1, and end of my hack
+		this.waitForWindowsToClose = false;
 	}); // end eventListener 'close'
 	
 	windowToOpen.addEventListener('set.to.close', function(dict) {
@@ -163,7 +161,7 @@ NavigationController.prototype.addCloseEventListenersToWindow = function(windowT
 NavigationController.prototype.close = function(numWindows) {
 	this.menu.closeMenuWithoutAnimation();
 	if (this.windowStack.length > 1 && this.windowStack[this.windowStack.length - 1] != this.lockedPage) {
-		
+		this.waitForWindowsToClose = true;
 		removeMenuFromWindow(this.windowStack, this.menu);
 		if (numWindows > 1) {
 			// setup chain reaction by setting up the flags on all the windows
@@ -233,6 +231,13 @@ NavigationController.prototype.analyticsTrackWindowScreen = function(window) {
 	Alloy.Globals.analyticsController.trackEvent(kioskModeString, window.analyticsPageLevel, window.analyticsPageTitle, 1);
 };
 
+NavigationController.prototype.openTutorial = function(windowToOpen) {
+	var controllerName = this.tutorialController.checkTutorialForPage(windowToOpen);
+	if (controllerName !== false) {
+		windowToOpen.add(Alloy.createController(controllerName).getView());
+	}
+};
+
 function addMenuToHomeWindow(windowStack, menu){
 	if(windowStack.length>0){	
 		windowStack[0].add(menu.getMenu());
@@ -246,7 +251,9 @@ function addMenuToNextWindow(windowStack, menu){
 }
 
 function removeMenuFromWindow(windowStack, menu){
+	Ti.API.info("About to check if window stack is greater than 0 to remove the menu", windowStack);
 	if(windowStack.length>0){
+		Ti.API.info("About to remove menu", windowStack);
 		windowStack[windowStack.length-1].remove(menu.getMenu());
 	}
 }
