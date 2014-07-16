@@ -1,8 +1,0 @@
-<Alloy>
-	<Window class="fullScreenWindow" autoStyle="true">
-		<View class="fullScreenOverlay" autoStyle="true" />
-		<Label id="tutorialTogglerText" class="fullScreenOverlayText">Would you like to enable the Tutorial?</Label>
-		<Button id="YesButton" onClick="tutorialHandler" class="tutorialButton">Yes</Button>
-		<Button id="NoButton" onClick="CloseToggler" class="tutorialButton">No</Button>
-	</Window>
-</Alloy>

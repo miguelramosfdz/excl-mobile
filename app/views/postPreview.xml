@@ -1,7 +1,9 @@
 <Alloy>
 	<View id="backgroundContainer">
-		<View id="postContainer">
-			<Label id="headingText" text="Post Title"/>
+		<View id="placeholderContainer">
+			<View id="header">
+				<Label id="headerText"/>
+			</View>
 			<View id="previewContainer">
 				<ImageView id="placeholderImage"/>
 				<Label id="placeholderLabel"/>

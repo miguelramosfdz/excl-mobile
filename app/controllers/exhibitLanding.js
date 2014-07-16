@@ -1,12 +1,12 @@
 var args = arguments[0] || {};
 
-var dataRetriever = require('dataRetriever/dataRetriever');
-var LoadingSpinner = require('loadingSpinner/loadingSpinner');
+var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var LoadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 
-var iconService = Alloy.Globals.setPathForLibDirectory('customCalls/iconService');
+var iconService = setPathForLibDirectory('customCalls/iconService');
 var iconService = new iconService();
 
-var buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
+var buttonService = setPathForLibDirectory('customCalls/buttonService');
 var buttonService = new buttonService();
 
 var spinner = new LoadingSpinner();
@@ -15,9 +15,36 @@ var url = Alloy.Globals.rootWebServiceUrl;
 var exhibitText = [];
 var componentsInExhibit = [];
 var currExhibitId;
+var expanderButton;
 var analyticsPageTitle = "Exhibit Landing";
 var analyticsPageLevel = "Exhibit Landing";
-var expanderButton;
+
+var setAnalyticsPageTitle = function(title) {
+	analyticsPageTitle = title;
+};
+var getAnalyticsPageTitle = function() {
+	return analyticsPageTitle;
+};
+var setAnalyticsPageLevel = function(level) {
+	analyticsPageLevel = level;
+};
+var getAnalyticsPageLevel = function() {
+	return analyticsPageLevel;
+};
+exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
+exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
+exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
+exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
+
+
+function setPathForLibDirectory(libFile){
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
 
 var reload = function() {
 	var controller = Alloy.createController("index");
@@ -65,7 +92,7 @@ function initializeWithJSON(json, controller) {
 	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);
 	populateWindow(json);
-	Alloy.Globals.navController.open(controller);
+	// Alloy.Globals.navController.open(controller);
 }
 
 function reloadWithJSON(json, controller) {
