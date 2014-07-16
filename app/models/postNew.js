@@ -7,7 +7,7 @@ exports.definition = {
 		},
 		adapter: {
 			type: "properties",
-			collection_name: "post"
+			collection_name: "postNew"
 		}
 	},
 	extendModel: function(Model) {
