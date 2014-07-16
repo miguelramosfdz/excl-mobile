@@ -3,11 +3,11 @@
 		<View id="mainView">
 			<Widget id="navBar" src="navigationBar"/>
 			<ScrollableView id="exhibitsCarousel">
-				<View id="placeholder" height='180dip'></View>
+				<View id="placeholder"></View>
 			</ScrollableView>
 			<ScrollView id="exhibitInfoScrollView">
-				<View id="collapsibleComponentView" layout="vertical">
-					<View height="50dip">
+				<View id="collapsibleComponentView" >
+					<View id="headingLabelView">
 						<Label class="headingLabel">Select an activity!</Label>
 					</View>
 					<ScrollView id="componentScrollView"></ScrollView>

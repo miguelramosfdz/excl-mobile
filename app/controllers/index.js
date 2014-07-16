@@ -30,9 +30,12 @@ function fixIpadSpacing() {
 	}
 }
 
-$.navBar.hideBackBtn();
-retrieveJson(url, initializeWithJSON, this);
-fixIpadSpacing();
+function init() {
+	spinner.addTo($.exhibitsCarousel);
+	spinner.show();
+	$.navBar.hideBackBtn();
+	fixIpadSpacing();
+}
 
 function setAnalyticsPageTitle(title) {
 	analyticsPageTitle = title;
@@ -50,13 +53,11 @@ function getAnalyticsPageLevel() {
 	return analyticsPageLevel;
 }
 
-function retrieveJson(jsonURL, callback, controller) {
-	spinner.addTo($.exhibitsCarousel);
-	spinner.show();
+function retrieveJson(jsonURL, controller) {
+	
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
-			callback(returnedData, controller);
-			spinner.hide();
+			initializeWithJSON(returnedData, controller);
 		}
 	});
 }
@@ -404,5 +405,9 @@ function createExhibitSelect(exhibits) {
 function setExhibitText(text) {
 	$.collapsibleInfoLabel.text = text;
 }
+
+init();
+retrieveJson(url, this);
+spinner.hide();
 
 exports.reload = reload;
