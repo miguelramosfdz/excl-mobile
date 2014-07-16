@@ -354,6 +354,7 @@ function createComponentsScrollView(exhibits) {
 			component.width = '300dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
+			component.addEventListener('longpress', openTestComponent);
 			/*
 			 component.sort(function(a,b){
 			 return a.component_order > b.component_order;
@@ -372,7 +373,19 @@ function openComponent(e) {
 	var component = components.where({"id": e.source.itemId})[0];
 	var controller = Alloy.createController('altSectionLanding', component);
 	var analyticsTitle = component.getScreenName();
-	var analyticsLevel = "Component Landing";
+	var analyticsLevel = "Section Landing";
+	controller.setAnalyticsPageTitle(analyticsTitle);
+	controller.setAnalyticsPageLevel(analyticsLevel);
+	Alloy.Globals.navController.open(controller);
+	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", analyticsLevel, 1);
+}
+
+function openTestComponent(e) {
+	var components = Alloy.Collections.instance('component');
+	var component = components.where({"id": e.source.itemId})[0];
+	var controller = Alloy.createController('sectionLanding', component);
+	var analyticsTitle = component.getScreenName();
+	var analyticsLevel = "Section Landing";
 	controller.setAnalyticsPageTitle(analyticsTitle);
 	controller.setAnalyticsPageLevel(analyticsLevel);
 	Alloy.Globals.navController.open(controller);
