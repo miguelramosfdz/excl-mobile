@@ -24,8 +24,15 @@ var reload = function() {
 	return controller;
 };
 
+function fixIpadSpacing() {
+	if (Titanium.Platform.osname == 'ipad') {
+		$.bottomButtonContainer.bottom = "48dip";
+	}
+}
+
 $.navBar.hideBackBtn();
 retrieveJson(url, initializeWithJSON, this);
+fixIpadSpacing();
 
 function setAnalyticsPageTitle(title) {
 	analyticsPageTitle = title;
@@ -102,7 +109,7 @@ function createExhibitsCarousel(exhibits) {
    //exhibits.order_number.sort();
 
 	for ( i = 0; i < exhibits.length; i++) {
-		exhibitText[i] = exhibits[i].description;
+		exhibitText[i] = exhibits[i].long_description;
 		var exhibitView;
 
 		if (OS_IOS) {
@@ -116,8 +123,11 @@ function createExhibitsCarousel(exhibits) {
 		$.exhibitsCarousel.addView(exhibitView);
 
 		// Change the current page to force the arrows to appear
-		$.exhibitsCarousel.currentPage = i;
+		if (i <= 1) {
+			$.exhibitsCarousel.currentPage = i;
+		}
 	}
+
 	// Change the current page back to 0
 	$.exhibitsCarousel.currentPage = 0;
 	
@@ -138,11 +148,11 @@ function createExhibitsImageIOS(exhibit, pageXofYtext) {
 	var viewConfig = {
 		backgroundColor : "#253342",
 		width : Ti.UI.FILL,
-		image : '/images/700x400.png',
+		image: '/images/700x400.png',
 		itemId : exhibit.id
 	};
-	if (exhibit.image) {
-		viewConfig.image = exhibit.image;
+	if (exhibit.exhibit_image) {
+		viewConfig.image = exhibit.exhibit_image;
 	}
 	var exhibitView = Ti.UI.createImageView(viewConfig);
 	exhibitView.add(createExhibitTitleLabel(exhibit.name, pageXofYtext));
@@ -396,4 +406,5 @@ function createExhibitSelect(exhibits) {
 		onExhibitsClick(exhibits);
 	});
 }
+
 exports.reload = reload; 
