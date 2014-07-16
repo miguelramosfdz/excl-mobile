@@ -82,10 +82,14 @@ TutorialService.prototype.updateIsTutorialOn = function() {
 	var storage = this.getStorageService();
 	if (this.isAnyPageOn()) {
 		storage.setBoolProperty("tutorialOn", true);
-		Alloy.Models.app.set("tutorialOn", true);
+		if (Alloy.Models.app) {
+			Alloy.Models.app.set("tutorialOn", true);
+		}
 	} else {
 		storage.setBoolProperty("tutorialOn", false);
-		Alloy.Models.app.set("tutorialOn", false);
+		if (Alloy.Models.app) {
+			Alloy.Models.app.set("tutorialOn", false);
+		}
 	}
 };
 

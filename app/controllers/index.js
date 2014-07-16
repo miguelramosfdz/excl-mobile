@@ -94,7 +94,6 @@ function populateWindow(json) {
 	createExhibitSelect(json.data.museum.exhibits);
 	createcollapsibleComponentView();
 	createComponentsScrollView(json.data.museum.exhibits);
-	setExhibitText(exhibitText[0]);
 }
 
 function clearAll() {
@@ -102,14 +101,14 @@ function clearAll() {
 }
 
 function createExhibitsCarousel(exhibits) {
-	$.exhibitsCarousel.removeView($.placeholder);
-	// This is an android hack
+	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
+	
+   /*exhibits.sort(function(a, b) {
+   return a.exhibit_order > b.exhibit_order;
+   });*/
 
-	/*exhibits.sort(function(a, b) {
-	return a.exhibit_order > b.exhibit_order;
-	});*/
+   //exhibits.order_number.sort();
 
-	//exhibits.order_number.sort();
 	for ( i = 0; i < exhibits.length; i++) {
 		exhibitText[i] = exhibits[i].long_description;
 		var exhibitView;
@@ -132,6 +131,9 @@ function createExhibitsCarousel(exhibits) {
 
 	// Change the current page back to 0
 	$.exhibitsCarousel.currentPage = 0;
+	
+	$.exhibitInfoLabel.text = exhibits[0].long_description;
+	
 	if (OS_IOS) {
 		//Android doesn't respond to singletap event, so the Android event listener is added above
 		$.exhibitsCarousel.addEventListener("singletap", function(e) {
@@ -271,7 +273,7 @@ function onExhibitsClick(exhibits) {
 		$.collapsibleComponentView.hidden = false;
 		var pageIndex = $.exhibitsCarousel.currentPage;
 		$.exhibitSelectLabel.text = "Go Back";
-		$.collapsibleInfoLabel.text = exhibits[pageIndex].long_description;
+		$.exhibitInfoLabel.text = exhibits[pageIndex].long_description;
 
 		$.exhibitInfoView.animate({
 			opacity : 0,
@@ -317,7 +319,7 @@ function onExhibitsScroll(e, exhibits) {
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
 	var index = $.exhibitsCarousel.currentPage;
-	$.collapsibleInfoLabel.text = exhibits[index].long_description;
+	$.exhibitInfoLabel.text = exhibits[index].long_description;
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
 	$.exhibitInfoView.height = Ti.UI.SIZE;
 	$.exhibitInfoView.animate({
@@ -400,10 +402,6 @@ function createExhibitSelect(exhibits) {
 	$.exhibitSelect.addEventListener('click', function(e) {
 		onExhibitsClick(exhibits);
 	});
-}
-
-function setExhibitText(text) {
-	$.collapsibleInfoLabel.text = text;
 }
 
 init();
