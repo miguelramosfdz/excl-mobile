@@ -20,8 +20,9 @@ NavigationController.prototype.restart = function(){
 		var lastWindow = this.windowStack.pop();
 		if (lastWindow) {
 			lastWindow.close();
-		}
+		}		
 		Alloy.createController("index");
+
 };
 
 NavigationController.prototype.enterKioskMode = function(){

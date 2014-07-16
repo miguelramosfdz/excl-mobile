@@ -20,6 +20,7 @@ exports.definition = {
 	
 				retriever.fetchDataFromUrl(url, function(response) {
 					if(response) {
+						Alloy.Globals.museumJSON = response;
 						var filters = response.data.museum.tailored_content_categories;
 						filters = filters.split('|');
 						
@@ -39,8 +40,6 @@ exports.definition = {
 							});
 						};
 						Alloy.Collections.filter.ready = true;
-						
-						Alloy.Globals.languageOptions = response.data.museum.lang_options;
 					}
 				});
 			}
