@@ -33,7 +33,7 @@ exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 // --------------------------------------------------------------------------------------------------------
 
 function setPageTitle(name){
-	$.container.title = name;
+	$.navBar.setPageTitle(name);
 }
 
 function insertComponentPicture(imageUrl){
@@ -93,17 +93,18 @@ function displaySectionList(orderedSectionList){
 
 		var label = Titanium.UI.createLabel({
 			color : 'white',
-			verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_CENTER,
+			// verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_CENTER,
 			textAlign: 'center',
+			height: Ti.UI.FILL,
 			font : {
-				fontSize : 22,
+				fontSize : 28,
 				fontWeight: 'bold'
 			},
 			text : orderedSectionList[i].key
 		}); 
 		view.add(label);
 
-		gradientColors++;
+		gradientColorsCount++;
 		$.scrollView.add(view);
 	}
 
