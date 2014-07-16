@@ -9,7 +9,3 @@
 	layout: "vertical",
 	bottom: "20dip"
 }
-
-"#homeContent": {
-	layout: "vertical"
-}
