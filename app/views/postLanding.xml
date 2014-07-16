@@ -12,7 +12,7 @@
 						<TextField id="insertEmail" />
 						<Label id="insertEmailDisclaimer">Email is optional - Won't be shared publicly</Label>
 						<TextArea id="insertComment"/>
-						<Button id="submitButton" onClick="verifyAndValidataData" />
+						<Button id="submitButton" />
 						<Button id="cancelCommentButton" />
 					</View>
 					<View id="thankYouMessageView">

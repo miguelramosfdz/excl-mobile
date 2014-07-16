@@ -141,15 +141,10 @@ function checkIfAgeFilterOn(allPosts) {
 
 function organizeBySection(allPosts) {
 	dictOrderedPostsBySection = {};
-	
-	Ti.API.info("89");
-	
 	for (var i = 0; i < allPosts.length; i++) {
 		compileDictOfSections(allPosts[i], dictOrderedPostsBySection);
 	}
-	
-	Ti.API.info("90");
-	
+
 	sortPostsIntoSections(dictOrderedPostsBySection);
 
 	Ti.API.info("Finished Organizing by Section");

@@ -4,12 +4,23 @@
  * --Move all non-UI to separate file
  */
 var args = arguments[0] || {};
-var component = args;
+var component = args[0];
 var componentID = component.get('id');
 var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
+var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var viewService = setPathForLibDirectory('customCalls/viewService');
+viewService = new viewService();
+var windowService = setPathForLibDirectory('customCalls/windowService');
+windowService = new windowService();
+var labelService = setPathForLibDirectory('customCalls/labelService');
+var label = new labelService();
+var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
+var spinner = new loadingSpinner();
+
 var dictOrderedPostsBySection = {};
 var dictOrderedPostsByAge = {};
+var currentTabGroup = windowService.createCustomTabGroup({});
 var selectedAges;
 
 var allPosts;
@@ -18,13 +29,12 @@ var genericAllAgesSectionTitle = "For Everyone in Your Group";
 var noContentMessage = "Sorry!\n\nLooks like we're still in the process of adding content here.\n\nCheck here later for new and exciting activities!";
 var noFiltersSelected = "Please select an age filter to see your sorted content!";
 
-var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
-var viewService = setPathForLibDirectory('customCalls/viewService');
-var view = new viewService();
-var labelService = setPathForLibDirectory('customCalls/labelService');
-var label = new labelService();
-var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
-var spinner = new loadingSpinner();
+/*
+ This is where the component landing and section landing will be connected
+ */
+var json = args[0];
+var selectedSection = args[1];
+/**/
 
 var analyticsPageTitle = "Section Landing";
 var analyticsPageLevel = "Section Landing";
@@ -61,7 +71,7 @@ function setPathForLibDirectory(libFile) {
 };
 
 function changeTitleOfThePage(name) {
-	$.container.title = name;
+	//$.container.title = name;
 }
 
 function goToPostLandingPage(e) {
@@ -76,19 +86,19 @@ function goToPostLandingPage(e) {
 
 function checkPostViewSpacing() {
 	if (OS_IOS) {
-		$.scrollView.bottom = "48dip";
+		//$.scrollView.bottom = "48dip";
 	}
 }
 
 function clearOrderedPostDicts() {
 	dictOrderedPostsBySection = {};
 	dictOrderedPostsByAge = {};
-	$.scrollView.removeAllChildren();
+	//$.scrollView.removeAllChildren();
 }
 
 function detectEventEnabled() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearningEnabled");
-	//Ti.API.info("Filter Status 2: " + JSON.stringify(Alloy.Collections.filter));
+	Ti.API.info("Filter Status 2: " + JSON.stringify(Alloy.Collections.filter));
 	//Ti.API.info("Filter Detected (Comp): set: " + ageFilterSet + ", on: " + ageFilterOn);
 	clearOrderedPostDicts();
 	retrieveComponentData();
@@ -107,7 +117,7 @@ function retrieveComponentData() {
 	addSpinner();
 	if (initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-			changeTitleOfThePage(returnedData.data.component.name);
+			//changeTitleOfThePage(returnedData.data.component.name);
 			allPosts = returnedData.data.component.posts;
 			initialLoad = false;
 			checkIfAgeFilterOn(allPosts);
@@ -121,7 +131,7 @@ function retrieveComponentData() {
 }
 
 function addSpinner() {
-	spinner.addTo($.container);
+	spinner.addTo(currentTabGroup);
 	spinner.show();
 }
 
@@ -130,13 +140,20 @@ function removeSpinner() {
 }
 
 function checkIfAgeFilterOn(allPosts) {
+	Ti.API.info("Organizing content by section");
+	resetTabGroup();
+	organizeBySection(allPosts);
 	if (ageFilterOn) {
-		Ti.API.info("Filtering content");
+		Ti.API.info("Adding tabs");
 		organizeByAge(allPosts);
-	} else {
-		Ti.API.info("Organizing content by section");
-		organizeBySection(allPosts);
 	}
+	currentTabGroup.open();
+}
+
+function resetTabGroup(currentTabGroup) {
+	//$.tabContainer.close();
+	args = {};
+	currentTabGroup = windowService.createCustomTabGroup(args);
 }
 
 function organizeBySection(allPosts) {
@@ -155,7 +172,10 @@ function compileDictOfSections(post, dict) {
 		sectionArray = parseStringIntoArray(post.section, ", ");
 		for (var i = 0; i < sectionArray.length; i++) {
 			//Accounts for multiple sections per post
-			addItemArrayToDict(sectionArray[i], post, dict);
+			Ti.API.info("section: " + sectionArray[i] + ", compared to: " + selectedSection + ", match: " + (sectionArray[i] == selectedSection));
+			if (sectionArray[i] == selectedSection) {
+				addItemArrayToDict(sectionArray[i], post, dict);
+			}
 		}
 	}
 
@@ -325,15 +345,15 @@ function sortPostsIntoSections(dict) {
 
 	if (dictLength == 0) {
 		var error = label.createLabel(noContentMessage);
-		var errorView = view.createView();
+		var errorView = viewService.createView();
 		errorView.add(error);
-		$.scrollView.add(errorView);
+		//$.scrollView.add(errorView);
 	} else if (dictLength == 1 && dict[genericAllAgesSectionTitle] == "") {
 		var error = label.createLabel(noFiltersSelected);
 		error.top = "0";
-		var errorView = view.createView();
+		var errorView = viewService.createView();
 		errorView.add(error);
-		$.scrollView.add(errorView);
+		//$.scrollView.add(errorView);
 	} else {
 		for (var i = 0; i < dictLength; i++) {
 			//cycle through dict keys
@@ -368,13 +388,52 @@ function sortPostsIntoSections(dict) {
 function addPostPreview(i, title, dictLength, postCollection, bolEmpty) {
 	var view = createPostPreview(title, postCollection);
 	view = adjustViewHeight(view, i, dictLength, bolEmpty);
-	$.scrollView.add(view);
+	var newTab = createNewTab(view, title);
+	currentTabGroup.addTab(newTab);
 }
 
 function createPostPreview(title, postCollection) {
 	var postPreview = Alloy.createController('postPreview', args);
 	//postPreview.headingText.text = title;
 	return postPreview.getView();
+}
+
+function createNewTab(view, title) {
+	args = {
+		contentWidth : "100%",
+		height : "50dip",
+		top : "0dip",
+		layout : "vertical",
+		backgroundColor : "red"
+	};
+	var topBar = viewService.createCustomView(args);
+
+	//var navBar = Alloy.createWidget("navigationBar");
+
+	args = {
+		backgroundColor : "green",
+		top : "50dip"
+	};
+	var scrollView = viewService.createCustomScrollView(args);
+
+	args = {
+		navBarHidden : true,
+		fullscreen : true,
+		backgroundColor : '#FFFFFF'
+	};
+	var container = windowService.createCustomWindow(args);
+
+	args = {
+		title : title,
+		window : container
+	};
+	var newTab = windowService.createCustomTab(args);
+
+	container.add(topBar);
+	container.add(scrollView);
+	//topBar.add(navBar);
+	scrollView.add(view);
+	return newTab;
 }
 
 function adjustViewHeight(view, i, dictLength, bolEmpty) {

@@ -36,8 +36,7 @@ exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
 exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
 exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
-
-function setPathForLibDirectory(libFile){
+function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
 		lib = require("../../lib/" + libFile);
 	} else {
@@ -127,7 +126,8 @@ function clearAll() {
 }
 
 function createExhibitsCarousel(exhibits) {
-	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
+	$.exhibitsCarousel.removeView($.placeholder);
+	// This is an android hack
 
 	for ( i = 0; i < exhibits.length; i++) {
 		exhibitText[i] = exhibits[i].long_description;
@@ -153,7 +153,7 @@ function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.currentPage = 0;
 	$.headingLabel.text = exhibits[0].name;
 	$.exhibitInfoLabel.text = exhibits[0].long_description;
-	
+
 	if (OS_IOS) {
 		//Android doesn't respond to singletap event, so the Android event listener is added above
 		$.exhibitsCarousel.addEventListener("singletap", function(e) {
@@ -368,22 +368,19 @@ function createComponentsScrollView(exhibits) {
 			width : Ti.UI.SIZE
 		});
 
-		/*exhibits[i].components.sort(function(a, b) {
-		 return a.component_order > b.component_order;
-		 });*/
-
 		for (var j = 0; j < exhibits[i].components.length; j++) {
 			var component = createLabeledPicView(exhibits[i].components[j], '15dip');
 
 			component.left = 3;
 			component.width = '300dip';
 			component.id = exhibits[i].components[j].id;
-			component.addEventListener('click', openComponent);
+			var myCustomVar = "Hey";
+			component.addEventListener('click', (function(image) {
+				return function(e) {
+					return openComponent(e, image);
+				};
+			})(exhibits[i].components[j].image));
 			component.addEventListener('longpress', openTestComponent);
-			/*
-			 component.sort(function(a,b){
-			 return a.component_order > b.component_order;
-			 });*/
 			componentsInExhibit[exhibits[i].id].add(component);
 		}
 
@@ -393,10 +390,11 @@ function createComponentsScrollView(exhibits) {
 	componentsInExhibit[currExhibitId].width = Ti.UI.SIZE;
 }
 
-function openComponent(e) {
+function openComponent(e, componentImageUrl) {
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
-	var controller = Alloy.createController('altSectionLanding', component);
+	// var controller = Alloy.createController('altSectionLanding', component);
+	var controller = Alloy.createController('componentLandingRedesign', [component, componentImageUrl]);
 	var analyticsTitle = component.getScreenName();
 	var analyticsLevel = "Section Landing";
 	controller.setAnalyticsPageTitle(analyticsTitle);
