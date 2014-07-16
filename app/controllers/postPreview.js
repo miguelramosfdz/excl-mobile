@@ -29,11 +29,11 @@ function init() {
 function createPostView(post) {
 	args = {
 		layout : "vertical",
-		borderWidth : "2",
-		borderRadius : "3",
-		height : "30%",
+		borderWidth : "4",
+		borderRadius : "4",
+		height : "50%",
 		width : "95%",
-		top : "3%"
+		top : "5%"
 	};
 	var postContainer = viewService.createCustomView(args);
 
@@ -49,7 +49,7 @@ function createPostView(post) {
 		text : post.get("name"),
 		textAlign : "center",
 		font : {
-			fontSize : "24",
+			fontSize : "48",
 			fontWeight : 'bold'
 		}
 	};
@@ -62,14 +62,17 @@ function createPostView(post) {
 
 	args = {
 		left : "0",
-		width : "40%",
+		width : "39%",
 		image : post.get("image")
 	};
 	var postImage = viewService.createCustomImageView(args);
 
 	args = {
 		left : "40%",
-		text : post.get("text") + "here"
+		text : post.get("text"),
+		font : {
+			fontSize : "36",
+		}
 	};
 	var postText = labelService.createCustomLabel(args);
 
