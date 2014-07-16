@@ -1,3 +1,4 @@
+// Every tutorial styles
 ".fullScreenWindow": {
   fullscreen: true,
   navBarHidden: true,
@@ -21,57 +22,138 @@
 		fontSize: "24dp"
 	}
 }
+".fullScreenOverlayText[formFactor=tablet]": {
+	font: {
+		//textStyle: Titanium.UI.TEXT_STYLE_HEADLINE,
+		fontWeight: "bold",
+		fontSize: "35dip"
+	}
+}
 ".tutorialButton": {
 	backgroundColor: "#ED1C24",
-	width: "200dip",
+	width: "50%",
 	height: "50dip",
 	borderColor: "white",
 	borderRadius: "7dip",
 	borderWidth: "1dip",
 	color: "#fff",
 	font: {
-		textStyle: Titanium.UI.TEXT_STYLE_HEADLINE,
 		fontSize: "24dp"
+	}
+}
+".tutorialButton[platform=ios]": {
+	borderWidth: "0dip",
+	backgroundColor: null,
+	backgroundGradient: {
+		type: 'linear',
+		startPoint: {
+			x: '50%',
+			y: '0%'
+		},
+		endPoint: {
+			x: '50%',
+			y: '100%'
+		},
+		colors: [
+			{
+				color: '#FF5B37',
+				offset: 0.0
+			},
+			{
+				color: '#FB2B69',
+				offset: 1.0
+			}
+		]
 	}
 }
 
 ".GotItButton": {
-	backgroundColor: "green",
-	width: "200dip",
+	backgroundColor: "#4CD964",
+	width: "50%",
 	height: "50dip",
 	borderColor: "white",
 	borderRadius: "7dip",
 	borderWidth: "1dip",
 	color: "#fff",
 	font: {
-		textStyle: Titanium.UI.TEXT_STYLE_HEADLINE,
 		fontSize: "24dp"
 	}
 }
 
-"#flyoutMenuArrow": {
-	top: "37dip",
-	right: "30dip",
-	//height: "110dip"
-	height: "70dip"
+".GotItButton[platform=ios]": {
+	borderWidth: "0dip",
+	backgroundColor: null,
+	backgroundGradient: {
+		type: 'linear',
+		startPoint: {
+			x: '50%',
+			y: '0%'
+		},
+		endPoint: {
+			x: '50%',
+			y: '100%'
+		},
+		colors: [
+			{
+				color: '#5AD427',
+				offset: 0.0
+			},
+			{
+				color: '#A4E786',
+				offset: 1.0
+			}
+		]
+	},
 }
 
-"#ComponentsArrow": {
+// Post landing tutorial styles
+
+"#sharingArrow": {
+	top: "145dip",
+	right: "65dip",
+	height: "100dip",
+	transform: Alloy.Globals.rotate90
+}
+
+"#sharingArrow[formFactor=tablet]": {
+	top: null,
+	right: null,
+	height: "125dip",
+	center: {
+		x: "60%",
+		y: "220dip"
+	}
+}
+
+"#sharingText": {
+	top: "120dip",
+	width: Ti.UI.FILL,
+	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
+}
+
+"#commentingArrow": {
+	top: "330dip",
 	transform: Alloy.Globals.rotate180,
-	height: "70dip"
+	height: "80dip"
 }
 
-"#flyoutMenuText": {
-	//top: "150dip",
-	top: "105dip",
-	right: "75dip",
-	textAlign: Titanium.UI.TEXT_ALIGNMENT_RIGHT
+"#commentingText": {
+	top: "305dip",
+	width: Ti.UI.FILL,
+	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
 }
 
-"#ComponentsText": {
-	top: "220dip",
-	right: "75dip",
-	textAlign: Titanium.UI.TEXT_AlIGNMENT_RIGHT
+"#commentingArrow[formFactor=tablet]": {
+	left: "40%",
+	top: "410dip",
+	transform: null,
+	height: "125dip"
+}
+
+"#commentingText[formFactor=tablet]": {
+	top: "540dip",
+	width: Ti.UI.FILL,
+	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
 }
 
 "#ExitButton": {
@@ -83,3 +165,25 @@
 	//bottom: "150dip"
 	bottom: "80dip"
 }
+
+
+// // Default label
+// "Label": { 
+    // backgroundColor: "#000",
+    // text: 'BlackBerry or another platform'
+// }
+// // iPhone
+// "Label[platform=ios formFactor=handheld]": {
+    // backgroundColor: "#f00",
+    // text: 'iPhone'
+// }
+// // iPad and iPad mini
+// "Label[platform=ios formFactor=tablet]": { 
+    // backgroundColor: "#0f0",
+    // text: 'iPad'
+// }
+// // Android handheld and tablet devices
+// "Label[platform=android]": { 
+    // backgroundColor: "#00f",
+    // text: 'Android'
+// }
