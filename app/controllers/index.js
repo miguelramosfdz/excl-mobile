@@ -35,6 +35,7 @@ function init() {
 	spinner.show();
 	$.navBar.hideBackBtn();
 	fixIpadSpacing();
+	alert("Hey there ho there ur using " + Titanium.Network.networkTypeName);
 }
 
 function setAnalyticsPageTitle(title) {
@@ -54,7 +55,6 @@ function getAnalyticsPageLevel() {
 }
 
 function retrieveJson(jsonURL, controller) {
-	
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
 			initializeWithJSON(returnedData, controller);
