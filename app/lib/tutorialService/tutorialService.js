@@ -30,8 +30,7 @@ TutorialService.prototype.setNavService = function(navService) {
 
 TutorialService.prototype.getAlloyService = function() {
 	if (!this.alloyService) {
-		var AlloyService = require(rootPath + "customCalls/alloyService");
-		this.alloyService = new AlloyService();
+		this.alloyService = require(rootPath + "customCalls/alloyService");
 	}
 	return this.alloyService;
 };
@@ -82,13 +81,13 @@ TutorialService.prototype.updateIsTutorialOn = function() {
 	var storage = this.getStorageService();
 	if (this.isAnyPageOn()) {
 		storage.setBoolProperty("tutorialOn", true);
-		if (Alloy.Models.app) {
-			Alloy.Models.app.set("tutorialOn", true);
+		if (this.getAlloyService().Models.app) {
+			this.getAlloyService().Models.app.set("tutorialOn", true);
 		}
 	} else {
 		storage.setBoolProperty("tutorialOn", false);
-		if (Alloy.Models.app) {
-			Alloy.Models.app.set("tutorialOn", false);
+		if (this.getAlloyService().Models.app) {
+			this.getAlloyService().Models.app.set("tutorialOn", false);
 		}
 	}
 };
