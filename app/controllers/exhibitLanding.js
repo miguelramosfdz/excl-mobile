@@ -371,6 +371,7 @@ function openComponent(e) {
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
 	var controller = Alloy.createController('altSectionLanding', component);
+	// var controller = Alloy.createController('componentLandingRedesign', [component, "the picture url yo!"]);
 	var analyticsTitle = component.getScreenName();
 	var analyticsLevel = "Component Landing";
 	controller.setAnalyticsPageTitle(analyticsTitle);
