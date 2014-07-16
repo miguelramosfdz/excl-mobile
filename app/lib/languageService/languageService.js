@@ -1,12 +1,36 @@
 function languageService(){
-	this.museumJSON = [];
+	Alloy.Models.app.on('change:currentLanguage', languageService.prototype.onLanguageChange);
+};
+
+languageService.prototype.onLanguageChange = function(){
+	languageService.prototype.refreshPage();
+	languageService.prototype.setMuseumJSON();
+};
+
+languageService.prototype.createInternationalizationMessageDialog = function(){
+	var message = Alloy.Globals.museumJSON.data.museum.internationalization_message;
+	if (message != ''){
+		alert(Alloy.Globals.museumJSON.data.museum.internationalization_message);
+	}
+};
+
+languageService.prototype.setMuseumJSON = function(){
+	var retriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
+	var url = Alloy.Globals.rootWebServiceUrl;
+
+	retriever.fetchDataFromUrl(url, function(response) {
+		if(response) {
+			Ti.API.info("Museum JSON: " + response.toString());
+			Alloy.Globals.museumJSON = response;
+			languageService.prototype.createInternationalizationMessageDialog();
+		}
+	});
 };
 
 languageService.prototype.getLanguageOptionsFourLetterCodeFromJSON = function(){
 	var languageOptionsFourLetter = new Array();
 	languageOptionsFourLetter = this.cloneLanguageOptions();
 	Ti.API.info("Language options: " + languageOptionsFourLetter.toString());
-	languageOptionsFourLetter = ["en_US", "es_ES", "fr_FR"];
 	return languageOptionsFourLetter;
 };
 
@@ -18,11 +42,11 @@ languageService.prototype.cloneLanguageOptions = function(){
 	return clonedLanguageOptions;
 };
 
-languageService.prototype.FourLetterToFullWord = function(FourLetter){
+languageService.prototype.fourLetterToFullWord = function(fourLetter){
 	var toReturn = "";
 	var length = this.languageLibrary.length;
 	for (i = 0; i<length; i++){
-		if (this.languageLibrary[i][1] == FourLetter){
+		if (this.languageLibrary[i][1] == fourLetter){
 			return this.languageLibrary[i][2];
 		}
 	}
@@ -32,7 +56,7 @@ languageService.prototype.FourLetterToFullWord = function(FourLetter){
 languageService.prototype.getLanguageOptionsFullWord = function(languageOptionsFourLetter){
 	var languageOptionsFullWord = [];
 	for (index in languageOptionsFourLetter){
-		languageOptionsFullWord[index] = this.FourLetterToFullWord(languageOptionsFourLetter[index]);
+		languageOptionsFullWord[index] = this.fourLetterToFullWord(languageOptionsFourLetter[index]);
 	}
 	return languageOptionsFullWord;
 };
@@ -54,7 +78,7 @@ languageService.prototype.displayDialog = function(){
 	var languageDialog = Titanium.UI.createOptionDialog({
 		options : languageOptionsFullWord,	
 		cancel : cancelIndex,
-		selectedIndex : languageOptionsFourLetterCode.indexOf(Alloy.Globals.currentLanguage)
+		selectedIndex : languageOptionsFourLetterCode.indexOf(Alloy.Models.app.get('currentLanguage'))
 	});
 	languageDialog.addEventListener("click", function(e){
 		languageService.prototype.languageDialogClickListener(e, languageOptionsFourLetterCode);
@@ -66,18 +90,19 @@ languageService.prototype.displayDialog = function(){
 languageService.prototype.languageDialogClickListener = function(e, languageOptionsFourLetterCode){
 	var newLanguage = languageOptionsFourLetterCode[e.index];
 		
-	if (newLanguage != 'CANCEL' && newLanguage != Alloy.Globals.currentLanguage){
-		Alloy.Globals.currentLanguage = newLanguage;
+	if (newLanguage != 'CANCEL' && newLanguage !=  Alloy.Models.app.get('currentLanguage')){
+		Alloy.Models.app.set('currentLanguage', newLanguage);
 		if (newLanguage != 'en_US'){
-			alert("We'll display this language's content where we can. Anything not translated will appear in English.");
+			//alert("We'll display this language's content where we can. Anything not translated will appear in English.");
 		}
 		this.refreshPage();
 	}
 };	
 
 languageService.prototype.refreshPage = function(){
-//	Alloy.Globals.navController.windowStack = []; //Reset windowStack
-//	Alloy.Globals.navController.open(Alloy.createController('index'));
+	Ti.API.info("Fake refresh");
+	Alloy.Globals.navController.windowStack = []; //Reset windowStack
+	Alloy.Globals.navController.open(Alloy.createController('index'));
 };	
 
 languageService.prototype.languageLibrary = [
