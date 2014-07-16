@@ -101,6 +101,10 @@ function displaySocialMediaButtons(json) {
 			$.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
 			$.scroller.scrollTo(0,0);
 		});
+		
+		$.submitButton.addEventListener('click', function(e){
+			verifyAndValidateData(commentButton);
+		});
 
 		row.add(commentButton);
 	}
@@ -127,7 +131,7 @@ function setCommentIconBusy(button) {
 
 function getImageRowFromPart(part) {
 	var row = createPlainRowWithHeight('200dip');
-	if (Titanium.Platform.osname = "ipad"){
+	if (Titanium.Platform.osname == "ipad"){
 		row.height = "40%";
 	}
 	imageView = Ti.UI.createImageView({
@@ -405,7 +409,7 @@ function displayComments(comments) {
 
 }
 
-function verifyAndValidataData() {
+function verifyAndValidateData(commentButton) {
 	// This function should verify that the data exists in the form fields
 	// Once verified, it should send the data to the WP DB
 	// And display a 'message sent' message

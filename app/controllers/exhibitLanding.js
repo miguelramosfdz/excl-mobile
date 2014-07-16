@@ -1,12 +1,12 @@
 var args = arguments[0] || {};
 
-var dataRetriever = require('dataRetriever/dataRetriever');
-var LoadingSpinner = require('loadingSpinner/loadingSpinner');
+var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var LoadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 
-var iconService = Alloy.Globals.setPathForLibDirectory('customCalls/iconService');
+var iconService = setPathForLibDirectory('customCalls/iconService');
 var iconService = new iconService();
 
-var buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
+var buttonService = setPathForLibDirectory('customCalls/buttonService');
 var buttonService = new buttonService();
 
 var spinner = new LoadingSpinner();
@@ -15,9 +15,36 @@ var url = Alloy.Globals.rootWebServiceUrl;
 var exhibitText = [];
 var componentsInExhibit = [];
 var currExhibitId;
-var analyticsPageTitle = "Home";
-var analyticsPageLevel = "Exhibit Landing";
 var expanderButton;
+var analyticsPageTitle = "Exhibit Landing";
+var analyticsPageLevel = "Exhibit Landing";
+
+var setAnalyticsPageTitle = function(title) {
+	analyticsPageTitle = title;
+};
+var getAnalyticsPageTitle = function() {
+	return analyticsPageTitle;
+};
+var setAnalyticsPageLevel = function(level) {
+	analyticsPageLevel = level;
+};
+var getAnalyticsPageLevel = function() {
+	return analyticsPageLevel;
+};
+exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
+exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
+exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
+exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
+
+
+function setPathForLibDirectory(libFile){
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
 
 var reload = function() {
 	var controller = Alloy.createController("index");
@@ -31,6 +58,7 @@ function fixIpadSpacing() {
 }
 
 function init() {
+	$.navBar.setPageTitle("Exhibits");
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
 	fixIpadSpacing();
@@ -63,8 +91,8 @@ function retrieveJson(jsonURL, controller) {
 function initializeWithJSON(json, controller) {
 	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);
-	Alloy.Globals.navController.open(controller);
 	populateWindow(json);
+	// Alloy.Globals.navController.open(controller);
 }
 
 function reloadWithJSON(json, controller) {
@@ -100,12 +128,6 @@ function clearAll() {
 
 function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
-	
-   /*exhibits.sort(function(a, b) {
-   return a.exhibit_order > b.exhibit_order;
-   });*/
-
-   //exhibits.order_number.sort();
 
 	for ( i = 0; i < exhibits.length; i++) {
 		exhibitText[i] = exhibits[i].long_description;
@@ -171,7 +193,7 @@ function createExhibitsImageAndroid(exhibit, pageXofYtext) {
 	var clickCatcher = Ti.UI.createView({
 		itemId : exhibit.id
 	});
-	image.image = exhibit.image;
+	image.image = exhibit.exhibit_image;
 
 	itemContainer.add(image);
 	itemContainer.add(createTitleLabel(exhibit.name, '25dip', pageXofYtext));
@@ -354,6 +376,7 @@ function createComponentsScrollView(exhibits) {
 			component.width = '300dip';
 			component.id = exhibits[i].components[j].id;
 			component.addEventListener('click', openComponent);
+			component.addEventListener('longpress', openTestComponent);
 			/*
 			 component.sort(function(a,b){
 			 return a.component_order > b.component_order;
@@ -373,7 +396,19 @@ function openComponent(e) {
 	var controller = Alloy.createController('altSectionLanding', component);
 	// var controller = Alloy.createController('componentLandingRedesign', [component, "the picture url yo!"]);
 	var analyticsTitle = component.getScreenName();
-	var analyticsLevel = "Component Landing";
+	var analyticsLevel = "Section Landing";
+	controller.setAnalyticsPageTitle(analyticsTitle);
+	controller.setAnalyticsPageLevel(analyticsLevel);
+	Alloy.Globals.navController.open(controller);
+	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", analyticsLevel, 1);
+}
+
+function openTestComponent(e) {
+	var components = Alloy.Collections.instance('component');
+	var component = components.where({"id": e.source.itemId})[0];
+	var controller = Alloy.createController('sectionLanding', component);
+	var analyticsTitle = component.getScreenName();
+	var analyticsLevel = "Section Landing";
 	controller.setAnalyticsPageTitle(analyticsTitle);
 	controller.setAnalyticsPageLevel(analyticsLevel);
 	Alloy.Globals.navController.open(controller);

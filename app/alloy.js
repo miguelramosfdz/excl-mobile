@@ -43,7 +43,7 @@ Alloy.Globals.setRootWebServiceUrl = function(url){
 };
 
 Alloy.Globals.rootWebServiceUrl = rootWebServiceUrls["dev"];
-//Alloy.Globals.currentLanguage = 'en_US';
+Alloy.Globals.currentLanguage = 'en_US';
 
 Alloy.Globals.setPathForLibDirectory = function(libFile){
 	if ( typeof Titanium == 'undefined') {

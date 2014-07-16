@@ -1,18 +1,32 @@
 
-".container": {
+"#backgroundContainer": {
 	layout: "vertical"
 }
 
-".headingText":{
-	color: "white"
+"#placeholderContainer": {
+	layout: "vertical"
 }
 
-".scroller":{
-	showPagingControl: "true",
-	overlayEnabled: "true",
-	backgroundColor: "black",
-	pagingControlTimeout: 0
+"#previewContainer": {
+	layout: "horizonal"
 }
-".placeholderLabel":{
-	color: "#FFFFFF"
+
+"#header":{
+	height: "50dip",
+	width: "100%"
+}
+
+"#headerText":{
+	color: "black",
+	text: "Post Title",
+	textAlign: "center"
+}
+
+"#placeholderImage":{
+	left: "0",
+	width: "40%"
+}
+
+"#placeholderLabel":{
+	left: "40%"
 }

@@ -7,27 +7,17 @@ var viewService = setPathForLibDirectory('customCalls/viewService');
 viewService = new viewService();
 var buttonService = setPathForLibDirectory('customCalls/buttonService');
 buttonService = new buttonService();
+var dialogService = setPathForLibDirectory('customCalls/dialogService');
+dialogService = new dialogService();
+var languageService = setPathForLibDirectory('languageService/languageService');
+languageService = new languageService();
 var TutorialService = setPathForLibDirectory('tutorialService/tutorialService');
 var tutorialService = new TutorialService();
-var tutorialOn = Alloy.Models.app.get("tutorialOn");
 
 Alloy.Models.app.on('change:tutorialOn', updateTutorialUI);
 Alloy.Models.app.on('change:customizeLearningSet', activateFiltersWithSet);
 Alloy.Models.app.on('change:customizeLearningEnabled', activateFiltersWithEnable);
-
-setMuseumJSON();
-
-function setMuseumJSON(){
-	var retriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
-	var url = Alloy.Globals.rootWebServiceUrl;
-
-	retriever.fetchDataFromUrl(url, function(response) {
-		if(response) {
-			Ti.API.info("Museum JSON: " + response.toString());
-			Alloy.Globals.museumJSON = response;
-		}
-	});
-};
+Alloy.Models.app.on('change:currentLanguage', onLanguageChange);
 
 function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
@@ -139,9 +129,8 @@ function tutorialToggler(e) {
 	//Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
 	//Alloy.createController('tutorialToggler').getView().open();
 	//closeMenu(e);
-	if (!tutorialOn) {
+	if (!Alloy.Models.app.get("tutorialOn")) {
 		tutorialService.resetTutorialMode();
-		tutorialOn = true;
 		Alloy.Models.app.set("tutorialOn", true);
 		Alloy.Models.app.trigger("change:tutorialOn");
 		var dialog = Ti.UI.createAlertDialog({
@@ -177,7 +166,6 @@ function tutorialToggler(e) {
 		dialog.show();
 	} else {
 		tutorialService.endTutorialMode();
-		tutorialOn = false;
 		Alloy.Models.app.set("tutorialOn", false);
 		Alloy.Models.app.trigger("change:tutorialOn");
 	}
@@ -193,13 +181,38 @@ function updateTutorialUI() {
 }
 
 function languageHandler(e){
-	var languageService = setPathForLibDirectory('languageService/languageService');
-	languageService = new languageService();
 	languageService.displayDialog();
-	
-	closeMenu(e);
 }
 
+function onLanguageChange(){
+	setMuseumJSONWithLanguageDialog();
+	refreshPage();
+}
+
+function refreshPage(){
+	Alloy.Globals.navController.restart();
+}
+
+function setMuseumJSONWithLanguageDialog(){
+	var retriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
+	var url = Alloy.Globals.rootWebServiceUrl;
+
+	retriever.fetchDataFromUrl(url, function(response) {
+		if(response) {
+			Alloy.Globals.museumJSON = response;
+			createInternationalizationMessageDialog();
+		}
+	});
+}
+
+function createInternationalizationMessageDialog(){
+	var message = Alloy.Globals.museumJSON.data.museum.internationalization_message;
+	if (message != ''){
+		alertDialog = dialogService.createAlertDialog(message);
+		alertDialog.buttonNames = ["Ok"];
+		alertDialog.show();
+	}
+}
 
 function detectFilterConditions() {
 	if (ageFilterSet && ageFilterOn) {

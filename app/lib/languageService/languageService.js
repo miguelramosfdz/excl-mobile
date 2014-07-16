@@ -1,30 +1,4 @@
 function languageService(){
-	Alloy.Models.app.on('change:currentLanguage', languageService.prototype.onLanguageChange);
-};
-
-languageService.prototype.onLanguageChange = function(){
-	languageService.prototype.refreshPage();
-	languageService.prototype.setMuseumJSON();
-};
-
-languageService.prototype.createInternationalizationMessageDialog = function(){
-	var message = Alloy.Globals.museumJSON.data.museum.internationalization_message;
-	if (message != ''){
-		alert(Alloy.Globals.museumJSON.data.museum.internationalization_message);
-	}
-};
-
-languageService.prototype.setMuseumJSON = function(){
-	var retriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
-	var url = Alloy.Globals.rootWebServiceUrl;
-
-	retriever.fetchDataFromUrl(url, function(response) {
-		if(response) {
-			Ti.API.info("Museum JSON: " + response.toString());
-			Alloy.Globals.museumJSON = response;
-			languageService.prototype.createInternationalizationMessageDialog();
-		}
-	});
 };
 
 languageService.prototype.getLanguageOptionsFourLetterCodeFromJSON = function(){
@@ -36,8 +10,8 @@ languageService.prototype.getLanguageOptionsFourLetterCodeFromJSON = function(){
 
 languageService.prototype.cloneLanguageOptions = function(){
 	clonedLanguageOptions = new Array();
-	for (index in Alloy.Globals.languageOptions){
-		clonedLanguageOptions[index] = Alloy.Globals.languageOptions[index];
+	for (index in Alloy.Globals.museumJSON.data.museum.lang_options){
+		clonedLanguageOptions[index] = Alloy.Globals.museumJSON.data.museum.lang_options[index];
 	}
 	return clonedLanguageOptions;
 };
@@ -88,22 +62,11 @@ languageService.prototype.displayDialog = function(){
 };
 
 languageService.prototype.languageDialogClickListener = function(e, languageOptionsFourLetterCode){
-	var newLanguage = languageOptionsFourLetterCode[e.index];
-		
+	var newLanguage = languageOptionsFourLetterCode[e.index];	
 	if (newLanguage != 'CANCEL' && newLanguage !=  Alloy.Models.app.get('currentLanguage')){
 		Alloy.Models.app.set('currentLanguage', newLanguage);
-		if (newLanguage != 'en_US'){
-			//alert("We'll display this language's content where we can. Anything not translated will appear in English.");
-		}
-		this.refreshPage();
 	}
-};	
-
-languageService.prototype.refreshPage = function(){
-	Ti.API.info("Fake refresh");
-	Alloy.Globals.navController.windowStack = []; //Reset windowStack
-	Alloy.Globals.navController.open(Alloy.createController('index'));
-};	
+};		
 
 languageService.prototype.languageLibrary = [
 	['af', 'af', 'Afrikaans'],

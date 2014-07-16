@@ -23,8 +23,9 @@ function fetchDataFromUrl(url, onSuccess) {
 }
 
 function addLanguageToURL(url) {
-	if (alloyCalls.Models.app) {
-		url += "?language=" + alloyCalls.Models.app.get('currentLanguage');
+	var alloyCallsModelApp = alloyCalls.Models.app;
+	if (alloyCallsModelApp) {
+		url += "?language=" + alloyCallsModelApp.get('currentLanguage');
 	}
 	return url;
 }

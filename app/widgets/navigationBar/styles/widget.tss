@@ -9,19 +9,19 @@
 
 ".flyoutView":{
 	width: "10%",
-	right: "0"
+	right: "3%"
 }
 
 ".backView":{
 	width: "10%",
-	left: "0"
+	left: "3%"
 }
 
 //iPhone
 ".pageTitleStyle[platform=ios formFactor=handheld]":{
 	color: "#FFF",
 	font: {
-		fontSize: '22dip',
+		fontSize: '20dip',
 		fontWeight: 'bold',
 		fontFamily: 'Helvetica Neue'
 	},
@@ -33,7 +33,7 @@
 ".pageTitleStyle[platform=ios formFactor=tablet]":{
 	color: "#FFF",
 	font: {
-		fontSize: '22dip',
+		fontSize: '20dip',
 		fontWeight: 'bold',
 		fontFamily: 'Helvetica Neue'
 	},
@@ -45,7 +45,7 @@
 ".pageTitleStyle[platform=android]":{
 	color: "#FFF",
 	font: {
-		fontSize: '22dip',
+		fontSize: '20dip',
 		fontWeight: 'bold',
 		fontFamily: 'Helvetica Neue'
 	},
