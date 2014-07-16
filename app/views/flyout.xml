@@ -5,8 +5,8 @@
 			
 			<View class="viewRow" onClick="openExhibitPage">
 				<View class="rowContainer">
-					<ImageView id="rowExhibit" backgroundImage= "/flyoutMenuIcons/exhibit.png" class="rowIcon" />
-					<Label id="exhibitLabel" class="rowLabel">Exhibits</Label>
+					<ImageView id="rowExhibit" backgroundImage= "/flyoutMenuIcons/home.png" class="rowIcon" />
+					<Label id="exhibitLabel" class="rowLabel">Home</Label>
 				</View>
 			</View>
 			

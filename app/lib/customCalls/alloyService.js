@@ -4,9 +4,7 @@ var alloyService = {
 		return Alloy.Globals;
 	},
 	
-	Models : function() {
-		return Alloy.Models;
-	}
+	Models : Alloy.Models
 };
 
 module.exports = alloyService;

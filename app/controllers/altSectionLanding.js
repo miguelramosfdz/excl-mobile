@@ -26,8 +26,8 @@ var label = new labelService();
 var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
 
-var analyticsPageTitle = "";
-var analyticsPageLevel = "";
+var analyticsPageTitle = "Section Landing";
+var analyticsPageLevel = "Section Landing";
 
 var setAnalyticsPageTitle = function(title) {
 	analyticsPageTitle = title;

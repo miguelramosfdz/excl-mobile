@@ -1,7 +1,6 @@
 <Alloy>
 	<Window class="container">
 		<View id="mainView">
-			<Widget id="navBar" src="navigationBar"/>
 			<View id="homeContent">
 				<ImageView id="homeImage" image="/images/HomePageDesign4.png"></ImageView>
 				<View id="exhibitsLink" onClick="openExhibits"></View>

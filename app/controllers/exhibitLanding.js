@@ -15,9 +15,27 @@ var url = Alloy.Globals.rootWebServiceUrl;
 var exhibitText = [];
 var componentsInExhibit = [];
 var currExhibitId;
+var expanderButton;
 var analyticsPageTitle = "Exhibit Landing";
 var analyticsPageLevel = "Exhibit Landing";
-var expanderButton;
+
+var setAnalyticsPageTitle = function(title) {
+	analyticsPageTitle = title;
+};
+var getAnalyticsPageTitle = function() {
+	return analyticsPageTitle;
+};
+var setAnalyticsPageLevel = function(level) {
+	analyticsPageLevel = level;
+};
+var getAnalyticsPageLevel = function() {
+	return analyticsPageLevel;
+};
+exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
+exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
+exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
+exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
+
 
 function setPathForLibDirectory(libFile){
 	if ( typeof Titanium == 'undefined') {
@@ -74,7 +92,7 @@ function initializeWithJSON(json, controller) {
 	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);
 	populateWindow(json);
-	Alloy.Globals.navController.open(controller);
+	// Alloy.Globals.navController.open(controller);
 }
 
 function reloadWithJSON(json, controller) {
@@ -376,6 +394,7 @@ function openComponent(e) {
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
 	var controller = Alloy.createController('altSectionLanding', component);
+	// var controller = Alloy.createController('componentLandingRedesign', [component, "the picture url yo!"]);
 	var analyticsTitle = component.getScreenName();
 	var analyticsLevel = "Section Landing";
 	controller.setAnalyticsPageTitle(analyticsTitle);

@@ -17,10 +17,16 @@ function setAnalyticsPageLevel(level) {
 function getAnalyticsPageLevel() {
 	return analyticsPageLevel;
 }
+exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
+exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
+exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
+exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 function openExhibits() {
 	var controller = Alloy.createController("exhibitLanding");
-	Alloy.Globals.navController.open(controller);	
+	controller.setAnalyticsPageTitle("Exhibit Landing");
+	controller.setAnalyticsPageLevel("Exhibit Landing");
+	Alloy.Globals.navController.open(controller);
 }
 
 function openMap() {
@@ -33,6 +39,4 @@ function openInfo() {
 	Alloy.Globals.navController.open(controller);	
 }
 
-$.navBar.setPageTitle("Children's Museum Of Houston");
-$.navBar.hideBackBtn();
 Alloy.Globals.navController.open(this);

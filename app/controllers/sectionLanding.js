@@ -36,8 +36,8 @@ var json = "";
 var selectedSection = "Try this!";
 /**/
 
-var analyticsPageTitle = "";
-var analyticsPageLevel = "";
+var analyticsPageTitle = "Section Landing";
+var analyticsPageLevel = "Section Landing";
 
 var setAnalyticsPageTitle = function(title) {
 	analyticsPageTitle = title;
