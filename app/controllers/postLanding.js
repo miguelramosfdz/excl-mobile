@@ -127,7 +127,7 @@ function setCommentIconBusy(button) {
 
 function getImageRowFromPart(part) {
 	var row = createPlainRowWithHeight('200dip');
-	if (Titanium.Platform.osname = "ipad"){
+	if (Titanium.Platform.osname == "ipad"){
 		row.height = "40%";
 	}
 	imageView = Ti.UI.createImageView({
