@@ -20,7 +20,7 @@ function getAnalyticsPageLevel() {
 
 function openExhibits() {
 	var controller = Alloy.createController("exhibitLanding");
-	Alloy.Globals.navController.open(controller);	
+	Alloy.Globals.navController.open(controller);
 }
 
 function openMap() {
