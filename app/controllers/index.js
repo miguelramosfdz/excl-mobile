@@ -17,9 +17,15 @@ function setAnalyticsPageLevel(level) {
 function getAnalyticsPageLevel() {
 	return analyticsPageLevel;
 }
+exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
+exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
+exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
+exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 function openExhibits() {
 	var controller = Alloy.createController("exhibitLanding");
+	controller.setAnalyticsPageTitle("Exhibit Landing");
+	controller.setAnalyticsPageLevel("Exhibit Landing");
 	Alloy.Globals.navController.open(controller);
 }
 

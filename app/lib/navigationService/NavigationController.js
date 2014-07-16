@@ -12,7 +12,6 @@ function NavigationController() {
 	this.menu = require(rootPath + "navigationService/flyoutService");
 	var TutorialController = require(rootPath + "tutorialService/tutorialService");
 	this.tutorialController = new TutorialController();
-	this.waitForWindowsToClose = false;
 }
 
 NavigationController.prototype.restart = function(){

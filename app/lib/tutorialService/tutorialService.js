@@ -2,7 +2,7 @@ var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
 
 var TutorialService = function() {
 	this.pages = ["exhibitLandingTutorial", "sectionLandingTutorial", "postLandingTutorial"];
-	this.initializePagesToShowTutorial("force");
+	this.initializePagesToShowTutorial();
 };
 
 TutorialService.prototype.getStorageService = function() {
@@ -107,7 +107,6 @@ TutorialService.prototype.setTutorialOff = function() {
 TutorialService.prototype.isAnyPageOn = function() {
 	var storage = this.getStorageService();
 	var anyPageIsOn = false;
-	Ti.API.info(this.pages.toString());
 	var pages = this.pages;
 	for (var i = 0; i < pages.length; i++) {
 		if(storage.getBoolProperty(pages[i])) {
