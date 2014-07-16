@@ -1,8 +1,12 @@
 <Alloy>
 	<Window class="container">
-		<Widget id="navBar" src="navigationBar"/>
-		<Label onClick="openExhibits">Exhibits</Label>
-		<Label onClick="openMap">Map</Label>
-		<Label onClick="openInfo">Info</Label>
+		<View id="mainView">
+			<Widget id="navBar" src="navigationBar"/>
+			<View id="homeContent">
+				<Label onClick="openExhibits">Exhibits</Label>
+				<Label onClick="openMap">Map</Label>
+				<Label onClick="openInfo">Info</Label>
+			</View>
+		</View>
 	</Window>
 </Alloy>
