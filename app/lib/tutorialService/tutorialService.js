@@ -42,6 +42,7 @@ TutorialService.prototype.setAlloyService = function(alloyService) {
 TutorialService.prototype.initializePagesToShowTutorial = function() {
 	var storage = this.getStorageService();
 	if (!storage.getBoolProperty("tutorialInitialized")) {
+		Ti.API.info("Tutorial is not initialized. Now initializing tutorial");
 		this.setAllPagesTo(true);
 		storage.setBoolProperty("tutorialInitialized", true);
 	}
@@ -65,6 +66,7 @@ TutorialService.prototype.setAllPagesTo = function(trueOrFalse) {
 };
 
 TutorialService.prototype.checkTutorialForPage = function(page) {
+	
 	var pageName = this.getPageNameFromWindow(page);
 	var storage = this.getStorageService();
 	var showTutorial = storage.getBoolProperty(pageName);

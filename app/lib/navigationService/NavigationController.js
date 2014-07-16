@@ -17,10 +17,12 @@ function NavigationController() {
 
 NavigationController.prototype.restart = function(){
 		this.home();
-		var lastWindow = this.windowStack.pop();
-		if (lastWindow) {
-			lastWindow.close();
-		}		
+		if (this.windowStack && this.windowStack > 0) {
+			var lastWindow = this.windowStack.pop();
+			if (lastWindow) {
+				lastWindow.close();
+			}
+		}
 		Alloy.createController("index");
 
 };

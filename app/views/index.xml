@@ -3,9 +3,11 @@
 		<View id="mainView">
 			<Widget id="navBar" src="navigationBar"/>
 			<View id="homeContent">
-				<Label onClick="openExhibits">Exhibits</Label>
-				<Label onClick="openMap">Map</Label>
-				<Label onClick="openInfo">Info</Label>
+				<ImageView id="homeImage" image="/images/HomePageDesign4.png"></ImageView>
+				<View id="exhibitsLink" onClick="openExhibits"></View>
+				<View id="mapLink" onClick="openMap"></View>
+				<View id="infoLink" onClick="openInfo" ></View>
+				<View id="iconLink"></View>
 			</View>
 		</View>
 	</Window>

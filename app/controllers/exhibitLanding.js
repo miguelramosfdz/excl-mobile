@@ -15,7 +15,7 @@ var url = Alloy.Globals.rootWebServiceUrl;
 var exhibitText = [];
 var componentsInExhibit = [];
 var currExhibitId;
-var analyticsPageTitle = "Home";
+var analyticsPageTitle = "Exhibit Landing";
 var analyticsPageLevel = "Exhibit Landing";
 var expanderButton;
 
@@ -40,6 +40,7 @@ function fixIpadSpacing() {
 }
 
 function init() {
+	$.navBar.setPageTitle("Exhibits");
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
 	fixIpadSpacing();
@@ -72,8 +73,8 @@ function retrieveJson(jsonURL, controller) {
 function initializeWithJSON(json, controller) {
 	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);
-	Alloy.Globals.navController.open(controller);
 	populateWindow(json);
+	Alloy.Globals.navController.open(controller);
 }
 
 function reloadWithJSON(json, controller) {
@@ -109,12 +110,6 @@ function clearAll() {
 
 function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
-	
-   /*exhibits.sort(function(a, b) {
-   return a.exhibit_order > b.exhibit_order;
-   });*/
-
-   //exhibits.order_number.sort();
 
 	for ( i = 0; i < exhibits.length; i++) {
 		exhibitText[i] = exhibits[i].long_description;
@@ -180,7 +175,7 @@ function createExhibitsImageAndroid(exhibit, pageXofYtext) {
 	var clickCatcher = Ti.UI.createView({
 		itemId : exhibit.id
 	});
-	image.image = exhibit.image;
+	image.image = exhibit.exhibit_image;
 
 	itemContainer.add(image);
 	itemContainer.add(createTitleLabel(exhibit.name, '25dip', pageXofYtext));
