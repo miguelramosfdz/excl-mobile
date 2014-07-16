@@ -1,4 +1,13 @@
-var tiService = require('../../lib/customCalls/tiService');
+function setPathForLibDirectory(libFile) {
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
+
+var tiService = setPathForLibDirectory("customCalls/tiService");
 
 var StorageService = function() {
 
