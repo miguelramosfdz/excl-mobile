@@ -12,8 +12,8 @@ function LoadingSpinner() {
 	  style: style,
 	  top: '50%',
 	  left: '50%',
-	  height: Ti.UI.SIZE * 2,
-	  width: Ti.UI.SIZE * 2
+	  height: Ti.UI.SIZE,
+	  width: Ti.UI.SIZE
 	});
 }
 
