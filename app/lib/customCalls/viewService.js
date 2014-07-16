@@ -16,6 +16,16 @@ viewService.prototype.createView = function() {
 	return view;
 };
 
+viewService.prototype.createCustomView = function(args) {
+	var view = Ti.UI.createView(args);
+	return view;
+};
+
+viewService.prototype.createCustomImageView = function(args) {
+	var view = Ti.UI.createImageView(args);
+	return view;
+};
+
 viewService.prototype.createTableView = function() {
 	var table = Ti.UI.createTableView({});
 	return table;

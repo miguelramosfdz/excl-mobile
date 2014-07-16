@@ -1,12 +1,12 @@
 var args = arguments[0] || {};
 
-var dataRetriever = require('dataRetriever/dataRetriever');
-var LoadingSpinner = require('loadingSpinner/loadingSpinner');
+var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var LoadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 
-var iconService = Alloy.Globals.setPathForLibDirectory('customCalls/iconService');
+var iconService = setPathForLibDirectory('customCalls/iconService');
 var iconService = new iconService();
 
-var buttonService = Alloy.Globals.setPathForLibDirectory('customCalls/buttonService');
+var buttonService = setPathForLibDirectory('customCalls/buttonService');
 var buttonService = new buttonService();
 
 var spinner = new LoadingSpinner();
@@ -18,6 +18,15 @@ var currExhibitId;
 var analyticsPageTitle = "Exhibit Landing";
 var analyticsPageLevel = "Exhibit Landing";
 var expanderButton;
+
+function setPathForLibDirectory(libFile){
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
 
 var reload = function() {
 	var controller = Alloy.createController("index");

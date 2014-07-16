@@ -26,8 +26,8 @@ var label = new labelService();
 var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
 
-var analyticsPageTitle = "";
-var analyticsPageLevel = "";
+var analyticsPageTitle = "Section Landing";
+var analyticsPageLevel = "Section Landing";
 
 var setAnalyticsPageTitle = function(title) {
 	analyticsPageTitle = title;
@@ -141,9 +141,15 @@ function checkIfAgeFilterOn(allPosts) {
 
 function organizeBySection(allPosts) {
 	dictOrderedPostsBySection = {};
+	
+	Ti.API.info("89");
+	
 	for (var i = 0; i < allPosts.length; i++) {
 		compileDictOfSections(allPosts[i], dictOrderedPostsBySection);
 	}
+	
+	Ti.API.info("90");
+	
 	sortPostsIntoSections(dictOrderedPostsBySection);
 
 	Ti.API.info("Finished Organizing by Section");
@@ -337,7 +343,7 @@ function sortPostsIntoSections(dict) {
 	} else {
 		for (var i = 0; i < dictLength; i++) {
 			//cycle through dict keys
-			var postCollection = Alloy.createCollection('post');
+			var postCollection = Alloy.createCollection('postNew');
 			stepIntoDict(dict, dictKeys[i], postCollection);
 			//Ti.API.info("section: " + JSON.stringify(dictKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
 			if (dictKeys[i] == genericAllAgesSectionTitle) {
