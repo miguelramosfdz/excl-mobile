@@ -12,7 +12,6 @@ function NavigationController() {
 	this.menu = require(rootPath + "navigationService/flyoutService");
 	var TutorialController = require(rootPath + "tutorialService/tutorialService");
 	this.tutorialController = new TutorialController();
-	this.waitForWindowsToClose = false;
 }
 
 NavigationController.prototype.restart = function(){
@@ -24,7 +23,6 @@ NavigationController.prototype.restart = function(){
 			}
 		}
 		Alloy.createController("index");
-
 };
 
 NavigationController.prototype.enterKioskMode = function(){
@@ -90,7 +88,7 @@ NavigationController.prototype.openHomeScreen = function(windowToOpen) {
 	this.Page = windowToOpen;
 	this.lockedPage = this.Page;
 	windowToOpen.analyticsPageTitle = "Home";
-	windowToOpen.analyticsPageLevel = "Exhibit Landing";
+	windowToOpen.analyticsPageLevel = "Home";
 	if (OS_ANDROID) {
 		//hack - setting this property ensures the window is "heavyweight" (associated with an Android activity)
 		windowToOpen.navBarHidden = windowToOpen.navBarHidden || false;

@@ -13,7 +13,6 @@ var languageService = setPathForLibDirectory('languageService/languageService');
 languageService = new languageService();
 var TutorialService = setPathForLibDirectory('tutorialService/tutorialService');
 var tutorialService = new TutorialService();
-var tutorialOn = Alloy.Models.app.get("tutorialOn");
 
 Alloy.Models.app.on('change:tutorialOn', updateTutorialUI);
 Alloy.Models.app.on('change:customizeLearningSet', activateFiltersWithSet);
@@ -130,9 +129,8 @@ function tutorialToggler(e) {
 	//Alloy.Globals.navController.open(Alloy.createController("tutorialToggler"));
 	//Alloy.createController('tutorialToggler').getView().open();
 	//closeMenu(e);
-	if (!tutorialOn) {
+	if (!Alloy.Models.app.get("tutorialOn")) {
 		tutorialService.resetTutorialMode();
-		tutorialOn = true;
 		Alloy.Models.app.set("tutorialOn", true);
 		Alloy.Models.app.trigger("change:tutorialOn");
 		var dialog = Ti.UI.createAlertDialog({
@@ -168,7 +166,6 @@ function tutorialToggler(e) {
 		dialog.show();
 	} else {
 		tutorialService.endTutorialMode();
-		tutorialOn = false;
 		Alloy.Models.app.set("tutorialOn", false);
 		Alloy.Models.app.trigger("change:tutorialOn");
 	}

@@ -2,7 +2,7 @@ var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
 
 var TutorialService = function() {
 	this.pages = ["exhibitLandingTutorial", "sectionLandingTutorial", "postLandingTutorial"];
-	this.initializePagesToShowTutorial("force");
+	this.initializePagesToShowTutorial();
 };
 
 TutorialService.prototype.getStorageService = function() {
@@ -93,7 +93,6 @@ TutorialService.prototype.setTutorialOn = function() {
 	storage.setBoolProperty("tutorialOn", true);
 	if (this.getAlloyService().Models.app) {
 		this.getAlloyService().Models.app.set("tutorialOn", true);
-		Alloy.Models.app.trigger('change:tutorialOn');
 	}
 };
 
@@ -102,23 +101,18 @@ TutorialService.prototype.setTutorialOff = function() {
 	storage.setBoolProperty("tutorialOn", false);
 	if (this.getAlloyService().Models.app) {
 		this.getAlloyService().Models.app.set("tutorialOn", false);
-		Alloy.Models.app.trigger('change:tutorialOn');
 	}
 };
 
 TutorialService.prototype.isAnyPageOn = function() {
-	Ti.API.info('Tutorial: checking if any page is on...');
 	var storage = this.getStorageService();
 	var anyPageIsOn = false;
-	Ti.API.info(this.pages.toString());
 	var pages = this.pages;
 	for (var i = 0; i < pages.length; i++) {
 		if(storage.getBoolProperty(pages[i])) {
-			Ti.API.info('Tutorial: Page ' + pages[i] + ' is on');
 			anyPageIsOn = true;
 		}
 	}
-	Ti.API.info('anyPageIsOn: ' + anyPageIsOn);
 	return anyPageIsOn;
 };
 
