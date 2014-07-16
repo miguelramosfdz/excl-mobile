@@ -21,22 +21,17 @@ if (posts) {
 }
 
 function createPostView(post) {
-	var args = {
+	var image = Ti.UI.createImageView({
 		height : Ti.UI.FILL,
 		image : post.get('image'),
 		top : "0"
-	};
-	var image = Ti.UI.createImageView(args);
-
-	args = {
-		//backgroundColor: 'black',
+	});
+	var titleBar = Ti.UI.createView({
 		opacity : 0.6,
 		height : Ti.UI.SIZE,
 		top : "0dip"
-	};
-	var titleBar = Ti.UI.createView(args);
-
-	args = {
+	});
+	var title = Ti.UI.createLabel({
 		top : 0,
 		left : "10dip",
 		color : 'white',
@@ -46,10 +41,9 @@ function createPostView(post) {
 			fontSize : '25dip',
 			fontWeight : 'bold'
 		},
-		//backgroundColor: "black",
 		text : post.get('name')
-	};
-	var title = Ti.UI.createLabel(args);
+	});
+	
 	titleBar.add(title);
 
 	var view;

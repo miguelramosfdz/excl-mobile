@@ -1,18 +1,25 @@
 
-".container": {
+"#backgroundContainer": {
 	layout: "vertical"
 }
 
-".headingText":{
+"#postContainer": {
+	layout: "vertical"
+}
+
+"#previewContainer": {
+	layout: "horizonal"
+}
+
+"#headingText":{
 	color: "white"
 }
 
-".scroller":{
-	showPagingControl: "true",
-	overlayEnabled: "true",
-	backgroundColor: "black",
-	pagingControlTimeout: 0
+"#placeholderImage":{
+	left: "0",
+	width: "40%"
 }
-".placeholderLabel":{
-	color: "#FFFFFF"
+
+"#placeholderLabel":{
+	left: "40%"
 }
