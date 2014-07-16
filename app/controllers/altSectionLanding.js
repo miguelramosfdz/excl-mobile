@@ -15,7 +15,7 @@ var selectedAges;
 var allPosts;
 var initialLoad = true;
 var genericAllAgesSectionTitle = "For Everyone in Your Group";
-var noContentMessage = "Sorry!\n\nLooks like we're still in thenprocess of adding content here.\n\nCheck here later for new and exciting activities!";
+var noContentMessage = "Sorry!\n\nLooks like we're still in the process of adding content here.\n\nCheck here later for new and exciting activities!";
 var noFiltersSelected = "Please select an age filter to see your sorted content!";
 
 var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
