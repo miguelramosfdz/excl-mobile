@@ -1,20 +1,13 @@
 var tiService = {
-	
 	App: {
-
 		Properties : {
-			setBool: function(name, bool) {
-				if ( typeof Titanium !== 'undefined') {
-					Ti.App.Properties.setBool(name, bool);
-				}
+			setBool: function(key, bool) {
+				Titanium.App.Properties.setBool(key, bool);
 			},
-			getBool: function(name) {
-				if ( typeof Titanium !== 'undefined') {
-					Ti.App.Properties.getBool(name);
-				}
+			getBool: function(key) {
+				return Titanium.App.Properties.getBool(key);
 			}
 		}
-	
 	}
 };
 
