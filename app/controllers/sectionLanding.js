@@ -96,9 +96,9 @@ function detectEventEnabled() {
 
 function detectEventSet() {
 	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
-	// if (ageFilterSet) {
-		// Alloy.Models.app.set("customizeLearningEnabled", true);
-	// }
+	
+	Ti.API.info("sectionLanding Accessed");
+	
 	detectEventEnabled();
 }
 
@@ -370,7 +370,7 @@ function addPostScroller(i, title, dictLength, postCollection, bolEmpty) {
 }
 
 function createPostScroller(title, postCollection) {
-	var postScroller = Alloy.createController('postScroller', args);
+	var postScroller = Alloy.createController('postPreview', args);
 	postScroller.sectionTitle.text = title;
 	return postScroller.getView();
 }

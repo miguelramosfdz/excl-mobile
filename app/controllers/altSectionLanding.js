@@ -96,6 +96,9 @@ function detectEventEnabled() {
 
 function detectEventSet() {
 	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
+	
+	Ti.API.info("altSectionLanding Accessed");
+	
 	detectEventEnabled();
 }
 
