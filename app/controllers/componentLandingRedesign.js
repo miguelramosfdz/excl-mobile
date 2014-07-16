@@ -113,6 +113,7 @@ function displaySectionList(orderedSectionList) {
 		});
 		view.addEventListener("click", function() {
 			var controller = Alloy.createController('sectionLanding', eval([args[0], label.text]));
+			Alloy.Globals.navController.open(controller);
 		});
 
 		var label = Titanium.UI.createLabel({

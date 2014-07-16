@@ -31,7 +31,7 @@ function createPostView(post) {
 		layout : "vertical",
 		borderWidth : "4",
 		borderRadius : "4",
-		height : "50%",
+		height : "70%",
 		width : "95%",
 		top : "5%"
 	};
@@ -49,7 +49,7 @@ function createPostView(post) {
 		text : post.get("name"),
 		textAlign : "center",
 		font : {
-			fontSize : "48",
+			fontSize : "20dip",
 			fontWeight : 'bold'
 		}
 	};
@@ -71,7 +71,7 @@ function createPostView(post) {
 		left : "40%",
 		text : post.get("text"),
 		font : {
-			fontSize : "36",
+			fontSize : "16dip",
 		}
 	};
 	var postText = labelService.createCustomLabel(args);

@@ -78,6 +78,7 @@ function goToPostLandingPage(e) {
 	var post = fetchPostById(e.source.itemId);
 	var analyticsTitle = component.getScreenName() + '/' + post.name;
 	var analyticsLevel = "Post Landing";
+	currentTabGroup.close();
 	var controller = Alloy.createController('postLanding', post);
 	controller.setAnalyticsPageTitle(analyticsTitle);
 	controller.setAnalyticsPageLevel(analyticsLevel);
