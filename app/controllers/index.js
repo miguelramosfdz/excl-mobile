@@ -33,5 +33,6 @@ function openInfo() {
 	Alloy.Globals.navController.open(controller);	
 }
 
+$.navBar.setPageTitle("Children's Museum Of Houston");
 $.navBar.hideBackBtn();
 Alloy.Globals.navController.open(this);

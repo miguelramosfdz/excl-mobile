@@ -31,6 +31,7 @@ function fixIpadSpacing() {
 }
 
 function init() {
+	$.navBar.setPageTitle("Exhibits");
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
 	fixIpadSpacing();
@@ -63,8 +64,8 @@ function retrieveJson(jsonURL, controller) {
 function initializeWithJSON(json, controller) {
 	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);
-	Alloy.Globals.navController.open(controller);
 	populateWindow(json);
+	Alloy.Globals.navController.open(controller);
 }
 
 function reloadWithJSON(json, controller) {
@@ -100,12 +101,6 @@ function clearAll() {
 
 function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.removeView($.placeholder); // This is an android hack
-	
-   /*exhibits.sort(function(a, b) {
-   return a.exhibit_order > b.exhibit_order;
-   });*/
-
-   //exhibits.order_number.sort();
 
 	for ( i = 0; i < exhibits.length; i++) {
 		exhibitText[i] = exhibits[i].long_description;
