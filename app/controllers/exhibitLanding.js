@@ -33,9 +33,7 @@ function fixIpadSpacing() {
 function init() {
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
-	// $.navBar.hideBackBtn();
 	fixIpadSpacing();
-	// alert("Hey there ho there ur using " + Titanium.Network.networkTypeName);
 }
 
 function setAnalyticsPageTitle(title) {

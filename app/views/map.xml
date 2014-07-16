@@ -1,6 +1,10 @@
 <Alloy>
 	<Window class="container">
-		<Widget id="navBar" src="navigationBar"/>
-		<Label>Map</Label>
+		<View id="mainView">
+			<Widget id="navBar" src="navigationBar"/>
+			<View id="homeContent">
+				<Label>Map</Label>
+			</View>
+		</View>
 	</Window>
 </Alloy>
