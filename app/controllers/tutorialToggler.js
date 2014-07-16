@@ -10,8 +10,7 @@ function closeMenu(e) {
 
 function tutorialHandler(e) {
 	CloseToggler();
-	tutorialService.resetTutorialMode();
-	Alloy.Globals.navController.restart();
+	
 }
 
 function CloseToggler() {

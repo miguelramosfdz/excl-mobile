@@ -30,9 +30,12 @@ function fixIpadSpacing() {
 	}
 }
 
-$.navBar.hideBackBtn();
-retrieveJson(url, initializeWithJSON, this);
-fixIpadSpacing();
+function init() {
+	spinner.addTo($.exhibitsCarousel);
+	spinner.show();
+	$.navBar.hideBackBtn();
+	fixIpadSpacing();
+}
 
 function setAnalyticsPageTitle(title) {
 	analyticsPageTitle = title;
@@ -50,13 +53,11 @@ function getAnalyticsPageLevel() {
 	return analyticsPageLevel;
 }
 
-function retrieveJson(jsonURL, callback, controller) {
-	spinner.addTo($.exhibitsCarousel);
-	spinner.show();
+function retrieveJson(jsonURL, controller) {
+	
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
-			callback(returnedData, controller);
-			spinner.hide();
+			initializeWithJSON(returnedData, controller);
 		}
 	});
 }
@@ -148,7 +149,7 @@ function createExhibitsImageIOS(exhibit, pageXofYtext) {
 	var viewConfig = {
 		backgroundColor : "#253342",
 		width : Ti.UI.FILL,
-		image: '/images/700x400.png',
+		image : '/images/700x400.png',
 		itemId : exhibit.id
 	};
 	if (exhibit.exhibit_image) {
@@ -320,11 +321,7 @@ function onExhibitsScroll(e, exhibits) {
 	var index = $.exhibitsCarousel.currentPage;
 	$.exhibitInfoLabel.text = exhibits[index].long_description;
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
-
-	setTimeout(function() {
-		$.exhibitInfoView.height = Ti.UI.SIZE;
-	}, 150);
-
+	$.exhibitInfoView.height = Ti.UI.SIZE;
 	$.exhibitInfoView.animate({
 		opacity : 1,
 		duration : 150
@@ -407,4 +404,8 @@ function createExhibitSelect(exhibits) {
 	});
 }
 
-exports.reload = reload; 
+init();
+retrieveJson(url, this);
+spinner.hide();
+
+exports.reload = reload;

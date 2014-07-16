@@ -63,13 +63,4 @@
 		fontSize: "15dip"
 	},
 	color: "#000"
-},
-
-".rowSwitch[platform=android]": {
-	top: "-8dip",
-	left: "5dip"
-},
-
-".rowSwitch[platform=ios]": {
-	right: "5dip"
 }

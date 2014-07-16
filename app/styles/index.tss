@@ -9,6 +9,10 @@
 	bottom: "20dip"
 }
 
+"#placeholder":{
+	height:'180dip'
+}
+
 "#exhibitsCarousel": {
 	backgroundColor: "#253342",
 	width: Ti.UI.FILL,
@@ -40,6 +44,15 @@
 	height: Ti.UI.SIZE
 }
 
+"#collapsibleComponentView":{
+	layout: "vertical",
+	height: "0"
+}
+
+"#headingLabelView":{
+	height: "50dip"
+}
+
 "#collapsibleInfoLabel[platform=android]": {
 	font: {
 		fontSize: '15dip'
@@ -65,13 +78,26 @@
 	left: "15%",
 	borderWidth: '1',
 	backgroundGradient: {
-	    type: 'linear',
-	    startPoint: { x: '50%', y: '0%' },
-	    endPoint: { x: '50%', y: '100%' },
-	    colors: [ 	{ color: '#B3363E', offset: 0.0}, 
-	    			{ color: '#8F2C2C', offset: 1.0 }],
-   }
-	
+		type: 'linear',
+		startPoint: {
+			x: '50%',
+			y: '0%'
+		},
+		endPoint: {
+			x: '50%',
+			y: '100%'
+		},
+		colors: [
+			{
+				color: '#B3363E',
+				offset: 0.0
+			},
+			{
+				color: '#8F2C2C',
+				offset: 1.0
+			}
+		]
+	}
 }
 
 "#bottomButtonContainer":{
@@ -101,7 +127,7 @@
 	scrollType: 'horizontal',
 	horizontalWrap: false,
 	top: "3dip",
-	bottom: "3dip",
+	bottom: "3dip"
 }
 
 ".headingLabel":{
@@ -113,45 +139,12 @@
 		fontFamily: 'Helvetica Neue',
 		fontSize: '22dip',
 		fontWeight: 'bold'
-	},
+	}
 }
 
 "#exhibitInfoView": {
 	layout: "vertical",
 	bottom: "50dip"
-}
-
-"#exhibitInfoLabel": {
-	color: '#232226',
-	font: {
-		fontFamily: 'Helvetica Neue',
-		fontWeight: 'normal'
-	},
-	top: '3%',
-	editable: false,
-	left: '3%',
-	right: '3%',
-	horizontalWrap: true,
-	height: Ti.UI.SIZE,
-	contentHeight: Ti.UI.SIZE
-}
-
-"#exhibitInfoLabel[platform=android]": {
-	font: {
-		fontSize: '15dip'
-	}
-}
-
-"#exhibitInfoLabel[platform=ios formFactor=handheld]": {
-	font: {
-		fontSize: '14dip'
-	}
-}
-
-"#exhibitInfoLabel[platform=ios formFactor=tablet]": {
-	font: {
-		fontSize: '20dip'
-	}
 }
 
 "#exhibitInfoScrollView": {

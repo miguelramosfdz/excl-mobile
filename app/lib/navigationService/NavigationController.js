@@ -17,7 +17,10 @@ function NavigationController() {
 
 NavigationController.prototype.restart = function(){
 		this.home();
-		this.windowStack.pop();
+		var lastWindow = this.windowStack.pop();
+		if (lastWindow) {
+			lastWindow.close();
+		}
 		Alloy.createController("index");
 };
 
@@ -37,12 +40,12 @@ NavigationController.prototype.exitKioskMode = function(){
 
 NavigationController.prototype.open = function(controller) {
 	var windowToOpen = this.getWindowFromController(controller);
-	try {
+	// try {
 		var win = this.openWindow(windowToOpen);
 		return win;
-	} catch(e) {
-		return false;
-	}
+	// } catch(e) {
+		// return false;
+	// }
 };
 
 NavigationController.prototype.getWindowFromController = function(controller) {
@@ -235,17 +238,18 @@ NavigationController.prototype.openTutorial = function(windowToOpen) {
 	var controllerName = this.tutorialController.checkTutorialForPage(windowToOpen);
 	if (controllerName !== false) {
 		windowToOpen.add(Alloy.createController(controllerName).getView());
+		this.tutorialController.markAsSeen(controllerName);
 	}
 };
 
 function addMenuToHomeWindow(windowStack, menu){
-	if(windowStack.length>0){	
+	if(windowStack.length>0){
 		windowStack[0].add(menu.getMenu());
 	}
 }
 
 function addMenuToNextWindow(windowStack, menu){
-	if(windowStack.length>1){	
+	if(windowStack.length>1){
 		windowStack[windowStack.length-2].add(menu.getMenu());
 	}
 }
