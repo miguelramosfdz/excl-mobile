@@ -40,7 +40,7 @@ function createPostView(post) {
 	args = {
 		height : "50dip",
 		width : "100%",
-		baackgroundColor : "#D8D8D8"
+		backgroundColor : "#D8D8D8"
 	};
 	var header = viewService.createCustomView(args);
 

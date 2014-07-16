@@ -10,6 +10,7 @@ var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
 var dictOrderedPostsBySection = {};
 var dictOrderedPostsByAge = {};
+var currentTabGroup;
 var selectedAges;
 
 var allPosts;
@@ -20,11 +21,20 @@ var noFiltersSelected = "Please select an age filter to see your sorted content!
 
 var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
 var viewService = setPathForLibDirectory('customCalls/viewService');
-var view = new viewService();
+viewService = new viewService();
+var windowService = setPathForLibDirectory('customCalls/windowService');
+windowService = new windowService();
 var labelService = setPathForLibDirectory('customCalls/labelService');
 var label = new labelService();
 var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
+
+/*
+ This is where the component landing and section landing will be connected
+ */
+var json = "";
+var selectedSection = "Try this!";
+/**/
 
 var analyticsPageTitle = "Section Landing";
 var analyticsPageLevel = "Section Landing";
@@ -88,7 +98,7 @@ function clearOrderedPostDicts() {
 
 function detectEventEnabled() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearningEnabled");
-	//Ti.API.info("Filter Status 2: " + JSON.stringify(Alloy.Collections.filter));
+	Ti.API.info("Filter Status 2: " + JSON.stringify(Alloy.Collections.filter));
 	//Ti.API.info("Filter Detected (Comp): set: " + ageFilterSet + ", on: " + ageFilterOn);
 	clearOrderedPostDicts();
 	retrieveComponentData();
@@ -107,7 +117,7 @@ function retrieveComponentData() {
 	addSpinner();
 	if (initialLoad) {
 		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-			changeTitleOfThePage(returnedData.data.component.name);
+			//changeTitleOfThePage(returnedData.data.component.name);
 			allPosts = returnedData.data.component.posts;
 			initialLoad = false;
 			checkIfAgeFilterOn(allPosts);
@@ -130,13 +140,19 @@ function removeSpinner() {
 }
 
 function checkIfAgeFilterOn(allPosts) {
+	Ti.API.info("Organizing content by section");
+	resetTabGroup();
+	organizeBySection(allPosts);
 	if (ageFilterOn) {
-		Ti.API.info("Filtering content");
+		Ti.API.info("Adding tabs");
 		organizeByAge(allPosts);
-	} else {
-		Ti.API.info("Organizing content by section");
-		organizeBySection(allPosts);
 	}
+}
+
+function resetTabGroup(currentTabGroup){
+	$.tabContainer.close();
+	args = {};
+	currentTabGroup = windowService.createCustomTabGroup(args);
 }
 
 function organizeBySection(allPosts) {
@@ -155,7 +171,10 @@ function compileDictOfSections(post, dict) {
 		sectionArray = parseStringIntoArray(post.section, ", ");
 		for (var i = 0; i < sectionArray.length; i++) {
 			//Accounts for multiple sections per post
-			addItemArrayToDict(sectionArray[i], post, dict);
+			Ti.API.info("section: " + sectionArray[i] + ", compared to: " + selectedSection);
+			if (sectionArray[i] == selectedSection) {
+				addItemArrayToDict(sectionArray[i], post, dict);
+			}
 		}
 	}
 
@@ -325,13 +344,13 @@ function sortPostsIntoSections(dict) {
 
 	if (dictLength == 0) {
 		var error = label.createLabel(noContentMessage);
-		var errorView = view.createView();
+		var errorView = viewService.createView();
 		errorView.add(error);
 		$.scrollView.add(errorView);
 	} else if (dictLength == 1 && dict[genericAllAgesSectionTitle] == "") {
 		var error = label.createLabel(noFiltersSelected);
 		error.top = "0";
-		var errorView = view.createView();
+		var errorView = viewService.createView();
 		errorView.add(error);
 		$.scrollView.add(errorView);
 	} else {
@@ -368,13 +387,44 @@ function sortPostsIntoSections(dict) {
 function addPostPreview(i, title, dictLength, postCollection, bolEmpty) {
 	var view = createPostPreview(title, postCollection);
 	view = adjustViewHeight(view, i, dictLength, bolEmpty);
-	$.scrollView.add(view);
+	$.tabContainer.addTab(createNewTab(view));
 }
 
 function createPostPreview(title, postCollection) {
 	var postPreview = Alloy.createController('postPreview', args);
 	//postPreview.headingText.text = title;
 	return postPreview.getView();
+}
+
+function createNewTab(view) {
+	args = {
+		contentWidth : "100%",
+		height : "50dip",
+		top : "0dip",
+		layout : "vertical"
+	};
+	var topBar = viewService.createCustomView(args);
+
+	var navBar = Alloy.createWidget("navigationBar");
+
+	args = {
+		navBarHidden : true,
+		fullscreen : true,
+		backgroundColor : '#FFFFFF'
+	};
+	var container = windowService.createCustomWindow(args);
+
+	args = {
+		title : title,
+		window : container
+	};
+	var newTab = windowService.createCustomTab(args);
+
+	container.add(topBar);
+	topBar.add(navBar);
+	container.add(view);
+	
+	return newTab;
 }
 
 function adjustViewHeight(view, i, dictLength, bolEmpty) {

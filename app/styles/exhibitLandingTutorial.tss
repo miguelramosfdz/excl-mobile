@@ -57,7 +57,9 @@
 
 "#ComponentsArrow": {
 	transform: Alloy.Globals.rotate180,
-	height: "70dip"
+	height: "140dip",
+	right: "35dip",
+	bottom: "20dip"
 }
 
 "#flyoutMenuText": {
@@ -68,19 +70,21 @@
 }
 
 "#ComponentsText": {
-	top: "220dip",
-	right: "75dip",
-	textAlign: Titanium.UI.TEXT_AlIGNMENT_RIGHT
+	top: "365dip",
+	left: "60dip"
+	//textAlign: Titanium.UI.TEXT_AlIGNMENT_RIGHT
 }
 
 "#ExitButton": {
 	//bottom: "150dip"
-	bottom: "20dip"
+	bottom: "270dip",
+
 }
 
 "#NextButton": {
 	//bottom: "150dip"
-	bottom: "80dip"
+	bottom: "330dip",
+	
 }
 
 
