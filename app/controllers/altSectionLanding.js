@@ -141,9 +141,15 @@ function checkIfAgeFilterOn(allPosts) {
 
 function organizeBySection(allPosts) {
 	dictOrderedPostsBySection = {};
+	
+	Ti.API.info("89");
+	
 	for (var i = 0; i < allPosts.length; i++) {
 		compileDictOfSections(allPosts[i], dictOrderedPostsBySection);
 	}
+	
+	Ti.API.info("90");
+	
 	sortPostsIntoSections(dictOrderedPostsBySection);
 
 	Ti.API.info("Finished Organizing by Section");
@@ -337,7 +343,7 @@ function sortPostsIntoSections(dict) {
 	} else {
 		for (var i = 0; i < dictLength; i++) {
 			//cycle through dict keys
-			var postCollection = Alloy.createCollection('post');
+			var postCollection = Alloy.createCollection('postNew');
 			stepIntoDict(dict, dictKeys[i], postCollection);
 			//Ti.API.info("section: " + JSON.stringify(dictKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
 			if (dictKeys[i] == genericAllAgesSectionTitle) {

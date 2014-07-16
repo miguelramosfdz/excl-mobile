@@ -3,7 +3,7 @@
 	layout: "vertical"
 }
 
-"#postContainer": {
+"#placeholderContainer": {
 	layout: "vertical"
 }
 
@@ -11,8 +11,15 @@
 	layout: "horizonal"
 }
 
-"#headingText":{
-	color: "white"
+"#header":{
+	height: "50dip",
+	width: "100%"
+}
+
+"#headerText":{
+	color: "black",
+	text: "Post Title",
+	textAlign: "center"
 }
 
 "#placeholderImage":{

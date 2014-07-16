@@ -6,6 +6,9 @@ labelService.prototype.createLabel = function(text) {
 	});
 	return label;
 };
-
+labelService.prototype.createCustomLabel = function(args) {
+	var label = Ti.UI.createLabel(args);
+	return label;
+};
 
 module.exports = labelService;

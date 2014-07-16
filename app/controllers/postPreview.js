@@ -1,67 +1,96 @@
 var args = arguments[0] || {};
-// expects:
-// posts - backbone.js collection of backbone.js model of post type
+var postArgs = args.posts;
+var viewService = setPathForLibDirectory("customCalls/viewService");
+viewService = new viewService();
+var labelService = setPathForLibDirectory("customCalls/labelService");
+labelService = new labelService();
 
-$.scroller.width = Ti.UI.FILL;
-$.scroller.height = Ti.UI.SIZE;
+function setPathForLibDirectory(libFile) {
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+	return lib;
+};
 
-var posts = args.posts;
-if (posts) {
-	for (var i = 0; i < posts.size(); i++) {
-		var post = posts.at(i);
-		post = createPostView(post);
-		$.scroller.addView(post);
-		$.scroller.currentPage = i;		// Change to current page to froce android arrows to appear
-	};
-	$.scroller.removeView($.placeholder);
-	$.scroller.currentPage = 0;			// Set current page back to the initial page
-	
-} else {
-	$.placeholderLabel.text = "There's no content specific for this age. Check above or change your filter!";
+function init() {
+	if (postArgs) {
+		for (var i = 0; i < postArgs.length; i++) {
+			post = createPostView(eval(postArgs.at(i)));
+			$.backgroundContainer.add(post);
+		};
+		$.placeholderContainer.height = "0";
+	} else {
+		$.placeholderLabel.text = "There's no content specific for this age. Check above or change your filter!";
+	}
 }
 
 function createPostView(post) {
-	var image = Ti.UI.createImageView({
-		height : Ti.UI.FILL,
-		image : post.get('image'),
-		top : "0"
-	});
-	var titleBar = Ti.UI.createView({
-		opacity : 0.6,
-		height : Ti.UI.SIZE,
-		top : "0dip"
-	});
-	var title = Ti.UI.createLabel({
-		top : 0,
-		left : "10dip",
-		color : 'white',
-		horizontalWrap : false,
+	args = {
+		layout : "vertical",
+		borderWidth : "2",
+		borderRadius : "3",
+		height : "30%",
+		width : "95%",
+		top : "3%"
+	};
+	var postContainer = viewService.createCustomView(args);
+
+	args = {
+		height : "50dip",
+		width : "100%",
+		baackgroundColor : "#D8D8D8"
+	};
+	var header = viewService.createCustomView(args);
+
+	args = {
+		color : "black",
+		text : post.get("name"),
+		textAlign : "center",
 		font : {
-			fontFamily : 'Arial',
-			fontSize : '25dip',
+			fontSize : "24",
 			fontWeight : 'bold'
-		},
-		text : post.get('name')
-	});
-	
-	titleBar.add(title);
+		}
+	};
+	var headerText = labelService.createCustomLabel(args);
 
-	var view;
-	if (OS_IOS) {
-		view = image;
-	} else if (OS_ANDROID) {
-		view = Ti.UI.createView();
-		view.add(image);
-	}
-	view.add(titleBar);
+	args = {
+		layout : "horizonal"
+	};
+	var previewContainer = viewService.createCustomView(args);
 
-	view.addEventListener('click', function(e) {
+	args = {
+		left : "0",
+		width : "40%",
+		image : post.get("image")
+	};
+	var postImage = viewService.createCustomImageView(args);
+
+	args = {
+		left : "40%",
+		text : post.get("text") + "here"
+	};
+	var postText = labelService.createCustomLabel(args);
+
+	postContainer.add(header);
+	header.add(headerText);
+	postContainer.add(previewContainer);
+	previewContainer.add(postImage);
+	previewContainer.add(postText);
+
+	previewContainer.addEventListener('click', function(e) {
 		var args = post;
+
+		Ti.API.info("name: " + post.get("name"));
+
 		postController = Alloy.createController('postLanding', args);
 		postController.setAnalyticsPageTitle(post.get("name"));
 		postController.setAnalyticsPageLevel("Post Landing");
 		Alloy.Globals.navController.open(postController);
 	});
 
-	return view;
+	return postContainer;
 }
+
+init();
