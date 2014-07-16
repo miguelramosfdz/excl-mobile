@@ -4,7 +4,7 @@
  * --Move all non-UI to separate file
  */
 var args = arguments[0] || {};
-var component = args;
+var component = args[0];
 var componentID = component.get('id');
 var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
 
@@ -32,8 +32,8 @@ var noFiltersSelected = "Please select an age filter to see your sorted content!
 /*
  This is where the component landing and section landing will be connected
  */
-var json = "";
-var selectedSection = "Try this!";
+var json = args[0];
+var selectedSection = args[1];
 /**/
 
 var analyticsPageTitle = "Section Landing";
@@ -172,7 +172,7 @@ function compileDictOfSections(post, dict) {
 		sectionArray = parseStringIntoArray(post.section, ", ");
 		for (var i = 0; i < sectionArray.length; i++) {
 			//Accounts for multiple sections per post
-			Ti.API.info("section: " + sectionArray[i] + ", compared to: " + selectedSection);
+			Ti.API.info("section: " + sectionArray[i] + ", compared to: " + selectedSection + ", match: " + (sectionArray[i] == selectedSection));
 			if (sectionArray[i] == selectedSection) {
 				addItemArrayToDict(sectionArray[i], post, dict);
 			}
