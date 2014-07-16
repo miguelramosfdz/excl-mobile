@@ -1,26 +1,5 @@
 <Alloy>
 	<Window class="container">
-		<View id="mainView">
-			<Widget id="navBar" src="navigationBar"/>
-			<ScrollableView id="exhibitsCarousel">
-				<View id="placeholder"></View>
-			</ScrollableView>
-			<ScrollView id="exhibitInfoScrollView">
-				<View id="collapsibleComponentView" >
-					<View id="headingLabelView">
-						<Label class="headingLabel">Select an activity!</Label>
-					</View>
-					<ScrollView id="componentScrollView"></ScrollView>
-				</View>
-				<View id="exhibitInfoView">
-					<Label id="exhibitInfoLabel"></Label>
-				</View>
-			</ScrollView>
-		</View>
-		<View id="bottomButtonContainer">
-			<View id="exhibitSelect">
-				<Label id="exhibitSelectLabel" class="headingText">Explore This Exhibit!</Label>
-			</View>
-		</View>
+		
 	</Window>
 </Alloy>
