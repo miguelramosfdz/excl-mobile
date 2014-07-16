@@ -96,9 +96,9 @@ function detectEventEnabled() {
 
 function detectEventSet() {
 	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
-	
-	Ti.API.info("sectionLanding Accessed");
-	
+
+	Ti.API.info("altSectionLanding Accessed");
+
 	detectEventEnabled();
 }
 
@@ -152,8 +152,13 @@ function organizeBySection(allPosts) {
 
 function compileDictOfSections(post, dict) {
 	if (post.section) {
-		addItemArrayToDict(post.section, post, dict);
+		sectionArray = parseStringIntoArray(post.section,", ");
+		for (var i = 0; i < sectionArray.length; i++) {
+			//Accounts for multiple sections per post
+			addItemArrayToDict(sectionArray[i], post, dict);
+		}
 	}
+	
 }
 
 function organizeByAge(allPosts) {
@@ -231,13 +236,10 @@ function compileDictOfSelectedAgesToPostAgeRange(selectedAges, dictOrderedPostsB
 	var postAgeRange = repairEmptyAgeRange(post.age_range);
 	postAgeRange = parseStringIntoArray(String(postAgeRange), ", ");
 	if (checkIfArrayInArray(selectedAges, postAgeRange) && selectedAges.length != 2) {
-		//Ti.API.info("1-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToDict("0", post, dictOrderedPostsByAge);
 	} else if (checkIfAbbrevArray(postAgeRange) && selectedAges.length != 2) {
-		//Ti.API.info("2-Adding to zed: " + JSON.stringify(post));
 		addItemArrayToDict("0", post, dictOrderedPostsByAge);
 	} else {
-		//Ti.API.info("3-Adding to other: " + JSON.stringify(post));
 		for (var i = 0; i < selectedAges.length; i++) {
 			var itemArray = createPostArray(postAgeRange, selectedAges[i], post);
 			addItemArrayToDict(selectedAges[i], itemArray, dictOrderedPostsByAge);
@@ -370,7 +372,7 @@ function addPostScroller(i, title, dictLength, postCollection, bolEmpty) {
 }
 
 function createPostScroller(title, postCollection) {
-	var postScroller = Alloy.createController('postPreview', args);
+	var postScroller = Alloy.createController('postScroller', args);
 	postScroller.sectionTitle.text = title;
 	return postScroller.getView();
 }
@@ -428,8 +430,8 @@ function parseFilterDictIntoArray(ary) {
 	ary = JSON.parse(ary);
 	for (var i = 0; i < ary.length; i++) {
 		var dict = ary[i];
-	//	Ti.API.info("Active: " + dict["name"] + " is " + dict["active"]);
-		if (dict["active"].toString()=="true") {
+		//	Ti.API.info("Active: " + dict["name"] + " is " + dict["active"]);
+		if (dict["active"].toString() == "true") {
 			newAry.push(dict["name"]);
 		}
 	}

@@ -1,15 +1,11 @@
 <Alloy>
-	<View class="container">
-		<View class="headingRow">
-			<Label id="sectionTitle" class="headingText">
-				section title
-			</Label>
-		</View>
-		<ScrollableView id="scroller" class="scroller">
-			<View id="placeholder">
+	<View id="backgroundContainer">
+		<View id="postContainer">
+			<Label id="headingText" text="Post Title"/>
+			<View id="previewContainer">
 				<ImageView id="placeholderImage"/>
-				<Label id="placeholderLabel" class="placeholderLabel"/>
+				<Label id="placeholderLabel"/>
 			</View>
-		</ScrollableView>
+		</View>
 	</View>
 </Alloy>

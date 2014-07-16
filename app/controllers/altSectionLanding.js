@@ -96,9 +96,9 @@ function detectEventEnabled() {
 
 function detectEventSet() {
 	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
-	
+
 	Ti.API.info("altSectionLanding Accessed");
-	
+
 	detectEventEnabled();
 }
 
@@ -152,8 +152,13 @@ function organizeBySection(allPosts) {
 
 function compileDictOfSections(post, dict) {
 	if (post.section) {
-		addItemArrayToDict(post.section, post, dict);
+		sectionArray = parseStringIntoArray(post.section,", ");
+		for (var i = 0; i < sectionArray.length; i++) {
+			//Accounts for multiple sections per post
+			addItemArrayToDict(sectionArray[i], post, dict);
+		}
 	}
+	
 }
 
 function organizeByAge(allPosts) {
@@ -425,8 +430,8 @@ function parseFilterDictIntoArray(ary) {
 	ary = JSON.parse(ary);
 	for (var i = 0; i < ary.length; i++) {
 		var dict = ary[i];
-	//	Ti.API.info("Active: " + dict["name"] + " is " + dict["active"]);
-		if (dict["active"].toString()=="true") {
+		//	Ti.API.info("Active: " + dict["name"] + " is " + dict["active"]);
+		if (dict["active"].toString() == "true") {
 			newAry.push(dict["name"]);
 		}
 	}
