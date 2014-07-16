@@ -151,7 +151,7 @@ function createExhibitsCarousel(exhibits) {
 
 	// Change the current page back to 0
 	$.exhibitsCarousel.currentPage = 0;
-	
+	$.headingLabel.text = exhibits[0].name;
 	$.exhibitInfoLabel.text = exhibits[0].long_description;
 	
 	if (OS_IOS) {
@@ -176,7 +176,7 @@ function createExhibitsImageIOS(exhibit, pageXofYtext) {
 		viewConfig.image = exhibit.exhibit_image;
 	}
 	var exhibitView = Ti.UI.createImageView(viewConfig);
-	exhibitView.add(createExhibitTitleLabel(exhibit.name, pageXofYtext));
+	// exhibitView.add(createExhibitTitleLabel(exhibit.name, pageXofYtext));
 	return exhibitView;
 }
 
@@ -196,7 +196,7 @@ function createExhibitsImageAndroid(exhibit, pageXofYtext) {
 	image.image = exhibit.exhibit_image;
 
 	itemContainer.add(image);
-	itemContainer.add(createTitleLabel(exhibit.name, '25dip', pageXofYtext));
+	// itemContainer.add(createTitleLabel(exhibit.name, '25dip', pageXofYtext));
 	itemContainer.add(clickCatcher);
 	return itemContainer;
 }
@@ -292,9 +292,10 @@ function onExhibitsClick(exhibits) {
 	if ($.collapsibleComponentView.hidden == true) {
 		$.collapsibleComponentView.hidden = false;
 		var pageIndex = $.exhibitsCarousel.currentPage;
-		$.exhibitSelectLabel.text = "Go Back";
+		$.exhibitSelectLabel.text = "Back to Description";
 		$.exhibitInfoLabel.text = exhibits[pageIndex].long_description;
-
+		$.headingLabel.text = "Select an Activity!";
+		
 		$.exhibitInfoView.animate({
 			opacity : 0,
 			duration : 300
@@ -314,6 +315,7 @@ function onExhibitsClick(exhibits) {
 		$.collapsibleComponentView.animate(slideOut);
 	} else {
 		$.collapsibleComponentView.hidden = true;
+		$.headingLabel.text = exhibits[$.exhibitsCarousel.currentPage].name;
 		$.exhibitSelectLabel.text = "Explore This Exhibit!";
 		$.exhibitInfoView.animate({
 			opacity : 1,
@@ -339,6 +341,7 @@ function onExhibitsScroll(e, exhibits) {
 	componentsInExhibit[e.view.itemId].width = Ti.UI.SIZE;
 	currExhibitId = e.view.itemId;
 	var index = $.exhibitsCarousel.currentPage;
+	$.headingLabel.text = exhibits[index].name;
 	$.exhibitInfoLabel.text = exhibits[index].long_description;
 	$.exhibitSelectLabel.text = "Explore This Exhibit!";
 	$.exhibitInfoView.height = Ti.UI.SIZE;

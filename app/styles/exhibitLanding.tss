@@ -49,10 +49,6 @@
 	height: "0"
 }
 
-"#headingLabelView":{
-	height: "50dip"
-}
-
 "#collapsibleInfoLabel[platform=android]": {
 	font: {
 		fontSize: '15dip'
@@ -71,12 +67,41 @@
 	}
 }
 
+"#bottomButtonContainer":{
+	height: '80dip',
+	bottom: 0,
+	backgroundColor: 'transparent'
+}
+
+"#exhibitInfoGradient": {
+	top: 0,
+	height: "30dip",
+	backgroundColor: "transparent"
+    // backgroundGradient: {
+	    // type: 'linear',
+	    // startPoint: { x: '50%', y: '100%' },
+	    // endPoint: { x: '50%', y: '0%' },
+	    // colors: [
+	    	// {color: 'white', offset: 0.1}, 
+	    	// {color: 'transparent', offset: 0.95} 
+	    // ],
+	// }
+}
+
 "#exhibitSelect": {
+	bottom: 0,
+	height: "50dip",
+	backgroundColor: 'white'
+}
+
+"#exhibitSelectLabel": {
+	bottom: "5dip",
+	height: "40dip",
 	borderRadius: "20dip",
 	backgroundColor: "#253342",
 	width: "70%",
 	left: "15%",
-	borderWidth: '1',
+	borderWidth: '0',
 	backgroundGradient: {
 		type: 'linear',
 		startPoint: {
@@ -98,12 +123,6 @@
 			}
 		]
 	}
-}
-
-"#bottomButtonContainer":{
-	height: '50dip',
-	bottom: '0',
-	backgroundColor: 'white'
 }
 
 ".headingText": {
@@ -130,11 +149,12 @@
 	bottom: "3dip"
 }
 
-".headingLabel":{
-	// bottom: '5dip',
-	// top: '5dip',
+"#headingLabelView":{
+	height: "50dip"
+}
+
+"#headingLabel":{
 	color: "#232226",
-	height: "50dip",
 	font: {
 		fontFamily: 'Helvetica Neue',
 		fontSize: '22dip',
@@ -143,14 +163,13 @@
 }
 
 "#exhibitInfoView": {
-	layout: "vertical",
 	bottom: "50dip",
 }
 
 "#exhibitInfoLabel": {
 	color: '#000',
   	font: { fontSize: 18 },
-  	width: "90%"
+  	width: "90%",
 }
 
 "#exhibitInfoScrollView": {
