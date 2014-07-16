@@ -127,12 +127,13 @@ function setCommentIconBusy(button) {
 
 function getImageRowFromPart(part) {
 	var row = createPlainRowWithHeight('200dip');
-
+	if (Titanium.Platform.osname = "ipad"){
+		row.height = "40%";
+	}
 	imageView = Ti.UI.createImageView({
 		image : part.get('image'),
-		width : '100%',
-		height : '100%'
-
+		width : "90%",
+		height : Ti.UI.SIZE
 	});
 
 	row.add(imageView);
