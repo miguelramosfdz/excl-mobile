@@ -5,10 +5,10 @@ var tutorialService = new TutorialService();
 
 function tutorialExit(e) {
 	tutorialService.endTutorialMode();
-	$.componentTutorialPage.hide();
+	$.sectionTutorialPage.hide();
 }
 
 function gotIt(e) {
-	tutorialService.gotIt("componentLandingTutorial");
-	$.componentTutorialPage.hide();
+	tutorialService.gotIt("sectionLandingTutorial");
+	$.sectionTutorialPage.hide();
 }

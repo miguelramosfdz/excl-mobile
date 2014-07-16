@@ -1,7 +1,8 @@
 var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
 
 var TutorialService = function() {
-	this.initializePagesToShowTutorial();
+	this.pages = ["exhibitLandingTutorial", "sectionLandingTutorial", "postLandingTutorial"];
+	this.initializePagesToShowTutorial("force");
 };
 
 TutorialService.prototype.getStorageService = function() {
@@ -39,9 +40,9 @@ TutorialService.prototype.setAlloyService = function(alloyService) {
 	this.alloyService = alloyService;
 };
 
-TutorialService.prototype.initializePagesToShowTutorial = function() {
+TutorialService.prototype.initializePagesToShowTutorial = function(force) {
 	var storage = this.getStorageService();
-	if (!storage.getBoolProperty("tutorialInitialized")) {
+	if (!storage.getBoolProperty("tutorialInitialized") || force === "force") {
 		Ti.API.info("Tutorial is not initialized. Now initializing tutorial");
 		this.setAllPagesTo(true);
 		storage.setBoolProperty("tutorialInitialized", true);
@@ -58,7 +59,7 @@ TutorialService.prototype.endTutorialMode = function() {
 
 TutorialService.prototype.setAllPagesTo = function(trueOrFalse) {
 	var storage = this.getStorageService();
-	var pages = ["exhibitLandingTutorial", "componentLandingTutorial", "postLandingTutorial"];
+	var pages = this.pages;
 	for (var i = 0; i < pages.length; i++) {
 		storage.setBoolProperty(pages[i], trueOrFalse);
 	}
@@ -80,29 +81,44 @@ TutorialService.prototype.markAsSeen = function(pageName) {
 };
 
 TutorialService.prototype.updateIsTutorialOn = function() {
-	var storage = this.getStorageService();
 	if (this.isAnyPageOn()) {
-		storage.setBoolProperty("tutorialOn", true);
-		if (this.getAlloyService().Models.app) {
-			this.getAlloyService().Models.app.set("tutorialOn", true);
-		}
+		this.setTutorialOn();
 	} else {
-		storage.setBoolProperty("tutorialOn", false);
-		if (this.getAlloyService().Models.app) {
-			this.getAlloyService().Models.app.set("tutorialOn", false);
-		}
+		this.setTutorialOff();
+	}
+};
+
+TutorialService.prototype.setTutorialOn = function() {
+	var storage = this.getStorageService();
+	storage.setBoolProperty("tutorialOn", true);
+	if (this.getAlloyService().Models.app) {
+		this.getAlloyService().Models.app.set("tutorialOn", true);
+		Alloy.Models.app.trigger('change:tutorialOn');
+	}
+};
+
+TutorialService.prototype.setTutorialOff = function() {
+	var storage = this.getStorageService();
+	storage.setBoolProperty("tutorialOn", false);
+	if (this.getAlloyService().Models.app) {
+		this.getAlloyService().Models.app.set("tutorialOn", false);
+		Alloy.Models.app.trigger('change:tutorialOn');
 	}
 };
 
 TutorialService.prototype.isAnyPageOn = function() {
+	Ti.API.info('Tutorial: checking if any page is on...');
 	var storage = this.getStorageService();
 	var anyPageIsOn = false;
-	var pages = ["exhibitLandingTutorial", "componentLandingTutorial", "postLandingTutorial"];
+	Ti.API.info(this.pages.toString());
+	var pages = this.pages;
 	for (var i = 0; i < pages.length; i++) {
 		if(storage.getBoolProperty(pages[i])) {
+			Ti.API.info('Tutorial: Page ' + pages[i] + ' is on');
 			anyPageIsOn = true;
 		}
 	}
+	Ti.API.info('anyPageIsOn: ' + anyPageIsOn);
 	return anyPageIsOn;
 };
 
