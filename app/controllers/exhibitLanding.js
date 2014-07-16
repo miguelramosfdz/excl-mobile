@@ -15,7 +15,7 @@ var url = Alloy.Globals.rootWebServiceUrl;
 var exhibitText = [];
 var componentsInExhibit = [];
 var currExhibitId;
-var analyticsPageTitle = "Home";
+var analyticsPageTitle = "Exhibit Landing";
 var analyticsPageLevel = "Exhibit Landing";
 var expanderButton;
 

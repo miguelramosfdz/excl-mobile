@@ -5,12 +5,12 @@ var StorageService = function() {
 
 };
 
-StorageService.prototype.setBoolProperty = function(name, value) {
-	tiService.App.Properties.setBool(name, value);
+StorageService.prototype.setBoolProperty = function(key, value) {
+	tiService.App.Properties.setBool(key, value);
 };
 
-StorageService.prototype.getBoolProperty = function(name) {
-	return tiService.App.Properties.getBool(name);
+StorageService.prototype.getBoolProperty = function(key) {
+	return tiService.App.Properties.getBool(key);
 };
-	
+
 module.exports = StorageService;
