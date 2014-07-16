@@ -1,7 +1,6 @@
 var args = arguments[0] || {};
 
 
-
 function openExhibits() {
 	var controller = Alloy.createController("exhibitLanding");
 	Alloy.Globals.navController.open(controller);	
@@ -17,5 +16,5 @@ function openInfo() {
 	Alloy.Globals.navController.open(controller);	
 }
 
-
+$.navBar.hideBackBtn();
 Alloy.Globals.navController.open(this);

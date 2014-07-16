@@ -5,3 +5,8 @@
 	backgroundColor: "#FFF",
     layout: "vertical"
 }
+
+"#mainView": {
+	layout: "vertical",
+	bottom: "20dip"
+}
