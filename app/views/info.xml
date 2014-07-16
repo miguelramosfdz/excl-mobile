@@ -1,0 +1,6 @@
+<Alloy>
+	<Window class="container">
+		<Widget id="navBar" src="navigationBar"/>
+		<Label>Info</Label>
+	</Window>
+</Alloy>
