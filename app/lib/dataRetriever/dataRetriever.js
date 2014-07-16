@@ -1,10 +1,10 @@
-var apiCalls, networkCalls, parseCalls;
+var apiCalls, networkCalls, parseCalls, alloyCalls;
 
 function setPathForLibDirectory(rootPath) {
 	apiCalls = require(rootPath + 'apiCalls');
 	networkCalls = require(rootPath + 'networkCalls');
 	parseCalls = require(rootPath + 'parseCalls');
-
+	alloyCalls = require(rootPath + 'alloyService');
 }
 
 function parseJson(responseText) {
@@ -13,15 +13,20 @@ function parseJson(responseText) {
 }
 
 function fetchDataFromUrl(url, onSuccess) {
+	url = addLanguageToURL(url);
 	var client = networkCalls.network(url, onSuccess);
-	url += "?language="; //Append language query to url
-	url +=  Alloy.Models.app.get('currentLanguage');
-	Ti.API.info("url: " + url);
+	apiCalls.info("url: " + url);
 	if (client) {
 		client.open("GET", url);
 		client.send();
 	}
+}
 
+function addLanguageToURL(url) {
+	if (alloyCalls.Models.app) {
+		url += "?language=" + alloyCalls.Models.app.get('currentLanguage');
+	}
+	return url;
 }
 
 function sendJsonToUrl(url, jsonData, onSuccess) {
