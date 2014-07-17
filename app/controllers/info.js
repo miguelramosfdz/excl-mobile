@@ -17,3 +17,29 @@ var getAnalyticsPageLevel = function() {
 };
 
 $.navBar.setPageTitle("Info");
+
+function insertInfoPicture() {
+
+	var view = Titanium.UI.createView({
+		height : '100%',
+		left : '6dip',
+		right : '6dip',
+		top : '10dip',
+		bottom : '20dip',
+		layout : 'vertical'
+	});
+
+	var image = Ti.UI.createImageView({
+		image : "/images/MuseumInfo.jpg",
+		width : '100%',
+		height : '100%'
+	});
+
+	view.add(image);
+
+	$.scrollView.add(view);
+	$.scrollView.height = "auto";
+
+}
+
+insertInfoPicture();
