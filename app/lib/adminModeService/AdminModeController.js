@@ -1,4 +1,5 @@
 var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
+var viewUnpublishedPosts = false;
 
 function ModeController() {
 	var kiosk = require(rootPath +'adminModeService/kioskMode');
@@ -7,6 +8,20 @@ function ModeController() {
 
 ModeController.prototype.isInKioskMode = function(){
 	return this.kioskMode.isInKioskMode();
+};
+
+ModeController.prototype.viewUnpublishedPostsIsEnabled = function(){
+	return viewUnpublishedPosts;
+};
+
+ModeController.prototype.toggleViewUnpublishedPosts = function(){
+	viewUnpublishedPosts = !viewUnpublishedPosts;
+	if(viewUnpublishedPosts){
+		alert("Unpublished Posts Enabled");
+	}else
+	{
+		alert('Unpublished Posts Disabled');
+	}
 };
 
 ModeController.prototype.addAdminModeListener = function(element) {

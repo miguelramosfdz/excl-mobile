@@ -33,9 +33,12 @@ function addLanguageToURL(url) {
 }
 
 function addViewUnpublishedPostsToURL(url){
-	var alloyCallsModelApp = alloyCalls.Models.app;
-	if (alloyCallsModelApp) {
-		url += "&view_unpublished_posts=" + alloyCallsModelApp.get('viewUnpublishedPosts');
+	if(Alloy.Globals.adminModeController.viewUnpublishedPostsIsEnabled())
+	{
+		url += "&view_unpublished_posts=" +"true";
+	}else
+	{
+		url += "&view_unpublished_posts=" +"false";
 	}
 	return url;
 }

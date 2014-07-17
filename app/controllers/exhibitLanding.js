@@ -404,7 +404,7 @@ function openComponent(e, componentImageUrl) {
 	// var controller = Alloy.createController('altSectionLanding', component);
 	var controller = Alloy.createController('componentLandingRedesign', [component, componentImageUrl]);
 	var analyticsTitle = component.getScreenName();
-	var analyticsLevel = "Section Landing";
+	var analyticsLevel = "Component Landing";
 	controller.setAnalyticsPageTitle(analyticsTitle);
 	controller.setAnalyticsPageLevel(analyticsLevel);
 	Alloy.Globals.navController.open(controller);
