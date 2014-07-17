@@ -1,6 +1,6 @@
 "#menuView":{
 	layout: 'horizontal',
-	opacity: ".93",
+	opacity: "1",
 	width: "100%",
 	left: "100%",
 	top: "50dip"
