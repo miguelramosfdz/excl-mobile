@@ -381,6 +381,10 @@ function sortPostsIntoSections(dict) {
 function addPostPreview(i, title, dictLength, postCollection, bolEmpty) {
 	var view = createPostPreview(title, postCollection);
 	//var newTab = createNewTab(view, title);
+	
+	Ti.API.info("View added: " + title + ", " + i);
+	
+	
 	$.scrollView.add(view);
 	//currentTabGroup.addTab(newTab);
 }

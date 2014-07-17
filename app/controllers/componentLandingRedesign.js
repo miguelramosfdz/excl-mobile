@@ -11,8 +11,8 @@ var dataRetriever = require(rootDirPath + 'dataRetriever/dataRetriever');
 var loadingSpinner = require(rootDirPath + 'loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
 // --------------------------------------------------------------------------------------------------------
-var analyticsPageTitle = "";
-var analyticsPageLevel = "";
+var analyticsPageTitle = "Component Landing";
+var analyticsPageLevel = "Component Landing";
 
 var setAnalyticsPageTitle = function(title) {
 	analyticsPageTitle = title;
@@ -159,8 +159,17 @@ function jackOfAllTrades() {
 		var unorderedSectionNames = extractSectionNamesAndOrder(rawJson["posts"]);
 		var orderedSectionList = orderSectionNameBySectionOrder(unorderedSectionNames);
 		displaySectionList(orderedSectionList, rawJson);
+		fixSpacingIOS();
 		removeSpinner();
 	});
+}
+
+function fixSpacingIOS(){
+	if (OS_IOS){
+		$.scrollView.bottom = "48dip";
+		$.scrollView.top="0"; 
+		
+	}
 }
 
 jackOfAllTrades();

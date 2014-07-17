@@ -20,7 +20,7 @@ function init() {
 			post = createPostView(eval(postArgs.at(i)));
 			$.backgroundContainer.add(post);
 		};
-		$.placeholderContainer.borderColor="purple";
+		$.backgroundContainer.height=Ti.UI.SIZE;
 		$.placeholderContainer.height = "0";
 	} else {
 		$.placeholderLabel.text = "There's no content specific for this age. Check above or change your filter!";
@@ -31,10 +31,11 @@ function createPostView(post) {
 	args = {
 		layout : "vertical",
 		borderWidth : "4",
-		borderRadius : "4",
-		height : "40%",
+		borderRadius : "3",
+		borderColor: "black",
+		height : "200dip",
 		width : "95%",
-		top : "5%"
+		bottom : "5%"
 	};
 	var postContainer = viewService.createCustomView(args);
 
@@ -60,7 +61,9 @@ function createPostView(post) {
 		layout : "horizonal",
 		backgroundColor: "#F0F0F0",
 		bottom: "1%",
-		width: "99%"
+		width: "99%",
+		//height: "100%"
+		height: "150dip"
 	};
 	var previewContainer = viewService.createCustomView(args);
 
@@ -86,7 +89,7 @@ function createPostView(post) {
 	previewContainer.add(postImage);
 	previewContainer.add(postText);
 
-$.backgroundContainer.height="100%";
+//$.backgroundContainer.borderColor = "red";
 if(OS_IOS){
 	//$.backgroundContainer.bottom="48dip";
 	$.backgroundContainer.top= "-50%";
