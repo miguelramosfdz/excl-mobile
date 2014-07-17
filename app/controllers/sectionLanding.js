@@ -159,6 +159,9 @@ function organizeBySection(allPosts) {
 function compileDictOfSections(post, dict) {
 	if (post.section) {
 		sectionArray = parseStringIntoArray(post.section, ", ");
+		
+		Ti.API.info("101: " + JSON.stringify(sectionArray));
+		
 		for (var i = 0; i < sectionArray.length; i++) {
 			//Accounts for multiple sections per post
 			Ti.API.info("section: " + sectionArray[i] + ", compared to: " + selectedSection + ", match: " + (sectionArray[i] == selectedSection));
@@ -381,6 +384,10 @@ function sortPostsIntoSections(dict) {
 function addPostPreview(i, title, dictLength, postCollection, bolEmpty) {
 	var view = createPostPreview(title, postCollection);
 	//var newTab = createNewTab(view, title);
+	
+	Ti.API.info("View added: " + title + ", " + i);
+	
+	
 	$.scrollView.add(view);
 	//currentTabGroup.addTab(newTab);
 }
