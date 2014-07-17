@@ -1,9 +1,10 @@
 <Alloy>
-	<View id="postTutorialPage" class="fullScreenWindow" autoStyle="true">
-		<View class="fullScreenOverlay" autoStyle="true" />
-		<ImageView id="flyoutMenuArrow" image="/images/tutorial/long-arrow.png"></ImageView>
-		<ImageView id="ComponentsArrow" image="/images/tutorial/long-arrow.png"></ImageView>
-		<Label id="flyoutMenuText" class="fullScreenOverlayText">Post Tutorial Page!</Label>
+	<View id="postTutorialPage" class="fullScreenWindow">
+		<View class="fullScreenOverlay" />
+		<ImageView id="sharingArrow" image="/images/tutorial/long-arrow.png" />
+		<ImageView id="commentingArrow" image="/images/tutorial/long-arrow.png" />
+		<Label id="sharingText" class="fullScreenOverlayText">Share what you learned!</Label>
+		<Label id="commentingText" class="fullScreenOverlayText">See what others have said</Label>
 		<Button id="ExitButton" onClick="tutorialExit" class="tutorialButton">End Tutorial</Button>
 		<Button id="NextButton" onClick="gotIt" class="GotItButton">Got it!</Button>
 	</View>

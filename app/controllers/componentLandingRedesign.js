@@ -32,76 +32,101 @@ exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
 exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 // --------------------------------------------------------------------------------------------------------
 
-function setPageTitle(name){
+function setPageTitle(name) {
 	$.navBar.setPageTitle(name);
 }
 
-function insertComponentPicture(imageUrl){
+function insertComponentPicture(imageUrl) {
 	Ti.API.info("Picture to insert ===> " + imageUrl.toString());
+
+	var view = Titanium.UI.createView({
+		height : '40%',
+		left : '6dip',
+		right : '6dip',
+		top : '10dip',
+		bottom : '20dip',
+		layout : 'vertical'
+	});
+
+	var image = Ti.UI.createImageView({
+		image : imageUrl,
+		width : '100%',
+		height : '100%'
+	});
+
+	view.add(image);
+
+	$.scrollView.add(view);
+
 }
 
-function extractSectionNamesAndOrder(rawPostJson){
+function extractSectionNamesAndOrder(rawPostJson) {
 	var allSectionNames = {};
-	for(var i=0; i<rawPostJson.length; i++){
-		if (allSectionNames.hasOwnProperty(rawPostJson[i].section) == false){
+	for (var i = 0; i < rawPostJson.length; i++) {
+		if (allSectionNames.hasOwnProperty(rawPostJson[i].section) == false) {
 			allSectionNames[rawPostJson[i].section] = convertSectionOrderToInteger(rawPostJson[i].section_order);
 		}
 	}
 	return allSectionNames;
 }
 
-function convertSectionOrderToInteger(section_order){
-	if (section_order == true){
+function convertSectionOrderToInteger(section_order) {
+	if (section_order == true) {
 		return 1;
-	}
-	else if (section_order == false){
+	} else if (section_order == false) {
 		return 0;
-	}
-	else{
+	} else {
 		return parseInt(section_order);
 	}
 }
 
-function orderSectionNameBySectionOrder(unorderedSectionNames){
+function orderSectionNameBySectionOrder(unorderedSectionNames) {
 	var sectionNamesAray = covertHashMapIntoArrayOfObject(unorderedSectionNames);
-	sectionNamesAray.sort(function(a,b) {
-    	return a.value - b.value;
+	sectionNamesAray.sort(function(a, b) {
+		return a.value - b.value;
 	});
 	return sectionNamesAray;
 }
 
-function covertHashMapIntoArrayOfObject(hashMap){
+function covertHashMapIntoArrayOfObject(hashMap) {
 	var arrayOfObjects = new Array();
-	for (var each_key in hashMap){
-		arrayOfObjects.push({key: each_key, value: hashMap[each_key]});
+	for (var each_key in hashMap) {
+		arrayOfObjects.push({
+			key : each_key,
+			value : hashMap[each_key]
+		});
 	}
 	return arrayOfObjects;
 }
 
-function displaySectionList(orderedSectionList){
-	for(var i=0; i<orderedSectionList.length; i++){
+function displaySectionList(orderedSectionList) {
+	for (var i = 0; i < orderedSectionList.length; i++) {
 		Ti.API.info(orderedSectionList[i].key);
 		var view = Titanium.UI.createView({
 			height : '10%',
-			left: '12dip',
-			right: '12dip',
-			top: '5dip',
-			bottom: '5dip',
+			left : '12dip',
+			right : '12dip',
+			top : '5dip',
+			bottom : '5dip',
 			backgroundColor : gradientColors[gradientColorsCount],
-			layout: 'vertical'
-		}); 
+			layout : 'vertical'
+		});
+		view.addEventListener("click", function() {
+			var controller = Alloy.createController('sectionLanding', eval([args[0], label.text]));
+			Alloy.Globals.navController.open(controller);
+		});
 
 		var label = Titanium.UI.createLabel({
 			color : 'white',
 			// verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_CENTER,
-			textAlign: 'center',
-			height: Ti.UI.FILL,
+			textAlign : 'center',
+			height : Ti.UI.FILL,
 			font : {
 				fontSize : 28,
-				fontWeight: 'bold'
+				fontWeight : 'bold'
 			},
 			text : orderedSectionList[i].key
-		}); 
+		});
 		view.add(label);
 
 		gradientColorsCount++;

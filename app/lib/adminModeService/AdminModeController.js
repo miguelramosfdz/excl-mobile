@@ -13,6 +13,7 @@ ModeController.prototype.addAdminModeListener = function(element) {
 	var count = 0;
 	var self = this;
 	var handleAdminModeEntry = function(e){
+		Titanium.Media.vibrate([0,200]);
 		count += 100;
 		if (count === 100) {
 			setTimeout(function(){count = 0;}, 3000);
@@ -70,7 +71,7 @@ function handleAdminModeDialog(self) {
 	    }
 	});
 	dialog.show();
-	setTimeout(function(){dialog.hide();}, 9000);
+	// setTimeout(function(){dialog.hide();}, 9000);
 }
 
 module.exports = ModeController;

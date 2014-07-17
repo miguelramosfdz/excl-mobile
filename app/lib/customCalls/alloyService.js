@@ -1,10 +1,16 @@
 var alloyService = {
 
-	Globals : function(object) {
-		return Alloy.Globals;
-	},
+	Globals : getAlloyGlobals(),
 	
-	Models : Alloy.Models
+	Models : getAlloyModels()
 };
+
+function getAlloyGlobals() {
+	return Alloy.Globals;
+}
+
+function getAlloyModels() {
+	return Alloy.Models;
+}
 
 module.exports = alloyService;

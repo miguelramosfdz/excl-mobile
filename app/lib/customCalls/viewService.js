@@ -26,6 +26,11 @@ viewService.prototype.createCustomImageView = function(args) {
 	return view;
 };
 
+viewService.prototype.createCustomScrollView = function(args) {
+	var scrollView = Ti.UI.createScrollView(args);
+	return scrollView;
+};
+
 viewService.prototype.createTableView = function() {
 	var table = Ti.UI.createTableView({});
 	return table;

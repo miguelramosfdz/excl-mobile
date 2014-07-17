@@ -54,6 +54,7 @@ Alloy.Globals.isNumber = function(n) {
 };
 
 Alloy.Globals.rotate180 = Ti.UI.create2DMatrix().rotate(-180);
+Alloy.Globals.rotate90 = Ti.UI.create2DMatrix().rotate(90);
 
 // do not remove: initialization of global backbone models
 Alloy.Models.app = Alloy.Models.instance('app');

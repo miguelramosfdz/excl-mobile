@@ -4,20 +4,9 @@
  * --Move all non-UI to separate file
  */
 var args = arguments[0] || {};
-var component = args;
+var component = args[0];
 var componentID = component.get('id');
 var url = Alloy.Globals.rootWebServiceUrl + "/component/" + componentID;
-
-var dictOrderedPostsBySection = {};
-var dictOrderedPostsByAge = {};
-var currentTabGroup;
-var selectedAges;
-
-var allPosts;
-var initialLoad = true;
-var genericAllAgesSectionTitle = "For Everyone in Your Group";
-var noContentMessage = "Sorry!\n\nLooks like we're still in the process of adding content here.\n\nCheck here later for new and exciting activities!";
-var noFiltersSelected = "Please select an age filter to see your sorted content!";
 
 var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
 var viewService = setPathForLibDirectory('customCalls/viewService');
@@ -29,11 +18,22 @@ var label = new labelService();
 var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
 
+var dictOrderedPostsBySection = {};
+var dictOrderedPostsByAge = {};
+var currentTabGroup = windowService.createCustomTabGroup({});
+var selectedAges;
+
+var allPosts;
+var initialLoad = true;
+var genericAllAgesSectionTitle = "For Everyone in Your Group";
+var noContentMessage = "Sorry!\n\nLooks like we're still in the process of adding content here.\n\nCheck here later for new and exciting activities!";
+var noFiltersSelected = "Please select an age filter to see your sorted content!";
+
 /*
  This is where the component landing and section landing will be connected
  */
-var json = "";
-var selectedSection = "Try this!";
+var json = args[0];
+var selectedSection = args[1];
 /**/
 
 var analyticsPageTitle = "Section Landing";
@@ -71,13 +71,14 @@ function setPathForLibDirectory(libFile) {
 };
 
 function changeTitleOfThePage(name) {
-	$.container.title = name;
+	//$.container.title = name;
 }
 
 function goToPostLandingPage(e) {
 	var post = fetchPostById(e.source.itemId);
 	var analyticsTitle = component.getScreenName() + '/' + post.name;
 	var analyticsLevel = "Post Landing";
+	currentTabGroup.close();
 	var controller = Alloy.createController('postLanding', post);
 	controller.setAnalyticsPageTitle(analyticsTitle);
 	controller.setAnalyticsPageLevel(analyticsLevel);
@@ -86,14 +87,14 @@ function goToPostLandingPage(e) {
 
 function checkPostViewSpacing() {
 	if (OS_IOS) {
-		$.scrollView.bottom = "48dip";
+		//$.scrollView.bottom = "48dip";
 	}
 }
 
 function clearOrderedPostDicts() {
 	dictOrderedPostsBySection = {};
 	dictOrderedPostsByAge = {};
-	$.scrollView.removeAllChildren();
+	//$.scrollView.removeAllChildren();
 }
 
 function detectEventEnabled() {
@@ -131,7 +132,7 @@ function retrieveComponentData() {
 }
 
 function addSpinner() {
-	spinner.addTo($.container);
+	spinner.addTo(currentTabGroup);
 	spinner.show();
 }
 
@@ -147,10 +148,11 @@ function checkIfAgeFilterOn(allPosts) {
 		Ti.API.info("Adding tabs");
 		organizeByAge(allPosts);
 	}
+	currentTabGroup.open();
 }
 
-function resetTabGroup(currentTabGroup){
-	$.tabContainer.close();
+function resetTabGroup(currentTabGroup) {
+	//$.tabContainer.close();
 	args = {};
 	currentTabGroup = windowService.createCustomTabGroup(args);
 }
@@ -171,7 +173,7 @@ function compileDictOfSections(post, dict) {
 		sectionArray = parseStringIntoArray(post.section, ", ");
 		for (var i = 0; i < sectionArray.length; i++) {
 			//Accounts for multiple sections per post
-			Ti.API.info("section: " + sectionArray[i] + ", compared to: " + selectedSection);
+			Ti.API.info("section: " + sectionArray[i] + ", compared to: " + selectedSection + ", match: " + (sectionArray[i] == selectedSection));
 			if (sectionArray[i] == selectedSection) {
 				addItemArrayToDict(sectionArray[i], post, dict);
 			}
@@ -346,13 +348,13 @@ function sortPostsIntoSections(dict) {
 		var error = label.createLabel(noContentMessage);
 		var errorView = viewService.createView();
 		errorView.add(error);
-		$.scrollView.add(errorView);
+		//$.scrollView.add(errorView);
 	} else if (dictLength == 1 && dict[genericAllAgesSectionTitle] == "") {
 		var error = label.createLabel(noFiltersSelected);
 		error.top = "0";
 		var errorView = viewService.createView();
 		errorView.add(error);
-		$.scrollView.add(errorView);
+		//$.scrollView.add(errorView);
 	} else {
 		for (var i = 0; i < dictLength; i++) {
 			//cycle through dict keys
@@ -387,7 +389,8 @@ function sortPostsIntoSections(dict) {
 function addPostPreview(i, title, dictLength, postCollection, bolEmpty) {
 	var view = createPostPreview(title, postCollection);
 	view = adjustViewHeight(view, i, dictLength, bolEmpty);
-	$.tabContainer.addTab(createNewTab(view));
+	var newTab = createNewTab(view, title);
+	currentTabGroup.addTab(newTab);
 }
 
 function createPostPreview(title, postCollection) {
@@ -396,16 +399,23 @@ function createPostPreview(title, postCollection) {
 	return postPreview.getView();
 }
 
-function createNewTab(view) {
+function createNewTab(view, title) {
 	args = {
 		contentWidth : "100%",
 		height : "50dip",
 		top : "0dip",
-		layout : "vertical"
+		layout : "vertical",
+		backgroundColor : "red"
 	};
 	var topBar = viewService.createCustomView(args);
 
-	var navBar = Alloy.createWidget("navigationBar");
+	//var navBar = Alloy.createWidget("navigationBar");
+
+	args = {
+		backgroundColor : "green",
+		top : "50dip"
+	};
+	var scrollView = viewService.createCustomScrollView(args);
 
 	args = {
 		navBarHidden : true,
@@ -421,9 +431,9 @@ function createNewTab(view) {
 	var newTab = windowService.createCustomTab(args);
 
 	container.add(topBar);
-	topBar.add(navBar);
-	container.add(view);
-	
+	container.add(scrollView);
+	//topBar.add(navBar);
+	scrollView.add(view);
 	return newTab;
 }
 
