@@ -201,6 +201,9 @@ function getVideoThumbnailViewFromPartAndroid(part) {
 
 function getVideoRowFromPartiOS(part) {
 	var row = createPlainRowWithHeight('200dip');
+	if (Titanium.Platform.osname == "ipad"){
+		row.height = "40%";
+	}
 	var video = Titanium.Media.createVideoPlayer({
 		url : part.get('video'),
 		fullscreen : false,
@@ -248,8 +251,10 @@ function creatingCommentTextHeading() {
 	var row = createPlainRowWithHeight('10%');
 	if (OS_IOS){
 		row.bottom = "48dip";
+		row.height = "10%";
+	} else {
+		row.height = "50dip";
 	}
-	
 	
 	var commentHeading = Ti.UI.createLabel({
 		top : 20,
@@ -265,7 +270,7 @@ function creatingCommentTextHeading() {
 		text : "Add Comment",
 		textAlign : 'center',
 		borderWidth : '1',
-		borderColor : '#aaa'
+		borderColor : '#aaa',
 	});
 	row.addEventListener('click', function(e) {
 		$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
@@ -274,7 +279,7 @@ function creatingCommentTextHeading() {
 		$.insertName.value = $.insertEmail.value = $.insertComment.value = "";
 		$.thankYouMessageView.visible = false;
 	});
-	row.bottom = '10%';
+	//row.bottom = '10%';
 	row.add(commentHeading);
 	tableData.push(row);
 }
@@ -300,6 +305,9 @@ function displayThereAreNoCommentsToDisplayText() {
 
 function addCommentToView(commentText, commentDate) {
 	var row = createPlainRowWithHeight('auto');
+	if (OS_ANDROID){
+		row.top = "10%";
+	}
 	var text = Ti.UI.createLabel({
 		top : 10,
 		width : '94%',
@@ -350,7 +358,7 @@ function displayComments(comments) {
 	if (comments.length > commentsLengthLimit) {
 		var row = createPlainRowWithHeight('auto');
 		var text = Ti.UI.createLabel({
-			top : 10,
+			top : "10dip",
 			width : '94%',
 			right : '3%',
 			left : '3%',
