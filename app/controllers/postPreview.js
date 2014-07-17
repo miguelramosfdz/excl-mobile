@@ -89,7 +89,7 @@ function createPostView(post) {
 	previewContainer.add(postImage);
 	previewContainer.add(postText);
 
-$.backgroundContainer.borderColor = "red";
+//$.backgroundContainer.borderColor = "red";
 if(OS_IOS){
 	//$.backgroundContainer.bottom="48dip";
 	$.backgroundContainer.top= "-50%";
