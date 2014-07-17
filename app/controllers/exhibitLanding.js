@@ -172,6 +172,8 @@ function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.addEventListener("scrollend", function(e) {
 		onExhibitsScroll(e, exhibits);
 	});
+	
+	removeSpinner();
 }
 
 function createExhibitsImageIOS(exhibit, pageXofYtext) {
@@ -436,6 +438,6 @@ function createExhibitSelect(exhibits) {
 
 init();
 retrieveJson(url, this);
-spinner.hide();
+//spinner.hide();
 
 exports.reload = reload;
