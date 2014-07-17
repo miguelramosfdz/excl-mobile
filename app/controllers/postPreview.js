@@ -33,22 +33,30 @@ function init() {
 
 function createPostView(post) {
 	args = {
-		layout : "horizontal",
-		height : "180dip",
 		width : "100%",
-		backgroundColor : "#FFFFFF",
+		backgroundColor : "white",
 	};
 	var container = viewService.createCustomView(args);
+	if (Titanium.Platform.osname == "ipad") {
+		container.top = "3%";
+		container.height = "300dip";
+	} else {
+		container.top = "30dip";
+		container.height = "225dip";
+	}
 
 	args = {
 		layout : "vertical",
-		height : "180dip",
 		width : "95%",
-		top : "5%",
-		backgroundColor : "#F0F0F0",
-		left : "1%"
+		backgroundColor : "#F8F8F8",
+		left : "2%"
 	};
 	var postContainer = viewService.createCustomView(args);
+	if (Titanium.Platform.osname == "ipad") {
+		postContainer.height = "300dip";
+	} else {
+		postContainer.height = "225dip";
+	}
 
 	args = {
 		height : "50dip",
@@ -59,13 +67,17 @@ function createPostView(post) {
 
 	args = {
 		height : "50dip",
-		width : "98%",
+		width : "99%",
 		backgroundColor : "#D8D8D8",
-		left : "2%",
 		top : "1%",
 		bottom : "1%"
 	};
 	var headerWrap = viewService.createCustomView(args);
+	if (Titanium.Platform.osname == "ipad") {
+		headerWrap.left = "4%";
+	} else {
+		headerWrap.left = "1%";
+	}
 
 	args = {
 		color : "#000000",
@@ -80,34 +92,50 @@ function createPostView(post) {
 
 	args = {
 		layout : "horizonal",
-		backgroundColor : "#F0F0F0",
+		backgroundColor : "#F8F8F8",
 		width : "95%",
-		height : "125dip",
 		top : "2%",
 		bottom : "10%"
 	};
 	var previewContainer = viewService.createCustomView(args);
+	if (Titanium.Platform.osname == "ipad") {
+		previewContainer.height = "250dip";
+	} else {
+		previewContainer.height = "175dip";
+	}
 
 	args = {
-		height : "25dip",
-		width : "25dip",
-		right : "0"
+		top: "60%"
 	};
 	var navArrow = buttonService.createCustomButton(args);
-	//iconService.setIcon(navArrow, "postNavArrow.png");
+	iconService.setIcon(navArrow, "postNavArrow.png");
 
+	if (Titanium.Platform.osname == "ipad") {
+		navArrow.right = "18dip";
+		navArrow.height = "25dip";
+		navArrow.width = "25dip";
+	} else {
+		navArrow.right = "0dip";
+		navArrow.height = "20dip";
+		navArrow.width = "20dip";
+	}
 	args = {
 		left : "0",
-		width : "39%",
-		height : "120dip",
+		width : "45%",
 		top : "0",
 		image : post.get("image"),
 	};
 	var postImage = viewService.createCustomImageView(args);
+	if (Titanium.Platform.osname == "ipad") {
+		postImage.height = "240dip";
+	} else {
+		postImage.height = "165dip";
+	}
 
 	args = {
-		left : "40%",
+		left : "46%",
 		text : post.get("text"),
+		color : "#000000",
 		font : {
 			fontSize : "16dip",
 			color : "#000000"
