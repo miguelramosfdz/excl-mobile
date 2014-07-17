@@ -16,12 +16,6 @@ ModeController.prototype.viewUnpublishedPostsIsEnabled = function(){
 
 ModeController.prototype.toggleViewUnpublishedPosts = function(){
 	viewUnpublishedPosts = !viewUnpublishedPosts;
-	if(viewUnpublishedPosts){
-		alert("Unpublished Posts Enabled");
-	}else
-	{
-		alert('Unpublished Posts Disabled');
-	}
 };
 
 ModeController.prototype.addAdminModeListener = function(element) {
