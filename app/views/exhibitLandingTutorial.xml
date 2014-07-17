@@ -6,7 +6,7 @@
 		<Label id="ScrollText" class="fullScreenOverlayText">Scroll Through Exhibits</Label>
 		<ImageView id="flyoutMenuArrow" image="/images/tutorial/long-arrow.png"></ImageView>
 		<ImageView id="ComponentsArrow" image="/images/tutorial/long-arrow.png"></ImageView>
-		<ImageView id="ScrollArrow" image="/images/tutorial/long-arrow.png"></ImageView>
+		<ImageView id="fingerSwipe" image="/images/tutorial/swipe_right.png"></ImageView>
 		<Button id="ExitButton" onClick="tutorialExit" class="tutorialButton">End Tutorial</Button>
 		<Button id="NextButton" onClick="gotIt" class="GotItButton">Got it!</Button>
 	</View>

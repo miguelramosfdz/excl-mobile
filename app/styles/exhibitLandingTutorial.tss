@@ -61,13 +61,6 @@
 	height: "70dip"
 }
 
-"#ScrollArrow": {
-	top: "148dip",
-	right: "30dip",
-	//height: "110dip"
-	height: "70dip"
-}
-
 "#flyoutMenuArrow[formFactor=tablet]": {
 	right: "75dip",
 	height: "130dip",
@@ -95,13 +88,23 @@
 	right: "75dip",
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_RIGHT
 }
+"#flyoutMenuText[formFactor=handheld]": {
+	right: null,
+	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
+}
 "#flyoutMenuText[formFactor=tablet]": {
 	top: "173dip",
 	right: "160dip"
 }
 
 "#ScrollText": {
-	top: "220dip"
+	top: "220dip",
+	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
+}
+
+"#ScrollText[formFactor=tablet]": {
+	top: "300dip",
+	right: "50dip"
 }
 
 "#ComponentsText": {
@@ -110,12 +113,28 @@
 	top: "430dip",
 	left: "60dip"
 }
+"#ComponentsText[formFactor=handheld]": {
+	left: null,
+	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
+}
 "#ComponentsText[formFactor=tablet]": {
 	top: null,
-	bottom: "200dip",
+	bottom: "160dip",
 	left: null,
 	width: "80%",
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
+}
+
+"#fingerSwipe[formFactor=handheld]": {
+	top: "150dip",
+	height: "50dip"
+}
+
+"#fingerSwipe[formFactor=tablet]": {
+	center: {
+		x: "25%",
+		y: "320dip"
+	}
 }
 
 "#ExitButton": {
