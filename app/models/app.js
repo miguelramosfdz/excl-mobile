@@ -4,8 +4,7 @@ exports.definition = {
 			customizeLearningEnabled: false,
 			customizeLearningSet: false,
 			currentLanguage: "en_US",
-			tutorialOn: true,
-			viewUnpublishedPosts: "false"
+			tutorialOn: true
 		},
 		adapter: {
 			type: "properties",
