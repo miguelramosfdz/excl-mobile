@@ -24,7 +24,6 @@
 }
 ".fullScreenOverlayText[formFactor=tablet]": {
 	font: {
-		//textStyle: Titanium.UI.TEXT_STYLE_HEADLINE,
 		fontWeight: "bold",
 		fontSize: "35dip"
 	}
@@ -74,6 +73,9 @@
 	width: Ti.UI.FILL,
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
 }
+"#sharingText[formFactor=handheld]": {
+	top: "90dip"
+}
 
 "#commentingText": {
 	top: "305dip",
@@ -104,11 +106,8 @@
 }
 
 "#iconHighlight[formFactor=handheld]": {
-	width: "80%"
-}
-
-"#iconHighlight[formFactor=handheld]": {
-	top: "200dip"
+	width: "80%",
+	top: "140dip"
 }
 
 ".sharingIcon[formFactor=handheld]": {
@@ -122,7 +121,9 @@
 
 "#commentIcon[platform=android]": {
 	image: "/images/icons_android/comment_ready.png",
-	left: "15%",
+	center: {
+		x: "27%"
+	},
 	height: "55dip",
 	width: "55dip"
 }
@@ -136,19 +137,25 @@
 
 "#shareIcon[platform=android]": {
 	image: "/images/icons_android/share_ready.png",
-	left: "65%"
+	center: {
+		x: "72%"
+	}
 }
 
 "#commentIcon[platform=ios]": {
 	image: "/images/icons_ios/comment_ready.png",
-	left: "15%",
+	center: {
+		x: "27%"
+	},
 	height: "55dip",
 	width: "55dip"
 }
 
 "#commentIcon[platform=ios formFactor=tablet]": {
 	image: "/images/icons_ios/comment_ready.png",
-	left: "15%",
+	center: {
+		x: "27%"
+	},
 	height: "85dip",
 	width: "85dip"
 }
@@ -162,26 +169,7 @@
 
 "#shareIcon[platform=ios]": {
 	image: "/images/icons_ios/share_ready.png",
-	left: "65%"
+	center: {
+		x: "72%"
+	}
 }
-
-// // Default label
-// "Label": { 
-    // backgroundColor: "#000",
-    // text: 'BlackBerry or another platform'
-// }
-// // iPhone
-// "Label[platform=ios formFactor=handheld]": {
-    // backgroundColor: "#f00",
-    // text: 'iPhone'
-// }
-// // iPad and iPad mini
-// "Label[platform=ios formFactor=tablet]": { 
-    // backgroundColor: "#0f0",
-    // text: 'iPad'
-// }
-// // Android handheld and tablet devices
-// "Label[platform=android]": { 
-    // backgroundColor: "#00f",
-    // text: 'Android'
-// }
