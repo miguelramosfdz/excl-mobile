@@ -44,9 +44,9 @@ function fixPageSpacing() {
 
 function setPageTitle(name) {
 	if (name === "") {
-		$.postLanding.title = "[Title]";
+		$.navBar.setPageTitle("[Title]");
 	} else {
-		$.postLanding.title = name;
+		$.navBar.setPageTitle(name);
 	}
 }
 

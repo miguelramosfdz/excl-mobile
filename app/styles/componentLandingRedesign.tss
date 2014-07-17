@@ -2,7 +2,3 @@
 	navBarHidden: true,
 	fullscreen: true
 }
-
-"#scrollView":{
-	bottom: '48dip',
-}

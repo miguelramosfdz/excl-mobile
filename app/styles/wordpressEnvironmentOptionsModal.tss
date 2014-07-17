@@ -12,6 +12,7 @@
 }
 
 ".horizontalContainer": {
-	layout: "horizontal"
+	layout: "horizontal",
+	width: Ti.UI.SIZE
 }
 

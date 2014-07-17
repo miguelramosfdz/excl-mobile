@@ -143,15 +143,18 @@ function jackOfAllTrades() {
 		var unorderedSectionNames = extractSectionNamesAndOrder(rawJson["posts"]);
 		var orderedSectionList = orderSectionNameBySectionOrder(unorderedSectionNames);
 		displaySectionList(orderedSectionList, rawJson);
-		// fixSpacingIOS();
+		fixBottomSpacing();
 	});
 }
 
-function fixSpacingIOS(){
-	if (OS_IOS){
-		$.scrollView.bottom = "48dip";
-		$.scrollView.top="0"; 	
+function fixBottomSpacing(){
+
+	if (OS_IOS) {
+		//$.scrollView.bottom = "48dip";
+		//$.scrollView.top = "0";
 	}
+	$.scrollView.height = "auto";
+
 	
 }
 

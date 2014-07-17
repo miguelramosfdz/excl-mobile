@@ -42,12 +42,12 @@ NavigationController.prototype.exitKioskMode = function(){
 
 NavigationController.prototype.open = function(controller) {
 	var windowToOpen = this.getWindowFromController(controller);
-	// try {
+	try {
 		var win = this.openWindow(windowToOpen);
 		return win;
-	// } catch(e) {
-		// return false;
-	// }
+	} catch(e) {
+		return false;
+	}
 };
 
 NavigationController.prototype.getWindowFromController = function(controller) {
