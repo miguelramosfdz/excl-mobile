@@ -35,7 +35,7 @@ function createPostView(post) {
 		borderColor: "black",
 		height : "175dip",
 		width : "95%",
-		top : "5%"
+		top : "10dip"
 	};
 	var postContainer = viewService.createCustomView(args);
 
@@ -60,8 +60,7 @@ function createPostView(post) {
 	args = {
 		layout : "horizonal",
 		backgroundColor: "#F0F0F0",
-		bottom: "1%",
-		width: "99%",
+		width: "95%",
 		//height: "100%"
 		height: "125dip"
 	};
@@ -70,6 +69,7 @@ function createPostView(post) {
 	args = {
 		left : "0",
 		width : "39%",
+		top: "0",
 		image : post.get("image")
 	};
 	var postImage = viewService.createCustomImageView(args);
