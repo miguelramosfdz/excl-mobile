@@ -14,6 +14,8 @@ function parseJson(responseText) {
 
 function fetchDataFromUrl(url, onSuccess) {
 	url = addLanguageToURL(url);
+	url = addViewUnpublishedPostsToURL(url);
+	
 	var client = networkCalls.network(url, onSuccess);
 	apiCalls.info("url: " + url);
 	if (client) {
@@ -26,6 +28,14 @@ function addLanguageToURL(url) {
 	var alloyCallsModelApp = alloyCalls.Models.app;
 	if (alloyCallsModelApp) {
 		url += "?language=" + alloyCallsModelApp.get('currentLanguage');
+	}
+	return url;
+}
+
+function addViewUnpublishedPostsToURL(url){
+	var alloyCallsModelApp = alloyCalls.Models.app;
+	if (alloyCallsModelApp) {
+		url += "&view_unpublished_posts=" + alloyCallsModelApp.get('viewUnpublishedPosts');
 	}
 	return url;
 }

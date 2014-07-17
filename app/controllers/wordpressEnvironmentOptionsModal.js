@@ -100,3 +100,18 @@ function handleUrl(url){
 	}
 }
 
+function toggleUnpublishedPosts(e){
+	
+	var app = Alloy.Models.app;
+	if (app.get("viewUnpublishedPosts") == "true") 
+	{
+		app.set("viewUnpublishedPosts", "false");
+		alert("Unpublished Posts Disabled");
+	}else
+	{
+		app.set("viewUnpublishedPosts", "true");
+		alert("Unpublished Posts Enabled");
+	}
+	Alloy.Globals.navController.restart();
+}
+
