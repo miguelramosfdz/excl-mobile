@@ -11,8 +11,8 @@ var dataRetriever = require(rootDirPath + 'dataRetriever/dataRetriever');
 var loadingSpinner = require(rootDirPath + 'loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
 // --------------------------------------------------------------------------------------------------------
-var analyticsPageTitle = "";
-var analyticsPageLevel = "";
+var analyticsPageTitle = "Component Landing";
+var analyticsPageLevel = "Component Landing";
 
 var setAnalyticsPageTitle = function(title) {
 	analyticsPageTitle = title;
