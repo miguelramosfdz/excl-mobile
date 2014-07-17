@@ -17,13 +17,11 @@
 }
 
 ".flyoutView":{
-	// backgroundColor: "green",
 	width: "40%",
 	right: 0
 }
 
 ".backView":{
-	// backgroundColor: "red",
 	width: "40%",
 	left: 0
 }
@@ -54,7 +52,6 @@
 
 //Android
 ".pageTitleStyle[platform=android]":{
-	// backgroundColor: "blue",
 	color: "#FFF",
 	font: {
 		fontSize: '20dip',
