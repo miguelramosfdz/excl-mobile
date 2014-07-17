@@ -67,74 +67,12 @@
 	}
 }
 
-".GotItButton": {
-	backgroundColor: "#4CD964",
-	width: "50%",
-	height: "50dip",
-	borderColor: "white",
-	borderRadius: "7dip",
-	borderWidth: "1dip",
-	color: "#fff",
-	font: {
-		fontSize: "24dp"
-	}
-}
-
-".GotItButton[platform=ios]": {
-	borderWidth: "0dip",
-	backgroundColor: null,
-	backgroundGradient: {
-		type: 'linear',
-		startPoint: {
-			x: '50%',
-			y: '0%'
-		},
-		endPoint: {
-			x: '50%',
-			y: '100%'
-		},
-		colors: [
-			{
-				color: '#5AD427',
-				offset: 0.0
-			},
-			{
-				color: '#A4E786',
-				offset: 1.0
-			}
-		]
-	},
-}
-
 // Post landing tutorial styles
-
-"#sharingArrow": {
-	top: "145dip",
-	right: "65dip",
-	height: "100dip",
-	transform: Alloy.Globals.rotate90
-}
-
-"#sharingArrow[formFactor=tablet]": {
-	top: null,
-	right: null,
-	height: "125dip",
-	center: {
-		x: "60%",
-		y: "220dip"
-	}
-}
 
 "#sharingText": {
 	top: "120dip",
 	width: Ti.UI.FILL,
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
-}
-
-"#commentingArrow": {
-	top: "330dip",
-	transform: Alloy.Globals.rotate180,
-	height: "80dip"
 }
 
 "#commentingText": {
@@ -143,15 +81,8 @@
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
 }
 
-"#commentingArrow[formFactor=tablet]": {
-	left: "40%",
-	top: "410dip",
-	transform: null,
-	height: "125dip"
-}
-
 "#commentingText[formFactor=tablet]": {
-	top: "540dip",
+	top: "640dip",
 	width: Ti.UI.FILL,
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
 }
@@ -166,6 +97,62 @@
 	bottom: "80dip"
 }
 
+"#iconHighlight": {
+	width: "50%",
+	top: "160dip",
+	height: Ti.UI.SIZE
+}
+
+"#iconHighlight[formFactor=handheld]": {
+	width: "80%"
+}
+
+".sharingIcon[formFactor=handheld]": {
+	width: "40dip",
+	height: "40dip"
+}
+
+"#highlightBackground": {
+	image: "/images/tutorial/highlight.png"
+}
+
+"#commentIcon[platform=android]": {
+	image: "/images/icons_android/comment_ready.png",
+	left: "15%",
+	height: "55dip",
+	width: "55dip"
+}
+
+"#photoIcon[platform=android]": {
+	image: "/images/icons_android/camera_ready.png",
+	center: {
+		x: "50%"
+	}
+}
+
+"#shareIcon[platform=android]": {
+	image: "/images/icons_android/share_ready.png",
+	left: "65%"
+}
+
+"#commentIcon[platform=ios]": {
+	image: "/images/icons_ios/comment_ready.png",
+	left: "15%",
+	height: "55dip",
+	width: "55dip"
+}
+
+"#photoIcon[platform=ios]": {
+	image: "/images/icons_ios/camera_ready.png",
+	center: {
+		x: "50%"
+	}
+}
+
+"#shareIcon[platform=ios]": {
+	image: "/images/icons_ios/share_ready.png",
+	left: "65%"
+}
 
 // // Default label
 // "Label": { 
