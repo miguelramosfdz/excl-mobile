@@ -112,10 +112,10 @@ function detectEventSet() {
 
 function retrieveComponentData() {
 	clearOrderedPostDicts();
-	addSpinner();
+	//addSpinner();
 	checkIfAgeFilterOn(json);
 	checkPostViewSpacing();
-	removeSpinner();
+	//removeSpinner();
 }
 
 function addSpinner() {
@@ -373,18 +373,13 @@ function sortPostsIntoSections(dict) {
 		}
 	}
 	$.scrollView.height = Ti.UI.SIZE;
-	
-	Ti.API.info("children: " + JSON.stringify($.scrollView.children));
+	//$.scrollView.height = "100%";
 	
 }
 
 function addPostPreview(i, title, dictLength, postCollection, bolEmpty) {
 	var view = createPostPreview(title, postCollection);
 	//var newTab = createNewTab(view, title);
-	
-	Ti.API.info("View added: " + title + ", " + i);
-	
-	
 	$.scrollView.add(view);
 	//currentTabGroup.addTab(newTab);
 }

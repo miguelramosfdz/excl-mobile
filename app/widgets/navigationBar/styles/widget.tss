@@ -8,13 +8,13 @@
 }
 
 ".flyoutView":{
-	width: "10%",
-	right: "3%"
+	width: "20%",
+	right: 0
 }
 
 ".backView":{
-	width: "10%",
-	left: "3%"
+	width: "20%",
+	left: 0
 }
 
 //iPhone
