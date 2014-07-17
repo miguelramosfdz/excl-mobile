@@ -150,8 +150,8 @@ function jackOfAllTrades() {
 function fixBottomSpacing(){
 
 	if (OS_IOS) {
-		$.scrollView.bottom = "48dip";
-		$.scrollView.top = "0";
+		//$.scrollView.bottom = "48dip";
+		//$.scrollView.top = "0";
 	}
 	$.scrollView.height = "auto";
 
