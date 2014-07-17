@@ -84,13 +84,11 @@ function displaySocialMediaButtons(json) {
 			$.thankYouMessageView.visible = false;
 		});
 
-		/*$.closeCommentBoxButton.addEventListener('click', function(e) {
-		 $.insertName.blur();
-		 $.insertEmail.blur();
-		 $.insertComment.blur();
-		 $.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;
-		 $.whiteCommentBox.visible = ($.whiteCommentBox.visible) ? false : true;
-		 });*/
+		 $.thankYouMessageView.addEventListener('click', function(e) {
+			$.whiteCommentBox.visible = false;
+			$.addNewCommentContainer.visible = false;
+			setCommentIconReady (commentButton);
+		 });
 
 		$.cancelCommentButton.addEventListener('click', function(e) {
 			setCommentIconReady (commentButton);
@@ -433,7 +431,7 @@ function verifyAndValidateData(commentButton) {
 
 		dataRetriever.sendJsonToUrl(url, jsonToSend, function(returnedData) {
 			$.submitCommentFormView.visible = false;
-			$.thankYouMessageView.visible = true;
+			$.thankYouMessageView.visible = true;									
 		});
 		setCommentIconReady(commentButton);
 	}

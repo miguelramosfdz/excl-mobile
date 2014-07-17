@@ -69,8 +69,10 @@ function createPostView(post) {
 	args = {
 		left : "0",
 		width : "39%",
+		height: Ti.UI.FILL,
 		top: "0",
-		image : post.get("image")
+		image : post.get("image"),
+		//borderColor: "red"
 	};
 	var postImage = viewService.createCustomImageView(args);
 
