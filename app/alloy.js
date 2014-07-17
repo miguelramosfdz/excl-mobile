@@ -19,11 +19,6 @@ Alloy.Globals.analyticsController = new AnalyticsController();
 var AdminModeController = require('adminModeService/AdminModeController');
 Alloy.Globals.adminModeController = new AdminModeController();
 
-
-// TODO  DELETE THESE AFTER THE 3 INSTANCES ARE FUNCTIONAL
-var dreamhostersAPI = "http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81";
-var backupAPI = "http://tvt.redhale.com/wordpress/wp-json/v01/excl/museum/81";
-
 // TODO MAKE THESE # INSTANCES FUNCTIONAL
 var rootWebServiceUrls = {
 	"dev": 		"http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81",

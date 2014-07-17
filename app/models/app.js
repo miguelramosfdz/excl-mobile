@@ -16,7 +16,7 @@ exports.definition = {
 			// extended functions and properties go here
 			retrieveMuseumData: function() {
 				var retriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
-				var url = dreamhostersAPI;
+				var url = Alloy.Globals.rootWebServiceUrl;
 	
 				retriever.fetchDataFromUrl(url, function(response) {
 					if(response) {
