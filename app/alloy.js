@@ -37,7 +37,7 @@ Alloy.Globals.setRootWebServiceUrl = function(url){
 		Alloy.Globals.rootWebServiceUrl = url;
 };
 
-Alloy.Globals.rootWebServiceUrl = rootWebServiceUrls["dev"];
+Alloy.Globals.rootWebServiceUrl = rootWebServiceUrls["qa"];
 Alloy.Globals.currentLanguage = 'en_US';
 Alloy.Globals.viewUnpublishedPosts = false;
 

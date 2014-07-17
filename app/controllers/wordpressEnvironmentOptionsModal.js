@@ -102,6 +102,12 @@ function handleUrl(url){
 
 function toggleUnpublishedPosts(e){
 	Alloy.Globals.adminModeController.toggleViewUnpublishedPosts();
-	Alloy.Globals.navController.restart();
+	//Alloy.Globals.navController.restart();
 }
+
+function init(){
+	$.toggleUnpublishedPostsSwitch.value = Alloy.Globals.adminModeController.viewUnpublishedPostsIsEnabled();
+	$.toggleUnpublishedPostsSwitch.addEventListener('change', toggleUnpublishedPosts);
+}
+init();
 
