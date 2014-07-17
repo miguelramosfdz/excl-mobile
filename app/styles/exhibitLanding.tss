@@ -10,7 +10,7 @@
 }
 
 "#placeholder":{
-	height:'180dip'
+	height: '180dip'
 }
 
 "#exhibitsCarousel": {
@@ -27,7 +27,7 @@
 "#exhibitsCarousel[platform=android]": {
 	// This is an android hack
 	// This should probably be calculated based on ... something
-	height: '220dip'
+	height: '205dip'
 }
 
 "#collapsibleInfoLabel": {
@@ -77,15 +77,6 @@
 	top: 0,
 	height: "30dip",
 	backgroundColor: "transparent"
-    // backgroundGradient: {
-	    // type: 'linear',
-	    // startPoint: { x: '50%', y: '100%' },
-	    // endPoint: { x: '50%', y: '0%' },
-	    // colors: [
-	    	// {color: 'white', offset: 0.1}, 
-	    	// {color: 'transparent', offset: 0.95} 
-	    // ],
-	// }
 }
 
 "#exhibitSelect": {
@@ -114,11 +105,11 @@
 		},
 		colors: [
 			{
-				color: '#B3363E',
+				color: '#5ea08a',
 				offset: 0.0
 			},
 			{
-				color: '#8F2C2C',
+				color: '#48748f',
 				offset: 1.0
 			}
 		]
@@ -163,13 +154,15 @@
 }
 
 "#exhibitInfoView": {
-	bottom: "50dip",
+	bottom: "50dip"
 }
 
 "#exhibitInfoLabel": {
 	color: '#000',
-  	font: { fontSize: 18 },
-  	width: "90%",
+	font: {
+		fontSize: 18
+	},
+	width: "90%"
 }
 
 "#exhibitInfoScrollView": {

@@ -4,6 +4,10 @@ var viewService = setPathForLibDirectory("customCalls/viewService");
 viewService = new viewService();
 var labelService = setPathForLibDirectory("customCalls/labelService");
 labelService = new labelService();
+var iconService = setPathForLibDirectory("customCalls/iconService");
+iconService = new iconService();
+var buttonService = setPathForLibDirectory("customCalls/buttonService");
+buttonService = new buttonService();
 
 function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
@@ -20,7 +24,7 @@ function init() {
 			post = createPostView(eval(postArgs.at(i)));
 			$.backgroundContainer.add(post);
 		};
-		$.backgroundContainer.height=Ti.UI.SIZE;
+		$.backgroundContainer.height = Ti.UI.SIZE;
 		$.placeholderContainer.height = "0";
 	} else {
 		$.placeholderLabel.text = "There's no content specific for this age. Check above or change your filter!";
@@ -29,13 +33,20 @@ function init() {
 
 function createPostView(post) {
 	args = {
+		layout : "horizontal",
+		height : "180dip",
+		width : "100%",
+		backgroundColor : "#FFFFFF",
+	};
+	var container = viewService.createCustomView(args);
+
+	args = {
 		layout : "vertical",
-		borderWidth : "4",
-		borderRadius : "3",
-		borderColor: "black",
-		height : "175dip",
+		height : "180dip",
 		width : "95%",
-		top : "10dip"
+		top : "5%",
+		backgroundColor : "#F0F0F0",
+		left : "1%"
 	};
 	var postContainer = viewService.createCustomView(args);
 
@@ -47,11 +58,21 @@ function createPostView(post) {
 	var header = viewService.createCustomView(args);
 
 	args = {
-		color : "black",
+		height : "50dip",
+		width : "98%",
+		backgroundColor : "#D8D8D8",
+		left : "2%",
+		top : "1%",
+		bottom : "1%"
+	};
+	var headerWrap = viewService.createCustomView(args);
+
+	args = {
+		color : "#000000",
 		text : post.get("name"),
-		textAlign : "center",
+		textAlign : "left",
 		font : {
-			fontSize : "20dip",
+			fontSize : "19dip",
 			fontWeight : 'bold'
 		}
 	};
@@ -59,18 +80,28 @@ function createPostView(post) {
 
 	args = {
 		layout : "horizonal",
-		backgroundColor: "#F0F0F0",
-		width: "95%",
-		//height: "100%"
-		height: "125dip"
+		backgroundColor : "#F0F0F0",
+		width : "95%",
+		height : "125dip",
+		top : "2%",
+		bottom : "10%"
 	};
 	var previewContainer = viewService.createCustomView(args);
 
 	args = {
+		height : "25dip",
+		width : "25dip",
+		right : "0"
+	};
+	var navArrow = buttonService.createCustomButton(args);
+	//iconService.setIcon(navArrow, "postNavArrow.png");
+
+	args = {
 		left : "0",
 		width : "39%",
-		top: "0",
-		image : post.get("image")
+		height : "120dip",
+		top : "0",
+		image : post.get("image"),
 	};
 	var postImage = viewService.createCustomImageView(args);
 
@@ -79,24 +110,25 @@ function createPostView(post) {
 		text : post.get("text"),
 		font : {
 			fontSize : "16dip",
+			color : "#000000"
 		},
-		top: 0
 	};
 	var postText = labelService.createCustomLabel(args);
 
 	postContainer.add(header);
-	header.add(headerText);
+	header.add(headerWrap);
+	headerWrap.add(headerText);
 	postContainer.add(previewContainer);
 	previewContainer.add(postImage);
 	previewContainer.add(postText);
+	container.add(postContainer);
+	container.add(navArrow);
 
-//$.backgroundContainer.borderColor = "red";
-if(OS_IOS){
-	$.backgroundContainer.bottom="48dip";
-	//$.backgroundContainer.top= "-50%";
-}
+	if (OS_IOS) {
+		$.backgroundContainer.bottom = "48dip";
+	}
 
-	previewContainer.addEventListener('click', function(e) {
+	container.addEventListener('click', function(e) {
 		var args = post;
 		postController = Alloy.createController('postLanding', args);
 		postController.setAnalyticsPageTitle(post.get("name"));
@@ -104,7 +136,7 @@ if(OS_IOS){
 		Alloy.Globals.navController.open(postController);
 	});
 
-	return postContainer;
+	return container;
 }
 
 init();
