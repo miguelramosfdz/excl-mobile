@@ -35,7 +35,9 @@
 		fontFamily: 'Helvetica Neue'
 	},
 	textAlign: 'center',
-	width: Ti.UI.SIZE
+	//width: Ti.UI.SIZE
+	height: Ti.UI.SIZE,
+	width: "80%"
 }
 
 //iPad
@@ -47,7 +49,9 @@
 		fontFamily: 'Helvetica Neue'
 	},
 	textAlign: 'center',
-	width: Ti.UI.SIZE
+	//width: Ti.UI.SIZE
+	height: Ti.UI.SIZE,
+	width: "80%"
 }
 
 //Android
@@ -59,5 +63,7 @@
 		fontFamily: 'Helvetica Neue'
 	},
 	textAlign: 'center',
-	width: Ti.UI.SIZE
+	//width: Ti.UI.SIZE
+	height: Ti.UI.SIZE,
+	width: "80%"
 }

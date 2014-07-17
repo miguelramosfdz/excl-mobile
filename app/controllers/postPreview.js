@@ -122,15 +122,19 @@ function createPostView(post) {
 	args = {
 		left : "0",
 		width : "45%",
-		top : "0",
+		top : "12%",
 		image : post.get("image"),
+		height: "70%"
 	};
 	var postImage = viewService.createCustomImageView(args);
-	if (Titanium.Platform.osname == "ipad") {
-		postImage.height = "240dip";
-	} else {
-		postImage.height = "165dip";
+	if (!postImage.image){
+		iconService.setIcon(postImage, "placeholder.png");
 	}
+	// if (Titanium.Platform.osname == "ipad") {
+		// postImage.height = "240dip";
+	// } else {
+		// postImage.height = "165dip";
+	// }
 
 	args = {
 		left : "46%",
@@ -142,6 +146,9 @@ function createPostView(post) {
 		},
 	};
 	var postText = labelService.createCustomLabel(args);
+	if (!postText.text){
+		postText.text = "Click here to dive in to this activity!";
+	}
 
 	postContainer.add(header);
 	header.add(headerWrap);
