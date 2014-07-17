@@ -11,6 +11,11 @@
 	bottom: '48dip'
 }
 
+"#tableView":{
+	top: "0",
+	height: Ti.UI.AUTO
+}
+
 "#addNewCommentContainer":{
 	backgroundColor: 'black',
 	opacity: '0.75',
@@ -197,7 +202,7 @@
 	opacity: '1.0',
 	font: {
 		fontFamily: 'Helvetica Neue',
-		fontSize: '13dp',
+		fontSize: '20dp',
 		fontWeight: 'normal'
 	},
 	textAlign: 'center',

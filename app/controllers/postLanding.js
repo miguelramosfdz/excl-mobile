@@ -245,7 +245,12 @@ function addTableDataToTheView(tableData) {
 }
 
 function creatingCommentTextHeading() {
-	var row = createPlainRowWithHeight('auto');
+	var row = createPlainRowWithHeight('10%');
+	if (OS_IOS){
+		row.bottom = "48dip";
+	}
+	
+	
 	var commentHeading = Ti.UI.createLabel({
 		top : 20,
 		width : '94%',
@@ -260,7 +265,7 @@ function creatingCommentTextHeading() {
 		text : "Add Comment",
 		textAlign : 'center',
 		borderWidth : '1',
-		borderColor : '#aaa',
+		borderColor : '#aaa'
 	});
 	row.addEventListener('click', function(e) {
 		$.addNewCommentContainer.visible = ($.addNewCommentContainer.visible) ? false : true;

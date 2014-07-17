@@ -42,7 +42,7 @@ function createPostView(post) {
 		container.height = "300dip";
 	} else {
 		container.top = "30dip";
-		container.height = "225dip";
+		container.height = "200dip";
 	}
 
 	args = {
@@ -55,7 +55,7 @@ function createPostView(post) {
 	if (Titanium.Platform.osname == "ipad") {
 		postContainer.height = "300dip";
 	} else {
-		postContainer.height = "225dip";
+		postContainer.height = "200dip";
 	}
 
 	args = {
@@ -101,7 +101,7 @@ function createPostView(post) {
 	if (Titanium.Platform.osname == "ipad") {
 		previewContainer.height = "250dip";
 	} else {
-		previewContainer.height = "175dip";
+		previewContainer.height = "150dip";
 	}
 
 	args = {
