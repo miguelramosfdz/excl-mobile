@@ -20,7 +20,7 @@ languageService.prototype.twoLetterToFullWord = function(twoLetter){
 	var toReturn = "";
 	var length = this.languageLibrary.length;
 	for (i = 0; i<length; i++){
-		if (this.languageLibrary[i][0] == twoLetter){
+		if (this.languageLibrary[i][1] == twoLetter){
 			return this.languageLibrary[i][2];
 		}
 	}
