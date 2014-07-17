@@ -33,9 +33,9 @@ function createPostView(post) {
 		borderWidth : "4",
 		borderRadius : "3",
 		borderColor: "black",
-		height : "200dip",
+		height : "175dip",
 		width : "95%",
-		bottom : "5%"
+		top : "5%"
 	};
 	var postContainer = viewService.createCustomView(args);
 
@@ -63,7 +63,7 @@ function createPostView(post) {
 		bottom: "1%",
 		width: "99%",
 		//height: "100%"
-		height: "150dip"
+		height: "125dip"
 	};
 	var previewContainer = viewService.createCustomView(args);
 
@@ -79,7 +79,8 @@ function createPostView(post) {
 		text : post.get("text"),
 		font : {
 			fontSize : "16dip",
-		}
+		},
+		top: 0
 	};
 	var postText = labelService.createCustomLabel(args);
 
@@ -91,8 +92,8 @@ function createPostView(post) {
 
 //$.backgroundContainer.borderColor = "red";
 if(OS_IOS){
-	//$.backgroundContainer.bottom="48dip";
-	$.backgroundContainer.top= "-50%";
+	$.backgroundContainer.bottom="48dip";
+	//$.backgroundContainer.top= "-50%";
 }
 
 	previewContainer.addEventListener('click', function(e) {
