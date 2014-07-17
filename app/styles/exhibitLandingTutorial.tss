@@ -83,13 +83,10 @@
 }
 
 "#flyoutMenuText": {
-	//top: "150dip",
 	top: "105dip",
-	right: "75dip",
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_RIGHT
 }
 "#flyoutMenuText[formFactor=handheld]": {
-	right: null,
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
 }
 "#flyoutMenuText[formFactor=tablet]": {
@@ -98,7 +95,7 @@
 }
 
 "#ScrollText": {
-	top: "200dip",
+	top: "210dip",
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
 }
 
@@ -109,22 +106,19 @@
 
 "#ComponentsText": {
 	bottom: "75dip",
-	left: "60dip"
 }
 "#ComponentsText[formFactor=handheld]": {
-	left: null,
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
 }
 "#ComponentsText[formFactor=tablet]": {
 	top: null,
 	bottom: "160dip",
-	left: null,
 	width: "80%",
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
 }
 
 "#fingerSwipe[formFactor=handheld]": {
-	top: "140dip",
+	top: "150dip",
 	height: "50dip"
 }
 
@@ -136,21 +130,26 @@
 }
 
 "#ExitButton": {
-	top: "300dip",
+	bottom: "130dip",
 	width: "50%"
 }
 "#ExitButton[formFactor=tablet]": {
-	top: null,
 	bottom: "330dip"
+}
+"#ExitButton[formFactor=handheld platform=android]": {
+	bottom: "140dip"
 }
 
 "#NextButton": {
-	top: "240dip",
+	bottom: "190dip",
 	width: "50%"
 }
 "#NextButton[formFactor=tablet]": {
 	top: null,
 	bottom: "390dip"
+}
+"#NextButton[formFactor=handheld platform=android]": {
+	bottom: "200dip"
 }
 
 
