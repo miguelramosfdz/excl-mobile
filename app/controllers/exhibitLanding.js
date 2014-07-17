@@ -128,10 +128,15 @@ function populateWindow(json) {
 function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.removeView($.placeholder);
 	// This is an android hack
-
+	var firstViewHit = false;
+	var firstView;
 	for ( i = 0; i < exhibits.length; i++) {
 		exhibitText[i] = exhibits[i].long_description;
 		var exhibitView;
+		if (!firstViewHit) {
+			firstViewHit = true;
+			firstView = exhibits[i];
+		}
 
 		if (OS_IOS) {
 			exhibitView = createExhibitsImageIOS(exhibits[i], (i + 1 + " of " + exhibits.length));
@@ -143,8 +148,9 @@ function createExhibitsCarousel(exhibits) {
 		}
 		$.exhibitsCarousel.addView(exhibitView);
 	}
-	
+
 	showScrollableViewArrows($.exhibitsCarousel);
+	$.exhibitsCarousel.scrollToView(firstView);
 	$.headingLabel.text = exhibits[0].name;
 	$.exhibitInfoLabel.text = exhibits[0].long_description;
 
@@ -157,8 +163,8 @@ function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.addEventListener("scrollend", function(e) {
 		onExhibitsScroll(e, exhibits);
 	});
-	
-	$.exhibitsCarousel.addEventListener('postlayout', function(){
+
+	$.exhibitsCarousel.addEventListener('postlayout', function() {
 		$.exhibitsCarousel.setCurrentPage(0);
 	});
 }
@@ -281,9 +287,9 @@ function createTitleLabel(name, type, pageXofYtext) {
 	return titleLabel;
 }
 
-function showScrollableViewArrows(scroller){
+function showScrollableViewArrows(scroller) {
 
-	if(scroller.getViews().length>0){
+	if (scroller.getViews().length > 0) {
 		scroller.setCurrentPage(1);
 	}
 	//scroller.setCurrentPage(0);
@@ -301,7 +307,7 @@ function onExhibitsClick(exhibits) {
 		$.exhibitSelectLabel.text = "Back to Description";
 		$.exhibitInfoLabel.text = exhibits[pageIndex].long_description;
 		$.headingLabel.text = "Select an Activity!";
-		
+
 		$.exhibitInfoView.animate({
 			opacity : 0,
 			duration : 300
