@@ -1,6 +1,7 @@
 
 "#backgroundContainer": {
-	layout: "vertical"
+	layout: "vertical",
+	top: "-50%"
 }
 
 "#placeholderContainer": {
