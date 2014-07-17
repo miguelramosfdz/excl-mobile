@@ -1,11 +1,11 @@
 function languageService(){
 };
 
-languageService.prototype.getLanguageOptionsFourLetterCodeFromJSON = function(){
-	var languageOptionsFourLetter = new Array();
-	languageOptionsFourLetter = this.cloneLanguageOptions();
-	Ti.API.info("Language options: " + languageOptionsFourLetter.toString());
-	return languageOptionsFourLetter;
+languageService.prototype.getLanguageOptionsTwoLetterCodeFromJSON = function(){
+	var languageOptionsTwoLetter = new Array();
+	languageOptionsTwoLetter = this.cloneLanguageOptions();
+	Ti.API.info("Language options: " + languageOptionsTwoLetter.toString());
+	return languageOptionsTwoLetter;
 };
 
 languageService.prototype.cloneLanguageOptions = function(){
@@ -16,27 +16,27 @@ languageService.prototype.cloneLanguageOptions = function(){
 	return clonedLanguageOptions;
 };
 
-languageService.prototype.fourLetterToFullWord = function(fourLetter){
+languageService.prototype.twoLetterToFullWord = function(twoLetter){
 	var toReturn = "";
 	var length = this.languageLibrary.length;
 	for (i = 0; i<length; i++){
-		if (this.languageLibrary[i][1] == fourLetter){
+		if (this.languageLibrary[i][0] == twoLetter){
 			return this.languageLibrary[i][2];
 		}
 	}
 	return ""; //TODO: Accommodate language not found
 };
 
-languageService.prototype.getLanguageOptionsFullWord = function(languageOptionsFourLetter){
+languageService.prototype.getLanguageOptionsFullWord = function(languageOptionsTwoLetter){
 	var languageOptionsFullWord = [];
-	for (index in languageOptionsFourLetter){
-		languageOptionsFullWord[index] = this.fourLetterToFullWord(languageOptionsFourLetter[index]);
+	for (index in languageOptionsTwoLetter){
+		languageOptionsFullWord[index] = this.twoLetterToFullWord(languageOptionsTwoLetter[index]);
 	}
 	return languageOptionsFullWord;
 };
 
-languageService.prototype.configureCancel = function(languageOptionsFourLetter, languageOptionsFullWord){
-	languageOptionsFourLetter.push('CANCEL');
+languageService.prototype.configureCancel = function(languageOptionsTwoLetter, languageOptionsFullWord){
+	languageOptionsTwoLetter.push('CANCEL');
 	if (OS_IOS){
 		languageOptionsFullWord.push('Cancel');
 	}
@@ -45,24 +45,24 @@ languageService.prototype.configureCancel = function(languageOptionsFourLetter, 
 };
 
 languageService.prototype.displayDialog = function(){
-	languageOptionsFourLetterCode = this.getLanguageOptionsFourLetterCodeFromJSON();
-	languageOptionsFullWord = this.getLanguageOptionsFullWord(languageOptionsFourLetterCode);
-	cancelIndex = this.configureCancel(languageOptionsFourLetterCode, languageOptionsFullWord);
+	languageOptionsTwoLetterCode = this.getLanguageOptionsTwoLetterCodeFromJSON();
+	languageOptionsFullWord = this.getLanguageOptionsFullWord(languageOptionsTwoLetterCode);
+	cancelIndex = this.configureCancel(languageOptionsTwoLetterCode, languageOptionsFullWord);
 	
 	var languageDialog = Titanium.UI.createOptionDialog({
 		options : languageOptionsFullWord,	
 		cancel : cancelIndex,
-		selectedIndex : languageOptionsFourLetterCode.indexOf(Alloy.Models.app.get('currentLanguage'))
+		selectedIndex : languageOptionsTwoLetterCode.indexOf(Alloy.Models.app.get('currentLanguage'))
 	});
 	languageDialog.addEventListener("click", function(e){
-		languageService.prototype.languageDialogClickListener(e, languageOptionsFourLetterCode);
+		languageService.prototype.languageDialogClickListener(e, languageOptionsTwoLetterCode);
 	});
 	
 	languageDialog.show();
 };
 
-languageService.prototype.languageDialogClickListener = function(e, languageOptionsFourLetterCode){
-	var newLanguage = languageOptionsFourLetterCode[e.index];	
+languageService.prototype.languageDialogClickListener = function(e, languageOptionsTwoLetterCode){
+	var newLanguage = languageOptionsTwoLetterCode[e.index];	
 	if (newLanguage != 'CANCEL' && newLanguage !=  Alloy.Models.app.get('currentLanguage')){
 		Alloy.Models.app.set('currentLanguage', newLanguage);
 	}

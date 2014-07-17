@@ -4,6 +4,10 @@ var viewService = setPathForLibDirectory("customCalls/viewService");
 viewService = new viewService();
 var labelService = setPathForLibDirectory("customCalls/labelService");
 labelService = new labelService();
+var iconService = setPathForLibDirectory("customCalls/iconService");
+iconService = new iconService();
+var buttonService = setPathForLibDirectory("customCalls/buttonService");
+buttonService = new buttonService();
 
 function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
@@ -29,11 +33,20 @@ function init() {
 
 function createPostView(post) {
 	args = {
+		layout : "horizontal",
+		height : "180dip",
+		width : "100%",
+		backgroundColor : "#FFFFFF",
+	};
+	var container = viewService.createCustomView(args);
+
+	args = {
 		layout : "vertical",
 		height : "180dip",
 		width : "95%",
 		top : "5%",
-		backgroundColor : "#F0F0F0"
+		backgroundColor : "#F0F0F0",
+		left : "1%"
 	};
 	var postContainer = viewService.createCustomView(args);
 
@@ -48,9 +61,9 @@ function createPostView(post) {
 		height : "50dip",
 		width : "98%",
 		backgroundColor : "#D8D8D8",
-		left: "2%",
-		top: "1%",
-		bottom: "1%"
+		left : "2%",
+		top : "1%",
+		bottom : "1%"
 	};
 	var headerWrap = viewService.createCustomView(args);
 
@@ -76,6 +89,14 @@ function createPostView(post) {
 	var previewContainer = viewService.createCustomView(args);
 
 	args = {
+		height : "25dip",
+		width : "25dip",
+		right : "0"
+	};
+	var navArrow = buttonService.createCustomButton(args);
+	//iconService.setIcon(navArrow, "postNavArrow.png");
+
+	args = {
 		left : "0",
 		width : "39%",
 		height : "120dip",
@@ -91,7 +112,6 @@ function createPostView(post) {
 			fontSize : "16dip",
 			color : "#000000"
 		},
-		//top: 0
 	};
 	var postText = labelService.createCustomLabel(args);
 
@@ -101,14 +121,14 @@ function createPostView(post) {
 	postContainer.add(previewContainer);
 	previewContainer.add(postImage);
 	previewContainer.add(postText);
+	container.add(postContainer);
+	container.add(navArrow);
 
-	//$.backgroundContainer.borderColor = "red";
 	if (OS_IOS) {
 		$.backgroundContainer.bottom = "48dip";
-		//$.backgroundContainer.top= "-50%";
 	}
 
-	previewContainer.addEventListener('click', function(e) {
+	container.addEventListener('click', function(e) {
 		var args = post;
 		postController = Alloy.createController('postLanding', args);
 		postController.setAnalyticsPageTitle(post.get("name"));
@@ -116,7 +136,7 @@ function createPostView(post) {
 		Alloy.Globals.navController.open(postController);
 	});
 
-	return postContainer;
+	return container;
 }
 
 init();
