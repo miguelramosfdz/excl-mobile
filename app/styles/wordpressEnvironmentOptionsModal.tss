@@ -10,3 +10,8 @@
 ".environmentOption": {
 	width: "70%"
 }
+
+".horizontalContainer": {
+	layout: "horizontal"
+}
+
