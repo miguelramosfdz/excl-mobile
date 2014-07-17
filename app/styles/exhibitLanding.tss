@@ -27,7 +27,7 @@
 "#exhibitsCarousel[platform=android]": {
 	// This is an android hack
 	// This should probably be calculated based on ... something
-	height: '220dip'
+	height: '205dip'
 }
 
 "#collapsibleInfoLabel": {
