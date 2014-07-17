@@ -98,19 +98,17 @@
 }
 
 "#ScrollText": {
-	top: "220dip",
+	top: "200dip",
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
 }
 
 "#ScrollText[formFactor=tablet]": {
-	top: "300dip",
-	right: "50dip"
+	top: "320dip",
+	right: "100dip"
 }
 
 "#ComponentsText": {
-	// top: "365dip",
-	// left: "60dip"
-	top: "430dip",
+	bottom: "75dip",
 	left: "60dip"
 }
 "#ComponentsText[formFactor=handheld]": {
@@ -126,7 +124,7 @@
 }
 
 "#fingerSwipe[formFactor=handheld]": {
-	top: "150dip",
+	top: "140dip",
 	height: "50dip"
 }
 
@@ -138,22 +136,20 @@
 }
 
 "#ExitButton": {
-	// bottom: "270dip",
-	// width: "50%"
-	bottom: "190dip",
+	top: "300dip",
 	width: "50%"
 }
 "#ExitButton[formFactor=tablet]": {
+	top: null,
 	bottom: "330dip"
 }
 
 "#NextButton": {
-	// bottom: "330dip",
-	// width: "50%"
-	bottom: "250dip",
+	top: "240dip",
 	width: "50%"
 }
 "#NextButton[formFactor=tablet]": {
+	top: null,
 	bottom: "390dip"
 }
 
