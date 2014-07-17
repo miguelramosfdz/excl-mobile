@@ -20,6 +20,7 @@ function init() {
 			post = createPostView(eval(postArgs.at(i)));
 			$.backgroundContainer.add(post);
 		};
+		$.placeholderContainer.borderColor="purple";
 		$.placeholderContainer.height = "0";
 	} else {
 		$.placeholderLabel.text = "There's no content specific for this age. Check above or change your filter!";
@@ -31,7 +32,7 @@ function createPostView(post) {
 		layout : "vertical",
 		borderWidth : "4",
 		borderRadius : "4",
-		height : "70%",
+		height : "40%",
 		width : "95%",
 		top : "5%"
 	};
@@ -56,7 +57,10 @@ function createPostView(post) {
 	var headerText = labelService.createCustomLabel(args);
 
 	args = {
-		layout : "horizonal"
+		layout : "horizonal",
+		backgroundColor: "#F0F0F0",
+		bottom: "1%",
+		width: "99%"
 	};
 	var previewContainer = viewService.createCustomView(args);
 
@@ -82,11 +86,14 @@ function createPostView(post) {
 	previewContainer.add(postImage);
 	previewContainer.add(postText);
 
+$.backgroundContainer.height="100%";
+if(OS_IOS){
+	//$.backgroundContainer.bottom="48dip";
+	$.backgroundContainer.top= "-50%";
+}
+
 	previewContainer.addEventListener('click', function(e) {
 		var args = post;
-
-		Ti.API.info("name: " + post.get("name"));
-
 		postController = Alloy.createController('postLanding', args);
 		postController.setAnalyticsPageTitle(post.get("name"));
 		postController.setAnalyticsPageLevel("Post Landing");

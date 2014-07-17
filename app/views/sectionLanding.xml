@@ -1,17 +1,9 @@
 <Alloy>
-	<Window>
-		<View>
+	<Window id="container" >
+		<View id="topBar">
 			<Widget src="navigationBar" id="navBar"/>
 		</View>
+			<ScrollView id="scrollView" ></ScrollView>
 	</Window>
-	<!-- <TabGroup id="tabContainer">
-		<Tab id="sections" title="Sections">
-			<Window id="container" class="container" >
-				<View id="topBar">
-					<Widget src="navigationBar" id="navBar"/>
-				</View>
-				<ScrollView id="scrollView" ></ScrollView>
-			</Window>
-		</Tab>
-	</TabGroup> -->
+
 </Alloy>

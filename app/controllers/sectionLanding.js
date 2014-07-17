@@ -20,7 +20,7 @@ var spinner = new loadingSpinner();
 
 var dictOrderedPostsBySection = {};
 var dictOrderedPostsByAge = {};
-var currentTabGroup = windowService.createCustomTabGroup({});
+//var currentTabGroup = windowService.createCustomTabGroup({});
 var selectedAges;
 
 var allPosts;
@@ -29,12 +29,9 @@ var genericAllAgesSectionTitle = "For Everyone in Your Group";
 var noContentMessage = "Sorry!\n\nLooks like we're still in the process of adding content here.\n\nCheck here later for new and exciting activities!";
 var noFiltersSelected = "Please select an age filter to see your sorted content!";
 
-/*
- This is where the component landing and section landing will be connected
- */
-var json = args[0];
-var selectedSection = args[1];
-/**/
+var json = eval(args[1]);
+var selectedSection = args[2];
+var sectionColor = args[3];
 
 var analyticsPageTitle = "Section Landing";
 var analyticsPageLevel = "Section Landing";
@@ -70,15 +67,16 @@ function setPathForLibDirectory(libFile) {
 	return lib;
 };
 
-function changeTitleOfThePage(name) {
-	//$.container.title = name;
+function changeTitleOfThePage(name, color) {
+	$.navBar.setPageTitle(name);
+	$.navBar.setBackgroundColor(color);
 }
 
 function goToPostLandingPage(e) {
 	var post = fetchPostById(e.source.itemId);
 	var analyticsTitle = component.getScreenName() + '/' + post.name;
 	var analyticsLevel = "Post Landing";
-	currentTabGroup.close();
+	//currentTabGroup.remove();
 	var controller = Alloy.createController('postLanding', post);
 	controller.setAnalyticsPageTitle(analyticsTitle);
 	controller.setAnalyticsPageLevel(analyticsLevel);
@@ -94,45 +92,35 @@ function checkPostViewSpacing() {
 function clearOrderedPostDicts() {
 	dictOrderedPostsBySection = {};
 	dictOrderedPostsByAge = {};
-	//$.scrollView.removeAllChildren();
+	$.scrollView.removeAllChildren();
 }
 
 function detectEventEnabled() {
 	ageFilterOn = Alloy.Models.app.get("customizeLearningEnabled");
-	Ti.API.info("Filter Status 2: " + JSON.stringify(Alloy.Collections.filter));
-	//Ti.API.info("Filter Detected (Comp): set: " + ageFilterSet + ", on: " + ageFilterOn);
+	//Ti.API.info("Filter Status 2: " + JSON.stringify(Alloy.Collections.filter));
+	Ti.API.info("Filter Detected (Comp): set: " + ageFilterSet + ", on: " + ageFilterOn);
 	clearOrderedPostDicts();
 	retrieveComponentData();
+	checkPostViewSpacing();
+	changeTitleOfThePage(selectedSection, sectionColor);
 }
 
 function detectEventSet() {
 	ageFilterSet = Alloy.Models.app.get("customizeLearningSet");
-
-	Ti.API.info("altSectionLanding Accessed");
-
 	detectEventEnabled();
 }
 
 function retrieveComponentData() {
 	clearOrderedPostDicts();
 	addSpinner();
-	if (initialLoad) {
-		dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-			//changeTitleOfThePage(returnedData.data.component.name);
-			allPosts = returnedData.data.component.posts;
-			initialLoad = false;
-			checkIfAgeFilterOn(allPosts);
-			checkPostViewSpacing();
-		});
-	} else {
-		checkIfAgeFilterOn(allPosts);
-		checkPostViewSpacing();
-	}
+	checkIfAgeFilterOn(json);
+	checkPostViewSpacing();
 	removeSpinner();
 }
 
 function addSpinner() {
-	spinner.addTo(currentTabGroup);
+	//spinner.addTo(currentTabGroup);
+	spinner.addTo($.scrollView);
 	spinner.show();
 }
 
@@ -142,13 +130,13 @@ function removeSpinner() {
 
 function checkIfAgeFilterOn(allPosts) {
 	Ti.API.info("Organizing content by section");
-	resetTabGroup();
+	//resetTabGroup();
 	organizeBySection(allPosts);
 	if (ageFilterOn) {
 		Ti.API.info("Adding tabs");
 		organizeByAge(allPosts);
 	}
-	currentTabGroup.open();
+	//currentTabGroup.open();
 }
 
 function resetTabGroup(currentTabGroup) {
@@ -343,7 +331,7 @@ function sortPostsIntoSections(dict) {
 	var dictKeys = returnDictKeys(dict);
 	var dictLength = dictKeys.length;
 	var bolEmpty;
-
+	$.scrollView.removeAllChildren();
 	if (dictLength == 0) {
 		var error = label.createLabel(noContentMessage);
 		var errorView = viewService.createView();
@@ -360,7 +348,7 @@ function sortPostsIntoSections(dict) {
 			//cycle through dict keys
 			var postCollection = Alloy.createCollection('post');
 			stepIntoDict(dict, dictKeys[i], postCollection);
-			//Ti.API.info("section: " + JSON.stringify(dictKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
+			Ti.API.info("section: " + JSON.stringify(dictKeys[i]) + ", postCollection: " + JSON.stringify(postCollection));
 			if (dictKeys[i] == genericAllAgesSectionTitle) {
 				if (JSON.stringify(postCollection) != "[]") {
 					args = {
@@ -384,76 +372,63 @@ function sortPostsIntoSections(dict) {
 			}
 		}
 	}
+	$.scrollView.height = Ti.UI.SIZE;
+	
+	Ti.API.info("children: " + JSON.stringify($.scrollView.children));
+	
 }
 
 function addPostPreview(i, title, dictLength, postCollection, bolEmpty) {
 	var view = createPostPreview(title, postCollection);
-	view = adjustViewHeight(view, i, dictLength, bolEmpty);
-	var newTab = createNewTab(view, title);
-	currentTabGroup.addTab(newTab);
+	//var newTab = createNewTab(view, title);
+	$.scrollView.add(view);
+	//currentTabGroup.addTab(newTab);
 }
 
 function createPostPreview(title, postCollection) {
 	var postPreview = Alloy.createController('postPreview', args);
-	//postPreview.headingText.text = title;
 	return postPreview.getView();
 }
 
-function createNewTab(view, title) {
-	args = {
-		contentWidth : "100%",
-		height : "50dip",
-		top : "0dip",
-		layout : "vertical",
-		backgroundColor : "red"
-	};
-	var topBar = viewService.createCustomView(args);
-
-	//var navBar = Alloy.createWidget("navigationBar");
-
-	args = {
-		backgroundColor : "green",
-		top : "50dip"
-	};
-	var scrollView = viewService.createCustomScrollView(args);
-
-	args = {
-		navBarHidden : true,
-		fullscreen : true,
-		backgroundColor : '#FFFFFF'
-	};
-	var container = windowService.createCustomWindow(args);
-
-	args = {
-		title : title,
-		window : container
-	};
-	var newTab = windowService.createCustomTab(args);
-
-	container.add(topBar);
-	container.add(scrollView);
-	//topBar.add(navBar);
-	scrollView.add(view);
-	return newTab;
-}
-
-function adjustViewHeight(view, i, dictLength, bolEmpty) {
-	var tempView = view;
-	tempView.top = "0";
-	if (bolEmpty == "false") {
-		if (OS_IOS) {
-			tempView.height = "60%";
-		} else {
-			tempView.height = "340dip";
-		}
-	} else {
-		tempView.height = "150dip";
-	}
-	if (i == dictLength - 1) {
-		tempView.bottom = "60dip";
-	}
-	return tempView;
-}
+// function createNewTab(view, title) {
+	// args = {
+		// contentWidth : "100%",
+		// height : "50dip",
+		// top : "0dip",
+		// layout : "vertical",
+		// backgroundColor : sectionColor
+	// };
+	// var topBar = viewService.createCustomView(args);
+// 
+	// //var navBar = Alloy.createWidget("navigationBar");
+// 
+	// args = {
+		// backgroundColor : "white",
+		// top : "50dip"
+	// };
+	// var scrollView = viewService.createCustomScrollView(args);
+// 
+	// args = {
+		// navBarHidden : true,
+		// fullscreen : true,
+		// backgroundColor : '#FFFFFF'
+	// };
+	// var container = windowService.createCustomWindow(args);
+// 
+	// args = {
+		// title : title,
+		// window : container
+	// };
+	// var newTab = windowService.createCustomTab(args);
+// 
+	// container.add(topBar);
+	// container.add(scrollView);
+// 
+	// //topBar.add(navBar);
+// 
+	// scrollView.add(view);
+	// return newTab;
+// }
 
 function stepIntoDict(dict, key, postCollection) {
 	//This level is a list of dictionaries

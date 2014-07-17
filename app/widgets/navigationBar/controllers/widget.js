@@ -16,3 +16,7 @@ exports.hideBackBtn = function() {
 exports.setPageTitle = function(title){
 	$.pageTitle.text = title;	
 };
+
+exports.setBackgroundColor = function(color){
+	$.navBar.backgroundColor = color;	
+};

@@ -4,12 +4,12 @@
 var args = arguments[0] || {};
 var gradientColors = ["#2382ff", "#005CD5", "#004092", "#002257", "#00142D", "#000914"];
 var gradientColorsCount = 0;
-
 var url = Alloy.Globals.rootWebServiceUrl + "/component/" + args[0].get('id');
 
 var rootDirPath = ( typeof Titanium == 'undefined') ? '../../lib/' : '';
 var dataRetriever = require(rootDirPath + 'dataRetriever/dataRetriever');
-
+var loadingSpinner = require(rootDirPath + 'loadingSpinner/loadingSpinner');
+var spinner = new loadingSpinner();
 // --------------------------------------------------------------------------------------------------------
 var analyticsPageTitle = "";
 var analyticsPageLevel = "";
@@ -34,6 +34,15 @@ exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 function setPageTitle(name) {
 	$.navBar.setPageTitle(name);
+}
+
+function addSpinner() {
+	spinner.addTo($.scrollView);
+	spinner.show();
+}
+
+function removeSpinner() {
+	spinner.hide();
 }
 
 function insertComponentPicture(imageUrl) {
@@ -99,9 +108,12 @@ function covertHashMapIntoArrayOfObject(hashMap) {
 	return arrayOfObjects;
 }
 
-function displaySectionList(orderedSectionList) {
+function displaySectionList(orderedSectionList, rawJson) {
+	var sectionTitles = [];
 	for (var i = 0; i < orderedSectionList.length; i++) {
-		Ti.API.info(orderedSectionList[i].key);
+		sectionTitles.push(orderedSectionList[i].key);
+	}
+	for (var i = 0; i < orderedSectionList.length; i++) {
 		var view = Titanium.UI.createView({
 			height : '10%',
 			left : '12dip',
@@ -111,10 +123,7 @@ function displaySectionList(orderedSectionList) {
 			backgroundColor : gradientColors[gradientColorsCount],
 			layout : 'vertical'
 		});
-		view.addEventListener("click", function() {
-			var controller = Alloy.createController('sectionLanding', eval([args[0], label.text]));
-			Alloy.Globals.navController.open(controller);
-		});
+		addEvent(view, orderedSectionList[i].key, rawJson);
 
 		var label = Titanium.UI.createLabel({
 			color : 'white',
@@ -132,16 +141,25 @@ function displaySectionList(orderedSectionList) {
 		gradientColorsCount++;
 		$.scrollView.add(view);
 	}
+}
 
+function addEvent(view, title, rawJson) {
+	view.addEventListener("click", function() {
+		var controller = Alloy.createController('sectionLanding', eval([args[0], rawJson["posts"], title, view.backgroundColor]));
+		Alloy.Globals.navController.open(controller);
+	});
 }
 
 function jackOfAllTrades() {
+	addSpinner();
 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
-		setPageTitle(returnedData.data.component.name);
+		var rawJson = eval(returnedData.data.component);
+		setPageTitle(rawJson["name"]);
 		insertComponentPicture(args[1]);
-		var unorderedSectionNames = extractSectionNamesAndOrder(returnedData.data.component.posts);
+		var unorderedSectionNames = extractSectionNamesAndOrder(rawJson["posts"]);
 		var orderedSectionList = orderSectionNameBySectionOrder(unorderedSectionNames);
-		displaySectionList(orderedSectionList);
+		displaySectionList(orderedSectionList, rawJson);
+		removeSpinner();
 	});
 }
 
