@@ -21,6 +21,12 @@
 		fontSize: "24dp"
 	}
 }
+".fullScreenOverlayText[formFactor=tablet]": {
+	font: {
+		fontWeight: "bold",
+		fontSize: "35dip"
+	}
+}
 ".GotItButton": {
 	backgroundColor: "green",
 	width: "200dip",
@@ -54,12 +60,21 @@
 	//height: "110dip"
 	height: "70dip"
 }
+"#flyoutMenuArrow[formFactor=tablet]": {
+	right: "75dip",
+	height: "130dip",
+	top: "45dip"
+}
 
 "#ComponentsArrow": {
 	transform: Alloy.Globals.rotate180,
 	height: "140dip",
 	right: "35dip",
 	bottom: "20dip"
+}
+"#ComponentsArrow[formFactor=tablet]": {
+	bottom: "75dip",
+	right: "100dip"
 }
 
 "#flyoutMenuText": {
@@ -68,23 +83,38 @@
 	right: "75dip",
 	textAlign: Titanium.UI.TEXT_ALIGNMENT_RIGHT
 }
+"#flyoutMenuText[formFactor=tablet]": {
+	top: "173dip",
+	right: "160dip"
+}
 
 "#ComponentsText": {
 	top: "365dip",
 	left: "60dip"
 	//textAlign: Titanium.UI.TEXT_AlIGNMENT_RIGHT
 }
+"#ComponentsText[formFactor=tablet]": {
+	top: null,
+	bottom: "200dip",
+	left: null,
+	width: "80%",
+	textAlign: Titanium.UI.TEXT_ALIGNMENT_CENTER
+}
 
 "#ExitButton": {
-	//bottom: "150dip"
 	bottom: "270dip",
-
+	width: "50%"
+}
+"#ExitButton[formFactor=tablet]": {
+	bottom: "330dip"
 }
 
 "#NextButton": {
-	//bottom: "150dip"
 	bottom: "330dip",
-	
+	width: "50%"
+}
+"#NextButton[formFactor=tablet]": {
+	bottom: "390dip"
 }
 
 
