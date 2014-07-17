@@ -54,11 +54,6 @@ function removeSpinner() {
 	spinner.hide();
 }
 
-var reload = function() {
-	var controller = Alloy.createController("index");
-	return controller;
-};
-
 function fixIpadSpacing() {
 	if (Titanium.Platform.osname == 'ipad') {
 		$.bottomButtonContainer.bottom = "48dip";
@@ -130,10 +125,6 @@ function populateWindow(json) {
 	createComponentsScrollView(json.data.museum.exhibits);
 }
 
-function clearAll() {
-
-}
-
 function createExhibitsCarousel(exhibits) {
 	$.exhibitsCarousel.removeView($.placeholder);
 	// This is an android hack
@@ -151,15 +142,9 @@ function createExhibitsCarousel(exhibits) {
 			});
 		}
 		$.exhibitsCarousel.addView(exhibitView);
-
-		// Change the current page to force the arrows to appear
-		if (i <= 1) {
-			$.exhibitsCarousel.currentPage = i;
-		}
 	}
-
-	// Change the current page back to 0
-	$.exhibitsCarousel.currentPage = 0;
+	
+	showScrollableViewArrows($.exhibitsCarousel);
 	$.headingLabel.text = exhibits[0].name;
 	$.exhibitInfoLabel.text = exhibits[0].long_description;
 
@@ -171,6 +156,10 @@ function createExhibitsCarousel(exhibits) {
 	}
 	$.exhibitsCarousel.addEventListener("scrollend", function(e) {
 		onExhibitsScroll(e, exhibits);
+	});
+	
+	$.exhibitsCarousel.addEventListener('postlayout', function(){
+		$.exhibitsCarousel.setCurrentPage(0);
 	});
 }
 
@@ -290,6 +279,14 @@ function createTitleLabel(name, type, pageXofYtext) {
 	}
 
 	return titleLabel;
+}
+
+function showScrollableViewArrows(scroller){
+
+	if(scroller.getViews().length>0){
+		scroller.setCurrentPage(1);
+	}
+	//scroller.setCurrentPage(0);
 }
 
 function createcollapsibleComponentView() {
@@ -437,5 +434,3 @@ function createExhibitSelect(exhibits) {
 init();
 retrieveJson(url, this);
 spinner.hide();
-
-exports.reload = reload;
