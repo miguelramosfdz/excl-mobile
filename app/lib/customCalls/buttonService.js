@@ -18,6 +18,11 @@ buttonService.prototype.createButton = function(id, title) {
 	return button;
 };
 
+buttonService.prototype.createCustomButton = function(args) {
+	var button = Ti.UI.createButton(args);
+	return button;
+};
+
 buttonService.prototype.createCheckbox = function() {
 	var checkbox = Ti.UI.createButton({
 		right : "5%",
