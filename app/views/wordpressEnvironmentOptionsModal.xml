@@ -7,7 +7,10 @@
 			<Button class="environmentOption" onClick="enterDevelopmentMode">Development</Button>
 			<Button class="environmentOption" onClick="enterDevelopmentTwoMode">Development 2</Button>
 			<Button class="environmentOption" onClick="enterOtherMode">Other</Button>
-			<Button class="environmentOption" onClick="toggleUnpublishedPosts">Toggle Unpublished Posts</Button>
+			<View class="horizontalContainer">
+				<Label>Toggle Unpublished Posts</Label>
+				<Switch id="toggleUnpublishedPostsSwitch"/>
+			</View>
 			<Button onClick="cancel" >Cancel</Button>
 		</View>
 	</Window>
