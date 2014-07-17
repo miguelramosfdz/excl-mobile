@@ -8,7 +8,8 @@ var url = Alloy.Globals.rootWebServiceUrl + "/component/" + args[0].get('id');
 
 var rootDirPath = ( typeof Titanium == 'undefined') ? '../../lib/' : '';
 var dataRetriever = require(rootDirPath + 'dataRetriever/dataRetriever');
-
+var loadingSpinner = require(rootDirPath + 'loadingSpinner/loadingSpinner');
+var spinner = new loadingSpinner();
 // --------------------------------------------------------------------------------------------------------
 var analyticsPageTitle = "";
 var analyticsPageLevel = "";
@@ -33,6 +34,15 @@ exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 function setPageTitle(name) {
 	$.navBar.setPageTitle(name);
+}
+
+function addSpinner() {
+	spinner.addTo($.scrollView);
+	spinner.show();
+}
+
+function removeSpinner() {
+	spinner.hide();
 }
 
 function insertComponentPicture(imageUrl) {
@@ -141,6 +151,7 @@ function addEvent(view, title, rawJson) {
 }
 
 function jackOfAllTrades() {
+	addSpinner();
 	dataRetriever.fetchDataFromUrl(url, function(returnedData) {
 		var rawJson = eval(returnedData.data.component);
 		setPageTitle(rawJson["name"]);
@@ -148,6 +159,7 @@ function jackOfAllTrades() {
 		var unorderedSectionNames = extractSectionNamesAndOrder(rawJson["posts"]);
 		var orderedSectionList = orderSectionNameBySectionOrder(unorderedSectionNames);
 		displaySectionList(orderedSectionList, rawJson);
+		removeSpinner();
 	});
 }
 

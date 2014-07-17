@@ -1,7 +1,8 @@
 var args = arguments[0] || {};
 
 var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
-var LoadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
+var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
+var spinner = new loadingSpinner();
 
 var iconService = setPathForLibDirectory('customCalls/iconService');
 var iconService = new iconService();
@@ -9,7 +10,6 @@ var iconService = new iconService();
 var buttonService = setPathForLibDirectory('customCalls/buttonService');
 var buttonService = new buttonService();
 
-var spinner = new LoadingSpinner();
 var url = Alloy.Globals.rootWebServiceUrl;
 
 var exhibitText = [];
@@ -45,6 +45,15 @@ function setPathForLibDirectory(libFile) {
 	return lib;
 };
 
+function addSpinner() {
+	spinner.addTo($.mainView);
+	spinner.show();
+}
+
+function removeSpinner() {
+	spinner.hide();
+}
+
 var reload = function() {
 	var controller = Alloy.createController("index");
 	return controller;
@@ -57,9 +66,9 @@ function fixIpadSpacing() {
 }
 
 function init() {
-	$.navBar.setPageTitle("Exhibits");
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
+	$.navBar.setPageTitle("Exhibits");
 	fixIpadSpacing();
 }
 
@@ -380,7 +389,6 @@ function createComponentsScrollView(exhibits) {
 					return openComponent(e, image);
 				};
 			})(exhibits[i].components[j].image));
-			component.addEventListener('longpress', openTestComponent);
 			componentsInExhibit[exhibits[i].id].add(component);
 		}
 
@@ -395,18 +403,6 @@ function openComponent(e, componentImageUrl) {
 	var component = components.where({"id": e.source.itemId})[0];
 	// var controller = Alloy.createController('altSectionLanding', component);
 	var controller = Alloy.createController('componentLandingRedesign', [component, componentImageUrl]);
-	var analyticsTitle = component.getScreenName();
-	var analyticsLevel = "Section Landing";
-	controller.setAnalyticsPageTitle(analyticsTitle);
-	controller.setAnalyticsPageLevel(analyticsLevel);
-	Alloy.Globals.navController.open(controller);
-	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", analyticsLevel, 1);
-}
-
-function openTestComponent(e) {
-	var components = Alloy.Collections.instance('component');
-	var component = components.where({"id": e.source.itemId})[0];
-	var controller = Alloy.createController('sectionLanding', component);
 	var analyticsTitle = component.getScreenName();
 	var analyticsLevel = "Section Landing";
 	controller.setAnalyticsPageTitle(analyticsTitle);

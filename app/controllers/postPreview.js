@@ -89,6 +89,7 @@ function createPostView(post) {
 $.backgroundContainer.height="100%";
 if(OS_IOS){
 	//$.backgroundContainer.bottom="48dip";
+	$.backgroundContainer.top= "-50%";
 }
 
 	previewContainer.addEventListener('click', function(e) {
