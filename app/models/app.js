@@ -4,7 +4,8 @@ exports.definition = {
 			customizeLearningEnabled: false,
 			customizeLearningSet: false,
 			currentLanguage: "en_US",
-			tutorialOn: true
+			tutorialOn: true,
+			viewUnpublishedPosts: "false"
 		},
 		adapter: {
 			type: "properties",
@@ -16,7 +17,7 @@ exports.definition = {
 			// extended functions and properties go here
 			retrieveMuseumData: function() {
 				var retriever = Alloy.Globals.setPathForLibDirectory('dataRetriever/dataRetriever');
-				var url = dreamhostersAPI;
+				var url = Alloy.Globals.rootWebServiceUrl;
 	
 				retriever.fetchDataFromUrl(url, function(response) {
 					if(response) {
