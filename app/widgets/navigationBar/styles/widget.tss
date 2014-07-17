@@ -2,18 +2,29 @@
 	backgroundColor: "#253342"
 }
 
-".icon":{
+".flyoutIcon":{
+	top: "20%",
+	right: "10%",
+	width: "25dip",
+	height: "25dip"
+}
+
+".backIcon":{
+	top: "20%",
+	left: "10%",
 	width: "25dip",
 	height: "25dip"
 }
 
 ".flyoutView":{
-	width: "20%",
+	// backgroundColor: "green",
+	width: "40%",
 	right: 0
 }
 
 ".backView":{
-	width: "20%",
+	// backgroundColor: "red",
+	width: "40%",
 	left: 0
 }
 
@@ -26,7 +37,7 @@
 		fontFamily: 'Helvetica Neue'
 	},
 	textAlign: 'center',
-	width: '80%'
+	width: Ti.UI.SIZE
 }
 
 //iPad
@@ -38,11 +49,12 @@
 		fontFamily: 'Helvetica Neue'
 	},
 	textAlign: 'center',
-	width: '80%'
+	width: Ti.UI.SIZE
 }
 
 //Android
 ".pageTitleStyle[platform=android]":{
+	// backgroundColor: "blue",
 	color: "#FFF",
 	font: {
 		fontSize: '20dip',
@@ -50,5 +62,5 @@
 		fontFamily: 'Helvetica Neue'
 	},
 	textAlign: 'center',
-	width: '80%'
+	width: Ti.UI.SIZE
 }
