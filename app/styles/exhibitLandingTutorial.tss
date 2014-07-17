@@ -60,6 +60,14 @@
 	//height: "110dip"
 	height: "70dip"
 }
+
+"#ScrollArrow": {
+	top: "148dip",
+	right: "30dip",
+	//height: "110dip"
+	height: "70dip"
+}
+
 "#flyoutMenuArrow[formFactor=tablet]": {
 	right: "75dip",
 	height: "130dip",
@@ -67,8 +75,12 @@
 }
 
 "#ComponentsArrow": {
+	// transform: Alloy.Globals.rotate180,
+	// height: "140dip",
+	// right: "35dip",
+	// bottom: "20dip"
 	transform: Alloy.Globals.rotate180,
-	height: "140dip",
+	height: "70dip",
 	right: "35dip",
 	bottom: "20dip"
 }
@@ -88,10 +100,15 @@
 	right: "160dip"
 }
 
+"#ScrollText": {
+	top: "220dip"
+}
+
 "#ComponentsText": {
-	top: "365dip",
+	// top: "365dip",
+	// left: "60dip"
+	top: "430dip",
 	left: "60dip"
-	//textAlign: Titanium.UI.TEXT_AlIGNMENT_RIGHT
 }
 "#ComponentsText[formFactor=tablet]": {
 	top: null,
@@ -102,7 +119,9 @@
 }
 
 "#ExitButton": {
-	bottom: "270dip",
+	// bottom: "270dip",
+	// width: "50%"
+	bottom: "190dip",
 	width: "50%"
 }
 "#ExitButton[formFactor=tablet]": {
@@ -110,7 +129,9 @@
 }
 
 "#NextButton": {
-	bottom: "330dip",
+	// bottom: "330dip",
+	// width: "50%"
+	bottom: "250dip",
 	width: "50%"
 }
 "#NextButton[formFactor=tablet]": {

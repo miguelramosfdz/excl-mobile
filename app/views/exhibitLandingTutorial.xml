@@ -3,8 +3,10 @@
 		<View class="fullScreenOverlay" autoStyle="true" />
 		<Label id="flyoutMenuText" class="fullScreenOverlayText">Menu and options here!</Label>
 		<Label id="ComponentsText" class="fullScreenOverlayText">Click This Button to View and Choose Stations in Exhibit!</Label>
+		<Label id="ScrollText" class="fullScreenOverlayText">Scroll Through Exhibits</Label>
 		<ImageView id="flyoutMenuArrow" image="/images/tutorial/long-arrow.png"></ImageView>
 		<ImageView id="ComponentsArrow" image="/images/tutorial/long-arrow.png"></ImageView>
+		<ImageView id="ScrollArrow" image="/images/tutorial/long-arrow.png"></ImageView>
 		<Button id="ExitButton" onClick="tutorialExit" class="tutorialButton">End Tutorial</Button>
 		<Button id="NextButton" onClick="gotIt" class="GotItButton">Got it!</Button>
 	</View>

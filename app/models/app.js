@@ -3,7 +3,7 @@ exports.definition = {
 		defaults: {
 			customizeLearningEnabled: false,
 			customizeLearningSet: false,
-			currentLanguage: "en_US",
+			currentLanguage: Titanium.Locale.getCurrentLocale().substr(0,2),
 			tutorialOn: true
 		},
 		adapter: {
