@@ -30,10 +30,16 @@ function insertInfoPicture() {
 	});
 
 	var image = Ti.UI.createImageView({
-		image : "/images/MuseumInfo.jpg",
+		image : "/images/MuseumInfoNoMember.jpg",
+		backgroundColor:'transparent', 
 		width : '100%',
 		height : '100%'
 	});
+	
+	image.addEventListener('pinch', function(e) { 
+		var t = Ti.UI.create2DMatrix().scale(e.scale); 
+		image.transform = t; 
+		});
 
 	view.add(image);
 
