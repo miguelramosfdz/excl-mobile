@@ -235,6 +235,15 @@ function getTextRowFromPart(part) {
 	return row;
 }
 
+function getRichTextRowFromPart(part) {
+	var row = createPlainRowWithHeight('auto');
+	var webView = Ti.UI.createWebView({
+		html: part.get('rich')
+	});
+	row.add(webView);
+	return row;
+}
+
 function addTableDataToTheView(tableData) {
 	$.tableView.height = 'auto';
 	if (OS_IOS) {
@@ -499,6 +508,9 @@ function getRowFromPart(part) {
 			break;
 		case 'video':
 			return getVideoRowFromPart(part);
+			break;
+		case 'rich':
+			return getRichTextRowFromPart(part);
 			break;
 		default:
 			return null;
