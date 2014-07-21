@@ -7,8 +7,8 @@ exports.definition = {
 		    "type": "text",
 		    "video": "text",
 		    "image": "text",
-		    "body": "text"
-		    
+		    "body": "text",
+		    "rich": "text"
 		},
 		adapter: {
 			type: "sql",

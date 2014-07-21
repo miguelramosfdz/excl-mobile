@@ -61,9 +61,6 @@ function handleAdminModeDialog(self) {
 	    if (e.text == "friend" || e.source.androidView.value == "friend") {
 			self.kioskMode.updateKioskMode();
 	    } 
-	    else if (e.text == "finterns" || e.source.androidView.value == "finterns") { 
-			Alloy.Globals.navController.open(Alloy.createController('finterns'));
-    	} 
     	else if (e.text == "wordpress" || e.source.androidView.value == "wordpress") {
     		var options = Alloy.createController("wordpressEnvironmentOptionsModal");
     		self.kioskMode.exitKioskMode();

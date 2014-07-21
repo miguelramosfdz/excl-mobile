@@ -63,8 +63,24 @@ function closeMenu(e) {
 	return Alloy.Globals.navController.toggleMenu();
 }
 
-function openExhibitPage(e) {
+function openHomePage(e) {
 	Alloy.Globals.navController.home();
+	closeMenu();
+}
+
+function openExhibitsPage(e) {
+	Alloy.Globals.navController.open(Alloy.createController("exhibitLanding"));
+	closeMenu();
+}
+
+function openMapPage(e) {
+	Alloy.Globals.navController.open(Alloy.createController("map"));
+	closeMenu();
+}
+
+function openInfoPage(e) {
+	Alloy.Globals.navController.open(Alloy.createController("info"));
+	closeMenu();
 }
 
 function setCustomLearn(e) {
