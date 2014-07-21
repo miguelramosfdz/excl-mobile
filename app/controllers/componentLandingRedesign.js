@@ -51,9 +51,7 @@ function insertComponentPicture(imageUrl) {
 		width : '100%',
 		height : '100%'
 	});
-
 	view.add(image);
-
 	$.scrollView.add(view);
 
 }
@@ -106,7 +104,7 @@ function displaySectionList(orderedSectionList, rawJson) {
 			top : '5dip',
 			bottom : '5dip',
 			backgroundColor : gradientColors[gradientColorsCount],
-			layout : 'vertical'
+			layout : 'horizontal'
 		});
 		addEvent(view, orderedSectionList[i].key, rawJson);
 
@@ -116,13 +114,13 @@ function displaySectionList(orderedSectionList, rawJson) {
 			textAlign : 'center',
 			height : Ti.UI.FILL,
 			font : {
-				fontSize : 28,
+				fontSize : "26dip",
 				fontWeight : 'bold'
 			},
-			text : orderedSectionList[i].key
+			text : orderedSectionList[i].key,
+			left: "5%"
 		});
 		view.add(label);
-
 		gradientColorsCount++;
 		$.scrollView.add(view);
 	}
@@ -147,7 +145,7 @@ function jackOfAllTrades() {
 	});
 }
 
-function fixBottomSpacing(){
+function fixBottomSpacing() {
 
 	if (OS_IOS) {
 		//$.scrollView.bottom = "48dip";
@@ -155,7 +153,6 @@ function fixBottomSpacing(){
 	}
 	$.scrollView.height = "auto";
 
-	
 }
 
 jackOfAllTrades();

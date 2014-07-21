@@ -389,7 +389,7 @@ function createComponentsScrollView(exhibits) {
 					return openComponent(e, image);
 				};
 			})(exhibits[i].components[j].image));
-			componentsInExhibit[exhibits[i].id].add(component);
+			componentsInExhibit[exhibits[i].id].add(component);		
 		}
 
 		$.componentScrollView.add(componentsInExhibit[exhibits[i].id]);
@@ -401,7 +401,6 @@ function createComponentsScrollView(exhibits) {
 function openComponent(e, componentImageUrl) {
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
-	// var controller = Alloy.createController('altSectionLanding', component);
 	var controller = Alloy.createController('componentLandingRedesign', [component, componentImageUrl]);
 	var analyticsTitle = component.getScreenName();
 	var analyticsLevel = "Component Landing";
