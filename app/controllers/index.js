@@ -39,4 +39,51 @@ function openInfo() {
 	Alloy.Globals.navController.open(controller);	
 }
 
+var url = Alloy.Globals.rootWebServiceUrl;
+
+//var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var dataRetriever = require('dataRetriever/dataRetriever');
+
+function setPathForLibDirectory(libFile) {
+	if ( typeof Titanium == 'undefined') {
+		lib = require("../../lib/" + libFile);
+	} else {
+		lib = require(libFile);
+	}
+}
+
+
+function initializeWithJSON(json, controller) {
+	populateWindow(json);
+	// Alloy.Globals.navController.open(controller);
+}
+
+
+function retrieveJson(jsonURL, controller) {
+	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
+		if (returnedData) {
+			initializeWithJSON(returnedData, controller);
+		}
+	});
+}
+
+function reloadWithJSON(json, controller) {
+	populateWindow(json);
+}
+
+function populateWindow(json) {
+	var museums = Alloy.Collections.instance('museum');
+	var museumModel = Alloy.createModel('museum');
+	var page_info = json.data.museum.info;
+			 museumModel.set({
+				 'info' : museum.info,
+			 });
+			 museums.add(museumModel);
+	
+	//Ti.API.info("******************************************TESTING***************************************************");
+}
+
+retrieveJson(url, this);
+
+// 
 Alloy.Globals.navController.open(this);
