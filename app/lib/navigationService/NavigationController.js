@@ -14,8 +14,16 @@ function NavigationController() {
 	this.tutorialController = new TutorialController();
 }
 
-NavigationController.prototype.restart = function(){	
-	this.home();
+NavigationController.prototype.restart = function(){
+		
+	if (this.windowStack && this.windowStack.length > 0) {
+			var lastWindow = this.windowStack.pop();
+			if (lastWindow) {
+				lastWindow.close();
+			}
+		}
+		Alloy.createController("index");//*/
+		//this.home();
 };
 
 NavigationController.prototype.enterKioskMode = function(){

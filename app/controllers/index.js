@@ -41,7 +41,6 @@ exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 function openExhibits() {
 	var controller = Alloy.createController("exhibitLanding", eval([json]));
 	controller.setAnalyticsPageTitle("Exhibit Landing");
-	controller.setAnalyticsPageLevel("Exhibit Landing");
 	Alloy.Globals.navController.open(controller);
 }
 
@@ -66,7 +65,6 @@ function retrieveJson(jsonURL) {
 			'info' : museums.info,
 			});
 			museums.add(museumModel);
-
 		}
 	});
 }

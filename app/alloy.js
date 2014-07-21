@@ -22,7 +22,6 @@ Alloy.Globals.adminModeController = new AdminModeController();
 // TODO MAKE THESE # INSTANCES FUNCTIONAL
 var rootWebServiceUrls = {
 	"dev": 		"http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81",
-	"devTwo": 	"http://excl.dreamhosters.com/dev2/wp-json/v01/excl/museum/81",
 	"qa": 		"http://excl.dreamhosters.com/qa/wp-json/v01/excl/museum/81",
 	"prod": 	"http://excl.dreamhosters.com/prod/wp-json/v01/excl/museum/81"
 };
