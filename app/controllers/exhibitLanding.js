@@ -1,8 +1,11 @@
 var args = arguments[0] || {};
 
-var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var json = args[0];
 var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
+
+var wifiService = setPathForLibDirectory('wifiService/wifiService');
+wifiService = new wifiService();
 
 var iconService = setPathForLibDirectory('customCalls/iconService');
 var iconService = new iconService();
@@ -64,7 +67,12 @@ function init() {
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
 	$.navBar.setPageTitle("Exhibitions");
+	
+	Ti.API.info("exhibit json: " + JSON.stringify(args[0]));
+	
+	initializeWithJSON(args[0]);
 	fixIpadSpacing();
+	spinner.hide();
 }
 
 function setAnalyticsPageTitle(title) {
@@ -83,26 +91,16 @@ function getAnalyticsPageLevel() {
 	return analyticsPageLevel;
 }
 
-function retrieveJson(jsonURL, controller) {
-	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
-		if (returnedData) {
-			initializeWithJSON(returnedData, controller);
-		}
-	});
-}
-
-function initializeWithJSON(json, controller) {
+function initializeWithJSON(json) {
 	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);
-	populateWindow(json);
-	// Alloy.Globals.navController.open(controller);
-}
-
-function reloadWithJSON(json, controller) {
 	populateWindow(json);
 }
 
 function populateWindow(json) {
+	
+	Ti.API.info("exhibit json: " + JSON.stringify(json));
+	
 	var components = Alloy.Collections.instance('component');
 	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
 		var exhibit = json.data.museum.exhibits[i];
@@ -123,6 +121,8 @@ function populateWindow(json) {
 	createExhibitSelect(json.data.museum.exhibits);
 	createcollapsibleComponentView();
 	createComponentsScrollView(json.data.museum.exhibits);
+
+	wifiService.detectAndroidConnection();
 }
 
 function createExhibitsCarousel(exhibits) {
@@ -133,10 +133,6 @@ function createExhibitsCarousel(exhibits) {
 	for ( i = 0; i < exhibits.length; i++) {
 		exhibitText[i] = exhibits[i].long_description;
 		var exhibitView;
-		if (!firstViewHit) {
-			firstViewHit = true;
-			firstView = exhibits[i];
-		}
 
 		if (OS_IOS) {
 			exhibitView = createExhibitsImageIOS(exhibits[i], (i + 1 + " of " + exhibits.length));
@@ -147,9 +143,15 @@ function createExhibitsCarousel(exhibits) {
 			});
 		}
 		$.exhibitsCarousel.addView(exhibitView);
+
+		//if (!firstViewHit) {
+		//	firstViewHit = true;
+		//	firstView = exhibitView;
+		//}
 	}
 
-	showScrollableViewArrows($.exhibitsCarousel);
+	//firstViewHit = false;
+	//showScrollableViewArrows($.exhibitsCarousel);
 	$.exhibitsCarousel.scrollToView(firstView);
 	$.headingLabel.text = exhibits[0].name;
 	$.exhibitInfoLabel.text = exhibits[0].long_description;
@@ -160,7 +162,7 @@ function createExhibitsCarousel(exhibits) {
 			onExhibitsClick(exhibits);
 		});
 	}
-	
+
 	$.exhibitsCarousel.addEventListener("scrollend", function(e) {
 		onExhibitsScroll(e, exhibits);
 	});
@@ -401,7 +403,6 @@ function createComponentsScrollView(exhibits) {
 function openComponent(e, componentImageUrl) {
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
-	// var controller = Alloy.createController('altSectionLanding', component);
 	var controller = Alloy.createController('componentLandingRedesign', [component, componentImageUrl]);
 	var analyticsTitle = component.getScreenName();
 	var analyticsLevel = "Component Landing";
@@ -435,5 +436,3 @@ function createExhibitSelect(exhibits) {
 }
 
 init();
-retrieveJson(url, this);
-spinner.hide();

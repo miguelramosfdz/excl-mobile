@@ -13,7 +13,8 @@
 
 "#tableView":{
 	top: "0",
-	height: Ti.UI.AUTO
+	height: Ti.UI.AUTO,
+	selectionStyle: Titanium.UI.iPhone.TableViewCellSelectionStyle.NONE
 }
 
 "#addNewCommentContainer":{

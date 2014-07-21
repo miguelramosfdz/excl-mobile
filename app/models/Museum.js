@@ -2,17 +2,12 @@ exports.definition = {
 	config: {
 		columns: {
 		    "id": "integer",
-		    "part_order": "integer",
 		    "name": "text",
-		    "type": "text",
-		    "video": "text",
-		    "image": "text",
-		    "body": "text",
-		    "rich": "text"
+		    "museum_order": "integer"
 		},
 		adapter: {
 			type: "sql",
-			collection_name: "Part",
+			collection_name: "Museum",
 			idAttribute: "alloy_id"
 		}
 	},

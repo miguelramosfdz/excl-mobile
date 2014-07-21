@@ -6,6 +6,12 @@ var tiService = {
 			},
 			getBool: function(key) {
 				return Titanium.App.Properties.getBool(key);
+			},
+			setString: function(key, string) {
+				Titanium.App.Properties.setString(key, string);
+			},
+			getString: function(key) {
+				return Titanium.App.Properties.getString(key);
 			}
 		}
 	}

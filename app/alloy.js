@@ -37,8 +37,7 @@ Alloy.Globals.setRootWebServiceUrl = function(url){
 		Alloy.Globals.rootWebServiceUrl = url;
 };
 
-Alloy.Globals.rootWebServiceUrl = rootWebServiceUrls["qa"];
-Alloy.Globals.viewUnpublishedPosts = false;
+Alloy.Globals.rootWebServiceUrl = rootWebServiceUrls["prod"];
 
 Alloy.Globals.setPathForLibDirectory = function(libFile){
 	if ( typeof Titanium == 'undefined') {

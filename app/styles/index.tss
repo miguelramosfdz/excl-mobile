@@ -22,7 +22,7 @@
 	top: "0dip",
 	left: "0dip",
 	width: Ti.UI.FILL,
-	height: "50%"
+	height: "45%"
 }
 
 "#infoLink": {
@@ -42,4 +42,13 @@
 "#iconLink": {
 	width: "175dip",
 	height: "175dip"
+}
+
+".homepageLabel": {
+	font: {
+		fontFamily: 'KGSummerSunshineShadow',
+		fontSize: '35dp',
+		fontWeight: 'bold'
+	},
+	color: 'white'
 }

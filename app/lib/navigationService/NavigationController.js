@@ -15,16 +15,8 @@ function NavigationController() {
 	var pageLevelList = [];
 }
 
-NavigationController.prototype.restart = function(){
-		
-		if (this.windowStack && this.windowStack > 0) {
-			var lastWindow = this.windowStack.pop();
-			if (lastWindow) {
-				lastWindow.close();
-			}
-		}
-		Alloy.createController("index");
-		this.home();
+NavigationController.prototype.restart = function(){	
+	this.home();
 };
 
 NavigationController.prototype.enterKioskMode = function(){
