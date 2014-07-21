@@ -1,5 +1,6 @@
 var args = arguments[0] || {};
 
+var json;
 var analyticsPageTitle = "Home";
 var analyticsPageLevel = "Home";
 var url = Alloy.Globals.rootWebServiceUrl;
@@ -36,7 +37,7 @@ exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
 exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 
 function openExhibits() {
-	var controller = Alloy.createController("exhibitLanding");
+	var controller = Alloy.createController("exhibitLanding", eval([json]));
 	controller.setAnalyticsPageTitle("Exhibit Landing");
 	controller.setAnalyticsPageLevel("Exhibit Landing");
 	Alloy.Globals.navController.open(controller);
@@ -55,23 +56,19 @@ function openInfo() {
 function retrieveJson(jsonURL) {
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
-			var museums = Alloy.Collections.instance('museum');
-			var museumModel = Alloy.createModel('museum');
-			var page_info = json.data.museum.info;
-			museumModel.set({
-				'info' : museum.info,
-			});
-			museums.add(museumModel);
-			args[0] = returnedData;
+			json = returnedData;
+			// var museums = Alloy.Collections.instance('museum');
+			// var museumModel = Alloy.createModel('museum');
+			// var page_info = json.data.museum.info;
+			// museumModel.set({
+			// 'info' : museum.info,
+			// });
+			// museums.add(museumModel);
 
-			Ti.API.info("json: " + JSON.stringify(json));
 		}
 	});
 }
 
-function init() {
-	retrieveJson(url);
-}
-
-init();
+retrieveJson(url);
 Alloy.Globals.navController.open(this);
+

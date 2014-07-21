@@ -1,6 +1,6 @@
 var args = arguments[0] || {};
 
-var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var json = args[0];
 var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
 
@@ -67,6 +67,9 @@ function init() {
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
 	$.navBar.setPageTitle("Exhibitions");
+	
+	Ti.API.info("exhibit json: " + JSON.stringify(args[0]));
+	
 	initializeWithJSON(args[0]);
 	fixIpadSpacing();
 	spinner.hide();
@@ -96,7 +99,7 @@ function initializeWithJSON(json) {
 
 function populateWindow(json) {
 	
-	Ti.API.info("json: " + JSON.stringify(json));
+	Ti.API.info("exhibit json: " + JSON.stringify(json));
 	
 	var components = Alloy.Collections.instance('component');
 	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
