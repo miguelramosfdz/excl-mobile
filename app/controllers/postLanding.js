@@ -240,7 +240,13 @@ function getRichTextRowFromPart(part) {
 	var richText = part.get("rich");
 	if (richText) {
 		var webView = Ti.UI.createWebView({
-			html: part.get('rich')
+			html: part.get('rich'),
+			width: "100%",
+			//willHandleTouches: false,
+			showScrollbars: false,
+			disableBounce: true,
+			//touchEnabled: false,
+			height: Ti.UI.SIZE
 		});
 		row.add(webView);
 	}

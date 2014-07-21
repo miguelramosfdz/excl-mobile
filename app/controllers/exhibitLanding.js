@@ -4,6 +4,9 @@ var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
 var loadingSpinner = setPathForLibDirectory('loadingSpinner/loadingSpinner');
 var spinner = new loadingSpinner();
 
+var wifiService = setPathForLibDirectory('wifiService/wifiService');
+wifiService = new wifiService();
+
 var iconService = setPathForLibDirectory('customCalls/iconService');
 var iconService = new iconService();
 
@@ -123,6 +126,8 @@ function populateWindow(json) {
 	createExhibitSelect(json.data.museum.exhibits);
 	createcollapsibleComponentView();
 	createComponentsScrollView(json.data.museum.exhibits);
+
+	wifiService.detectAndroidConnection();
 }
 
 function createExhibitsCarousel(exhibits) {
