@@ -2,7 +2,6 @@ var rootPath = (typeof Titanium == 'undefined')? '../../lib/' : '';
 var tiService = require(rootPath + 'customCalls/tiService');
 
 var StorageService = function() {
-
 };
 
 StorageService.prototype.setBoolProperty = function(key, value) {
