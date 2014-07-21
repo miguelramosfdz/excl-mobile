@@ -106,11 +106,11 @@ exports.init = function (logger, config, cli, appc) {
 				};
 			}), function () {
 				var cmd = [paths.node, paths.alloy, 'compile', appDir, '--config', config];
-				if (cli.argv['no-colors'] || cli.argv['color'] === false) { cmd.push('--no-colors'); }
+				if (cli.argv['no-colors']) { cmd.push('--no-colors'); }
 				if (process.platform === 'win32') { cmd.shift(); }
 				logger.info(__('Executing Alloy compile: %s', cmd.join(' ').cyan));
 
-				var child = (process.platform === 'win32') ? spawn(cmd.shift(), cmd, { stdio: 'inherit' }) : spawn(cmd.shift(), cmd);
+				var child = spawn(cmd.shift(), cmd);
 
 				function checkLine(line) {
 					var re = new RegExp(
@@ -128,17 +128,17 @@ exports.init = function (logger, config, cli, appc) {
 					}
 				}
 
-				child.stdout !== null && child.stdout.on('data', function (data) {
+				child.stdout.on('data', function (data) {
 					data.toString().split('\n').forEach(function (line) {
 						checkLine(line);
 					});
 				});
-				child.stderr !== null && child.stderr.on('data', function (data) {
+				child.stderr.on('data', function (data) {
 					data.toString().split('\n').forEach(function (line) {
 						checkLine(line);
 					});
 				});
-				child !== null && child.on('exit', function (code) {
+				child.on('exit', function (code) {
 					if (code) {
 						logger.error(__('Alloy compiler failed'));
 						process.exit(1);
