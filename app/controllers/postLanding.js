@@ -237,10 +237,13 @@ function getTextRowFromPart(part) {
 
 function getRichTextRowFromPart(part) {
 	var row = createPlainRowWithHeight('auto');
-	var webView = Ti.UI.createWebView({
-		html: part.get('rich')
-	});
-	row.add(webView);
+	var richText = part.get("rich");
+	if (richText) {
+		var webView = Ti.UI.createWebView({
+			html: part.get('rich')
+		});
+		row.add(webView);
+	}
 	return row;
 }
 
