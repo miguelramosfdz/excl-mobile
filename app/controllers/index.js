@@ -29,6 +29,7 @@ function setAnalyticsPageLevel(level) {
 function getAnalyticsPageLevel() {
 	return analyticsPageLevel;
 }
+
 exports.setAnalyticsPageTitle = setAnalyticsPageTitle;
 exports.getAnalyticsPageTitle = getAnalyticsPageTitle;
 exports.setAnalyticsPageLevel = setAnalyticsPageLevel;
@@ -43,44 +44,34 @@ function openExhibits() {
 
 function openMap() {
 	var controller = Alloy.createController("map");
-	Alloy.Globals.navController.open(controller);	
+	Alloy.Globals.navController.open(controller);
 }
 
 function openInfo() {
 	var controller = Alloy.createController("info");
-	Alloy.Globals.navController.open(controller);	
+	Alloy.Globals.navController.open(controller);
 }
 
-function setPathForLibDirectory(libFile) {
-	if ( typeof Titanium == 'undefined') {
-		lib = require("../../lib/" + libFile);
-	} else {
-		lib = require(libFile);
-	}
-}
-
-function retrieveJson(jsonURL, controller) {
+function retrieveJson(jsonURL) {
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
 			var museums = Alloy.Collections.instance('museum');
-	var museumModel = Alloy.createModel('museum');
-	var page_info = json.data.museum.info;
-			 museumModel.set({
-				 'info' : museum.info,
-			 });
-			 museums.add(museumModel);
+			var museumModel = Alloy.createModel('museum');
+			var page_info = json.data.museum.info;
+			museumModel.set({
+				'info' : museum.info,
+			});
+			museums.add(museumModel);
+			args[0] = returnedData;
+
+			Ti.API.info("json: " + JSON.stringify(json));
 		}
 	});
 }
 
-function reloadWithJSON(json, controller) {
-	populateWindow(json);
+function init() {
+	retrieveJson(url);
 }
 
-	//Ti.API.info("******************************************TESTING***************************************************");
-
-
-retrieveJson(url, this);
-
-// 
+init();
 Alloy.Globals.navController.open(this);

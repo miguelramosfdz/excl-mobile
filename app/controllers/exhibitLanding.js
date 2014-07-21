@@ -67,7 +67,9 @@ function init() {
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
 	$.navBar.setPageTitle("Exhibitions");
+	initializeWithJSON(args[0]);
 	fixIpadSpacing();
+	spinner.hide();
 }
 
 function setAnalyticsPageTitle(title) {
@@ -86,26 +88,16 @@ function getAnalyticsPageLevel() {
 	return analyticsPageLevel;
 }
 
-function retrieveJson(jsonURL, controller) {
-	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
-		if (returnedData) {
-			initializeWithJSON(returnedData, controller);
-		}
-	});
-}
-
-function initializeWithJSON(json, controller) {
+function initializeWithJSON(json) {
 	Alloy.Globals.analyticsController.setTrackerID(json.data.museum.tracking_id);
 	Alloy.Globals.analyticsController.trackEvent("Landing Pages", "Open Page", "Exhibit Landing", 1);
-	populateWindow(json);
-	// Alloy.Globals.navController.open(controller);
-}
-
-function reloadWithJSON(json, controller) {
 	populateWindow(json);
 }
 
 function populateWindow(json) {
+	
+	Ti.API.info("json: " + JSON.stringify(json));
+	
 	var components = Alloy.Collections.instance('component');
 	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
 		var exhibit = json.data.museum.exhibits[i];
@@ -148,7 +140,7 @@ function createExhibitsCarousel(exhibits) {
 			});
 		}
 		$.exhibitsCarousel.addView(exhibitView);
-		
+
 		//if (!firstViewHit) {
 		//	firstViewHit = true;
 		//	firstView = exhibitView;
@@ -167,7 +159,7 @@ function createExhibitsCarousel(exhibits) {
 			onExhibitsClick(exhibits);
 		});
 	}
-	
+
 	$.exhibitsCarousel.addEventListener("scrollend", function(e) {
 		onExhibitsScroll(e, exhibits);
 	});
@@ -396,7 +388,7 @@ function createComponentsScrollView(exhibits) {
 					return openComponent(e, image);
 				};
 			})(exhibits[i].components[j].image));
-			componentsInExhibit[exhibits[i].id].add(component);		
+			componentsInExhibit[exhibits[i].id].add(component);
 		}
 
 		$.componentScrollView.add(componentsInExhibit[exhibits[i].id]);
@@ -441,5 +433,3 @@ function createExhibitSelect(exhibits) {
 }
 
 init();
-retrieveJson(url, this);
-spinner.hide();
