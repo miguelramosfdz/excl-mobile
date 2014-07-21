@@ -3,10 +3,20 @@
 		<View id="mainView">
 			<View id="homeContent">
 				<ImageView id="homeImage" image="/images/HomePageDesign4.png"></ImageView>
-				<View id="exhibitsLink" onClick="openExhibits"></View>
-				<View id="mapLink" onClick="openMap"></View>
-				<View id="infoLink" onClick="openInfo" ></View>
-				<View id="iconLink"></View>
+				
+				<View id="exhibitsLink" onClick="openExhibits">
+					<Label id="exhibitsLabel" class="homepageLabel" text="Exhibits"></Label>
+				</View>
+				
+				<View id="mapLink" onClick="openMap">
+					<Label id="mapLabel" class="homepageLabel" text="Map"></Label>
+				</View>
+				
+				<View id="infoLink" onClick="openInfo" >
+					<Label id="infoLabel" class="homepageLabel" text="Info"></Label>
+				</View>
+					
+				<ImageView id="iconLink" image="/images/error_face_transparent.png"></ImageView>	
 			</View>
 		</View>
 	</Window>
