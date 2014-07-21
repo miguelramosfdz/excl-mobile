@@ -19,7 +19,9 @@ Alloy.Globals.analyticsController = new AnalyticsController();
 var AdminModeController = require('adminModeService/AdminModeController');
 Alloy.Globals.adminModeController = new AdminModeController();
 
-// TODO MAKE THESE # INSTANCES FUNCTIONAL
+var StorageService = require('storageService/storageService');
+Alloy.Globals.storageService = new StorageService();
+
 var rootWebServiceUrls = {
 	"dev": 		"http://excl.dreamhosters.com/dev/wp-json/v01/excl/museum/81",
 	"devTwo": 	"http://excl.dreamhosters.com/dev2/wp-json/v01/excl/museum/81",
@@ -29,15 +31,22 @@ var rootWebServiceUrls = {
 
 Alloy.Globals.setRootWebServiceFromUrls = function(key){
 	if( rootWebServiceUrls[key] )
-		Alloy.Globals.rootWebServiceUrl = rootWebServiceUrls[key];
+		Alloy.Globals.setRootWebServiceUrl(rootWebServiceUrls[key]);
 };
 
 Alloy.Globals.setRootWebServiceUrl = function(url){
-	if( url )
+	if( url ) {
 		Alloy.Globals.rootWebServiceUrl = url;
+		Alloy.Globals.storageService.setStringProperty("rootWebServiceURL", url);
+	}
 };
 
-Alloy.Globals.rootWebServiceUrl = rootWebServiceUrls["qa"];
+if (Alloy.Globals.storageService.getStringProperty("rootWebServiceURL")) {
+	Alloy.Globals.setRootWebServiceUrl(Alloy.Globals.storageService.getStringProperty("rootWebServiceURL"));
+} else {
+	Alloy.Globals.setRootWebServiceFromUrls("qa");
+}
+
 Alloy.Globals.viewUnpublishedPosts = false;
 
 Alloy.Globals.setPathForLibDirectory = function(libFile){
