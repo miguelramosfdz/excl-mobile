@@ -5,7 +5,6 @@
 			<Button class="environmentOption" onClick="enterProductionMode">Production</Button>		
 			<Button class="environmentOption" onClick="enterQualityAssuranceMode">Quality Assurance</Button>
 			<Button class="environmentOption" onClick="enterDevelopmentMode">Development</Button>
-			<Button class="environmentOption" onClick="enterDevelopmentTwoMode">Development 2</Button>
 			<Button class="environmentOption" onClick="enterOtherMode">Other</Button>
 			<View class="horizontalContainer">
 				<Label>Toggle Unpublished Posts</Label>

@@ -12,10 +12,19 @@ function NavigationController() {
 	this.menu = require(rootPath + "navigationService/flyoutService");
 	var TutorialController = require(rootPath + "tutorialService/tutorialService");
 	this.tutorialController = new TutorialController();
+	var pageLevelList = [];
 }
 
-NavigationController.prototype.restart = function(){	
-	this.home();
+NavigationController.prototype.restart = function(){
+		
+	if (this.windowStack && this.windowStack.length > 0) {
+			var lastWindow = this.windowStack.pop();
+			if (lastWindow) {
+				lastWindow.close();
+			}
+		}
+		Alloy.createController("index");//*/
+		//this.home();
 };
 
 NavigationController.prototype.enterKioskMode = function(){
@@ -33,13 +42,27 @@ NavigationController.prototype.exitKioskMode = function(){
 };
 
 NavigationController.prototype.open = function(controller) {
+	if (this.checkPageLevel(controller) == false){
+		return false;
+	}
+	//this.setPageLevel(controller);
 	var windowToOpen = this.getWindowFromController(controller);
-	try {
+	try {	
 		var win = this.openWindow(windowToOpen);
 		return win;
 	} catch(e) {
 		return false;
+	}	
+};
+
+NavigationController.prototype.checkPageLevel = function(controllerToBeOpened) {
+	pageLevelToBeOpened = _.isFunction(controllerToBeOpened.getAnalyticsPageLevel) ? controllerToBeOpened.getAnalyticsPageLevel() : "[Unnamed Level]";
+	for (i = 0; i<this.windowStack.length; i++){
+		if (this.windowStack[i].analyticsPageLevel == pageLevelToBeOpened){
+			return false;
+		}
 	}
+	return true;	
 };
 
 NavigationController.prototype.getWindowFromController = function(controller) {
@@ -68,7 +91,6 @@ NavigationController.prototype.openWindow = function(windowToOpen) {
 	}
 	this.openTutorial(windowToOpen);
 	this.windowStack.push(windowToOpen);
-
 	return windowToOpen;
 };
 
@@ -82,6 +104,7 @@ NavigationController.prototype.openHomeScreen = function(windowToOpen) {
 	this.lockedPage = this.Page;
 	windowToOpen.analyticsPageTitle = "Home";
 	windowToOpen.analyticsPageLevel = "Home";
+
 	if (OS_ANDROID) {
 		//hack - setting this property ensures the window is "heavyweight" (associated with an Android activity)
 		windowToOpen.navBarHidden = windowToOpen.navBarHidden || false;

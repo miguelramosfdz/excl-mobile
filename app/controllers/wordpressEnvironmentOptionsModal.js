@@ -41,13 +41,6 @@ function enterDevelopmentMode(e){
 	alert("Entered Development Wordpress Environment");
 }
 
-function enterDevelopmentTwoMode(e){
-	Alloy.Globals.setRootWebServiceFromUrls("devTwo");
-	addUnpublishedPostsFunctionality();
-	Alloy.Globals.navController.restart();
-	alert("Entered Development Wordpress Environment");
-}
-
 function enterQualityAssuranceMode(e){
 	Alloy.Globals.setRootWebServiceFromUrls("qa");
 	Alloy.Globals.navController.restart();

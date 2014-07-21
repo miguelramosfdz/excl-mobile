@@ -3,6 +3,7 @@ var args = arguments[0] || {};
 var json;
 var analyticsPageTitle = "Home";
 var analyticsPageLevel = "Home";
+
 var url = Alloy.Globals.rootWebServiceUrl;
 
 var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
@@ -41,7 +42,6 @@ exports.getAnalyticsPageLevel = getAnalyticsPageLevel;
 function openExhibits() {
 	var controller = Alloy.createController("exhibitLanding", eval([json]));
 	controller.setAnalyticsPageTitle("Exhibit Landing");
-	controller.setAnalyticsPageLevel("Exhibit Landing");
 	Alloy.Globals.navController.open(controller);
 }
 
