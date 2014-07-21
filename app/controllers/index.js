@@ -5,8 +5,8 @@ var analyticsPageTitle = "Home";
 var analyticsPageLevel = "Home";
 var url = Alloy.Globals.rootWebServiceUrl;
 
-//var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
-var dataRetriever = require('dataRetriever/dataRetriever');
+var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+//var dataRetriever = require('dataRetriever/dataRetriever');
 
 function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
@@ -66,7 +66,6 @@ function retrieveJson(jsonURL) {
 			'info' : museums.info,
 			});
 			museums.add(museumModel);
-
 		}
 	});
 }

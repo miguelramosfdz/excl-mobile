@@ -67,10 +67,7 @@ function init() {
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
 	$.navBar.setPageTitle("Exhibitions");
-	
-	Ti.API.info("exhibit json: " + JSON.stringify(args[0]));
-	
-	initializeWithJSON(args[0]);
+	initializeWithJSON(json);
 	fixIpadSpacing();
 	spinner.hide();
 }
@@ -98,9 +95,6 @@ function initializeWithJSON(json) {
 }
 
 function populateWindow(json) {
-	
-	Ti.API.info("exhibit json: " + JSON.stringify(json));
-	
 	var components = Alloy.Collections.instance('component');
 	for (var i = 0; i < json.data.museum.exhibits.length; i++) {
 		var exhibit = json.data.museum.exhibits[i];
@@ -403,7 +397,7 @@ function createComponentsScrollView(exhibits) {
 function openComponent(e, componentImageUrl) {
 	var components = Alloy.Collections.instance('component');
 	var component = components.where({"id": e.source.itemId})[0];
-	var controller = Alloy.createController('componentLandingRedesign', [component, componentImageUrl]);
+	var controller = Alloy.createController('componentLanding', [component, componentImageUrl]);
 	var analyticsTitle = component.getScreenName();
 	var analyticsLevel = "Component Landing";
 	controller.setAnalyticsPageTitle(analyticsTitle);

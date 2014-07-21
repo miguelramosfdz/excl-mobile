@@ -22,6 +22,16 @@ function fetchDataFromUrl(url, onSuccess) {
 		client.open("GET", url);
 		client.send();
 	}
+	checkIfDataRetrieverNull(onSuccess);
+}
+
+function checkIfDataRetrieverNull(returnedData){
+	if (!returnedData){
+		alert("There was an error retrieving the app's data.\nPlease contact a museum administrator for assistance.");
+		Ti.API.info("Error: Connection returned null JSON");
+	} else{
+		Ti.API.info("Connection returned valid JSON");
+	}
 }
 
 function addLanguageToURL(url) {
