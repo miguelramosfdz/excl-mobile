@@ -2,6 +2,7 @@ var args = arguments[0] || {};
 
 var analyticsPageTitle = "Home";
 var analyticsPageLevel = "Home";
+
 function setAnalyticsPageTitle(title) {
 	analyticsPageTitle = title;
 }
