@@ -160,12 +160,9 @@ function createExhibitsCarousel(exhibits) {
 			onExhibitsClick(exhibits);
 		});
 	}
+	
 	$.exhibitsCarousel.addEventListener("scrollend", function(e) {
 		onExhibitsScroll(e, exhibits);
-	});
-
-	$.exhibitsCarousel.addEventListener('postlayout', function() {
-		$.exhibitsCarousel.setCurrentPage(0);
 	});
 }
 
