@@ -63,7 +63,7 @@ function fixIpadSpacing() {
 function init() {
 	spinner.addTo($.exhibitsCarousel);
 	spinner.show();
-	$.navBar.setPageTitle("Exhibits");
+	$.navBar.setPageTitle("Exhibitions");
 	fixIpadSpacing();
 }
 
@@ -328,7 +328,7 @@ function onExhibitsClick(exhibits) {
 	} else {
 		$.collapsibleComponentView.hidden = true;
 		$.headingLabel.text = exhibits[$.exhibitsCarousel.currentPage].name;
-		$.exhibitSelectLabel.text = "Explore This Exhibit!";
+		$.exhibitSelectLabel.text = "Explore This Exhibition!";
 		$.exhibitInfoView.animate({
 			opacity : 1,
 			duration : 300
@@ -355,7 +355,7 @@ function onExhibitsScroll(e, exhibits) {
 	var index = $.exhibitsCarousel.currentPage;
 	$.headingLabel.text = exhibits[index].name;
 	$.exhibitInfoLabel.text = exhibits[index].long_description;
-	$.exhibitSelectLabel.text = "Explore This Exhibit!";
+	$.exhibitSelectLabel.text = "Explore This Exhibition!";
 	$.exhibitInfoView.height = Ti.UI.SIZE;
 	$.exhibitInfoView.animate({
 		opacity : 1,
