@@ -4,7 +4,9 @@ var json;
 var analyticsPageTitle = "Home";
 var analyticsPageLevel = "Home";
 var url = Alloy.Globals.rootWebServiceUrl;
-var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+
+//var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var dataRetriever = require('dataRetriever/dataRetriever');
 
 function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
@@ -57,13 +59,13 @@ function retrieveJson(jsonURL) {
 	dataRetriever.fetchDataFromUrl(jsonURL, function(returnedData) {
 		if (returnedData) {
 			json = returnedData;
-			// var museums = Alloy.Collections.instance('museum');
-			// var museumModel = Alloy.createModel('museum');
-			// var page_info = json.data.museum.info;
-			// museumModel.set({
-			// 'info' : museum.info,
-			// });
-			// museums.add(museumModel);
+			var museums = Alloy.Collections.instance('museum');
+			var museumModel = Alloy.createModel('museum');
+			var page_info = json.data.museum.info;
+			museumModel.set({
+			'info' : museums.info,
+			});
+			museums.add(museumModel);
 
 		}
 	});
