@@ -3,7 +3,9 @@ var args = arguments[0] || {};
 var analyticsPageTitle = "Home";
 var analyticsPageLevel = "Home";
 var url = Alloy.Globals.rootWebServiceUrl;
-var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+
+//var dataRetriever = setPathForLibDirectory('dataRetriever/dataRetriever');
+var dataRetriever = require('dataRetriever/dataRetriever');
 
 function setPathForLibDirectory(libFile) {
 	if ( typeof Titanium == 'undefined') {
@@ -88,7 +90,7 @@ function populateWindow(json) {
 	//Ti.API.info("******************************************TESTING***************************************************");
 }
 
-//retrieveJson(url, this);
+retrieveJson(url, this);
 
 // 
 Alloy.Globals.navController.open(this);
