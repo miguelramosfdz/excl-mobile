@@ -133,10 +133,6 @@ function createExhibitsCarousel(exhibits) {
 	for ( i = 0; i < exhibits.length; i++) {
 		exhibitText[i] = exhibits[i].long_description;
 		var exhibitView;
-		if (!firstViewHit) {
-			firstViewHit = true;
-			firstView = exhibits[i];
-		}
 
 		if (OS_IOS) {
 			exhibitView = createExhibitsImageIOS(exhibits[i], (i + 1 + " of " + exhibits.length));
@@ -147,9 +143,15 @@ function createExhibitsCarousel(exhibits) {
 			});
 		}
 		$.exhibitsCarousel.addView(exhibitView);
+		
+		//if (!firstViewHit) {
+		//	firstViewHit = true;
+		//	firstView = exhibitView;
+		//}
 	}
 
-	showScrollableViewArrows($.exhibitsCarousel);
+	//firstViewHit = false;
+	//showScrollableViewArrows($.exhibitsCarousel);
 	$.exhibitsCarousel.scrollToView(firstView);
 	$.headingLabel.text = exhibits[0].name;
 	$.exhibitInfoLabel.text = exhibits[0].long_description;
