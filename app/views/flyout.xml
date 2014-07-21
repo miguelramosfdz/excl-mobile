@@ -27,7 +27,7 @@
 			<View class="viewRow" onClick="openInfoPage">
 				<View class="rowContainer">	
 					<View backgroundImage="/flyoutMenuIcons/info.png" class="rowIcon"/>
-					<Label id="museumInfoLabel" class="rowLabel">Museum Info</Label>
+					<Label id="museumInfoLabel" class="rowLabel">Info</Label>
 				</View>
 			</View>
 			
