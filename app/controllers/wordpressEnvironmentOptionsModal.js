@@ -1,7 +1,9 @@
 var args = arguments[0] || {};
 var networkCalls = setPathForLibDirectory('customCalls/networkCalls');
+var toggleUnpublishedPosts;
 
 var onSuccess = function(){
+	addUnpublishedPostsFunctionality();
 	Alloy.Globals.navController.restart();
 	alert("Entered new Wordpress environment"); 
 };
@@ -27,18 +29,21 @@ function cancel(e){
 
 function enterProductionMode(e){
 	Alloy.Globals.setRootWebServiceFromUrls("prod");
+	addUnpublishedPostsFunctionality();
 	Alloy.Globals.navController.restart();
 	alert("Entered Production Wordpress Environment");
 }
 
 function enterDevelopmentMode(e){
 	Alloy.Globals.setRootWebServiceFromUrls("dev");
+	addUnpublishedPostsFunctionality();
 	Alloy.Globals.navController.restart();
 	alert("Entered Development Wordpress Environment");
 }
 
 function enterDevelopmentTwoMode(e){
 	Alloy.Globals.setRootWebServiceFromUrls("devTwo");
+	addUnpublishedPostsFunctionality();
 	Alloy.Globals.navController.restart();
 	alert("Entered Development Wordpress Environment");
 }
@@ -100,14 +105,21 @@ function handleUrl(url){
 	}
 }
 
-function toggleUnpublishedPosts(e){
-	Alloy.Globals.adminModeController.toggleViewUnpublishedPosts();
-	//Alloy.Globals.navController.restart();
+function switchPush(e){
+	toggleUnpublishedPosts = !toggleUnpublishedPosts;
+}
+
+function addUnpublishedPostsFunctionality(){
+	if(toggleUnpublishedPosts)
+	{
+		Alloy.Globals.adminModeController.toggleViewUnpublishedPosts();
+	}
 }
 
 function init(){
+	toggleUnpublishedPosts = false;
 	$.toggleUnpublishedPostsSwitch.value = Alloy.Globals.adminModeController.viewUnpublishedPostsIsEnabled();
-	$.toggleUnpublishedPostsSwitch.addEventListener('change', toggleUnpublishedPosts);
+	$.toggleUnpublishedPostsSwitch.addEventListener('change', switchPush);
 }
 init();
 
