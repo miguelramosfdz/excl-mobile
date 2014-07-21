@@ -3,10 +3,31 @@
 		<View class="clearPageProtecterView" onClick="closeMenu"/>
 		<View id="menuContainer" >
 			
-			<View class="viewRow" onClick="openExhibitPage">
+			<View class="viewRow" onClick="openHomePage">
 				<View class="rowContainer">
 					<ImageView id="rowExhibit" backgroundImage= "/flyoutMenuIcons/home.png" class="rowIcon" />
-					<Label id="exhibitLabel" class="rowLabel">Home</Label>
+					<Label id="homeLabel" class="rowLabel">Home</Label>
+				</View>
+			</View>
+			
+			<View class="viewRow" onClick="openExhibitsPage">
+				<View class="rowContainer">
+					<View backgroundImage= "/flyoutMenuIcons/exhibit.png" class="rowIcon"/>
+					<Label id="exhibitLabel" class="rowLabel">Exhibits</Label>
+				</View>
+			</View>
+			
+			<View class="viewRow" onClick="openMapPage">
+				<View class="rowContainer">
+					<View backgroundImage= "/flyoutMenuIcons/map.png" class="rowIcon"/>
+					<Label id="mapLabel" class="rowLabel">Map</Label>
+				</View>
+			</View>
+			
+			<View class="viewRow" onClick="openInfoPage">
+				<View class="rowContainer">	
+					<View backgroundImage="/flyoutMenuIcons/info.png" class="rowIcon"/>
+					<Label id="museumInfoLabel" class="rowLabel">Museum Info</Label>
 				</View>
 			</View>
 			
@@ -24,27 +45,13 @@
 				</View>
 			</View>
 			
-			<View class="viewRow">
+			<!-- <View class="viewRow">
 				<View class="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/favorites.png" class="rowIcon"/>
 					<Label id="favoritesLabel" color="#C0C0C0" class="rowLabel">My Favorites</Label>
 				</View>
 			</View>
-			
-			<View class="viewRow">
-				<View class="rowContainer">
-					<View backgroundImage= "/flyoutMenuIcons/map.png" class="rowIcon"/>
-					<Label id="mapLabel" color="#C0C0C0" class="rowLabel">Map</Label>
-				</View>
-			</View>
-			
-			<View class="viewRow">
-				<View class="rowContainer">	
-					<View backgroundImage="/flyoutMenuIcons/info.png" class="rowIcon"/>
-					<Label id="museumInfoLabel" color="#C0C0C0" class="rowLabel">Museum Info</Label>
-				</View>
-			</View>
-			
+			 -->
 			<View class="viewRow" onClick="tutorialToggler">
 				<View class="rowContainer">
 					<View backgroundImage="/flyoutMenuIcons/tutorial.png" class="rowIcon"/>
