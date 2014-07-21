@@ -77,10 +77,18 @@ function reloadWithJSON(json, controller) {
 	populateWindow(json);
 }
 
+
+
+function populateWindow(json) {
+	var museums = Alloy.Collections.instance('museum');
+	var museumModel = Alloy.createModel('museum');
+	var page_info = json.data.museum.info;
+	
+
 	//Ti.API.info("******************************************TESTING***************************************************");
+}
 
-
-retrieveJson(url, this);
+//retrieveJson(url, this);
 
 // 
 Alloy.Globals.navController.open(this);
